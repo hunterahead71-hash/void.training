@@ -224,6 +224,72 @@
             margin-right: 10px;
         }
         
+        /* New Mod Requirements Sections */
+        .mod-requirements {
+            margin: 40px 0;
+        }
+        
+        .requirement-section {
+            background: rgba(20, 20, 40, 0.7);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border: 1px solid rgba(138, 43, 226, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .requirement-section:hover {
+            border-color: var(--accent);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 212, 255, 0.1);
+        }
+        
+        .requirement-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+        }
+        
+        .requirement-title i {
+            margin-right: 12px;
+            color: var(--primary);
+        }
+        
+        .requirement-content {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            padding-left: 10px;
+        }
+        
+        .requirement-list {
+            list-style-type: none;
+            margin: 15px 0;
+        }
+        
+        .requirement-list li {
+            margin-bottom: 10px;
+            padding-left: 25px;
+            position: relative;
+        }
+        
+        .requirement-list li:before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-size: 1.5rem;
+        }
+        
+        .weekly-requirements {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--accent);
+            margin-top: 10px;
+        }
+        
         /* Roster Categories */
         .roster-categories {
             display: grid;
@@ -644,6 +710,71 @@
             flex-direction: column;
             border-right: 1px solid var(--discord-border);
             overflow-y: auto;
+        }
+        
+        /* Mobile Back Arrow */
+        .mobile-back-arrow {
+            display: none;
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            z-index: 1002;
+            cursor: pointer;
+            padding: 10px;
+        }
+        
+        /* Mobile Menu Button */
+        .mobile-menu-button {
+            display: none;
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            z-index: 1001;
+            cursor: pointer;
+            padding: 10px;
+        }
+        
+        /* Mobile Overlay */
+        .mobile-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+        
+        .mobile-overlay.active {
+            display: block;
+        }
+        
+        /* Mobile Sidebar */
+        .mobile-sidebar {
+            position: fixed;
+            top: 0;
+            left: -280px;
+            width: 280px;
+            height: 100%;
+            background-color: var(--discord-sidebar);
+            z-index: 1000;
+            transition: left 0.3s ease;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .mobile-sidebar.active {
+            left: 0;
         }
         
         .server-header {
@@ -1535,16 +1666,41 @@
                 width: 100%;
             }
             
-            /* Test page responsive */
+            /* Test page responsive for mobile */
             .test-container {
                 flex-direction: column;
             }
             
             .discord-sidebar {
-                width: 100%;
-                height: auto;
-                max-height: 200px;
-                overflow-y: auto;
+                display: none;
+            }
+            
+            .mobile-menu-button, .mobile-back-arrow {
+                display: block;
+            }
+            
+            .mobile-sidebar {
+                display: flex;
+            }
+            
+            .mobile-overlay {
+                display: none;
+            }
+            
+            .mobile-overlay.active {
+                display: block;
+            }
+            
+            .chat-header {
+                padding-left: 60px;
+            }
+            
+            .chat-channel-members {
+                display: none;
+            }
+            
+            .chat-controls {
+                display: none;
             }
             
             .test-info {
@@ -1555,6 +1711,47 @@
                 left: 50%;
                 transform: translateX(-50%);
                 bottom: 100px;
+                width: 90%;
+                max-width: 300px;
+            }
+            
+            .user-modal-stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .message-content {
+                max-width: calc(100% - 55px);
+            }
+            
+            .message-text {
+                font-size: 0.9rem;
+            }
+            
+            .message-input-container {
+                padding: 8px;
+            }
+            
+            .message-input {
+                font-size: 0.9rem;
+            }
+            
+            .send-button {
+                padding: 6px 12px;
+                font-size: 0.9rem;
+            }
+            
+            .test-result-buttons {
+                flex-direction: column;
+            }
+        }
+        
+        @media (min-width: 769px) {
+            .mobile-menu-button, .mobile-back-arrow, .mobile-overlay, .mobile-sidebar {
+                display: none !important;
+            }
+            
+            .discord-sidebar {
+                display: flex;
             }
         }
     </style>
@@ -1740,6 +1937,50 @@
                         <li>Willing To Do Free Work For Staff/Roster</li>
                         <li>Deliver When Asked</li>
                     </ul>
+                </div>
+            </div>
+            
+            <!-- New Mod Requirements Section -->
+            <div class="mod-requirements">
+                <h2 class="section-title"><i class="fas fa-tasks"></i> Mod Responsibilities & Commands</h2>
+                
+                <div class="requirement-section">
+                    <h3 class="requirement-title"><i class="fas fa-exclamation-triangle"></i> Warn / Report Command</h3>
+                    <div class="requirement-content">
+                        <p>Use <strong>*warn user-id reason</strong> command in <strong>#staff-commands</strong> channel only if a user keeps on breaking minor rules.</p>
+                        <p>Use <strong>/report</strong> command only if a user is breaking major rules repeatedly.</p>
+                    </div>
+                </div>
+                
+                <div class="requirement-section">
+                    <h3 class="requirement-title"><i class="fas fa-bed"></i> LOA or Leave On Application</h3>
+                    <div class="requirement-content">
+                        <p>You might be sick sometimes, or for some XYZ reason were not able to attend the server for few days. Then you use <strong>/loa command</strong> to take leave.</p>
+                        <p><strong>Note:</strong> Always inform the staff team before taking an LOA, and provide a valid reason with expected return date.</p>
+                    </div>
+                </div>
+                
+                <div class="requirement-section">
+                    <h3 class="requirement-title"><i class="fas fa-sign-in-alt"></i> Login/Logout Shifts</h3>
+                    <div class="requirement-content">
+                        <p>Whenever you start to moderate the server, use <strong>/login command</strong> and once you're done, use <strong>/logout command</strong>.</p>
+                        <p><strong>Important:</strong> If you fail to use this, your hours won't be logged for us and might result in a demotion.</p>
+                    </div>
+                </div>
+                
+                <div class="requirement-section">
+                    <h3 class="requirement-title"><i class="fas fa-chart-line"></i> Weekly Requirements for Mods</h3>
+                    <div class="requirement-content">
+                        <p>To maintain your mod position, you must meet the following weekly requirements:</p>
+                        <ul class="requirement-list">
+                            <li><strong>10 Tickets</strong> - Handle at least 10 support tickets</li>
+                            <li><strong>400 Messages</strong> - Be active in server conversations</li>
+                            <li><strong>5 Dyno Modlogs</strong> - Document mod actions properly</li>
+                            <li><strong>8 Hour Shift</strong> - Be active for at least 8 hours per week</li>
+                            <li><strong>2 Hours VC Time</strong> - Spend time in voice channels with members</li>
+                        </ul>
+                        <div class="weekly-requirements">Failure to meet these requirements may result in a warning or demotion.</div>
+                    </div>
                 </div>
             </div>
             
@@ -2069,8 +2310,96 @@
             <i class="fas fa-arrow-left"></i> Back to Training
         </button>
         
+        <!-- Mobile Menu Button -->
+        <button class="mobile-menu-button" id="mobileMenuButton">
+            <i class="fas fa-bars"></i>
+        </button>
+        
+        <!-- Mobile Back Arrow -->
+        <button class="mobile-back-arrow" id="mobileBackArrow">
+            <i class="fas fa-arrow-left"></i>
+        </button>
+        
+        <!-- Mobile Overlay -->
+        <div class="mobile-overlay" id="mobileOverlay"></div>
+        
+        <!-- Mobile Sidebar -->
+        <div class="mobile-sidebar" id="mobileSidebar">
+            <div class="server-header" id="mobileServerHeader">
+                <div class="server-icon">V</div>
+                <div class="server-name">Void Esports</div>
+                <div class="server-dropdown" id="mobileServerDropdown">
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+            </div>
+            
+            <!-- Server Info Panel -->
+            <div class="server-info-panel" id="mobileServerInfoPanel">
+                <div class="server-members">
+                    <i class="fas fa-user-friends"></i>
+                    <span class="online-count">247</span>
+                    <span>Online</span>
+                    <span>•</span>
+                    <span>1,284 Members</span>
+                </div>
+                <div class="server-description">
+                    Competitive Fortnite organization since 2019. Home to pro players, content creators, and competitive grinders.
+                </div>
+            </div>
+            
+            <!-- Test Info Panel -->
+            <div class="test-info">
+                <div class="test-title">Mod Certification Test</div>
+                <div class="test-description">Handle a simulated conversation with a user applying to join Void. Respond as if you're a real mod handling a ticket.</div>
+                
+                <div class="score-display">
+                    <div class="score-title">SCORE</div>
+                    <div>
+                        <span class="score-value" id="mobileScoreValue">0</span>
+                        <span class="score-total">/ 8</span>
+                    </div>
+                    <div class="progress-bar-test">
+                        <div class="progress-fill-test" id="mobileProgressFillTest"></div>
+                    </div>
+                </div>
+                
+                <div class="status-indicator">
+                    <div class="status-dot" id="mobileStatusDot"></div>
+                    <div class="status-text" id="mobileStatusText">Test In Progress</div>
+                </div>
+            </div>
+            
+            <!-- Channels Section -->
+            <div class="channels-section">
+                <div class="channels-header" id="mobileChannelsHeader">
+                    <div class="channels-title">Text Channels</div>
+                    <div class="channels-dropdown" id="mobileChannelsDropdown">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+                
+                <div class="channels-list" id="mobileChannelsList">
+                    <!-- Channels will be dynamically added here -->
+                </div>
+            </div>
+            
+            <!-- User Profile -->
+            <div class="user-profile" id="mobileUserProfile">
+                <div class="user-avatar" id="mobileUserAvatar">
+                    <div class="user-status"></div>
+                </div>
+                <div class="user-info">
+                    <div class="username-display" id="mobileUsernameDisplay">You</div>
+                    <div class="user-tag">Trainee Mod</div>
+                </div>
+                <div class="user-controls">
+                    <i class="fas fa-cog"></i>
+                </div>
+            </div>
+        </div>
+        
         <div class="test-container">
-            <!-- Enhanced Discord Sidebar -->
+            <!-- Discord Sidebar (PC) -->
             <div class="discord-sidebar" id="discordSidebar">
                 <div class="server-header" id="serverHeader">
                     <div class="server-icon">V</div>
@@ -2733,7 +3062,26 @@
             const statTickets = document.getElementById('statTickets');
             const statScore = document.getElementById('statScore');
             
-            // Sidebar elements
+            // Mobile elements
+            const mobileMenuButton = document.getElementById('mobileMenuButton');
+            const mobileBackArrow = document.getElementById('mobileBackArrow');
+            const mobileOverlay = document.getElementById('mobileOverlay');
+            const mobileSidebar = document.getElementById('mobileSidebar');
+            const mobileScoreValue = document.getElementById('mobileScoreValue');
+            const mobileStatusDot = document.getElementById('mobileStatusDot');
+            const mobileStatusText = document.getElementById('mobileStatusText');
+            const mobileProgressFillTest = document.getElementById('mobileProgressFillTest');
+            const mobileServerHeader = document.getElementById('mobileServerHeader');
+            const mobileServerDropdown = document.getElementById('mobileServerDropdown');
+            const mobileServerInfoPanel = document.getElementById('mobileServerInfoPanel');
+            const mobileChannelsHeader = document.getElementById('mobileChannelsHeader');
+            const mobileChannelsDropdown = document.getElementById('mobileChannelsDropdown');
+            const mobileChannelsList = document.getElementById('mobileChannelsList');
+            const mobileUserProfile = document.getElementById('mobileUserProfile');
+            const mobileUserAvatar = document.getElementById('mobileUserAvatar');
+            const mobileUsernameDisplay = document.getElementById('mobileUsernameDisplay');
+            
+            // Sidebar elements (PC)
             const serverHeader = document.getElementById('serverHeader');
             const serverDropdown = document.getElementById('serverDropdown');
             const serverInfoPanel = document.getElementById('serverInfoPanel');
@@ -2755,32 +3103,16 @@
             const membersListBtn = document.getElementById('membersListBtn');
             const searchBtn = document.getElementById('searchBtn');
             
+            // Check if device is mobile
+            const isMobile = window.innerWidth <= 768;
+            
             // Initialize the Discord interface
             function initializeDiscordInterface() {
-                // Populate text channels
-                if (channelsList) {
-                    channelsList.innerHTML = '';
-                    textChannels.forEach(channel => {
-                        const channelItem = document.createElement('div');
-                        channelItem.className = `channel-item ${channel.id === 1 ? 'active' : ''} ${channel.unread ? 'unread' : ''}`;
-                        channelItem.dataset.channelId = channel.id;
-                        channelItem.dataset.channelName = channel.name;
-                        channelItem.dataset.channelTopic = channel.topic;
-                        
-                        channelItem.innerHTML = `
-                            <div class="channel-icon">
-                                <i class="${channel.icon}"></i>
-                            </div>
-                            <div class="channel-name">${channel.name}</div>
-                            ${channel.notifications > 0 ? `<div class="channel-notification">${channel.notifications}</div>` : ''}
-                        `;
-                        
-                        channelItem.addEventListener('click', () => switchChannel(channel.id));
-                        channelsList.appendChild(channelItem);
-                    });
-                }
+                // Populate text channels for both PC and mobile
+                populateChannelsList(channelsList);
+                populateChannelsList(mobileChannelsList);
                 
-                // Populate voice channels
+                // Populate voice channels (PC only)
                 if (voiceChannelsList) {
                     voiceChannelsList.innerHTML = '';
                     voiceChannels.forEach(channel => {
@@ -2800,7 +3132,7 @@
                     });
                 }
                 
-                // Toggle server info panel
+                // PC sidebar functionality
                 if (serverHeader) {
                     serverHeader.addEventListener('click', () => {
                         if (serverInfoPanel && serverDropdown) {
@@ -2810,7 +3142,6 @@
                     });
                 }
                 
-                // Toggle text channels list
                 if (channelsHeader && channelsList && channelsDropdown) {
                     channelsHeader.addEventListener('click', () => {
                         const isHidden = channelsList.style.display === 'none';
@@ -2819,7 +3150,6 @@
                     });
                 }
                 
-                // Toggle voice channels list
                 if (voiceChannelsHeader && voiceChannelsList && voiceChannelsDropdown) {
                     voiceChannelsHeader.addEventListener('click', () => {
                         const isHidden = voiceChannelsList.style.display === 'none';
@@ -2828,7 +3158,57 @@
                     });
                 }
                 
-                // User profile modal
+                // Mobile sidebar functionality
+                if (mobileServerHeader) {
+                    mobileServerHeader.addEventListener('click', () => {
+                        if (mobileServerInfoPanel && mobileServerDropdown) {
+                            mobileServerInfoPanel.classList.toggle('show');
+                            mobileServerDropdown.classList.toggle('open');
+                        }
+                    });
+                }
+                
+                if (mobileChannelsHeader && mobileChannelsList && mobileChannelsDropdown) {
+                    mobileChannelsHeader.addEventListener('click', () => {
+                        const isHidden = mobileChannelsList.style.display === 'none';
+                        mobileChannelsList.style.display = isHidden ? 'block' : 'none';
+                        mobileChannelsDropdown.classList.toggle('open');
+                    });
+                }
+                
+                // Mobile menu toggle
+                if (mobileMenuButton) {
+                    mobileMenuButton.addEventListener('click', () => {
+                        mobileSidebar.classList.add('active');
+                        mobileOverlay.classList.add('active');
+                    });
+                }
+                
+                // Mobile back arrow
+                if (mobileBackArrow) {
+                    mobileBackArrow.addEventListener('click', () => {
+                        mobileSidebar.classList.add('active');
+                        mobileOverlay.classList.add('active');
+                    });
+                }
+                
+                // Close mobile sidebar when clicking overlay
+                if (mobileOverlay) {
+                    mobileOverlay.addEventListener('click', () => {
+                        mobileSidebar.classList.remove('active');
+                        mobileOverlay.classList.remove('active');
+                    });
+                }
+                
+                // Close mobile sidebar when clicking a channel
+                document.addEventListener('click', (e) => {
+                    if (e.target.closest('.channel-item')) {
+                        mobileSidebar.classList.remove('active');
+                        mobileOverlay.classList.remove('active');
+                    }
+                });
+                
+                // User profile modal (PC)
                 if (userProfile && userModal) {
                     userProfile.addEventListener('click', (e) => {
                         e.stopPropagation();
@@ -2840,6 +3220,14 @@
                         if (userModal && !userModal.contains(e.target) && userProfile && !userProfile.contains(e.target)) {
                             userModal.classList.remove('active');
                         }
+                    });
+                }
+                
+                // User profile modal (mobile)
+                if (mobileUserProfile) {
+                    mobileUserProfile.addEventListener('click', () => {
+                        // For mobile, we'll just show a simple alert or could implement a mobile-specific modal
+                        showNotification("User profile would open here on mobile.");
                     });
                 }
                 
@@ -2866,12 +3254,38 @@
                 updateChannelInfo(1);
             }
             
+            // Populate channels list
+            function populateChannelsList(container) {
+                if (!container) return;
+                
+                container.innerHTML = '';
+                textChannels.forEach(channel => {
+                    const channelItem = document.createElement('div');
+                    channelItem.className = `channel-item ${channel.id === 1 ? 'active' : ''} ${channel.unread ? 'unread' : ''}`;
+                    channelItem.dataset.channelId = channel.id;
+                    channelItem.dataset.channelName = channel.name;
+                    channelItem.dataset.channelTopic = channel.topic;
+                    
+                    channelItem.innerHTML = `
+                        <div class="channel-icon">
+                            <i class="${channel.icon}"></i>
+                        </div>
+                        <div class="channel-name">${channel.name}</div>
+                        ${channel.notifications > 0 ? `<div class="channel-notification">${channel.notifications}</div>` : ''}
+                    `;
+                    
+                    channelItem.addEventListener('click', () => switchChannel(channel.id));
+                    container.appendChild(channelItem);
+                });
+            }
+            
             // Switch to a different channel
             function switchChannel(channelId) {
-                // Update active channel in sidebar
+                // Update active channel in sidebar (both PC and mobile)
                 document.querySelectorAll('.channel-item').forEach(item => {
                     item.classList.remove('active');
                 });
+                
                 const activeChannel = document.querySelector(`.channel-item[data-channel-id="${channelId}"]`);
                 if (activeChannel) activeChannel.classList.add('active');
                 
@@ -2967,19 +3381,22 @@
                     // Store the username
                     userDiscordUsername = discordUsername;
                     
-                    // Update the display
+                    // Update the display for both PC and mobile
                     const usernameDisplay = document.getElementById('usernameDisplay');
                     const userModalNameElem = document.getElementById('userModalName');
                     const userModalTagElem = document.getElementById('userModalTag');
+                    const mobileUsernameDisplayElem = document.getElementById('mobileUsernameDisplay');
                     
                     if (usernameDisplay) usernameDisplay.textContent = discordUsername.split('#')[0];
                     if (userModalNameElem) userModalNameElem.textContent = discordUsername.split('#')[0];
                     if (userModalTagElem) userModalTagElem.textContent = discordUsername;
+                    if (mobileUsernameDisplayElem) mobileUsernameDisplayElem.textContent = discordUsername.split('#')[0];
                     
                     // Set avatar initials
                     const initials = discordUsername.split('#')[0].charAt(0).toUpperCase();
                     if (userAvatar) userAvatar.textContent = initials;
                     if (userModalAvatar) userModalAvatar.textContent = initials;
+                    if (mobileUserAvatar) mobileUserAvatar.textContent = initials;
                     
                     // Hide modal and show test page
                     const usernameModal = document.getElementById('usernameModal');
@@ -2992,6 +3409,17 @@
                     
                     // Initialize Discord interface
                     initializeDiscordInterface();
+                    
+                    // Show/hide mobile elements based on device
+                    if (isMobile) {
+                        if (mobileMenuButton) mobileMenuButton.style.display = 'block';
+                        if (mobileBackArrow) mobileBackArrow.style.display = 'block';
+                        if (document.querySelector('.discord-sidebar')) document.querySelector('.discord-sidebar').style.display = 'none';
+                    } else {
+                        if (mobileMenuButton) mobileMenuButton.style.display = 'none';
+                        if (mobileBackArrow) mobileBackArrow.style.display = 'none';
+                        if (document.querySelector('.discord-sidebar')) document.querySelector('.discord-sidebar').style.display = 'flex';
+                    }
                     
                     // Start the test
                     setTimeout(() => {
@@ -3254,6 +3682,7 @@
             // Function to update score display
             function updateTestScore() {
                 if (testScoreValue) testScoreValue.textContent = testScore;
+                if (mobileScoreValue) mobileScoreValue.textContent = testScore;
                 updateTestStatus();
                 
                 // Update user stats
@@ -3265,10 +3694,10 @@
             
             // Function to update progress bar
             function updateTestProgressBar() {
-                if (progressFillTest) {
-                    const percentage = (testCurrentQuestion / testTotalQuestions) * 100;
-                    progressFillTest.style.width = `${percentage}%`;
-                }
+                const percentage = (testCurrentQuestion / testTotalQuestions) * 100;
+                
+                if (progressFillTest) progressFillTest.style.width = `${percentage}%`;
+                if (mobileProgressFillTest) mobileProgressFillTest.style.width = `${percentage}%`;
             }
             
             // Function to update status indicator
@@ -3278,8 +3707,11 @@
                 if (testCurrentQuestion >= testTotalQuestions) {
                     if (testStatusText) testStatusText.textContent = "Test Complete";
                     if (testStatusDot) testStatusDot.style.backgroundColor = "#3ba55c";
+                    if (mobileStatusText) mobileStatusText.textContent = "Test Complete";
+                    if (mobileStatusDot) mobileStatusDot.style.backgroundColor = "#3ba55c";
                 } else {
                     if (testStatusText) testStatusText.textContent = `Question ${testCurrentQuestion + 1} of ${testTotalQuestions}`;
+                    if (mobileStatusText) mobileStatusText.textContent = `Question ${testCurrentQuestion + 1} of ${testTotalQuestions}`;
                     
                     // Change dot color based on progress
                     if (testStatusDot) {
@@ -3289,6 +3721,16 @@
                             testStatusDot.style.backgroundColor = "#faa81a";
                         } else {
                             testStatusDot.style.backgroundColor = "#3ba55c";
+                        }
+                    }
+                    
+                    if (mobileStatusDot) {
+                        if (percentage < 33) {
+                            mobileStatusDot.style.backgroundColor = "#ed4245";
+                        } else if (percentage < 66) {
+                            mobileStatusDot.style.backgroundColor = "#faa81a";
+                        } else {
+                            mobileStatusDot.style.backgroundColor = "#3ba55c";
                         }
                     }
                 }
