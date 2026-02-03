@@ -25,6 +25,19 @@
             --warning: #ffaa00;
             --card-bg: rgba(30, 30, 46, 0.8);
             --border-color: rgba(138, 43, 226, 0.3);
+            
+            /* Discord colors for test page */
+            --discord-bg: #36393f;
+            --discord-sidebar: #202225;
+            --discord-chat-bg: #36393f;
+            --discord-message-bg: #2f3136;
+            --discord-text-primary: #dcddde;
+            --discord-text-secondary: #72767d;
+            --discord-blue: #5865f2;
+            --discord-green: #3ba55c;
+            --discord-red: #ed4245;
+            --discord-yellow: #faa81a;
+            --discord-border: #202225;
         }
         
         body {
@@ -419,6 +432,16 @@
             box-shadow: 0 5px 15px rgba(0, 176, 155, 0.4);
         }
         
+        .btn-test {
+            background: linear-gradient(90deg, #ff6b6b, #ffa726);
+            color: white;
+        }
+        
+        .btn-test:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+        }
+        
         .answer-feedback {
             margin-top: 25px;
             padding: 25px;
@@ -503,6 +526,511 @@
             line-height: 1.8;
         }
         
+        .completion-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        /* Test Page Styles (Discord-like) */
+        .test-page {
+            display: none;
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--discord-bg);
+            color: var(--discord-text-primary);
+            height: 100vh;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            overflow: hidden;
+        }
+        
+        .test-container {
+            display: flex;
+            height: 100vh;
+            width: 100%;
+        }
+        
+        /* Discord Sidebar */
+        .discord-sidebar {
+            width: 240px;
+            background-color: var(--discord-sidebar);
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid var(--discord-border);
+        }
+        
+        .server-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--discord-border);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .server-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #8a2be2, #4a00e0);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+        
+        .server-name {
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+        
+        .test-info {
+            padding: 20px;
+            border-bottom: 1px solid var(--discord-border);
+        }
+        
+        .test-title {
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: white;
+            font-size: 1.2rem;
+        }
+        
+        .test-description {
+            font-size: 0.9rem;
+            color: var(--discord-text-secondary);
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+        
+        .score-display {
+            background-color: rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .score-title {
+            font-size: 0.9rem;
+            color: var(--discord-text-secondary);
+            margin-bottom: 5px;
+        }
+        
+        .score-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: white;
+        }
+        
+        .score-total {
+            font-size: 1rem;
+            color: var(--discord-text-secondary);
+        }
+        
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 15px;
+            padding: 8px 12px;
+            border-radius: 4px;
+            background-color: rgba(0, 0, 0, 0.2);
+        }
+        
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: var(--discord-green);
+        }
+        
+        .status-text {
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        
+        .channels-list {
+            padding: 20px 10px;
+            flex-grow: 1;
+        }
+        
+        .channel-item {
+            padding: 8px 10px;
+            border-radius: 4px;
+            margin-bottom: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: background-color 0.2s;
+        }
+        
+        .channel-item:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+        
+        .channel-item.active {
+            background-color: rgba(88, 101, 242, 0.2);
+            color: white;
+        }
+        
+        .channel-icon {
+            width: 20px;
+            text-align: center;
+        }
+        
+        .user-profile {
+            padding: 15px;
+            background-color: #292b2f;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-top: 1px solid var(--discord-border);
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #5865f2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+        
+        .user-info {
+            flex-grow: 1;
+        }
+        
+        .username {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+        
+        .user-tag {
+            font-size: 0.8rem;
+            color: var(--discord-text-secondary);
+        }
+        
+        /* Discord Chat Area */
+        .discord-chat-area {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            background-color: var(--discord-chat-bg);
+        }
+        
+        .chat-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--discord-border);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+        }
+        
+        .chat-channel-name {
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+        
+        .chat-channel-topic {
+            font-size: 0.9rem;
+            color: var(--discord-text-secondary);
+            margin-top: 3px;
+        }
+        
+        .messages-container {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .message {
+            display: flex;
+            margin-bottom: 20px;
+            animation: messageAppear 0.3s ease;
+        }
+        
+        .message-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 15px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+        
+        .message-content {
+            flex-grow: 1;
+        }
+        
+        .message-header {
+            display: flex;
+            align-items: baseline;
+            margin-bottom: 5px;
+        }
+        
+        .message-username {
+            font-weight: 600;
+            font-size: 1rem;
+            margin-right: 8px;
+        }
+        
+        .message-timestamp {
+            font-size: 0.75rem;
+            color: var(--discord-text-secondary);
+        }
+        
+        .message-text {
+            font-size: 0.95rem;
+            line-height: 1.4;
+            word-wrap: break-word;
+        }
+        
+        .message-bot-tag {
+            background-color: #5865f2;
+            color: white;
+            font-size: 0.7rem;
+            padding: 1px 4px;
+            border-radius: 3px;
+            margin-left: 6px;
+            vertical-align: middle;
+        }
+        
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            opacity: 0.7;
+        }
+        
+        .typing-dots {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            margin-left: 15px;
+        }
+        
+        .typing-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: var(--discord-text-secondary);
+            animation: typing 1.4s infinite ease-in-out;
+        }
+        
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+        
+        @keyframes typing {
+            0%, 80%, 100% { transform: scale(0.8); opacity: 0.5; }
+            40% { transform: scale(1); opacity: 1; }
+        }
+        
+        .message-input-area {
+            padding: 20px;
+            background-color: var(--discord-message-bg);
+            border-top: 1px solid var(--discord-border);
+        }
+        
+        .message-input-container {
+            background-color: #40444b;
+            border-radius: 8px;
+            display: flex;
+            padding: 10px;
+        }
+        
+        .message-input {
+            flex-grow: 1;
+            background: transparent;
+            border: none;
+            color: var(--discord-text-primary);
+            font-size: 0.95rem;
+            padding: 5px 10px;
+            outline: none;
+            font-family: 'Roboto', sans-serif;
+            resize: none;
+            max-height: 100px;
+            min-height: 20px;
+        }
+        
+        .message-input::placeholder {
+            color: var(--discord-text-secondary);
+        }
+        
+        .send-button {
+            background-color: var(--discord-blue);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .send-button:hover {
+            background-color: #4752c4;
+        }
+        
+        .send-button:disabled {
+            background-color: #4a4d57;
+            cursor: not-allowed;
+        }
+        
+        /* Correct/Incorrect Message Styles */
+        .message.correct .message-text {
+            border-left: 3px solid var(--discord-green);
+            padding-left: 10px;
+        }
+        
+        .message.incorrect .message-text {
+            border-left: 3px solid var(--discord-red);
+            padding-left: 10px;
+        }
+        
+        .feedback-badge {
+            display: inline-block;
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 3px;
+            margin-left: 8px;
+            vertical-align: middle;
+            font-weight: 600;
+        }
+        
+        .correct-badge {
+            background-color: rgba(59, 165, 92, 0.2);
+            color: var(--discord-green);
+        }
+        
+        .incorrect-badge {
+            background-color: rgba(237, 66, 69, 0.2);
+            color: var(--discord-red);
+        }
+        
+        /* Test Complete Screen */
+        .test-complete-screen {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            width: 100%;
+            padding: 40px;
+            text-align: center;
+            background-color: var(--discord-bg);
+        }
+        
+        .test-complete-screen.active {
+            display: flex;
+        }
+        
+        .test-result-icon {
+            font-size: 5rem;
+            margin-bottom: 20px;
+        }
+        
+        .test-result-pass {
+            color: var(--discord-green);
+        }
+        
+        .test-result-fail {
+            color: var(--discord-red);
+        }
+        
+        .test-result-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: white;
+        }
+        
+        .test-result-score {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: var(--discord-text-secondary);
+        }
+        
+        .test-result-message {
+            max-width: 600px;
+            margin-bottom: 30px;
+            line-height: 1.6;
+            font-size: 1.1rem;
+        }
+        
+        .test-result-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .test-result-button {
+            padding: 12px 30px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+        }
+        
+        .test-btn-primary {
+            background-color: var(--discord-blue);
+            color: white;
+        }
+        
+        .test-btn-primary:hover {
+            background-color: #4752c4;
+        }
+        
+        .test-btn-secondary {
+            background-color: #4f545c;
+            color: white;
+        }
+        
+        .test-btn-secondary:hover {
+            background-color: #5d6269;
+        }
+        
+        /* Back button for test page */
+        .back-to-training {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 1001;
+            font-weight: 600;
+        }
+        
+        .back-to-training:hover {
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+        
         /* Footer */
         .footer {
             text-align: center;
@@ -537,7 +1065,7 @@
                 margin: 20px 0;
             }
             
-            .quiz-buttons {
+            .quiz-buttons, .completion-buttons {
                 flex-direction: column;
                 gap: 15px;
             }
@@ -545,11 +1073,28 @@
             .btn {
                 width: 100%;
             }
+            
+            /* Test page responsive */
+            .test-container {
+                flex-direction: column;
+            }
+            
+            .discord-sidebar {
+                width: 100%;
+                height: auto;
+                max-height: 200px;
+                overflow-y: auto;
+            }
+            
+            .test-info {
+                display: none;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
+    <!-- Main Training Page -->
+    <div class="container" id="mainContainer">
         <!-- Header -->
         <div class="header">
             <h1>Advanced Mod Training</h1>
@@ -592,17 +1137,17 @@
             <div class="ticket-types">
                 <div class="ticket-card">
                     <h3><i class="fas fa-users"></i> 1) General Ticket</h3>
-                    <p>This category is for the users if they have any problem or wants to talk with any of the mods or complain any issue.</p>
+                    <p>These are made by players/users if they have any problem or wants to talk with any of the mods or complain any issue.</p>
                 </div>
                 
                 <div class="ticket-card">
                     <h3><i class="fas fa-user-plus"></i> 2) Roster Ticket</h3>
-                    <p>This category is for the users who want to join Void Esports.</p>
+                    <p>This category is for the users who want to join Void Esports. If you are taking a ticket your starting response should always be "Hello! What's your age and how may I help you?" or something similar to this question.</p>
                 </div>
             </div>
             
             <div class="intro-text">
-                <strong>Important:</strong> Now I need you to go through all the categories below and read everything carefully before proceeding to the practice quiz.  If you are taking a ticket your starting response should always be "Hello! What's your age and how may I help you?" or something similar to this question.
+                <strong>Important:</strong> Now I need you to go through all the categories below and read everything carefully before proceeding to the practice quiz.
             </div>
         </div>
         
@@ -1010,9 +1555,14 @@
                 <p>Congratulations! You've successfully completed the advanced mod training. You now have the knowledge to handle various types of roster tickets effectively.</p>
                 <p>Remember to always maintain professionalism, ask for age in your first response, and ping the appropriate departments when needed. You're now ready to handle real tickets in the Void Esports server!</p>
             </div>
-            <button class="btn btn-primary" id="restartQuiz">
-                <i class="fas fa-redo"></i> Review Training Again
-            </button>
+            <div class="completion-buttons">
+                <button class="btn btn-primary" id="restartQuiz">
+                    <i class="fas fa-redo"></i> Review Training Again
+                </button>
+                <button class="btn btn-test" id="takeTestBtn">
+                    <i class="fas fa-vial"></i> Take Certification Test
+                </button>
+            </div>
         </div>
         
         <!-- Footer -->
@@ -1021,14 +1571,169 @@
             <p>© 2023 Void Esports. All rights reserved.</p>
         </div>
     </div>
+    
+    <!-- Test Page (Hidden by default) -->
+    <div class="test-page" id="testPage">
+        <button class="back-to-training" id="backToTraining">
+            <i class="fas fa-arrow-left"></i> Back to Training
+        </button>
+        
+        <div class="test-container">
+            <!-- Discord Sidebar -->
+            <div class="discord-sidebar">
+                <div class="server-header">
+                    <div class="server-icon">V</div>
+                    <div class="server-name">Void Esports</div>
+                </div>
+                
+                <div class="test-info">
+                    <div class="test-title">Mod Certification Test</div>
+                    <div class="test-description">Handle a simulated conversation with a user applying to join Void. Respond as if you're a real mod handling a ticket.</div>
+                    
+                    <div class="score-display">
+                        <div class="score-title">SCORE</div>
+                        <div>
+                            <span class="score-value" id="scoreValue">0</span>
+                            <span class="score-total">/ 8</span>
+                        </div>
+                    </div>
+                    
+                    <div class="status-indicator">
+                        <div class="status-dot" id="statusDot"></div>
+                        <div class="status-text" id="statusText">Test In Progress</div>
+                    </div>
+                </div>
+                
+                <div class="channels-list">
+                    <div class="channel-item active">
+                        <div class="channel-icon">#</div>
+                        <div>training-test</div>
+                    </div>
+                    <div class="channel-item">
+                        <div class="channel-icon">#</div>
+                        <div>how-to-join-roster</div>
+                    </div>
+                    <div class="channel-item">
+                        <div class="channel-icon"><i class="fas fa-lock"></i></div>
+                        <div>mod-chat</div>
+                    </div>
+                    <div class="channel-item">
+                        <div class="channel-icon"><i class="fas fa-shield-alt"></i></div>
+                        <div>staff-announcements</div>
+                    </div>
+                </div>
+                
+                <div class="user-profile">
+                    <div class="user-avatar" id="userAvatar">Y</div>
+                    <div class="user-info">
+                        <div class="username" id="username">You</div>
+                        <div class="user-tag">Trainee Mod</div>
+                    </div>
+                    <div class="user-status">
+                        <i class="fas fa-headset" style="color: #3ba55c;"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Discord Chat Area -->
+            <div class="discord-chat-area" id="chatArea">
+                <div class="chat-header">
+                    <div>
+                        <div class="chat-channel-name">#training-test</div>
+                        <div class="chat-channel-topic">Simulated mod test - Handle this conversation as if it were a real ticket</div>
+                    </div>
+                </div>
+                
+                <div class="messages-container" id="messagesContainer">
+                    <!-- Test instructions -->
+                    <div class="message">
+                        <div class="message-avatar" style="background-color: #5865f2;">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="message-content">
+                            <div class="message-header">
+                                <div class="message-username">Void Bot</div>
+                                <span class="message-bot-tag">BOT</span>
+                                <div class="message-timestamp">Today at 12:00 PM</div>
+                            </div>
+                            <div class="message-text">
+                                Welcome to the Void Mod Certification Test! A simulated user named <strong>Nicks Cold</strong> will message you with various requests. Respond as if you're handling a real ticket. Your responses will be evaluated for correctness.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="message">
+                        <div class="message-avatar" style="background-color: #5865f2;">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="message-content">
+                            <div class="message-header">
+                                <div class="message-username">Void Bot</div>
+                                <span class="message-bot-tag">BOT</span>
+                                <div class="message-timestamp">Today at 12:00 PM</div>
+                            </div>
+                            <div class="message-text">
+                                <strong>Test Starting...</strong> The conversation will begin shortly. Type your responses in the message box below and click Send.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Messages will be added here by JavaScript -->
+                </div>
+                
+                <!-- Typing indicator (shown when bot is "typing") -->
+                <div class="typing-indicator" id="typingIndicator" style="display: none;">
+                    <div class="message-avatar" style="background-color: #ed4245;">NC</div>
+                    <div class="typing-dots">
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                    </div>
+                </div>
+                
+                <div class="message-input-area">
+                    <div class="message-input-container">
+                        <textarea class="message-input" id="messageInput" placeholder="Message #training-test" rows="1"></textarea>
+                        <button class="send-button" id="sendButton">
+                            <i class="fas fa-paper-plane"></i> Send
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Test Complete Screen -->
+        <div class="test-complete-screen" id="testCompleteScreen">
+            <div class="test-result-icon" id="testResultIcon">
+                <i class="fas fa-trophy"></i>
+            </div>
+            <div class="test-result-title" id="testResultTitle">Test Complete!</div>
+            <div class="test-result-score" id="testResultScore">Score: 0/8</div>
+            <div class="test-result-message" id="testResultMessage">
+                Your responses have been evaluated. Check your score above.
+            </div>
+            <div class="test-result-buttons">
+                <button class="test-result-button test-btn-primary" id="testReviewTestBtn">
+                    <i class="fas fa-redo"></i> Retake Test
+                </button>
+                <button class="test-result-button test-btn-secondary" id="testBackToTrainingBtn">
+                    <i class="fas fa-arrow-left"></i> Back to Training
+                </button>
+            </div>
+        </div>
+    </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Quiz state
+            // ==========================================
+            // TRAINING QUIZ LOGIC
+            // ==========================================
+            
+            // Quiz state for training
             let currentQuestion = 1;
             const totalQuestions = 7;
             
-            // DOM Elements
+            // DOM Elements for training
             const startQuizBtn = document.getElementById('startQuizBtn');
             const quizSection = document.getElementById('quizSection');
             const progressFill = document.getElementById('progressFill');
@@ -1037,6 +1742,7 @@
             const completionScreen = document.getElementById('completionScreen');
             const restartQuizBtn = document.getElementById('restartQuiz');
             const skipBtn = document.getElementById('skipBtn');
+            const takeTestBtn = document.getElementById('takeTestBtn');
             
             // Initialize progress bar
             updateProgressBar();
@@ -1140,6 +1846,18 @@
                 updateProgressBar();
             });
             
+            // Take test button
+            takeTestBtn.addEventListener('click', function() {
+                // Hide main container and show test page
+                document.getElementById('mainContainer').style.display = 'none';
+                document.getElementById('testPage').style.display = 'block';
+                
+                // Start the test
+                setTimeout(() => {
+                    startTest();
+                }, 500);
+            });
+            
             // Function to show a specific question
             function showQuestion(questionNum) {
                 // Hide all questions
@@ -1179,6 +1897,464 @@
                     this.style.boxShadow = '0 10px 20px rgba(0, 0, 0, 0.3)';
                 });
             });
+            
+            // ==========================================
+            // TEST PAGE LOGIC
+            // ==========================================
+            
+            // Test configuration
+            const testQuestions = [
+                {
+                    userMessage: "Hi i want to join void",
+                    correctAnswers: [
+                        "hey whats your age",
+                        "whats your age",
+                        "how old are you",
+                        "please check #roster channel",
+                        "check how-to-join-roster",
+                        "read #how-to-join-roster",
+                        "tell me what requirement you fit",
+                        "what role are you interested in"
+                    ],
+                    user: "Nicks Cold",
+                    avatarColor: "#ed4245"
+                },
+                {
+                    userMessage: "i want to join as a pro",
+                    correctAnswers: [
+                        "please send your fortnite tracker",
+                        "send your fortnite tracker",
+                        "wait for @trapped",
+                        "wait for @cheif",
+                        "ping @trapped",
+                        "ping @cheif",
+                        "share your tracker",
+                        "provide your fortnite tracker"
+                    ],
+                    user: "Nicks Cold",
+                    avatarColor: "#ed4245"
+                },
+                {
+                    userMessage: "i want to join as creative roster",
+                    correctAnswers: [
+                        "please send atleast 2 clips",
+                        "send 2 clips of freebuilding",
+                        "wait for @creativedepartment",
+                        "ping @creativedepartment",
+                        "share clips of freebuilding",
+                        "provide clips of your editing"
+                    ],
+                    user: "Nicks Cold",
+                    avatarColor: "#ed4245"
+                },
+                {
+                    userMessage: "i want to join as academy player",
+                    correctAnswers: [
+                        "sure send your fortnite tracker",
+                        "send your fortnite tracker",
+                        "share your tracker",
+                        "provide your fortnite stats",
+                        "show me your fortnite tracker"
+                    ],
+                    user: "Nicks Cold",
+                    avatarColor: "#ed4245"
+                },
+                {
+                    userMessage: "im 12 years old is that okay?",
+                    correctAnswers: [
+                        "@cheif",
+                        "ping @cheif",
+                        "contact @cheif",
+                        "you will be banned for underage",
+                        "underage is not allowed",
+                        "minimum age is 13",
+                        "you're underage",
+                        "age requirement not met"
+                    ],
+                    user: "Nicks Cold",
+                    avatarColor: "#ed4245"
+                },
+                {
+                    userMessage: "i want to join as void grinder",
+                    correctAnswers: [
+                        "change your discord and fortnite name",
+                        "add void to your username",
+                        "use team.void in item shop",
+                        "show proof of team.void",
+                        "modify your username to include void"
+                    ],
+                    user: "Nicks Cold",
+                    avatarColor: "#ed4245"
+                },
+                {
+                    userMessage: "i will nuke this server",
+                    correctAnswers: [
+                        "@cheif",
+                        "ping @cheif",
+                        "you'll be banned",
+                        "threats are not allowed",
+                        "this is against rules",
+                        "immediate ban",
+                        "contact higher authority"
+                    ],
+                    user: "Nicks Cold",
+                    avatarColor: "#ed4245"
+                },
+                {
+                    userMessage: "i wanna join as a content creator",
+                    correctAnswers: [
+                        "send links of your socials",
+                        "share your social media links",
+                        "wait for @contentdep",
+                        "ping @contentdep",
+                        "provide your social media",
+                        "show your content creator profiles"
+                    ],
+                    user: "Nicks Cold",
+                    avatarColor: "#ed4245"
+                }
+            ];
+            
+            // Test state
+            let testCurrentQuestion = 0;
+            let testScore = 0;
+            let testActive = false;
+            const testTotalQuestions = testQuestions.length;
+            
+            // DOM elements for test page
+            const backToTrainingBtn = document.getElementById('backToTraining');
+            const testMessagesContainer = document.getElementById('messagesContainer');
+            const testMessageInput = document.getElementById('messageInput');
+            const testSendButton = document.getElementById('sendButton');
+            const testTypingIndicator = document.getElementById('typingIndicator');
+            const testChatArea = document.getElementById('chatArea');
+            const testCompleteScreen = document.getElementById('testCompleteScreen');
+            const testScoreValue = document.getElementById('scoreValue');
+            const testStatusDot = document.getElementById('statusDot');
+            const testStatusText = document.getElementById('statusText');
+            const testResultTitle = document.getElementById('testResultTitle');
+            const testResultScore = document.getElementById('testResultScore');
+            const testResultMessage = document.getElementById('testResultMessage');
+            const testResultIcon = document.getElementById('testResultIcon');
+            const testReviewTestBtn = document.getElementById('testReviewTestBtn');
+            const testBackToTrainingBtn = document.getElementById('testBackToTrainingBtn');
+            
+            // Back to training button
+            backToTrainingBtn.addEventListener('click', function() {
+                document.getElementById('testPage').style.display = 'none';
+                document.getElementById('mainContainer').style.display = 'block';
+                resetTest();
+            });
+            
+            testBackToTrainingBtn.addEventListener('click', function() {
+                document.getElementById('testPage').style.display = 'none';
+                document.getElementById('mainContainer').style.display = 'block';
+                resetTest();
+            });
+            
+            // Auto-resize textarea
+            testMessageInput.addEventListener('input', function() {
+                this.style.height = 'auto';
+                this.style.height = (this.scrollHeight) + 'px';
+            });
+            
+            // Send message on Enter (without Shift)
+            testMessageInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    sendTestMessage();
+                }
+            });
+            
+            // Send message on button click
+            testSendButton.addEventListener('click', sendTestMessage);
+            
+            // Retake test button
+            testReviewTestBtn.addEventListener('click', function() {
+                resetTest();
+                testCompleteScreen.classList.remove('active');
+                testChatArea.style.display = 'flex';
+                setTimeout(() => {
+                    startTest();
+                }, 500);
+            });
+            
+            // Function to start the test
+            function startTest() {
+                testActive = true;
+                testCurrentQuestion = 0;
+                testScore = 0;
+                updateTestScore();
+                updateTestStatus();
+                
+                // Clear previous messages (keep only initial bot messages)
+                const initialMessages = testMessagesContainer.querySelectorAll('.message');
+                for (let i = 2; i < initialMessages.length; i++) {
+                    initialMessages[i].remove();
+                }
+                
+                // Start with first question
+                setTimeout(() => {
+                    showNextTestQuestion();
+                }, 2000);
+            }
+            
+            // Function to reset the test
+            function resetTest() {
+                testActive = false;
+                testCurrentQuestion = 0;
+                testScore = 0;
+                updateTestScore();
+                updateTestStatus();
+                
+                // Clear input
+                testMessageInput.value = '';
+                testMessageInput.style.height = 'auto';
+                testMessageInput.disabled = true;
+                testSendButton.disabled = true;
+            }
+            
+            // Function to show the next question from the bot
+            function showNextTestQuestion() {
+                if (testCurrentQuestion >= testTotalQuestions) {
+                    endTest();
+                    return;
+                }
+                
+                // Show typing indicator
+                testTypingIndicator.style.display = 'flex';
+                
+                // Wait 1-2 seconds to simulate typing
+                setTimeout(() => {
+                    testTypingIndicator.style.display = 'none';
+                    
+                    // Add the user's message
+                    const question = testQuestions[testCurrentQuestion];
+                    addTestMessage(question.user, question.userMessage, question.avatarColor, false);
+                    
+                    // Enable input for user response
+                    testMessageInput.disabled = false;
+                    testSendButton.disabled = false;
+                    testMessageInput.focus();
+                    
+                    // Update status
+                    updateTestStatus();
+                }, 1500 + Math.random() * 1000);
+            }
+            
+            // Function to send user's message
+            function sendTestMessage() {
+                const userMessage = testMessageInput.value.trim();
+                
+                if (!userMessage || !testActive) return;
+                
+                // Add user's message to chat
+                addTestMessage("You", userMessage, "#5865f2", true);
+                
+                // Clear input
+                testMessageInput.value = '';
+                testMessageInput.style.height = 'auto';
+                
+                // Check if answer is correct
+                checkTestAnswer(userMessage);
+                
+                // Disable input while bot "types"
+                testMessageInput.disabled = true;
+                testSendButton.disabled = true;
+                
+                // Move to next question after delay
+                setTimeout(() => {
+                    testCurrentQuestion++;
+                    showNextTestQuestion();
+                }, 1000);
+            }
+            
+            // Function to check if answer is correct
+            function checkTestAnswer(userAnswer) {
+                const question = testQuestions[testCurrentQuestion];
+                const userAnswerLower = userAnswer.toLowerCase();
+                let isCorrect = false;
+                
+                // Check against all possible correct answers
+                for (let correctAnswer of question.correctAnswers) {
+                    if (userAnswerLower.includes(correctAnswer.toLowerCase())) {
+                        isCorrect = true;
+                        break;
+                    }
+                }
+                
+                // Additional check for partial matches
+                if (!isCorrect) {
+                    // Check for key phrases
+                    const keyPhrases = [];
+                    
+                    if (testCurrentQuestion === 0) {
+                        // First question - should ask for age or direct to roster channel
+                        keyPhrases.push("age", "how old", "roster", "channel", "requirement", "fit");
+                    } else if (testCurrentQuestion === 1) {
+                        // Pro question - should ask for tracker or mention trapped/cheif
+                        keyPhrases.push("tracker", "fortnite", "trapped", "cheif", "send", "share");
+                    } else if (testCurrentQuestion === 2) {
+                        // Creative question - should ask for clips or mention creativedepartment
+                        keyPhrases.push("clip", "freebuild", "creative", "department", "send", "share");
+                    } else if (testCurrentQuestion === 3) {
+                        // Academy question - should ask for tracker
+                        keyPhrases.push("tracker", "fortnite", "send", "share", "stats");
+                    } else if (testCurrentQuestion === 4) {
+                        // Age question - should mention cheif or say underage/ban
+                        keyPhrases.push("cheif", "underage", "ban", "age", "minimum", "13");
+                    } else if (testCurrentQuestion === 5) {
+                        // Grinder question - should mention username change and team.void
+                        keyPhrases.push("username", "void", "name", "discord", "fortnite", "team.void", "item shop");
+                    } else if (testCurrentQuestion === 6) {
+                        // Threat question - should mention cheif or ban
+                        keyPhrases.push("cheif", "ban", "threat", "rule", "against");
+                    } else if (testCurrentQuestion === 7) {
+                        // Content creator question - should ask for socials or mention contentdep
+                        keyPhrases.push("social", "link", "contentdep", "media", "send", "share");
+                    }
+                    
+                    // Count matching key phrases
+                    let matchCount = 0;
+                    for (let phrase of keyPhrases) {
+                        if (userAnswerLower.includes(phrase)) {
+                            matchCount++;
+                        }
+                    }
+                    
+                    // If at least 2 key phrases match, consider it correct
+                    if (matchCount >= 2) {
+                        isCorrect = true;
+                    }
+                }
+                
+                // Update score if correct
+                if (isCorrect) {
+                    testScore++;
+                    updateTestScore();
+                    
+                    // Add correct badge to last user message
+                    const lastMessage = testMessagesContainer.lastElementChild;
+                    if (lastMessage && lastMessage.classList.contains('message')) {
+                        lastMessage.classList.add('correct');
+                        
+                        const messageText = lastMessage.querySelector('.message-text');
+                        if (messageText) {
+                            const badge = document.createElement('span');
+                            badge.className = 'feedback-badge correct-badge';
+                            badge.textContent = 'Correct';
+                            messageText.appendChild(badge);
+                        }
+                    }
+                } else {
+                    // Add incorrect badge to last user message
+                    const lastMessage = testMessagesContainer.lastElementChild;
+                    if (lastMessage && lastMessage.classList.contains('message')) {
+                        lastMessage.classList.add('incorrect');
+                        
+                        const messageText = lastMessage.querySelector('.message-text');
+                        if (messageText) {
+                            const badge = document.createElement('span');
+                            badge.className = 'feedback-badge incorrect-badge';
+                            badge.textContent = 'Incorrect';
+                            messageText.appendChild(badge);
+                        }
+                    }
+                }
+            }
+            
+            // Function to add a message to the chat
+            function addTestMessage(username, text, avatarColor, isUser = false) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = 'message';
+                
+                // Get current time for timestamp
+                const now = new Date();
+                const timeString = `${now.getHours()}:${now.getMinutes().toString().padStart(2, '0')}`;
+                
+                // Create avatar initials
+                let avatarInitials = username.charAt(0).toUpperCase();
+                if (username === "Nicks Cold") avatarInitials = "NC";
+                
+                messageDiv.innerHTML = `
+                    <div class="message-avatar" style="background-color: ${avatarColor};">${avatarInitials}</div>
+                    <div class="message-content">
+                        <div class="message-header">
+                            <div class="message-username">${username}</div>
+                            ${username === "Void Bot" ? '<span class="message-bot-tag">BOT</span>' : ''}
+                            <div class="message-timestamp">Today at ${timeString}</div>
+                        </div>
+                        <div class="message-text">${text}</div>
+                    </div>
+                `;
+                
+                testMessagesContainer.appendChild(messageDiv);
+                
+                // Scroll to bottom
+                testMessagesContainer.scrollTop = testMessagesContainer.scrollHeight;
+            }
+            
+            // Function to update score display
+            function updateTestScore() {
+                testScoreValue.textContent = testScore;
+                updateTestStatus();
+            }
+            
+            // Function to update status indicator
+            function updateTestStatus() {
+                const percentage = (testCurrentQuestion / testTotalQuestions) * 100;
+                
+                if (testCurrentQuestion >= testTotalQuestions) {
+                    testStatusText.textContent = "Test Complete";
+                    testStatusDot.style.backgroundColor = "#3ba55c";
+                } else {
+                    testStatusText.textContent = `Question ${testCurrentQuestion + 1} of ${testTotalQuestions}`;
+                    
+                    // Change dot color based on progress
+                    if (percentage < 33) {
+                        testStatusDot.style.backgroundColor = "#ed4245";
+                    } else if (percentage < 66) {
+                        testStatusDot.style.backgroundColor = "#faa81a";
+                    } else {
+                        testStatusDot.style.backgroundColor = "#3ba55c";
+                    }
+                }
+            }
+            
+            // Function to end the test and show results
+            function endTest() {
+                testActive = false;
+                
+                // Add final message
+                setTimeout(() => {
+                    addTestMessage("Void Bot", "Test complete! Your responses have been evaluated. Check your score in the sidebar.", "#5865f2", false);
+                    
+                    // Show test complete screen after delay
+                    setTimeout(() => {
+                        testChatArea.style.display = 'none';
+                        testCompleteScreen.classList.add('active');
+                        
+                        // Calculate result
+                        const passingScore = testTotalQuestions - 2; // Need to get at least 6 out of 8
+                        const passed = testScore >= passingScore;
+                        
+                        // Update result screen
+                        testResultScore.textContent = `Score: ${testScore}/${testTotalQuestions}`;
+                        
+                        if (passed) {
+                            testResultTitle.textContent = "Test Passed!";
+                            testResultMessage.textContent = `Congratulations! You passed the mod certification test with a score of ${testScore}/${testTotalQuestions}. You demonstrated knowledge of proper ticket handling procedures.`;
+                            testResultIcon.innerHTML = '<i class="fas fa-trophy"></i>';
+                            testResultIcon.className = "test-result-icon test-result-pass";
+                        } else {
+                            testResultTitle.textContent = "Test Failed";
+                            testResultMessage.textContent = `You scored ${testScore}/${testTotalQuestions}. You need at least ${passingScore} correct answers to pass. Review the training material and try again.`;
+                            testResultIcon.innerHTML = '<i class="fas fa-times-circle"></i>';
+                            testResultIcon.className = "test-result-icon test-result-fail";
+                        }
+                    }, 1500);
+                }, 1000);
+            }
         });
     </script>
 </body>
