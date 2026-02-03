@@ -1594,7 +1594,8 @@
         .back-to-training {
             position: absolute;
             top: 20px;
-            left: 20px;
+            right: 20px;
+            left: auto;
             background-color: rgba(0, 0, 0, 0.5);
             color: white;
             border: none;
@@ -1666,11 +1667,117 @@
                 width: 100%;
             }
             
-            /* Test page responsive for mobile */
+            /* Mobile UI Fixes */
+            .mobile-menu-button {
+                top: 15px;
+                left: 15px;
+                z-index: 1002;
+            }
+            
+            .mobile-back-arrow {
+                top: 15px;
+                left: 70px;
+                z-index: 1001;
+            }
+            
+            .back-to-training {
+                top: 15px;
+                right: 15px;
+                left: auto;
+                z-index: 1001;
+            }
+            
+            /* Fix chat header padding to accommodate buttons */
+            .chat-header {
+                padding-left: 20px;
+                padding-top: 60px;
+            }
+            
+            /* Fix message input area for mobile keyboards */
+            .message-input-area {
+                padding-bottom: max(20px, env(safe-area-inset-bottom, 20px));
+                position: sticky;
+                bottom: 0;
+                background-color: var(--discord-message-bg);
+                z-index: 100;
+            }
+            
+            /* Make the message container adjust for keyboard */
+            .messages-container {
+                padding-bottom: 80px;
+                flex-grow: 1;
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+            
+            /* Adjust message input container for mobile */
+            .message-input-container {
+                flex-direction: column;
+                padding: 10px;
+                gap: 10px;
+            }
+            
+            .message-input {
+                min-height: 40px;
+                max-height: 120px;
+                font-size: 16px;
+            }
+            
+            .send-button {
+                align-self: flex-end;
+                padding: 10px 20px;
+            }
+            
+            /* Adjust test complete screen for mobile */
+            .test-complete-screen {
+                padding: 20px;
+                padding-top: 80px;
+            }
+            
+            /* Ensure mobile sidebar doesn't overlap with top buttons */
+            .mobile-sidebar {
+                padding-top: 70px;
+                height: calc(100% - 70px);
+                top: 70px;
+            }
+            
+            /* Make sure the overlay covers properly */
+            .mobile-overlay {
+                top: 0;
+                height: 100%;
+            }
+            
+            /* Fix user profile position in mobile sidebar */
+            .user-profile {
+                margin-top: auto;
+                padding-bottom: max(20px, env(safe-area-inset-bottom, 20px));
+            }
+            
+            /* Test page adjustments */
+            .test-page {
+                position: fixed;
+                overflow: hidden;
+            }
+            
             .test-container {
+                height: 100vh;
+                overflow: hidden;
+            }
+            
+            /* Ensure chat area fills available space */
+            .discord-chat-area {
+                height: 100vh;
+                display: flex;
                 flex-direction: column;
             }
             
+            /* Make the typing indicator position correctly */
+            .typing-indicator {
+                padding-left: 20px;
+                margin-bottom: 10px;
+            }
+            
+            /* Test page responsive for mobile */
             .discord-sidebar {
                 display: none;
             }
@@ -1689,10 +1796,6 @@
             
             .mobile-overlay.active {
                 display: block;
-            }
-            
-            .chat-header {
-                padding-left: 60px;
             }
             
             .chat-channel-members {
@@ -1742,6 +1845,38 @@
             
             .test-result-buttons {
                 flex-direction: column;
+            }
+        }
+        
+        /* Additional CSS to prevent iOS zoom on input */
+        @media screen and (max-width: 768px) {
+            input, textarea, select {
+                font-size: 16px !important;
+            }
+            
+            .message-input:focus {
+                font-size: 16px !important;
+            }
+        }
+        
+        /* Specific fix for very small screens */
+        @media (max-width: 480px) {
+            .mobile-menu-button {
+                padding: 8px;
+            }
+            
+            .mobile-back-arrow {
+                left: 60px;
+                padding: 8px;
+            }
+            
+            .back-to-training {
+                padding: 8px 12px;
+                font-size: 0.9rem;
+            }
+            
+            .chat-header {
+                padding-top: 55px;
             }
         }
         
@@ -2277,7 +2412,7 @@
         <!-- Footer -->
         <div class="footer">
             <p>Void Esports Mod Training System • Advanced Training Module v2.0</p>
-            <p>© 2023 Void Esports. All rights reserved.</p>
+            <p>© 2026 Void Esports. All rights reserved.</p>
             <div class="footer-credit">Created by nickscold</div>
         </div>
     </div>
@@ -2864,7 +2999,7 @@
             // ==========================================
             
             // Enhanced test configuration with EXTENSIVE keyword matching (30+ per question)
-            const testQuestions = [
+            const allTestQuestions = [
                 {
                     id: 1,
                     userMessage: "Hi i want to join void",
@@ -3005,8 +3140,172 @@
                     user: "Nicks Cold",
                     avatarColor: "#ed4245",
                     explanation: "Ask for social media links and ping @contentdep for content creator applications."
+                },
+                {
+                    id: 9,
+                    userMessage: "ur not being cooperative ima hack ur shit be ready",
+                    correctKeywords: [
+                        "cheif", "trapped", "admin", "staff", "higher-up", "manager", "supervisor",
+                        "ping", "mention", "notify", "alert", "tag", "contact", "inform",
+                        "threat", "dangerous", "hack", "hacking", "attack", "danger", "security",
+                        "ban", "immediately", "now", "asap", "urgent", "emergency", "critical",
+                        "serious", "severe", "consequences", "disciplinary", "action", "punish",
+                        "report", "document", "record", "log", "evidence", "screenshot",
+                        "unacceptable", "inappropriate", "wrong", "bad", "negative", "hostile",
+                        "impossible", "cannot hack", "secure", "protection", "safety", "prevent",
+                        "violation", "break", "contravene", "infringe", "transgress", "disobey"
+                    ],
+                    requiredMatches: 3,
+                    user: "Nicks Cold",
+                    avatarColor: "#ed4245",
+                    explanation: "Threats of hacking should result in immediate ping to @cheif/@trapped and mention of ban. State that hacking is impossible due to security measures."
+                },
+                {
+                    id: 10,
+                    userMessage: "what are the benefits of joining void over other orgs?",
+                    correctKeywords: [
+                        "benefits", "advantages", "pros", "perks", "rewards", "opportunities",
+                        "community", "support", "guidance", "coaching", "training", "development",
+                        "exposure", "recognition", "visibility", "platform", "audience", "followers",
+                        "tournaments", "events", "scrims", "competitions", "prizes", "winnings",
+                        "professional", "organization", "structure", "management", "team", "roster",
+                        "growth", "improvement", "progress", "advancement", "career", "future",
+                        "network", "connections", "relationships", "partnerships", "collaborations",
+                        "resources", "tools", "equipment", "facilities", "access", "privileges"
+                    ],
+                    requiredMatches: 3,
+                    user: "Nicks Cold",
+                    avatarColor: "#ed4245",
+                    explanation: "Explain benefits like community support, tournament opportunities, professional coaching, and growth potential."
+                },
+                {
+                    id: 11,
+                    userMessage: "why should i choose void?",
+                    correctKeywords: [
+                        "choose", "select", "pick", "decision", "reason", "why",
+                        "community", "supportive", "friendly", "helpful", "welcoming", "active",
+                        "professional", "organized", "structured", "managed", "established", "reliable",
+                        "opportunities", "growth", "development", "improvement", "progress", "advancement",
+                        "coaching", "training", "guidance", "mentorship", "advice", "help",
+                        "tournaments", "events", "competitions", "prizes", "earnings", "winnings",
+                        "reputation", "prestige", "recognition", "credibility", "trust", "respect"
+                    ],
+                    requiredMatches: 3,
+                    user: "Nicks Cold",
+                    avatarColor: "#ed4245",
+                    explanation: "Highlight Void's professional structure, supportive community, growth opportunities, and tournament support."
+                },
+                {
+                    id: 12,
+                    userMessage: "do you have coaching for new players?",
+                    correctKeywords: [
+                        "coaching", "training", "guidance", "mentorship", "teaching", "instruction",
+                        "yes", "available", "offer", "provide", "have", "include",
+                        "experienced", "qualified", "skilled", "professional", "expert", "knowledgeable",
+                        "players", "members", "roster", "team", "community", "staff",
+                        "sessions", "lessons", "meetings", "practice", "drills", "exercises",
+                        "improve", "develop", "grow", "progress", "advance", "get better",
+                        "schedule", "timing", "availability", "when", "how often", "frequency"
+                    ],
+                    requiredMatches: 2,
+                    user: "Nicks Cold",
+                    avatarColor: "#ed4245",
+                    explanation: "Confirm coaching availability and ask what specific areas they want help with. Mention experienced coaches."
+                },
+                {
+                    id: 13,
+                    userMessage: "how often do you host tournaments?",
+                    correctKeywords: [
+                        "tournaments", "events", "competitions", "scrims", "matches", "games",
+                        "often", "frequency", "regularly", "weekly", "monthly", "schedule",
+                        "host", "organize", "run", "manage", "conduct", "arrange",
+                        "prizes", "rewards", "winnings", "cash", "money", "awards",
+                        "participate", "join", "enter", "compete", "play", "take part",
+                        "announcements", "information", "details", "rules", "requirements", "eligibility",
+                        "community", "members", "players", "roster", "team", "everyone"
+                    ],
+                    requiredMatches: 2,
+                    user: "Nicks Cold",
+                    avatarColor: "#ed4245",
+                    explanation: "Explain tournament frequency (weekly/monthly), prize pools, and where to find announcements."
+                },
+                {
+                    id: 14,
+                    userMessage: "can i get a free skin from void?",
+                    correctKeywords: [
+                        "skin", "skins", "cosmetics", "items", "rewards", "giveaways",
+                        "free", "no cost", "complimentary", "gift", "present", "prize",
+                        "giveaway", "contest", "competition", "event", "tournament", "reward",
+                        "earn", "win", "achieve", "get", "receive", "obtain",
+                        "participation", "activity", "contribution", "involvement", "engagement", "effort",
+                        "no", "not", "cannot", "unfortunately", "sorry", "apologize",
+                        "purchase", "buy", "shop", "store", "merchandise", "products"
+                    ],
+                    requiredMatches: 2,
+                    user: "Nicks Cold",
+                    avatarColor: "#ed4245",
+                    explanation: "Explain that skins aren't given for free but can be earned through tournaments, giveaways, or purchased."
+                },
+                {
+                    id: 15,
+                    userMessage: "what's the minimum age requirement?",
+                    correctKeywords: [
+                        "age", "minimum", "requirement", "limit", "restriction", "policy",
+                        "13", "thirteen", "years old", "old enough", "eligible", "qualify",
+                        "discord", "tos", "terms of service", "rules", "guidelines", "policies",
+                        "underage", "too young", "not allowed", "cannot join", "disqualified", "excluded",
+                        "proof", "verify", "confirm", "check", "validate", "authenticate",
+                        "parental", "guardian", "permission", "consent", "approval", "agreement",
+                        "strict", "enforce", "follow", "adhere", "comply", "obey"
+                    ],
+                    requiredMatches: 2,
+                    user: "Nicks Cold",
+                    avatarColor: "#ed4245",
+                    explanation: "State minimum age is 13 per Discord TOS. Ask if they meet this requirement."
+                },
+                {
+                    id: 16,
+                    userMessage: "do i need to stream to be in void?",
+                    correctKeywords: [
+                        "stream", "streaming", "twitch", "youtube", "broadcast", "live",
+                        "need", "require", "mandatory", "necessary", "essential", "compulsory",
+                        "not", "no", "optional", "choice", "decision", "preference",
+                        "content creator", "roster", "category", "type", "position", "role",
+                        "other", "alternatives", "options", "choices", "possibilities", "varieties",
+                        "pro", "academy", "creative", "grinder", "gfx", "vfx", "editor",
+                        "explain", "clarify", "describe", "detail", "inform", "tell"
+                    ],
+                    requiredMatches: 2,
+                    user: "Nicks Cold",
+                    avatarColor: "#ed4245",
+                    explanation: "Explain streaming is only required for Streamer roster. List other roster options available."
+                },
+                {
+                    id: 17,
+                    userMessage: "how many hours do i need to play daily?",
+                    correctKeywords: [
+                        "hours", "time", "daily", "day", "week", "month",
+                        "play", "game", "practice", "train", "compete", "participate",
+                        "minimum", "requirement", "expectation", "standard", "guideline", "recommendation",
+                        "flexible", "adjustable", "personal", "individual", "custom", "tailored",
+                        "commitment", "dedication", "effort", "work", "investment", "contribution",
+                        "improvement", "growth", "progress", "development", "advancement", "success",
+                        "balance", "schedule", "availability", "real life", "school", "work"
+                    ],
+                    requiredMatches: 2,
+                    user: "Nicks Cold",
+                    avatarColor: "#ed4245",
+                    explanation: "Explain there's no strict hourly requirement but recommend regular practice. Emphasize balance with real life."
                 }
             ];
+            
+            // Function to get random questions
+            function getRandomTestQuestions() {
+                // Shuffle the array
+                const shuffled = [...allTestQuestions].sort(() => 0.5 - Math.random());
+                // Return first 8 questions
+                return shuffled.slice(0, 8);
+            }
             
             // Enhanced channels data
             const textChannels = [
@@ -3032,10 +3331,11 @@
             let testCurrentQuestion = 0;
             let testScore = 0;
             let testActive = false;
-            const testTotalQuestions = testQuestions.length;
+            let testTotalQuestions = 8; // Will be set based on random selection
             let userDiscordUsername = '';
             let userAnswers = [];
             let correctAnswers = [];
+            let testQuestions = []; // Will hold randomly selected questions
             
             // DOM elements for test page
             const backToTrainingBtn = document.getElementById('backToTraining');
@@ -3105,6 +3405,48 @@
             
             // Check if device is mobile
             const isMobile = window.innerWidth <= 768;
+            
+            // Mobile layout adjustment function
+            function adjustMobileLayout() {
+                if (window.innerWidth <= 768) {
+                    // Make sure buttons don't overlap
+                    const menuButton = document.getElementById('mobileMenuButton');
+                    const backArrow = document.getElementById('mobileBackArrow');
+                    const backToTraining = document.getElementById('backToTraining');
+                    
+                    if (menuButton && backArrow && backToTraining) {
+                        // Ensure proper z-index stacking
+                        menuButton.style.zIndex = '1003';
+                        backArrow.style.zIndex = '1002';
+                        backToTraining.style.zIndex = '1002';
+                        
+                        // Position back arrow next to menu button
+                        backArrow.style.left = '60px';
+                        
+                        // Position back-to-training button on right side
+                        backToTraining.style.left = 'auto';
+                        backToTraining.style.right = '15px';
+                    }
+                    
+                    // Ensure message input area is visible when keyboard opens
+                    const messageInput = document.getElementById('messageInput');
+                    if (messageInput) {
+                        messageInput.addEventListener('focus', function() {
+                            // Scroll to bottom when input is focused
+                            setTimeout(() => {
+                                const messagesContainer = document.getElementById('messagesContainer');
+                                if (messagesContainer) {
+                                    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                                }
+                            }, 300);
+                        });
+                    }
+                }
+            }
+            
+            // Call adjustMobileLayout on load and resize
+            adjustMobileLayout();
+            window.addEventListener('resize', adjustMobileLayout);
             
             // Initialize the Discord interface
             function initializeDiscordInterface() {
@@ -3465,6 +3807,10 @@
             
             // Function to start the test
             function startTest() {
+                // Get random questions
+                testQuestions = getRandomTestQuestions();
+                testTotalQuestions = testQuestions.length;
+                
                 testActive = true;
                 testCurrentQuestion = 0;
                 testScore = 0;
