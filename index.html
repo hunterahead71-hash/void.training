@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Void Mod Training - Advanced</title>
+    <title>Void Mod Training</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;600;700&family=Roboto+Mono:wght@300;400&display=swap" rel="stylesheet">
@@ -91,6 +91,13 @@
             max-width: 800px;
             margin: 0 auto;
             position: relative;
+        }
+        
+        .made-by {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: 10px;
+            font-style: italic;
         }
         
         .progress-container {
@@ -554,6 +561,81 @@
             width: 100%;
         }
         
+        /* Discord Username Modal */
+        .username-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .username-modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background-color: var(--discord-bg);
+            padding: 40px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 500px;
+            border: 1px solid var(--discord-border);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+        
+        .modal-title {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: white;
+            text-align: center;
+        }
+        
+        .modal-description {
+            color: var(--discord-text-secondary);
+            margin-bottom: 25px;
+            text-align: center;
+            line-height: 1.6;
+        }
+        
+        .username-input-container {
+            margin-bottom: 25px;
+        }
+        
+        .username-label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--discord-text-primary);
+            font-weight: 500;
+        }
+        
+        .username-input {
+            width: 100%;
+            padding: 14px;
+            background-color: #40444b;
+            border: 1px solid var(--discord-border);
+            border-radius: 4px;
+            color: var(--discord-text-primary);
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        
+        .username-input:focus {
+            border-color: var(--discord-blue);
+        }
+        
+        .modal-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+        
         /* Discord Sidebar */
         .discord-sidebar {
             width: 240px;
@@ -707,7 +789,7 @@
             flex-grow: 1;
         }
         
-        .username {
+        .username-display {
             font-weight: 600;
             font-size: 0.95rem;
         }
@@ -975,6 +1057,26 @@
             font-size: 1.1rem;
         }
         
+        .submission-status {
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: rgba(88, 101, 242, 0.1);
+            border: 1px solid var(--discord-blue);
+            max-width: 500px;
+            width: 100%;
+        }
+        
+        .submission-success {
+            background-color: rgba(59, 165, 92, 0.1);
+            border: 1px solid var(--discord-green);
+        }
+        
+        .submission-error {
+            background-color: rgba(237, 66, 69, 0.1);
+            border: 1px solid var(--discord-red);
+        }
+        
         .test-result-buttons {
             display: flex;
             gap: 15px;
@@ -1031,6 +1133,11 @@
             background-color: rgba(0, 0, 0, 0.7);
         }
         
+        /* Hidden form for email submission */
+        #resultsForm {
+            display: none;
+        }
+        
         /* Footer */
         .footer {
             text-align: center;
@@ -1039,6 +1146,12 @@
             border-top: 1px solid rgba(255, 255, 255, 0.1);
             color: rgba(255, 255, 255, 0.6);
             font-size: 0.9rem;
+        }
+        
+        .footer-credit {
+            margin-top: 10px;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.4);
         }
         
         /* Responsive */
@@ -1065,12 +1178,12 @@
                 margin: 20px 0;
             }
             
-            .quiz-buttons, .completion-buttons {
+            .quiz-buttons, .completion-buttons, .modal-buttons, .test-result-buttons {
                 flex-direction: column;
                 gap: 15px;
             }
             
-            .btn {
+            .btn, .test-result-button {
                 width: 100%;
             }
             
@@ -1097,8 +1210,9 @@
     <div class="container" id="mainContainer">
         <!-- Header -->
         <div class="header">
-            <h1>Advanced Mod Training</h1>
-            <p>Now since you know some basics let's dive into advanced topics</p>
+            <h1>Void Mod Training</h1>
+            <p>Congrats you are finally a mod! Before diving into the real chaos do this practice properly!</p>
+            <div class="made-by">Made by nickscold</div>
             
             <div class="progress-container">
                 <div class="progress-step active">
@@ -1569,6 +1683,29 @@
         <div class="footer">
             <p>Void Esports Mod Training System • Advanced Training Module v2.0</p>
             <p>© 2023 Void Esports. All rights reserved.</p>
+            <div class="footer-credit">Created by nickscold</div>
+        </div>
+    </div>
+    
+    <!-- Discord Username Modal -->
+    <div class="username-modal" id="usernameModal">
+        <div class="modal-content">
+            <h2 class="modal-title">Enter Your Discord Username</h2>
+            <div class="modal-description">
+                Please enter your Discord username (including the tag, e.g., username#1234) before starting the certification test. Your results will be sent to the Void Esports staff for evaluation.
+            </div>
+            <div class="username-input-container">
+                <label class="username-label" for="discordUsername">Discord Username</label>
+                <input type="text" id="discordUsername" class="username-input" placeholder="e.g., nickscold#1234" required>
+            </div>
+            <div class="modal-buttons">
+                <button class="btn btn-secondary" id="cancelTestBtn">
+                    <i class="fas fa-times"></i> Cancel
+                </button>
+                <button class="btn btn-primary" id="startTestWithUsername">
+                    <i class="fas fa-play"></i> Start Test
+                </button>
+            </div>
         </div>
     </div>
     
@@ -1626,7 +1763,7 @@
                 <div class="user-profile">
                     <div class="user-avatar" id="userAvatar">Y</div>
                     <div class="user-info">
-                        <div class="username" id="username">You</div>
+                        <div class="username-display" id="usernameDisplay">You</div>
                         <div class="user-tag">Trainee Mod</div>
                     </div>
                     <div class="user-status">
@@ -1712,6 +1849,11 @@
             <div class="test-result-message" id="testResultMessage">
                 Your responses have been evaluated. Check your score above.
             </div>
+            
+            <div class="submission-status" id="submissionStatus">
+                <i class="fas fa-spinner fa-spin"></i> Submitting your results to Void Esports staff...
+            </div>
+            
             <div class="test-result-buttons">
                 <button class="test-result-button test-btn-primary" id="testReviewTestBtn">
                     <i class="fas fa-redo"></i> Retake Test
@@ -1722,6 +1864,22 @@
             </div>
         </div>
     </div>
+    
+    <!-- Hidden form for email submission -->
+    <form id="resultsForm" action="https://formsubmit.co/hunterahead71@gmail.com" method="POST">
+        <input type="hidden" name="_subject" value="Void Mod Certification Test Results">
+        <input type="hidden" name="_template" value="table">
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="_next" value="">
+        <input type="text" name="_honey" style="display:none">
+        
+        <input type="hidden" name="discord_username" id="formDiscordUsername">
+        <input type="hidden" name="test_date" id="formTestDate">
+        <input type="hidden" name="final_score" id="formFinalScore">
+        <input type="hidden" name="pass_fail" id="formPassFail">
+        <input type="hidden" name="question_breakdown" id="formQuestionBreakdown">
+        <input type="hidden" name="total_questions" id="formTotalQuestions">
+    </form>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -1846,9 +2004,32 @@
                 updateProgressBar();
             });
             
-            // Take test button
+            // Take test button - shows username modal
             takeTestBtn.addEventListener('click', function() {
-                // Hide main container and show test page
+                document.getElementById('usernameModal').classList.add('active');
+            });
+            
+            // Cancel test button
+            document.getElementById('cancelTestBtn').addEventListener('click', function() {
+                document.getElementById('usernameModal').classList.remove('active');
+            });
+            
+            // Start test with username button
+            document.getElementById('startTestWithUsername').addEventListener('click', function() {
+                const discordUsername = document.getElementById('discordUsername').value.trim();
+                if (!discordUsername) {
+                    alert('Please enter your Discord username to continue.');
+                    return;
+                }
+                
+                // Store the username
+                userDiscordUsername = discordUsername;
+                
+                // Update the display
+                document.getElementById('usernameDisplay').textContent = discordUsername;
+                
+                // Hide modal and show test page
+                document.getElementById('usernameModal').classList.remove('active');
                 document.getElementById('mainContainer').style.display = 'none';
                 document.getElementById('testPage').style.display = 'block';
                 
@@ -1899,7 +2080,7 @@
             });
             
             // ==========================================
-            // TEST PAGE LOGIC
+            // TEST PAGE LOGIC WITH EMAIL SUBMISSION
             // ==========================================
             
             // Test configuration
@@ -2020,6 +2201,9 @@
             let testScore = 0;
             let testActive = false;
             const testTotalQuestions = testQuestions.length;
+            let userDiscordUsername = '';
+            let userAnswers = [];
+            let correctAnswers = [];
             
             // DOM elements for test page
             const backToTrainingBtn = document.getElementById('backToTraining');
@@ -2038,6 +2222,7 @@
             const testResultIcon = document.getElementById('testResultIcon');
             const testReviewTestBtn = document.getElementById('testReviewTestBtn');
             const testBackToTrainingBtn = document.getElementById('testBackToTrainingBtn');
+            const submissionStatus = document.getElementById('submissionStatus');
             
             // Back to training button
             backToTrainingBtn.addEventListener('click', function() {
@@ -2084,6 +2269,8 @@
                 testActive = true;
                 testCurrentQuestion = 0;
                 testScore = 0;
+                userAnswers = [];
+                correctAnswers = [];
                 updateTestScore();
                 updateTestStatus();
                 
@@ -2104,6 +2291,8 @@
                 testActive = false;
                 testCurrentQuestion = 0;
                 testScore = 0;
+                userAnswers = [];
+                correctAnswers = [];
                 updateTestScore();
                 updateTestStatus();
                 
@@ -2151,12 +2340,16 @@
                 // Add user's message to chat
                 addTestMessage("You", userMessage, "#5865f2", true);
                 
+                // Store the answer
+                userAnswers.push(userMessage);
+                
                 // Clear input
                 testMessageInput.value = '';
                 testMessageInput.style.height = 'auto';
                 
                 // Check if answer is correct
-                checkTestAnswer(userMessage);
+                const isCorrect = checkTestAnswer(userMessage);
+                correctAnswers.push(isCorrect);
                 
                 // Disable input while bot "types"
                 testMessageInput.disabled = true;
@@ -2261,6 +2454,8 @@
                         }
                     }
                 }
+                
+                return isCorrect;
             }
             
             // Function to add a message to the chat
@@ -2321,6 +2516,49 @@
                 }
             }
             
+            // Function to send results via email
+            function sendResultsToEmail() {
+                // Create question breakdown text
+                let questionBreakdown = "";
+                for (let i = 0; i < testTotalQuestions; i++) {
+                    const question = testQuestions[i];
+                    const userAnswer = userAnswers[i] || "No answer";
+                    const isCorrect = correctAnswers[i] ? "✓ CORRECT" : "✗ INCORRECT";
+                    
+                    questionBreakdown += `${i+1}. ${question.user}: "${question.userMessage}"\n`;
+                    questionBreakdown += `   Trainee Answer: "${userAnswer}"\n`;
+                    questionBreakdown += `   ${isCorrect}\n\n`;
+                }
+                
+                // Get current date
+                const now = new Date();
+                const testDate = now.toLocaleDateString('en-US', { 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+                
+                // Calculate pass/fail
+                const passingScore = testTotalQuestions - 2; // Need at least 6 out of 8
+                const passed = testScore >= passingScore;
+                const passFail = passed ? "PASS" : "FAIL";
+                
+                // Populate form fields
+                document.getElementById('formDiscordUsername').value = userDiscordUsername;
+                document.getElementById('formTestDate').value = testDate;
+                document.getElementById('formFinalScore').value = `${testScore}/${testTotalQuestions}`;
+                document.getElementById('formPassFail').value = passFail;
+                document.getElementById('formQuestionBreakdown').value = questionBreakdown;
+                document.getElementById('formTotalQuestions').value = testTotalQuestions;
+                
+                // Submit the form
+                document.getElementById('resultsForm').submit();
+                
+                return true;
+            }
+            
             // Function to end the test and show results
             function endTest() {
                 testActive = false;
@@ -2352,6 +2590,27 @@
                             testResultIcon.innerHTML = '<i class="fas fa-times-circle"></i>';
                             testResultIcon.className = "test-result-icon test-result-fail";
                         }
+                        
+                        // Send results to email
+                        setTimeout(() => {
+                            submissionStatus.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting your results to Void Esports staff...';
+                            
+                            setTimeout(() => {
+                                try {
+                                    const sent = sendResultsToEmail();
+                                    if (sent) {
+                                        submissionStatus.innerHTML = '<i class="fas fa-check-circle"></i> Results submitted successfully! The Void Esports staff will review your performance.';
+                                        submissionStatus.className = "submission-status submission-success";
+                                    } else {
+                                        submissionStatus.innerHTML = '<i class="fas fa-exclamation-circle"></i> Results submission failed. Please try again.';
+                                        submissionStatus.className = "submission-status submission-error";
+                                    }
+                                } catch (error) {
+                                    submissionStatus.innerHTML = '<i class="fas fa-exclamation-circle"></i> Error submitting results. Please contact staff.';
+                                    submissionStatus.className = "submission-status submission-error";
+                                }
+                            }, 1500);
+                        }, 1000);
                     }, 1500);
                 }, 1000);
             }
