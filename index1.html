@@ -1,37 +1,1185 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Moderator Training</title>
-  <style>
-    body { font-family: Arial; background: #111; color: #fff; padding: 40px; }
-    textarea { width: 100%; height: 100px; }
-    .solution { display: none; margin-top: 15px; color: #0f0; }
-    button { padding: 10px 20px; margin-top: 10px; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Void Mod Training - Advanced</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;600;700&family=Roboto+Mono:wght@300;400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary: #8a2be2;
+            --secondary: #4a00e0;
+            --accent: #00d4ff;
+            --dark: #0f0f1e;
+            --light: #f0f4ff;
+            --success: #00ffaa;
+            --warning: #ffaa00;
+            --card-bg: rgba(30, 30, 46, 0.8);
+            --border-color: rgba(138, 43, 226, 0.3);
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, var(--dark) 0%, #1a1a2e 100%);
+            color: var(--light);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 50px 20px 30px;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 20px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M50 50c0-5.523 4.477-10 10-10s10 4.477 10 10-4.477 10-10 10c0 5.523-4.477 10-10 10s-10-4.477-10-10 4.477-10 10-10zM10 10c0-5.523 4.477-10 10-10s10 4.477 10 10-4.477 10-10 10c0 5.523-4.477 10-10 10S0 25.523 0 20s4.477-10 10-10zm10 8c4.418 0 8-3.582 8-8s-3.582-8-8-8-8 3.582-8 8 3.582 8 8 8zm40 40c4.418 0 8-3.582 8-8s-3.582-8-8-8-8 3.582-8 8 3.582 8 8 8z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+        
+        .header h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            position: relative;
+        }
+        
+        .header p {
+            font-size: 1.3rem;
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .progress-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 800px;
+            margin: 30px auto;
+            position: relative;
+        }
+        
+        .progress-bar {
+            flex-grow: 1;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            margin: 0 20px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--accent), var(--success));
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+        
+        .progress-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: rgba(255, 255, 255, 0.5);
+            transition: color 0.3s ease;
+        }
+        
+        .progress-step.active {
+            color: var(--accent);
+        }
+        
+        .step-icon {
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+        
+        .step-icon.active {
+            background: var(--accent);
+            color: var(--dark);
+        }
+        
+        /* Content Sections */
+        .content-section {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 35px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-color);
+            backdrop-filter: blur(10px);
+        }
+        
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            margin-bottom: 25px;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(138, 43, 226, 0.5);
+        }
+        
+        .section-title i {
+            margin-right: 15px;
+            color: var(--primary);
+        }
+        
+        .intro-text {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            margin-bottom: 25px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 12px;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .ticket-types {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+        
+        .ticket-card {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 25px;
+            border-radius: 15px;
+            border: 1px solid rgba(138, 43, 226, 0.2);
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+        
+        .ticket-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+        }
+        
+        .ticket-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+        }
+        
+        .ticket-card h3 i {
+            margin-right: 10px;
+        }
+        
+        /* Roster Categories */
+        .roster-categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+        
+        .roster-card {
+            background: rgba(20, 20, 40, 0.7);
+            border-radius: 15px;
+            padding: 25px;
+            border: 1px solid rgba(138, 43, 226, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .roster-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 212, 255, 0.1);
+        }
+        
+        .roster-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .roster-icon {
+            font-size: 2rem;
+            margin-right: 15px;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(138, 43, 226, 0.2);
+            border-radius: 12px;
+        }
+        
+        .roster-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            color: var(--light);
+        }
+        
+        .roster-requirements {
+            list-style-type: none;
+        }
+        
+        .roster-requirements li {
+            margin-bottom: 10px;
+            padding-left: 25px;
+            position: relative;
+        }
+        
+        .roster-requirements li:before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-size: 1.5rem;
+        }
+        
+        /* Training Quiz */
+        .training-quiz {
+            margin-top: 50px;
+        }
+        
+        .quiz-instructions {
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid var(--accent);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .quiz-instructions h3 {
+            color: var(--accent);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .quiz-instructions h3 i {
+            margin-right: 10px;
+        }
+        
+        .question-card {
+            background: rgba(30, 30, 46, 0.9);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(138, 43, 226, 0.3);
+            display: none;
+        }
+        
+        .question-card.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(138, 43, 226, 0.5);
+        }
+        
+        .question-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            color: var(--accent);
+        }
+        
+        .question-number {
+            background: var(--primary);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 700;
+        }
+        
+        .question-description {
+            margin-bottom: 25px;
+            font-size: 1.1rem;
+            line-height: 1.7;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+        
+        .answer-box {
+            width: 100%;
+            min-height: 150px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(138, 43, 226, 0.5);
+            border-radius: 10px;
+            color: var(--light);
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            resize: vertical;
+            margin-bottom: 25px;
+            transition: border-color 0.3s ease;
+        }
+        
+        .answer-box:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+        
+        .quiz-buttons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 30px;
+        }
+        
+        .btn {
+            padding: 14px 30px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .btn i {
+            margin-right: 10px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(138, 43, 226, 0.4);
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--light);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .btn-success {
+            background: linear-gradient(90deg, #00b09b, #96c93d);
+            color: white;
+        }
+        
+        .btn-success:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 176, 155, 0.4);
+        }
+        
+        .answer-feedback {
+            margin-top: 25px;
+            padding: 25px;
+            border-radius: 12px;
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .answer-feedback.show {
+            display: block;
+        }
+        
+        .feedback-correct {
+            background: rgba(0, 255, 170, 0.1);
+            border: 1px solid var(--success);
+        }
+        
+        .feedback-title {
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .feedback-title i {
+            margin-right: 10px;
+        }
+        
+        .correct-answer {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 15px;
+            border-left: 4px solid var(--success);
+        }
+        
+        .correction-note {
+            background: rgba(255, 170, 0, 0.1);
+            border: 1px solid var(--warning);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-size: 0.95rem;
+        }
+        
+        /* Completion Screen */
+        .completion-screen {
+            text-align: center;
+            padding: 60px 40px;
+            display: none;
+        }
+        
+        .completion-screen.active {
+            display: block;
+            animation: fadeIn 0.8s ease;
+        }
+        
+        .completion-icon {
+            font-size: 5rem;
+            color: var(--success);
+            margin-bottom: 30px;
+            animation: bounce 1s ease infinite alternate;
+        }
+        
+        @keyframes bounce {
+            from { transform: translateY(0); }
+            to { transform: translateY(-20px); }
+        }
+        
+        .completion-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: var(--accent);
+        }
+        
+        .completion-message {
+            font-size: 1.3rem;
+            max-width: 800px;
+            margin: 0 auto 40px;
+            line-height: 1.8;
+        }
+        
+        /* Footer */
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.2rem;
+            }
+            
+            .section-title {
+                font-size: 1.7rem;
+            }
+            
+            .ticket-types, .roster-categories {
+                grid-template-columns: 1fr;
+            }
+            
+            .progress-container {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .progress-bar {
+                width: 100%;
+                margin: 20px 0;
+            }
+            
+            .quiz-buttons {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
 <body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>Advanced Mod Training</h1>
+            <p>Now since you know some basics let's dive into advanced topics</p>
+            
+            <div class="progress-container">
+                <div class="progress-step active">
+                    <div class="step-icon active"><i class="fas fa-book"></i></div>
+                    <span>Learn</span>
+                </div>
+                
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                
+                <div class="progress-step">
+                    <div class="step-icon"><i class="fas fa-question-circle"></i></div>
+                    <span>Practice</span>
+                </div>
+                
+                <div class="progress-bar">
+                    <div class="progress-fill"></div>
+                </div>
+                
+                <div class="progress-step">
+                    <div class="step-icon"><i class="fas fa-flag-checkered"></i></div>
+                    <span>Complete</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Ticket Types Section -->
+        <div class="content-section">
+            <h2 class="section-title"><i class="fas fa-ticket-alt"></i> Ticket Types</h2>
+            
+            <div class="intro-text">
+                Your first and foremost thing as a mod is to take tickets in Void Esports. We have tickets of 2 kinds:
+            </div>
+            
+            <div class="ticket-types">
+                <div class="ticket-card">
+                    <h3><i class="fas fa-users"></i> 1) General Ticket</h3>
+                    <p>This category is for the users if they have any problem or wants to talk with any of the mods or complain any issue.</p>
+                </div>
+                
+                <div class="ticket-card">
+                    <h3><i class="fas fa-user-plus"></i> 2) Roster Ticket</h3>
+                    <p>This category is for the users who want to join Void Esports.</p>
+                </div>
+            </div>
+            
+            <div class="intro-text">
+                <strong>Important:</strong> Now I need you to go through all the categories below and read everything carefully before proceeding to the practice quiz.  If you are taking a ticket your starting response should always be "Hello! What's your age and how may I help you?" or something similar to this question.
+            </div>
+        </div>
+        
+        <!-- Roster Categories Section -->
+        <div class="content-section">
+            <h2 class="section-title"><i class="fas fa-layer-group"></i> Roster Categories & Requirements</h2>
+            
+            <div class="roster-categories">
+                <!-- Pro Roster -->
+                <div class="roster-card">
+                    <div class="roster-header">
+                        <div class="roster-icon">🏆</div>
+                        <div class="roster-title">Pro Roster</div>
+                    </div>
+                    <ul class="roster-requirements">
+                        <li>25,000+ Power Ranking</li>
+                        <li>$1,000+ in Official Fortnite Earnings</li>
+                        <li>Place and earn consistently</li>
+                        <li>Represent Us In Game and On Your Socials</li>
+                    </ul>
+                </div>
+                
+                <!-- Semi-Pro -->
+                <div class="roster-card">
+                    <div class="roster-header">
+                        <div class="roster-icon">🎮</div>
+                        <div class="roster-title">Semi-Pro</div>
+                    </div>
+                    <ul class="roster-requirements">
+                        <li>10,000-25,000 PR</li>
+                        <li>Place Consistently</li>
+                        <li>Represent us in Game</li>
+                        <li>Use our Fortnite Code</li>
+                        <li>Must have earnings</li>
+                    </ul>
+                </div>
+                
+                <!-- Academy Roster -->
+                <div class="roster-card">
+                    <div class="roster-header">
+                        <div class="roster-icon">🎓</div>
+                        <div class="roster-title">Academy Roster</div>
+                    </div>
+                    <ul class="roster-requirements">
+                        <li>500-10,000 PR</li>
+                        <li>Place Consistently</li>
+                        <li>Represent us in Game</li>
+                        <li>Use our Fortnite Code</li>
+                    </ul>
+                </div>
+                
+                <!-- Creative Roster -->
+                <div class="roster-card">
+                    <div class="roster-header">
+                        <div class="roster-icon">🎨</div>
+                        <div class="roster-title">Creative Roster</div>
+                    </div>
+                    <ul class="roster-requirements">
+                        <li>Smooth/Fast Mechanics</li>
+                        <li>Must Be Unique</li>
+                        <li>Must Be Able To Provide Clips When Asked</li>
+                        <li>Represent Us In Game and On Your Socials</li>
+                    </ul>
+                </div>
+                
+                <!-- Streamer -->
+                <div class="roster-card">
+                    <div class="roster-header">
+                        <div class="roster-icon">🎙️</div>
+                        <div class="roster-title">Streamer</div>
+                    </div>
+                    <ul class="roster-requirements">
+                        <li>1k+ Followers/Subscribers</li>
+                        <li>Average 25+ Viewers Per Stream</li>
+                        <li>Stream At Least 4x Per Week</li>
+                        <li>Use Our Hashtags in Bio/Descriptions</li>
+                        <li>Represent Us In Game and On Your Socials</li>
+                    </ul>
+                </div>
+                
+                <!-- Content Creator -->
+                <div class="roster-card">
+                    <div class="roster-header">
+                        <div class="roster-icon">🎥</div>
+                        <div class="roster-title">Content Creator</div>
+                    </div>
+                    <ul class="roster-requirements">
+                        <li>>1k Followers on Twitch/YouTube</li>
+                        <li>>10k Followers on TikTok</li>
+                        <li>Original/High Quality Posts</li>
+                        <li>Willing to Help Out With Void Content</li>
+                        <li>Must Post Actively</li>
+                        <li>Represent Us In Game and On Your Socials</li>
+                    </ul>
+                </div>
+                
+                <!-- Junior Content Creator -->
+                <div class="roster-card">
+                    <div class="roster-header">
+                        <div class="roster-icon">🎬</div>
+                        <div class="roster-title">Junior Content Creator</div>
+                    </div>
+                    <ul class="roster-requirements">
+                        <li>>500 Followers On Twitch/YouTube</li>
+                        <li>>3k Followers On TikTok</li>
+                        <li>Posts Are Original and High Quality</li>
+                        <li>Willing To Grind to Become a Main Roster Content Creator</li>
+                        <li>Represent Us In Game and On Your Socials</li>
+                    </ul>
+                </div>
+                
+                <!-- GFX/VFX -->
+                <div class="roster-card">
+                    <div class="roster-header">
+                        <div class="roster-icon">🖌️</div>
+                        <div class="roster-title">GFX/VFX</div>
+                    </div>
+                    <ul class="roster-requirements">
+                        <li>Experience With Editing</li>
+                        <li>Portfolio Required</li>
+                        <li>High-Quality Work (1440p or Higher)</li>
+                        <li>Willing To Do Free Work For Staff/Roster</li>
+                        <li>Deliver When Asked</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="quiz-instructions">
+                <h3><i class="fas fa-info-circle"></i> Ready for Practice?</h3>
+                <p>Once you've read through all the roster categories above, click the "Start Practice" button below to begin the interactive training quiz. You'll be presented with scenarios and asked to write your response as if you were handling a real ticket.</p>
+                <button class="btn btn-primary" id="startQuizBtn">
+                    <i class="fas fa-play-circle"></i> Start Practice Quiz
+                </button>
+            </div>
+        </div>
+        
+        <!-- Training Quiz Section (Initially Hidden) -->
+        <div class="training-quiz" id="quizSection" style="display: none;">
+            <h2 class="section-title"><i class="fas fa-graduation-cap"></i> Practice Scenarios</h2>
+            
+            <!-- Question 1 -->
+            <div class="question-card active" id="question1">
+                <div class="question-header">
+                    <div class="question-title">Scenario 1: General Roster Inquiry</div>
+                    <div class="question-number">Question 1 of 7</div>
+                </div>
+                
+                <div class="question-description">
+                    <p>A user creates a roster ticket and asks: <em>"I want to join the team, what should I do?"</em></p>
+                    <p><strong>Your task:</strong> Write your response as if you were handling this ticket. Remember to include a professional greeting and ask for their age.</p>
+                </div>
+                
+                <textarea class="answer-box" placeholder="Write your response here... Example: Hello! What's your age and how can I help you today?"></textarea>
+                
+                <div class="quiz-buttons">
+                    <button class="btn btn-secondary" id="skipBtn">
+                        <i class="fas fa-forward"></i> Skip Question
+                    </button>
+                    <button class="btn btn-primary" id="checkAnswer1">
+                        <i class="fas fa-check-circle"></i> Check Answer
+                    </button>
+                </div>
+                
+                <div class="answer-feedback" id="feedback1">
+                    <div class="feedback-title"><i class="fas fa-lightbulb"></i> Recommended Response</div>
+                    <div class="correct-answer">
+                        <p><strong>Answer:</strong> Your response should include a professional greeting like "Hello! What's your age and how may I help you?" or similar. New users don't know where things are, so direct them to <strong>🎯┃how-to-join-roster</strong> and ask them to read it and choose what they fit for.</p>
+                    </div>
+                    <div class="correction-note">
+                        <p><strong>+1 Correction:</strong> Do ask for their age in the first question itself.</p>
+                        <p><strong>+2 Correction:</strong> Direct new users to 🎯┃how-to-join-roster and ask them to read it and choose what they fit for.</p>
+                    </div>
+                    <div class="quiz-buttons" style="margin-top: 20px;">
+                        <button class="btn btn-success next-question" data-next="2">
+                            <i class="fas fa-arrow-right"></i> Next Question
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Question 2 -->
+            <div class="question-card" id="question2">
+                <div class="question-header">
+                    <div class="question-title">Scenario 2: Pro/Semi-Pro Application</div>
+                    <div class="question-number">Question 2 of 7</div>
+                </div>
+                
+                <div class="question-description">
+                    <p>A user wants to join as Pro or Semi-Pro player.</p>
+                    <p><strong>Your task:</strong> Write your response for handling this specific type of application.</p>
+                </div>
+                
+                <textarea class="answer-box" placeholder="Write your response here..."></textarea>
+                
+                <div class="quiz-buttons">
+                    <button class="btn btn-secondary prev-question" data-prev="1">
+                        <i class="fas fa-arrow-left"></i> Previous
+                    </button>
+                    <button class="btn btn-primary" id="checkAnswer2">
+                        <i class="fas fa-check-circle"></i> Check Answer
+                    </button>
+                </div>
+                
+                <div class="answer-feedback" id="feedback2">
+                    <div class="feedback-title"><i class="fas fa-lightbulb"></i> Recommended Response</div>
+                    <div class="correct-answer">
+                        <p><strong>Answer:</strong> If they want to join as pro/semi-pro, ask for their info and Fortnite tracker. Once they send it, ping @trapped or any of your higher-ups. Do ping people or else they won't know what the ticket belongs to.</p>
+                    </div>
+                    <div class="quiz-buttons" style="margin-top: 20px;">
+                        <button class="btn btn-success next-question" data-next="3">
+                            <i class="fas fa-arrow-right"></i> Next Question
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Question 3 -->
+            <div class="question-card" id="question3">
+                <div class="question-header">
+                    <div class="question-title">Scenario 3: Academy Player Application</div>
+                    <div class="question-number">Question 3 of 7</div>
+                </div>
+                
+                <div class="question-description">
+                    <p>A user wants to join as an Academy player.</p>
+                    <p><strong>Your task:</strong> Write your step-by-step response for handling an Academy application.</p>
+                </div>
+                
+                <textarea class="answer-box" placeholder="Write your response here..."></textarea>
+                
+                <div class="quiz-buttons">
+                    <button class="btn btn-secondary prev-question" data-prev="2">
+                        <i class="fas fa-arrow-left"></i> Previous
+                    </button>
+                    <button class="btn btn-primary" id="checkAnswer3">
+                        <i class="fas fa-check-circle"></i> Check Answer
+                    </button>
+                </div>
+                
+                <div class="answer-feedback" id="feedback3">
+                    <div class="feedback-title"><i class="fas fa-lightbulb"></i> Recommended Response</div>
+                    <div class="correct-answer">
+                        <p><strong>Answer:</strong> Ask him to send the Fortnite tracker. Open his Fortnite tracker, make sure that it's his own account and is not faking. Go to events and check if PR meets the requirement. If yes, then ask him to change his Fortnite username by adding "Void" to represent us. Also make sure they use "team.void" in item shop. If the user does it, ask for photo proof. Once they give it, welcome them to Void and ping mod or sr mod to give the role.</p>
+                    </div>
+                    <div class="quiz-buttons" style="margin-top: 20px;">
+                        <button class="btn btn-success next-question" data-next="4">
+                            <i class="fas fa-arrow-right"></i> Next Question
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Question 4 -->
+            <div class="question-card" id="question4">
+                <div class="question-header">
+                    <div class="question-title">Scenario 4: Streamer/Content Creator Application</div>
+                    <div class="question-number">Question 4 of 7</div>
+                </div>
+                
+                <div class="question-description">
+                    <p>A user wants to be a Streamer, Content Creator, or Junior Content Creator.</p>
+                    <p><strong>Your task:</strong> Write your response for handling content creator applications.</p>
+                </div>
+                
+                <textarea class="answer-box" placeholder="Write your response here..."></textarea>
+                
+                <div class="quiz-buttons">
+                    <button class="btn btn-secondary prev-question" data-prev="3">
+                        <i class="fas fa-arrow-left"></i> Previous
+                    </button>
+                    <button class="btn btn-primary" id="checkAnswer4">
+                        <i class="fas fa-check-circle"></i> Check Answer
+                    </button>
+                </div>
+                
+                <div class="answer-feedback" id="feedback4">
+                    <div class="feedback-title"><i class="fas fa-lightbulb"></i> Recommended Response</div>
+                    <div class="correct-answer">
+                        <p><strong>Answer:</strong> Ask them to check the requirements from the #join-roster channel. If they say yes, ask them to send the links to their socials and ping @content department. Ask them to wait for their reply.</p>
+                    </div>
+                    <div class="quiz-buttons" style="margin-top: 20px;">
+                        <button class="btn btn-success next-question" data-next="5">
+                            <i class="fas fa-arrow-right"></i> Next Question
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Question 5 -->
+            <div class="question-card" id="question5">
+                <div class="question-header">
+                    <div class="question-title">Scenario 5: GFX/VFX or Editor Application</div>
+                    <div class="question-number">Question 5 of 7</div>
+                </div>
+                
+                <div class="question-description">
+                    <p>A user wants to join as GFX/VFX or as an editor.</p>
+                    <p><strong>Your task:</strong> Write your response for handling GFX/VFX applications.</p>
+                </div>
+                
+                <textarea class="answer-box" placeholder="Write your response here..."></textarea>
+                
+                <div class="quiz-buttons">
+                    <button class="btn btn-secondary prev-question" data-prev="4">
+                        <i class="fas fa-arrow-left"></i> Previous
+                    </button>
+                    <button class="btn btn-primary" id="checkAnswer5">
+                        <i class="fas fa-check-circle"></i> Check Answer
+                    </button>
+                </div>
+                
+                <div class="answer-feedback" id="feedback5">
+                    <div class="feedback-title"><i class="fas fa-lightbulb"></i> Recommended Response</div>
+                    <div class="correct-answer">
+                        <p><strong>Answer:</strong> Ask them to send their work and proof of their work. Ping @gfx-vfx lead and ask them to wait for their reply.</p>
+                    </div>
+                    <div class="quiz-buttons" style="margin-top: 20px;">
+                        <button class="btn btn-success next-question" data-next="6">
+                            <i class="fas fa-arrow-right"></i> Next Question
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Question 6 -->
+            <div class="question-card" id="question6">
+                <div class="question-header">
+                    <div class="question-title">Scenario 6: Creative Roster Application</div>
+                    <div class="question-number">Question 6 of 7</div>
+                </div>
+                
+                <div class="question-description">
+                    <p>A user wants to join as Creative Roster.</p>
+                    <p><strong>Your task:</strong> Write your response for handling Creative applications.</p>
+                </div>
+                
+                <textarea class="answer-box" placeholder="Write your response here..."></textarea>
+                
+                <div class="quiz-buttons">
+                    <button class="btn btn-secondary prev-question" data-prev="5">
+                        <i class="fas fa-arrow-left"></i> Previous
+                    </button>
+                    <button class="btn btn-primary" id="checkAnswer6">
+                        <i class="fas fa-check-circle"></i> Check Answer
+                    </button>
+                </div>
+                
+                <div class="answer-feedback" id="feedback6">
+                    <div class="feedback-title"><i class="fas fa-lightbulb"></i> Recommended Response</div>
+                    <div class="correct-answer">
+                        <p><strong>Answer:</strong> Ask them to send at least 2 clips of themselves freebuilding. Once they send it, ping @creativedepartment and ask them to wait for their reply.</p>
+                    </div>
+                    <div class="quiz-buttons" style="margin-top: 20px;">
+                        <button class="btn btn-success next-question" data-next="7">
+                            <i class="fas fa-arrow-right"></i> Next Question
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Question 7 -->
+            <div class="question-card" id="question7">
+                <div class="question-header">
+                    <div class="question-title">Scenario 7: Grinder Application</div>
+                    <div class="question-number">Question 7 of 7</div>
+                </div>
+                
+                <div class="question-description">
+                    <p>A user wants to join as a Grinder.</p>
+                    <p><strong>Your task:</strong> Write your response for handling Grinder applications.</p>
+                </div>
+                
+                <textarea class="answer-box" placeholder="Write your response here..."></textarea>
+                
+                <div class="quiz-buttons">
+                    <button class="btn btn-secondary prev-question" data-prev="6">
+                        <i class="fas fa-arrow-left"></i> Previous
+                    </button>
+                    <button class="btn btn-primary" id="checkAnswer7">
+                        <i class="fas fa-check-circle"></i> Check Answer
+                    </button>
+                </div>
+                
+                <div class="answer-feedback" id="feedback7">
+                    <div class="feedback-title"><i class="fas fa-lightbulb"></i> Recommended Response</div>
+                    <div class="correct-answer">
+                        <p><strong>Answer:</strong> Ask them to change their Discord username to have "Void" in it and their Fortnite username. Ask for proof of using "team.void" item shop.</p>
+                    </div>
+                    <div class="quiz-buttons" style="margin-top: 20px;">
+                        <button class="btn btn-success" id="completeQuiz">
+                            <i class="fas fa-flag-checkered"></i> Complete Training
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Completion Screen -->
+        <div class="completion-screen" id="completionScreen">
+            <div class="completion-icon">
+                <i class="fas fa-trophy"></i>
+            </div>
+            <h2 class="completion-title">Training Complete!</h2>
+            <div class="completion-message">
+                <p>Congratulations! You've successfully completed the advanced mod training. You now have the knowledge to handle various types of roster tickets effectively.</p>
+                <p>Remember to always maintain professionalism, ask for age in your first response, and ping the appropriate departments when needed. You're now ready to handle real tickets in the Void Esports server!</p>
+            </div>
+            <button class="btn btn-primary" id="restartQuiz">
+                <i class="fas fa-redo"></i> Review Training Again
+            </button>
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <p>Void Esports Mod Training System • Advanced Training Module v2.0</p>
+            <p>© 2023 Void Esports. All rights reserved.</p>
+        </div>
+    </div>
 
-<h2>Question 1</h2>
-<p>
-Two users are arguing aggressively in chat. What should you do as a moderator?
-</p>
-
-<textarea id="answer" placeholder="Type your answer here..."></textarea>
-<br>
-<button onclick="showSolution()">Submit</button>
-
-<div class="solution" id="solution">
-  <strong>Suggested Solution:</strong><br>
-  Step in calmly, warn both users, ask them to move to DMs or stop,
-  and mute if they continue. Log the incident.
-</div>
-
-<script>
-function showSolution() {
-  document.getElementById("solution").style.display = "block";
-}
-</script>
-
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Quiz state
+            let currentQuestion = 1;
+            const totalQuestions = 7;
+            
+            // DOM Elements
+            const startQuizBtn = document.getElementById('startQuizBtn');
+            const quizSection = document.getElementById('quizSection');
+            const progressFill = document.getElementById('progressFill');
+            const progressSteps = document.querySelectorAll('.progress-step');
+            const stepIcons = document.querySelectorAll('.step-icon');
+            const completionScreen = document.getElementById('completionScreen');
+            const restartQuizBtn = document.getElementById('restartQuiz');
+            const skipBtn = document.getElementById('skipBtn');
+            
+            // Initialize progress bar
+            updateProgressBar();
+            
+            // Start quiz button
+            startQuizBtn.addEventListener('click', function() {
+                quizSection.style.display = 'block';
+                startQuizBtn.style.display = 'none';
+                
+                // Update progress steps
+                progressSteps[0].classList.remove('active');
+                stepIcons[0].classList.remove('active');
+                progressSteps[1].classList.add('active');
+                stepIcons[1].classList.add('active');
+                
+                // Scroll to quiz section
+                quizSection.scrollIntoView({ behavior: 'smooth' });
+            });
+            
+            // Check answer buttons
+            for (let i = 1; i <= totalQuestions; i++) {
+                document.getElementById(`checkAnswer${i}`).addEventListener('click', function() {
+                    const feedback = document.getElementById(`feedback${i}`);
+                    feedback.classList.add('show');
+                    
+                    // Update progress bar
+                    updateProgressBar();
+                });
+            }
+            
+            // Next question buttons
+            document.querySelectorAll('.next-question').forEach(button => {
+                button.addEventListener('click', function() {
+                    const nextQuestion = this.getAttribute('data-next');
+                    showQuestion(nextQuestion);
+                });
+            });
+            
+            // Previous question buttons
+            document.querySelectorAll('.prev-question').forEach(button => {
+                button.addEventListener('click', function() {
+                    const prevQuestion = this.getAttribute('data-prev');
+                    showQuestion(prevQuestion);
+                });
+            });
+            
+            // Skip question button
+            skipBtn.addEventListener('click', function() {
+                showQuestion(currentQuestion + 1);
+            });
+            
+            // Complete quiz button
+            document.getElementById('completeQuiz').addEventListener('click', function() {
+                // Update progress steps
+                progressSteps[1].classList.remove('active');
+                stepIcons[1].classList.remove('active');
+                progressSteps[2].classList.add('active');
+                stepIcons[2].classList.add('active');
+                
+                // Show completion screen
+                quizSection.style.display = 'none';
+                completionScreen.classList.add('active');
+                completionScreen.scrollIntoView({ behavior: 'smooth' });
+                
+                // Update progress bar to 100%
+                progressFill.style.width = '100%';
+            });
+            
+            // Restart quiz button
+            restartQuizBtn.addEventListener('click', function() {
+                // Reset to first question
+                showQuestion(1);
+                
+                // Hide all feedback
+                for (let i = 1; i <= totalQuestions; i++) {
+                    document.getElementById(`feedback${i}`).classList.remove('show');
+                }
+                
+                // Clear all answer boxes
+                document.querySelectorAll('.answer-box').forEach(box => {
+                    box.value = '';
+                });
+                
+                // Hide completion screen
+                completionScreen.classList.remove('active');
+                
+                // Show quiz section
+                quizSection.style.display = 'block';
+                quizSection.scrollIntoView({ behavior: 'smooth' });
+                
+                // Reset progress steps
+                progressSteps[0].classList.add('active');
+                stepIcons[0].classList.add('active');
+                progressSteps[1].classList.remove('active');
+                stepIcons[1].classList.remove('active');
+                progressSteps[2].classList.remove('active');
+                stepIcons[2].classList.remove('active');
+                
+                // Reset progress bar
+                currentQuestion = 1;
+                updateProgressBar();
+            });
+            
+            // Function to show a specific question
+            function showQuestion(questionNum) {
+                // Hide all questions
+                for (let i = 1; i <= totalQuestions; i++) {
+                    document.getElementById(`question${i}`).classList.remove('active');
+                }
+                
+                // Show the requested question
+                document.getElementById(`question${questionNum}`).classList.add('active');
+                
+                // Update current question
+                currentQuestion = parseInt(questionNum);
+                
+                // Update progress bar
+                updateProgressBar();
+                
+                // Scroll to the question
+                document.getElementById(`question${questionNum}`).scrollIntoView({ behavior: 'smooth' });
+            }
+            
+            // Function to update progress bar
+            function updateProgressBar() {
+                const progressPercentage = (currentQuestion / totalQuestions) * 100;
+                progressFill.style.width = `${progressPercentage}%`;
+            }
+            
+            // Add some animation to cards on hover
+            const cards = document.querySelectorAll('.roster-card, .ticket-card');
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-8px)';
+                    this.style.boxShadow = '0 15px 30px rgba(0, 0, 0, 0.4)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                    this.style.boxShadow = '0 10px 20px rgba(0, 0, 0, 0.3)';
+                });
+            });
+        });
+    </script>
 </body>
 </html>
-
