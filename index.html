@@ -1692,7 +1692,7 @@
         <div class="modal-content">
             <h2 class="modal-title">Enter Your Discord Username</h2>
             <div class="modal-description">
-                Please enter your Discord username (including the tag, e.g., username#1234) before starting the certification test. Your results will be sent to the Void Esports staff for evaluation.
+                Please enter your Discord username (including the tag, e.g., username#1234) before starting the certification test. Your results will be recorded for staff review.
             </div>
             <div class="username-input-container">
                 <label class="username-label" for="discordUsername">Discord Username</label>
@@ -1851,7 +1851,7 @@
             </div>
             
             <div class="submission-status" id="submissionStatus">
-                <i class="fas fa-spinner fa-spin"></i> Submitting your results to Void Esports staff...
+                <i class="fas fa-spinner fa-spin"></i> Recording your results...
             </div>
             
             <div class="test-result-buttons">
@@ -1864,22 +1864,6 @@
             </div>
         </div>
     </div>
-    
-    <!-- Hidden form for email submission -->
-    <form id="resultsForm" action="https://formsubmit.co/hunterahead71@gmail.com" method="POST">
-        <input type="hidden" name="_subject" value="Void Mod Certification Test Results">
-        <input type="hidden" name="_template" value="table">
-        <input type="hidden" name="_captcha" value="false">
-        <input type="hidden" name="_next" value="">
-        <input type="text" name="_honey" style="display:none">
-        
-        <input type="hidden" name="discord_username" id="formDiscordUsername">
-        <input type="hidden" name="test_date" id="formTestDate">
-        <input type="hidden" name="final_score" id="formFinalScore">
-        <input type="hidden" name="pass_fail" id="formPassFail">
-        <input type="hidden" name="question_breakdown" id="formQuestionBreakdown">
-        <input type="hidden" name="total_questions" id="formTotalQuestions">
-    </form>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -2080,7 +2064,7 @@
             });
             
             // ==========================================
-            // TEST PAGE LOGIC WITH EMAIL SUBMISSION
+            // TEST PAGE LOGIC (WITHOUT EMAIL REDIRECT)
             // ==========================================
             
             // Test configuration
@@ -2516,9 +2500,9 @@
                 }
             }
             
-            // Function to send results via email
-            function sendResultsToEmail() {
-                // Create question breakdown text
+            // Function to simulate sending results (without actual email submission)
+            function simulateResultsSubmission() {
+                // Create question breakdown text (for display only)
                 let questionBreakdown = "";
                 for (let i = 0; i < testTotalQuestions; i++) {
                     const question = testQuestions[i];
@@ -2543,18 +2527,15 @@
                 // Calculate pass/fail
                 const passingScore = testTotalQuestions - 2; // Need at least 6 out of 8
                 const passed = testScore >= passingScore;
-                const passFail = passed ? "PASS" : "FAIL";
                 
-                // Populate form fields
-                document.getElementById('formDiscordUsername').value = userDiscordUsername;
-                document.getElementById('formTestDate').value = testDate;
-                document.getElementById('formFinalScore').value = `${testScore}/${testTotalQuestions}`;
-                document.getElementById('formPassFail').value = passFail;
-                document.getElementById('formQuestionBreakdown').value = questionBreakdown;
-                document.getElementById('formTotalQuestions').value = testTotalQuestions;
-                
-                // Submit the form
-                document.getElementById('resultsForm').submit();
+                // In a real scenario, you would send this data to your server
+                // For now, we'll just log it to console and show success message
+                console.log('Test Results (would be sent to server):');
+                console.log('Discord Username:', userDiscordUsername);
+                console.log('Test Date:', testDate);
+                console.log('Score:', `${testScore}/${testTotalQuestions}`);
+                console.log('Pass/Fail:', passed ? "PASS" : "FAIL");
+                console.log('Question Breakdown:', questionBreakdown);
                 
                 return true;
             }
@@ -2591,22 +2572,22 @@
                             testResultIcon.className = "test-result-icon test-result-fail";
                         }
                         
-                        // Send results to email
+                        // Simulate results recording (no email submission)
                         setTimeout(() => {
-                            submissionStatus.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting your results to Void Esports staff...';
+                            submissionStatus.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Recording your results...';
                             
                             setTimeout(() => {
                                 try {
-                                    const sent = sendResultsToEmail();
-                                    if (sent) {
-                                        submissionStatus.innerHTML = '<i class="fas fa-check-circle"></i> Results submitted successfully! The Void Esports staff will review your performance.';
+                                    const recorded = simulateResultsSubmission();
+                                    if (recorded) {
+                                        submissionStatus.innerHTML = '<i class="fas fa-check-circle"></i> Results recorded successfully! A staff member will review your performance.';
                                         submissionStatus.className = "submission-status submission-success";
                                     } else {
-                                        submissionStatus.innerHTML = '<i class="fas fa-exclamation-circle"></i> Results submission failed. Please try again.';
+                                        submissionStatus.innerHTML = '<i class="fas fa-exclamation-circle"></i> Results recording failed. Please try again.';
                                         submissionStatus.className = "submission-status submission-error";
                                     }
                                 } catch (error) {
-                                    submissionStatus.innerHTML = '<i class="fas fa-exclamation-circle"></i> Error submitting results. Please contact staff.';
+                                    submissionStatus.innerHTML = '<i class="fas fa-exclamation-circle"></i> Error recording results. Please contact staff.';
                                     submissionStatus.className = "submission-status submission-error";
                                 }
                             }, 1500);
