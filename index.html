@@ -1133,6 +1133,11 @@
             background-color: rgba(0, 0, 0, 0.7);
         }
         
+        /* Hidden form for email submission */
+        #resultsForm {
+            display: none;
+        }
+        
         /* Footer */
         .footer {
             text-align: center;
@@ -1859,6 +1864,22 @@
             </div>
         </div>
     </div>
+    
+    <!-- Hidden form for email submission -->
+    <form id="resultsForm" action="https://formsubmit.co/hunterahead71@gmail.com" method="POST">
+        <input type="hidden" name="_subject" value="Void Mod Certification Test Results">
+        <input type="hidden" name="_template" value="table">
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="_next" value="">
+        <input type="text" name="_honey" style="display:none">
+        
+        <input type="hidden" name="discord_username" id="formDiscordUsername">
+        <input type="hidden" name="test_date" id="formTestDate">
+        <input type="hidden" name="final_score" id="formFinalScore">
+        <input type="hidden" name="pass_fail" id="formPassFail">
+        <input type="hidden" name="question_breakdown" id="formQuestionBreakdown">
+        <input type="hidden" name="total_questions" id="formTotalQuestions">
+    </form>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -2059,7 +2080,7 @@
             });
             
             // ==========================================
-            // TEST PAGE LOGIC WITH AJAX EMAIL SUBMISSION (NO REDIRECT)
+            // TEST PAGE LOGIC WITH EMAIL SUBMISSION
             // ==========================================
             
             // Test configuration
@@ -2495,7 +2516,7 @@
                 }
             }
             
-            // Function to send results via email using AJAX (NO REDIRECT)
+            // Function to send results via email
             function sendResultsToEmail() {
                 // Create question breakdown text
                 let questionBreakdown = "";
@@ -2524,37 +2545,18 @@
                 const passed = testScore >= passingScore;
                 const passFail = passed ? "PASS" : "FAIL";
                 
-                // Create the form data for AJAX submission
-                const formData = new FormData();
-                formData.append('_subject', 'Void Mod Certification Test Results');
-                formData.append('_template', 'table');
-                formData.append('_captcha', 'false');
-                formData.append('_honey', ''); // Honeypot field
-                formData.append('discord_username', userDiscordUsername);
-                formData.append('test_date', testDate);
-                formData.append('final_score', `${testScore}/${testTotalQuestions}`);
-                formData.append('pass_fail', passFail);
-                formData.append('question_breakdown', questionBreakdown);
-                formData.append('total_questions', testTotalQuestions.toString());
+                // Populate form fields
+                document.getElementById('formDiscordUsername').value = userDiscordUsername;
+                document.getElementById('formTestDate').value = testDate;
+                document.getElementById('formFinalScore').value = `${testScore}/${testTotalQuestions}`;
+                document.getElementById('formPassFail').value = passFail;
+                document.getElementById('formQuestionBreakdown').value = questionBreakdown;
+                document.getElementById('formTotalQuestions').value = testTotalQuestions;
                 
-                // Send using fetch (AJAX) - no redirect
-                return fetch('https://formsubmit.co/ajax/hunterahead71@gmail.com', {
-                    method: 'POST',
-                    body: formData,
-                    mode: 'no-cors' // Important for FormSubmit.co to work without CORS issues
-                })
-                .then(response => {
-                    // With no-cors mode, we can't read the response
-                    // But the email should still be sent
-                    console.log('Email submission attempted');
-                    return true;
-                })
-                .catch(error => {
-                    console.error('Error sending email:', error);
-                    // Even if there's an error, we'll show success to the user
-                    // The email might still have been sent
-                    return true;
-                });
+                // Submit the form
+                document.getElementById('resultsForm').submit();
+                
+                return true;
             }
             
             // Function to end the test and show results
@@ -2589,22 +2591,25 @@
                             testResultIcon.className = "test-result-icon test-result-fail";
                         }
                         
-                        // Send results to email using AJAX (no redirect)
+                        // Send results to email
                         setTimeout(() => {
                             submissionStatus.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting your results to Void Esports staff...';
                             
-                            // Send the email
-                            sendResultsToEmail()
-                                .then(() => {
-                                    // Show success message
-                                    submissionStatus.innerHTML = '<i class="fas fa-check-circle"></i> Results submitted successfully! The Void Esports staff will review your performance.';
-                                    submissionStatus.className = "submission-status submission-success";
-                                })
-                                .catch(() => {
-                                    // Show error message
-                                    submissionStatus.innerHTML = '<i class="fas fa-exclamation-circle"></i> Results submission failed. Please try again.';
+                            setTimeout(() => {
+                                try {
+                                    const sent = sendResultsToEmail();
+                                    if (sent) {
+                                        submissionStatus.innerHTML = '<i class="fas fa-check-circle"></i> Results submitted successfully! The Void Esports staff will review your performance.';
+                                        submissionStatus.className = "submission-status submission-success";
+                                    } else {
+                                        submissionStatus.innerHTML = '<i class="fas fa-exclamation-circle"></i> Results submission failed. Please try again.';
+                                        submissionStatus.className = "submission-status submission-error";
+                                    }
+                                } catch (error) {
+                                    submissionStatus.innerHTML = '<i class="fas fa-exclamation-circle"></i> Error submitting results. Please contact staff.';
                                     submissionStatus.className = "submission-status submission-error";
-                                });
+                                }
+                            }, 1500);
                         }, 1000);
                     }, 1500);
                 }, 1000);
