@@ -846,6 +846,7 @@
         .channels-list {
             max-height: 300px;
             overflow-y: auto;
+            display: block;
         }
         
         .channel-item {
@@ -2004,7 +2005,7 @@
                         <p><strong>Answer:</strong> Ask them to change their Discord username to have "Void" in it and their Fortnite username. Ask for proof of using "team.void" item shop.</p>
                     </div>
                     <div class="quiz-buttons" style="margin-top: 20px;">
-                        <button class="btn btn-success" id="completeQuiz">
+                        <button class="btn btn-success" id="completeQuizBtn">
                             <i class="fas fa-flag-checkered"></i> Complete Training
                         </button>
                     </div>
@@ -2023,7 +2024,7 @@
                 <p>Remember to always maintain professionalism, ask for age in your first response, and ping the appropriate departments when needed. You're now ready to handle real tickets in the Void Esports server!</p>
             </div>
             <div class="completion-buttons">
-                <button class="btn btn-primary" id="restartQuiz">
+                <button class="btn btn-primary" id="restartQuizBtn">
                     <i class="fas fa-redo"></i> Review Training Again
                 </button>
                 <button class="btn btn-test" id="takeTestBtn">
@@ -2336,7 +2337,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // ==========================================
-            // TRAINING QUIZ LOGIC - WORKING
+            // TRAINING QUIZ LOGIC
             // ==========================================
             
             // Quiz state for training
@@ -2350,35 +2351,30 @@
             const progressSteps = document.querySelectorAll('.progress-step');
             const stepIcons = document.querySelectorAll('.step-icon');
             const completionScreen = document.getElementById('completionScreen');
-            const restartQuizBtn = document.getElementById('restartQuiz');
+            const restartQuizBtn = document.getElementById('restartQuizBtn');
             const skipBtn = document.getElementById('skipBtn');
             const takeTestBtn = document.getElementById('takeTestBtn');
+            const completeQuizBtn = document.getElementById('completeQuizBtn');
             
             // Initialize progress bar
             updateProgressBar();
             
-            // Start quiz button - FIXED AND WORKING
-            if (startQuizBtn) {
-                startQuizBtn.addEventListener('click', function() {
-                    console.log('Start Quiz button clicked');
+            // Start quiz button - FIXED
+            startQuizBtn.addEventListener('click', function() {
+                if (quizSection) {
+                    quizSection.style.display = 'block';
+                    startQuizBtn.style.display = 'none';
                     
-                    if (quizSection) {
-                        quizSection.style.display = 'block';
-                        startQuizBtn.style.display = 'none';
-                        
-                        // Update progress steps
-                        if (progressSteps.length > 0 && stepIcons.length > 0) {
-                            progressSteps[0].classList.remove('active');
-                            stepIcons[0].classList.remove('active');
-                            progressSteps[1].classList.add('active');
-                            stepIcons[1].classList.add('active');
-                        }
-                        
-                        // Scroll to quiz section
-                        quizSection.scrollIntoView({ behavior: 'smooth' });
-                    }
-                });
-            }
+                    // Update progress steps
+                    if (progressSteps[0]) progressSteps[0].classList.remove('active');
+                    if (stepIcons[0]) stepIcons[0].classList.remove('active');
+                    if (progressSteps[1]) progressSteps[1].classList.add('active');
+                    if (stepIcons[1]) stepIcons[1].classList.add('active');
+                    
+                    // Scroll to quiz section
+                    quizSection.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
             
             // Check answer buttons
             for (let i = 1; i <= totalQuestions; i++) {
@@ -2388,6 +2384,8 @@
                         const feedback = document.getElementById(`feedback${i}`);
                         if (feedback) {
                             feedback.classList.add('show');
+                            
+                            // Update progress bar
                             updateProgressBar();
                         }
                     });
@@ -2417,40 +2415,37 @@
                 });
             }
             
-            // Complete quiz button
-            const completeQuizBtn = document.getElementById('completeQuiz');
+            // Complete quiz button - FIXED
             if (completeQuizBtn) {
                 completeQuizBtn.addEventListener('click', function() {
-                    if (progressSteps.length > 0 && stepIcons.length > 0) {
-                        progressSteps[1].classList.remove('active');
-                        stepIcons[1].classList.remove('active');
-                        progressSteps[2].classList.add('active');
-                        stepIcons[2].classList.add('active');
-                    }
+                    // Update progress steps
+                    if (progressSteps[1]) progressSteps[1].classList.remove('active');
+                    if (stepIcons[1]) stepIcons[1].classList.remove('active');
+                    if (progressSteps[2]) progressSteps[2].classList.add('active');
+                    if (stepIcons[2]) stepIcons[2].classList.add('active');
                     
-                    if (quizSection && completionScreen) {
-                        quizSection.style.display = 'none';
+                    // Show completion screen
+                    if (quizSection) quizSection.style.display = 'none';
+                    if (completionScreen) {
                         completionScreen.classList.add('active');
                         completionScreen.scrollIntoView({ behavior: 'smooth' });
-                        
-                        if (progressFill) {
-                            progressFill.style.width = '100%';
-                        }
                     }
+                    
+                    // Update progress bar to 100%
+                    if (progressFill) progressFill.style.width = '100%';
                 });
             }
             
             // Restart quiz button
             if (restartQuizBtn) {
                 restartQuizBtn.addEventListener('click', function() {
+                    // Reset to first question
                     showQuestion(1);
                     
                     // Hide all feedback
                     for (let i = 1; i <= totalQuestions; i++) {
                         const feedback = document.getElementById(`feedback${i}`);
-                        if (feedback) {
-                            feedback.classList.remove('show');
-                        }
+                        if (feedback) feedback.classList.remove('show');
                     }
                     
                     // Clear all answer boxes
@@ -2458,25 +2453,24 @@
                         box.value = '';
                     });
                     
-                    if (completionScreen) {
-                        completionScreen.classList.remove('active');
-                    }
+                    // Hide completion screen
+                    if (completionScreen) completionScreen.classList.remove('active');
                     
+                    // Show quiz section
                     if (quizSection) {
                         quizSection.style.display = 'block';
                         quizSection.scrollIntoView({ behavior: 'smooth' });
                     }
                     
                     // Reset progress steps
-                    if (progressSteps.length > 0 && stepIcons.length > 0) {
-                        progressSteps[0].classList.add('active');
-                        stepIcons[0].classList.add('active');
-                        progressSteps[1].classList.remove('active');
-                        stepIcons[1].classList.remove('active');
-                        progressSteps[2].classList.remove('active');
-                        stepIcons[2].classList.remove('active');
-                    }
+                    if (progressSteps[0]) progressSteps[0].classList.add('active');
+                    if (stepIcons[0]) stepIcons[0].classList.add('active');
+                    if (progressSteps[1]) progressSteps[1].classList.remove('active');
+                    if (stepIcons[1]) stepIcons[1].classList.remove('active');
+                    if (progressSteps[2]) progressSteps[2].classList.remove('active');
+                    if (stepIcons[2]) stepIcons[2].classList.remove('active');
                     
+                    // Reset progress bar
                     currentQuestion = 1;
                     updateProgressBar();
                 });
@@ -2486,9 +2480,7 @@
             if (takeTestBtn) {
                 takeTestBtn.addEventListener('click', function() {
                     const usernameModal = document.getElementById('usernameModal');
-                    if (usernameModal) {
-                        usernameModal.classList.add('active');
-                    }
+                    if (usernameModal) usernameModal.classList.add('active');
                 });
             }
             
@@ -2497,31 +2489,35 @@
             if (cancelTestBtn) {
                 cancelTestBtn.addEventListener('click', function() {
                     const usernameModal = document.getElementById('usernameModal');
-                    if (usernameModal) {
-                        usernameModal.classList.remove('active');
-                    }
+                    if (usernameModal) usernameModal.classList.remove('active');
                 });
             }
             
             // Function to show a specific question
             function showQuestion(questionNum) {
+                // Validate question number
                 questionNum = parseInt(questionNum);
-                if (questionNum < 1 || questionNum > totalQuestions) return;
+                if (questionNum < 1) questionNum = 1;
+                if (questionNum > totalQuestions) questionNum = totalQuestions;
                 
                 // Hide all questions
                 for (let i = 1; i <= totalQuestions; i++) {
                     const question = document.getElementById(`question${i}`);
-                    if (question) {
-                        question.classList.remove('active');
-                    }
+                    if (question) question.classList.remove('active');
                 }
                 
                 // Show the requested question
                 const targetQuestion = document.getElementById(`question${questionNum}`);
                 if (targetQuestion) {
                     targetQuestion.classList.add('active');
+                    
+                    // Update current question
                     currentQuestion = questionNum;
+                    
+                    // Update progress bar
                     updateProgressBar();
+                    
+                    // Scroll to the question
                     targetQuestion.scrollIntoView({ behavior: 'smooth' });
                 }
             }
@@ -2535,10 +2531,10 @@
             }
             
             // ==========================================
-            // ENHANCED TEST PAGE LOGIC WITH 100% DYNAMIC DISCORD
+            // ENHANCED TEST PAGE LOGIC WITH COMPREHENSIVE KEYWORDS
             // ==========================================
             
-            // Enhanced test configuration with EXTENSIVE keyword matching
+            // Enhanced test configuration with EXTENSIVE keyword matching (30+ per question)
             const testQuestions = [
                 {
                     id: 1,
@@ -2761,90 +2757,110 @@
             
             // Initialize the Discord interface
             function initializeDiscordInterface() {
-                console.log('Initializing Discord interface...');
-                
                 // Populate text channels
-                textChannels.forEach(channel => {
-                    const channelItem = document.createElement('div');
-                    channelItem.className = `channel-item ${channel.id === 1 ? 'active' : ''} ${channel.unread ? 'unread' : ''}`;
-                    channelItem.dataset.channelId = channel.id;
-                    channelItem.dataset.channelName = channel.name;
-                    channelItem.dataset.channelTopic = channel.topic;
-                    
-                    channelItem.innerHTML = `
-                        <div class="channel-icon">
-                            <i class="${channel.icon}"></i>
-                        </div>
-                        <div class="channel-name">${channel.name}</div>
-                        ${channel.notifications > 0 ? `<div class="channel-notification">${channel.notifications}</div>` : ''}
-                    `;
-                    
-                    channelItem.addEventListener('click', () => switchChannel(channel.id));
-                    channelsList.appendChild(channelItem);
-                });
+                if (channelsList) {
+                    channelsList.innerHTML = '';
+                    textChannels.forEach(channel => {
+                        const channelItem = document.createElement('div');
+                        channelItem.className = `channel-item ${channel.id === 1 ? 'active' : ''} ${channel.unread ? 'unread' : ''}`;
+                        channelItem.dataset.channelId = channel.id;
+                        channelItem.dataset.channelName = channel.name;
+                        channelItem.dataset.channelTopic = channel.topic;
+                        
+                        channelItem.innerHTML = `
+                            <div class="channel-icon">
+                                <i class="${channel.icon}"></i>
+                            </div>
+                            <div class="channel-name">${channel.name}</div>
+                            ${channel.notifications > 0 ? `<div class="channel-notification">${channel.notifications}</div>` : ''}
+                        `;
+                        
+                        channelItem.addEventListener('click', () => switchChannel(channel.id));
+                        channelsList.appendChild(channelItem);
+                    });
+                }
                 
                 // Populate voice channels
-                voiceChannels.forEach(channel => {
-                    const channelItem = document.createElement('div');
-                    channelItem.className = 'channel-item';
-                    channelItem.dataset.channelId = channel.id;
-                    
-                    channelItem.innerHTML = `
-                        <div class="channel-icon">
-                            <i class="${channel.icon}"></i>
-                        </div>
-                        <div class="channel-name">${channel.name}</div>
-                        <div class="channel-notification">${channel.users}</div>
-                    `;
-                    
-                    voiceChannelsList.appendChild(channelItem);
-                });
+                if (voiceChannelsList) {
+                    voiceChannelsList.innerHTML = '';
+                    voiceChannels.forEach(channel => {
+                        const channelItem = document.createElement('div');
+                        channelItem.className = 'channel-item';
+                        channelItem.dataset.channelId = channel.id;
+                        
+                        channelItem.innerHTML = `
+                            <div class="channel-icon">
+                                <i class="${channel.icon}"></i>
+                            </div>
+                            <div class="channel-name">${channel.name}</div>
+                            <div class="channel-notification">${channel.users}</div>
+                        `;
+                        
+                        voiceChannelsList.appendChild(channelItem);
+                    });
+                }
                 
                 // Toggle server info panel
-                serverHeader.addEventListener('click', () => {
-                    serverInfoPanel.classList.toggle('show');
-                    serverDropdown.classList.toggle('open');
-                });
+                if (serverHeader) {
+                    serverHeader.addEventListener('click', () => {
+                        if (serverInfoPanel && serverDropdown) {
+                            serverInfoPanel.classList.toggle('show');
+                            serverDropdown.classList.toggle('open');
+                        }
+                    });
+                }
                 
                 // Toggle text channels list
-                channelsHeader.addEventListener('click', () => {
-                    const isVisible = channelsList.style.display !== 'none';
-                    channelsList.style.display = isVisible ? 'none' : 'block';
-                    channelsDropdown.classList.toggle('open');
-                });
+                if (channelsHeader && channelsList && channelsDropdown) {
+                    channelsHeader.addEventListener('click', () => {
+                        const isHidden = channelsList.style.display === 'none';
+                        channelsList.style.display = isHidden ? 'block' : 'none';
+                        channelsDropdown.classList.toggle('open');
+                    });
+                }
                 
                 // Toggle voice channels list
-                voiceChannelsHeader.addEventListener('click', () => {
-                    const isVisible = voiceChannelsList.style.display !== 'none';
-                    voiceChannelsList.style.display = isVisible ? 'none' : 'block';
-                    voiceChannelsDropdown.classList.toggle('open');
-                });
+                if (voiceChannelsHeader && voiceChannelsList && voiceChannelsDropdown) {
+                    voiceChannelsHeader.addEventListener('click', () => {
+                        const isHidden = voiceChannelsList.style.display === 'none';
+                        voiceChannelsList.style.display = isHidden ? 'block' : 'none';
+                        voiceChannelsDropdown.classList.toggle('open');
+                    });
+                }
                 
                 // User profile modal
-                userProfile.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    userModal.classList.toggle('active');
-                });
-                
-                // Close modal when clicking outside
-                document.addEventListener('click', (e) => {
-                    if (!userModal.contains(e.target) && !userProfile.contains(e.target)) {
-                        userModal.classList.remove('active');
-                    }
-                });
+                if (userProfile && userModal) {
+                    userProfile.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        userModal.classList.toggle('active');
+                    });
+                    
+                    // Close modal when clicking outside
+                    document.addEventListener('click', (e) => {
+                        if (userModal && !userModal.contains(e.target) && userProfile && !userProfile.contains(e.target)) {
+                            userModal.classList.remove('active');
+                        }
+                    });
+                }
                 
                 // Chat control buttons
-                pinMessagesBtn.addEventListener('click', () => {
-                    showNotification("Pinned messages would open here in a real Discord client.");
-                });
+                if (pinMessagesBtn) {
+                    pinMessagesBtn.addEventListener('click', () => {
+                        showNotification("Pinned messages would open here in a real Discord client.");
+                    });
+                }
                 
-                membersListBtn.addEventListener('click', () => {
-                    showNotification("Member list would open here in a real Discord client.");
-                });
+                if (membersListBtn) {
+                    membersListBtn.addEventListener('click', () => {
+                        showNotification("Member list would open here in a real Discord client.");
+                    });
+                }
                 
-                searchBtn.addEventListener('click', () => {
-                    showNotification("Search function would open here in a real Discord client.");
-                });
+                if (searchBtn) {
+                    searchBtn.addEventListener('click', () => {
+                        showNotification("Search function would open here in a real Discord client.");
+                    });
+                }
                 
                 // Set initial channel info
                 updateChannelInfo(1);
@@ -2856,10 +2872,8 @@
                 document.querySelectorAll('.channel-item').forEach(item => {
                     item.classList.remove('active');
                 });
-                const targetChannel = document.querySelector(`.channel-item[data-channel-id="${channelId}"]`);
-                if (targetChannel) {
-                    targetChannel.classList.add('active');
-                }
+                const activeChannel = document.querySelector(`.channel-item[data-channel-id="${channelId}"]`);
+                if (activeChannel) activeChannel.classList.add('active');
                 
                 // Update channel info in header
                 const channel = textChannels.find(c => c.id === channelId);
@@ -2877,8 +2891,8 @@
             function updateChannelInfo(channelId) {
                 const channel = textChannels.find(c => c.id === channelId);
                 if (channel) {
-                    activeChannelName.textContent = channel.name;
-                    channelTopic.textContent = channel.topic;
+                    if (activeChannelName) activeChannelName.textContent = channel.name;
+                    if (channelTopic) channelTopic.textContent = channel.topic;
                     
                     // Update online count based on channel
                     let count = 3; // Base count for training-test
@@ -2886,12 +2900,14 @@
                     else if (channelId === 3) count = 24; // general
                     else if (channelId === 5) count = 6; // mod-chat
                     
-                    onlineCount.textContent = count;
+                    if (onlineCount) onlineCount.textContent = count;
                 }
             }
             
             // Show notification
             function showNotification(message) {
+                if (!testMessagesContainer) return;
+                
                 // Create notification element
                 const notification = document.createElement('div');
                 notification.className = 'message';
@@ -2915,83 +2931,112 @@
             }
             
             // Back to training button
-            backToTrainingBtn.addEventListener('click', function() {
-                document.getElementById('testPage').style.display = 'none';
-                document.getElementById('mainContainer').style.display = 'block';
-                resetTest();
-            });
+            if (backToTrainingBtn) {
+                backToTrainingBtn.addEventListener('click', function() {
+                    const testPage = document.getElementById('testPage');
+                    const mainContainer = document.getElementById('mainContainer');
+                    if (testPage) testPage.style.display = 'none';
+                    if (mainContainer) mainContainer.style.display = 'block';
+                    resetTest();
+                });
+            }
             
-            testBackToTrainingBtn.addEventListener('click', function() {
-                document.getElementById('testPage').style.display = 'none';
-                document.getElementById('mainContainer').style.display = 'block';
-                resetTest();
-            });
+            if (testBackToTrainingBtn) {
+                testBackToTrainingBtn.addEventListener('click', function() {
+                    const testPage = document.getElementById('testPage');
+                    const mainContainer = document.getElementById('mainContainer');
+                    if (testPage) testPage.style.display = 'none';
+                    if (mainContainer) mainContainer.style.display = 'block';
+                    resetTest();
+                });
+            }
             
             // Start test with username button
-            document.getElementById('startTestWithUsername').addEventListener('click', function() {
-                const discordUsername = document.getElementById('discordUsername').value.trim();
-                if (!discordUsername) {
-                    alert('Please enter your Discord username to continue.');
-                    return;
-                }
-                
-                // Store the username
-                userDiscordUsername = discordUsername;
-                
-                // Update the display
-                document.getElementById('usernameDisplay').textContent = discordUsername.split('#')[0];
-                document.getElementById('userModalName').textContent = discordUsername.split('#')[0];
-                document.getElementById('userModalTag').textContent = discordUsername;
-                
-                // Set avatar initials
-                const initials = discordUsername.split('#')[0].charAt(0).toUpperCase();
-                userAvatar.textContent = initials;
-                userModalAvatar.textContent = initials;
-                
-                // Hide modal and show test page
-                document.getElementById('usernameModal').classList.remove('active');
-                document.getElementById('mainContainer').style.display = 'none';
-                document.getElementById('testPage').style.display = 'block';
-                
-                // Initialize Discord interface
-                initializeDiscordInterface();
-                
-                // Start the test
-                setTimeout(() => {
-                    startTest();
-                }, 1000);
-            });
+            const startTestWithUsernameBtn = document.getElementById('startTestWithUsername');
+            if (startTestWithUsernameBtn) {
+                startTestWithUsernameBtn.addEventListener('click', function() {
+                    const discordUsernameInput = document.getElementById('discordUsername');
+                    if (!discordUsernameInput) return;
+                    
+                    const discordUsername = discordUsernameInput.value.trim();
+                    if (!discordUsername) {
+                        alert('Please enter your Discord username to continue.');
+                        return;
+                    }
+                    
+                    // Store the username
+                    userDiscordUsername = discordUsername;
+                    
+                    // Update the display
+                    const usernameDisplay = document.getElementById('usernameDisplay');
+                    const userModalNameElem = document.getElementById('userModalName');
+                    const userModalTagElem = document.getElementById('userModalTag');
+                    
+                    if (usernameDisplay) usernameDisplay.textContent = discordUsername.split('#')[0];
+                    if (userModalNameElem) userModalNameElem.textContent = discordUsername.split('#')[0];
+                    if (userModalTagElem) userModalTagElem.textContent = discordUsername;
+                    
+                    // Set avatar initials
+                    const initials = discordUsername.split('#')[0].charAt(0).toUpperCase();
+                    if (userAvatar) userAvatar.textContent = initials;
+                    if (userModalAvatar) userModalAvatar.textContent = initials;
+                    
+                    // Hide modal and show test page
+                    const usernameModal = document.getElementById('usernameModal');
+                    const mainContainer = document.getElementById('mainContainer');
+                    const testPage = document.getElementById('testPage');
+                    
+                    if (usernameModal) usernameModal.classList.remove('active');
+                    if (mainContainer) mainContainer.style.display = 'none';
+                    if (testPage) testPage.style.display = 'block';
+                    
+                    // Initialize Discord interface
+                    initializeDiscordInterface();
+                    
+                    // Start the test
+                    setTimeout(() => {
+                        startTest();
+                    }, 1000);
+                });
+            }
             
             // Auto-resize textarea
-            testMessageInput.addEventListener('input', function() {
-                this.style.height = 'auto';
-                this.style.height = (this.scrollHeight) + 'px';
-            });
+            if (testMessageInput) {
+                testMessageInput.addEventListener('input', function() {
+                    this.style.height = 'auto';
+                    this.style.height = (this.scrollHeight) + 'px';
+                });
+            }
             
             // Send message on Enter (without Shift)
-            testMessageInput.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter' && !e.shiftKey) {
-                    e.preventDefault();
-                    sendTestMessage();
-                }
-            });
+            if (testMessageInput) {
+                testMessageInput.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        sendTestMessage();
+                    }
+                });
+            }
             
             // Send message on button click
-            testSendButton.addEventListener('click', sendTestMessage);
+            if (testSendButton) {
+                testSendButton.addEventListener('click', sendTestMessage);
+            }
             
             // Retake test button
-            testReviewTestBtn.addEventListener('click', function() {
-                resetTest();
-                testCompleteScreen.classList.remove('active');
-                testChatArea.style.display = 'flex';
-                setTimeout(() => {
-                    startTest();
-                }, 500);
-            });
+            if (testReviewTestBtn) {
+                testReviewTestBtn.addEventListener('click', function() {
+                    resetTest();
+                    if (testCompleteScreen) testCompleteScreen.classList.remove('active');
+                    if (testChatArea) testChatArea.style.display = 'flex';
+                    setTimeout(() => {
+                        startTest();
+                    }, 500);
+                });
+            }
             
             // Function to start the test
             function startTest() {
-                console.log('Starting test...');
                 testActive = true;
                 testCurrentQuestion = 0;
                 testScore = 0;
@@ -2999,17 +3044,19 @@
                 correctAnswers = [];
                 updateTestScore();
                 updateTestStatus();
-                updateProgressBar();
+                updateTestProgressBar();
                 
                 // Clear previous messages (keep only initial bot messages)
-                const initialMessages = testMessagesContainer.querySelectorAll('.message');
-                for (let i = 2; i < initialMessages.length; i++) {
-                    initialMessages[i].remove();
+                if (testMessagesContainer) {
+                    const initialMessages = testMessagesContainer.querySelectorAll('.message');
+                    for (let i = 2; i < initialMessages.length; i++) {
+                        initialMessages[i].remove();
+                    }
                 }
                 
                 // Update user stats
-                statTickets.textContent = Math.floor(Math.random() * 5) + 1;
-                statScore.textContent = "0%";
+                if (statTickets) statTickets.textContent = Math.floor(Math.random() * 5) + 1;
+                if (statScore) statScore.textContent = "0%";
                 
                 // Start with first question
                 setTimeout(() => {
@@ -3026,13 +3073,15 @@
                 correctAnswers = [];
                 updateTestScore();
                 updateTestStatus();
-                updateProgressBar();
+                updateTestProgressBar();
                 
                 // Clear input
-                testMessageInput.value = '';
-                testMessageInput.style.height = 'auto';
-                testMessageInput.disabled = true;
-                testSendButton.disabled = true;
+                if (testMessageInput) {
+                    testMessageInput.value = '';
+                    testMessageInput.style.height = 'auto';
+                    testMessageInput.disabled = true;
+                }
+                if (testSendButton) testSendButton.disabled = true;
             }
             
             // Function to show the next question from the bot
@@ -3043,32 +3092,35 @@
                 }
                 
                 // Show typing indicator
-                testTypingIndicator.style.display = 'flex';
+                if (testTypingIndicator) testTypingIndicator.style.display = 'flex';
                 
                 // Wait 1-2 seconds to simulate typing
                 setTimeout(() => {
-                    testTypingIndicator.style.display = 'none';
+                    if (testTypingIndicator) testTypingIndicator.style.display = 'none';
                     
                     // Add the user's message
                     const question = testQuestions[testCurrentQuestion];
                     addTestMessage(question.user, question.userMessage, question.avatarColor, false);
                     
                     // Enable input for user response
-                    testMessageInput.disabled = false;
-                    testSendButton.disabled = false;
-                    testMessageInput.focus();
+                    if (testMessageInput) {
+                        testMessageInput.disabled = false;
+                        testMessageInput.focus();
+                    }
+                    if (testSendButton) testSendButton.disabled = false;
                     
                     // Update status
                     updateTestStatus();
-                    updateProgressBar();
+                    updateTestProgressBar();
                 }, 1500 + Math.random() * 1000);
             }
             
             // Function to send user's message
             function sendTestMessage() {
-                const userMessage = testMessageInput.value.trim();
+                if (!testMessageInput || !testActive) return;
                 
-                if (!userMessage || !testActive) return;
+                const userMessage = testMessageInput.value.trim();
+                if (!userMessage) return;
                 
                 // Add user's message to chat
                 addTestMessage("You", userMessage, "#5865f2", true);
@@ -3086,7 +3138,7 @@
                 
                 // Disable input while bot "types"
                 testMessageInput.disabled = true;
-                testSendButton.disabled = true;
+                if (testSendButton) testSendButton.disabled = true;
                 
                 // Move to next question after delay
                 setTimeout(() => {
@@ -3115,7 +3167,7 @@
                 if (isCorrect) {
                     testScore++;
                     updateTestScore();
-                    updateProgressBar();
+                    updateTestProgressBar();
                     
                     // Add correct badge to last user message
                     const lastMessage = testMessagesContainer.lastElementChild;
@@ -3167,6 +3219,8 @@
             
             // Function to add a message to the chat
             function addTestMessage(username, text, avatarColor, isUser = false) {
+                if (!testMessagesContainer) return;
+                
                 const messageDiv = document.createElement('div');
                 messageDiv.className = 'message';
                 
@@ -3199,18 +3253,20 @@
             
             // Function to update score display
             function updateTestScore() {
-                testScoreValue.textContent = testScore;
+                if (testScoreValue) testScoreValue.textContent = testScore;
                 updateTestStatus();
                 
                 // Update user stats
-                const percentage = Math.round((testScore / testTotalQuestions) * 100);
-                statScore.textContent = `${percentage}%`;
+                if (statScore) {
+                    const percentage = Math.round((testScore / testTotalQuestions) * 100);
+                    statScore.textContent = `${percentage}%`;
+                }
             }
             
             // Function to update progress bar
-            function updateProgressBar() {
-                const percentage = (testCurrentQuestion / testTotalQuestions) * 100;
+            function updateTestProgressBar() {
                 if (progressFillTest) {
+                    const percentage = (testCurrentQuestion / testTotalQuestions) * 100;
                     progressFillTest.style.width = `${percentage}%`;
                 }
             }
@@ -3220,18 +3276,20 @@
                 const percentage = (testCurrentQuestion / testTotalQuestions) * 100;
                 
                 if (testCurrentQuestion >= testTotalQuestions) {
-                    testStatusText.textContent = "Test Complete";
-                    testStatusDot.style.backgroundColor = "#3ba55c";
+                    if (testStatusText) testStatusText.textContent = "Test Complete";
+                    if (testStatusDot) testStatusDot.style.backgroundColor = "#3ba55c";
                 } else {
-                    testStatusText.textContent = `Question ${testCurrentQuestion + 1} of ${testTotalQuestions}`;
+                    if (testStatusText) testStatusText.textContent = `Question ${testCurrentQuestion + 1} of ${testTotalQuestions}`;
                     
                     // Change dot color based on progress
-                    if (percentage < 33) {
-                        testStatusDot.style.backgroundColor = "#ed4245";
-                    } else if (percentage < 66) {
-                        testStatusDot.style.backgroundColor = "#faa81a";
-                    } else {
-                        testStatusDot.style.backgroundColor = "#3ba55c";
+                    if (testStatusDot) {
+                        if (percentage < 33) {
+                            testStatusDot.style.backgroundColor = "#ed4245";
+                        } else if (percentage < 66) {
+                            testStatusDot.style.backgroundColor = "#faa81a";
+                        } else {
+                            testStatusDot.style.backgroundColor = "#3ba55c";
+                        }
                     }
                 }
             }
@@ -3266,17 +3324,27 @@
                 const passFail = passed ? "PASS" : "FAIL";
                 
                 // Populate form fields
-                document.getElementById('formDiscordUsername').value = userDiscordUsername;
-                document.getElementById('formTestDate').value = testDate;
-                document.getElementById('formFinalScore').value = `${testScore}/${testTotalQuestions}`;
-                document.getElementById('formPassFail').value = passFail;
-                document.getElementById('formQuestionBreakdown').value = questionBreakdown;
-                document.getElementById('formTotalQuestions').value = testTotalQuestions;
+                const formDiscordUsername = document.getElementById('formDiscordUsername');
+                const formTestDate = document.getElementById('formTestDate');
+                const formFinalScore = document.getElementById('formFinalScore');
+                const formPassFail = document.getElementById('formPassFail');
+                const formQuestionBreakdown = document.getElementById('formQuestionBreakdown');
+                const formTotalQuestions = document.getElementById('formTotalQuestions');
+                
+                if (formDiscordUsername) formDiscordUsername.value = userDiscordUsername;
+                if (formTestDate) formTestDate.value = testDate;
+                if (formFinalScore) formFinalScore.value = `${testScore}/${testTotalQuestions}`;
+                if (formPassFail) formPassFail.value = passFail;
+                if (formQuestionBreakdown) formQuestionBreakdown.value = questionBreakdown;
+                if (formTotalQuestions) formTotalQuestions.value = testTotalQuestions;
                 
                 // Submit the form
-                document.getElementById('resultsForm').submit();
-                
-                return true;
+                const form = document.getElementById('resultsForm');
+                if (form) {
+                    form.submit();
+                    return true;
+                }
+                return false;
             }
             
             // Function to end the test and show results
@@ -3289,65 +3357,57 @@
                     
                     // Show test complete screen after delay
                     setTimeout(() => {
-                        testChatArea.style.display = 'none';
-                        testCompleteScreen.classList.add('active');
+                        if (testChatArea) testChatArea.style.display = 'none';
+                        if (testCompleteScreen) testCompleteScreen.classList.add('active');
                         
                         // Calculate result
                         const passingScore = testTotalQuestions - 2; // Need to get at least 6 out of 8
                         const passed = testScore >= passingScore;
                         
                         // Update result screen
-                        testResultScore.textContent = `Score: ${testScore}/${testTotalQuestions}`;
+                        if (testResultScore) testResultScore.textContent = `Score: ${testScore}/${testTotalQuestions}`;
                         
                         if (passed) {
-                            testResultTitle.textContent = "Test Passed!";
-                            testResultMessage.textContent = `Congratulations! You passed the mod certification test with a score of ${testScore}/${testTotalQuestions}. You demonstrated knowledge of proper ticket handling procedures.`;
-                            testResultIcon.innerHTML = '<i class="fas fa-trophy"></i>';
-                            testResultIcon.className = "test-result-icon test-result-pass";
+                            if (testResultTitle) testResultTitle.textContent = "Test Passed!";
+                            if (testResultMessage) testResultMessage.textContent = `Congratulations! You passed the mod certification test with a score of ${testScore}/${testTotalQuestions}. You demonstrated knowledge of proper ticket handling procedures.`;
+                            if (testResultIcon) {
+                                testResultIcon.innerHTML = '<i class="fas fa-trophy"></i>';
+                                testResultIcon.className = "test-result-icon test-result-pass";
+                            }
                         } else {
-                            testResultTitle.textContent = "Test Failed";
-                            testResultMessage.textContent = `You scored ${testScore}/${testTotalQuestions}. You need at least ${passingScore} correct answers to pass. Review the training material and try again.`;
-                            testResultIcon.innerHTML = '<i class="fas fa-times-circle"></i>';
-                            testResultIcon.className = "test-result-icon test-result-fail";
+                            if (testResultTitle) testResultTitle.textContent = "Test Failed";
+                            if (testResultMessage) testResultMessage.textContent = `You scored ${testScore}/${testTotalQuestions}. You need at least ${passingScore} correct answers to pass. Review the training material and try again.`;
+                            if (testResultIcon) {
+                                testResultIcon.innerHTML = '<i class="fas fa-times-circle"></i>';
+                                testResultIcon.className = "test-result-icon test-result-fail";
+                            }
                         }
                         
                         // Send results to email
                         setTimeout(() => {
-                            submissionStatus.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting your results to Void Esports staff...';
-                            
-                            setTimeout(() => {
-                                try {
-                                    const sent = sendResultsToEmail();
-                                    if (sent) {
-                                        submissionStatus.innerHTML = '<i class="fas fa-check-circle"></i> Results submitted successfully! The Void Esports staff will review your performance.';
-                                        submissionStatus.className = "submission-status submission-success";
-                                    } else {
-                                        submissionStatus.innerHTML = '<i class="fas fa-exclamation-circle"></i> Results submission failed. Please try again.';
+                            if (submissionStatus) {
+                                submissionStatus.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting your results to Void Esports staff...';
+                                
+                                setTimeout(() => {
+                                    try {
+                                        const sent = sendResultsToEmail();
+                                        if (sent) {
+                                            submissionStatus.innerHTML = '<i class="fas fa-check-circle"></i> Results submitted successfully! The Void Esports staff will review your performance.';
+                                            submissionStatus.className = "submission-status submission-success";
+                                        } else {
+                                            submissionStatus.innerHTML = '<i class="fas fa-exclamation-circle"></i> Results submission failed. Please try again.';
+                                            submissionStatus.className = "submission-status submission-error";
+                                        }
+                                    } catch (error) {
+                                        submissionStatus.innerHTML = '<i class="fas fa-exclamation-circle"></i> Error submitting results. Please contact staff.';
                                         submissionStatus.className = "submission-status submission-error";
                                     }
-                                } catch (error) {
-                                    submissionStatus.innerHTML = '<i class="fas fa-exclamation-circle"></i> Error submitting results. Please contact staff.';
-                                    submissionStatus.className = "submission-status submission-error";
-                                }
-                            }, 1500);
+                                }, 1500);
+                            }
                         }, 1000);
                     }, 1500);
                 }, 1000);
             }
-            
-            // Add some animation to cards on hover
-            const cards = document.querySelectorAll('.roster-card, .ticket-card');
-            cards.forEach(card => {
-                card.addEventListener('mouseenter', function() {
-                    this.style.transform = 'translateY(-8px)';
-                    this.style.boxShadow = '0 15px 30px rgba(0, 0, 0, 0.4)';
-                });
-                
-                card.addEventListener('mouseleave', function() {
-                    this.style.transform = 'translateY(0)';
-                    this.style.boxShadow = '0 10px 20px rgba(0, 0, 0, 0.3)';
-                });
-            });
         });
     </script>
 </body>
