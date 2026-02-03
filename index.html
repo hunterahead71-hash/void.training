@@ -1693,39 +1693,58 @@
                 padding-top: 60px;
             }
             
-            /* Fix message input area for mobile keyboards */
+            /* FIXED: Message input area for mobile - Send button above textarea */
             .message-input-area {
-                padding-bottom: max(20px, env(safe-area-inset-bottom, 20px));
+                padding: 15px;
+                padding-bottom: max(15px, env(safe-area-inset-bottom, 15px));
                 position: sticky;
                 bottom: 0;
                 background-color: var(--discord-message-bg);
                 z-index: 100;
+                border-top: 1px solid var(--discord-border);
             }
             
-            /* Make the message container adjust for keyboard */
-            .messages-container {
-                padding-bottom: 80px;
-                flex-grow: 1;
-                overflow-y: auto;
-                -webkit-overflow-scrolling: touch;
-            }
-            
-            /* Adjust message input container for mobile */
             .message-input-container {
                 flex-direction: column;
-                padding: 10px;
+                padding: 0;
                 gap: 10px;
-            }
-            
-            .message-input {
-                min-height: 40px;
-                max-height: 120px;
-                font-size: 16px;
+                background-color: transparent;
             }
             
             .send-button {
                 align-self: flex-end;
-                padding: 10px 20px;
+                padding: 12px 24px;
+                font-size: 1rem;
+                order: -1; /* Send button comes first */
+                margin-bottom: 10px;
+                width: 100%;
+                max-width: 150px;
+            }
+            
+            .message-input {
+                min-height: 100px; /* Larger textarea for mobile */
+                max-height: 200px;
+                font-size: 16px !important; /* Prevent zoom on iOS */
+                padding: 15px;
+                background-color: #40444b;
+                border-radius: 8px;
+                border: 1px solid var(--discord-border);
+                width: 100%;
+                box-sizing: border-box;
+            }
+            
+            .message-input:focus {
+                border-color: var(--discord-blue);
+                font-size: 16px !important; /* Prevent zoom on iOS */
+            }
+            
+            /* Make the message container adjust for keyboard */
+            .messages-container {
+                padding-bottom: 20px;
+                flex-grow: 1;
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+                padding-top: 10px;
             }
             
             /* Adjust test complete screen for mobile */
@@ -1830,31 +1849,30 @@
                 font-size: 0.9rem;
             }
             
-            .message-input-container {
-                padding: 8px;
-            }
-            
-            .message-input {
-                font-size: 0.9rem;
-            }
-            
-            .send-button {
-                padding: 6px 12px;
-                font-size: 0.9rem;
-            }
-            
             .test-result-buttons {
                 flex-direction: column;
+            }
+            
+            /* Keyboard-aware layout adjustments */
+            .keyboard-open .messages-container {
+                max-height: 40vh;
+                overflow-y: scroll;
+            }
+            
+            .keyboard-open .message-input-area {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                background-color: var(--discord-message-bg);
+                z-index: 1000;
+                padding-bottom: env(safe-area-inset-bottom, 15px);
             }
         }
         
         /* Additional CSS to prevent iOS zoom on input */
         @media screen and (max-width: 768px) {
             input, textarea, select {
-                font-size: 16px !important;
-            }
-            
-            .message-input:focus {
                 font-size: 16px !important;
             }
         }
@@ -1877,6 +1895,16 @@
             
             .chat-header {
                 padding-top: 55px;
+            }
+            
+            .message-input {
+                min-height: 120px;
+                font-size: 16px !important;
+            }
+            
+            .send-button {
+                padding: 10px 20px;
+                font-size: 0.95rem;
             }
         }
         
@@ -2747,10 +2775,10 @@
                 
                 <div class="message-input-area">
                     <div class="message-input-container">
-                        <textarea class="message-input" id="messageInput" placeholder="Message #training-test" rows="1"></textarea>
                         <button class="send-button" id="sendButton">
                             <i class="fas fa-paper-plane"></i> Send
                         </button>
+                        <textarea class="message-input" id="messageInput" placeholder="Type your response here..." rows="4"></textarea>
                     </div>
                 </div>
             </div>
@@ -3439,6 +3467,14 @@
                                     messagesContainer.scrollTop = messagesContainer.scrollHeight;
                                 }
                             }, 300);
+                            
+                            // Add keyboard-open class to body
+                            document.body.classList.add('keyboard-open');
+                        });
+                        
+                        messageInput.addEventListener('blur', function() {
+                            // Remove keyboard-open class when input loses focus
+                            document.body.classList.remove('keyboard-open');
                         });
                     }
                 }
@@ -3757,6 +3793,13 @@
                         if (mobileMenuButton) mobileMenuButton.style.display = 'block';
                         if (mobileBackArrow) mobileBackArrow.style.display = 'block';
                         if (document.querySelector('.discord-sidebar')) document.querySelector('.discord-sidebar').style.display = 'none';
+                        
+                        // Apply mobile-specific styling for message input area
+                        const messageInputArea = document.querySelector('.message-input-area');
+                        if (messageInputArea) {
+                            messageInputArea.style.padding = '15px';
+                            messageInputArea.style.paddingBottom = 'max(15px, env(safe-area-inset-bottom, 15px))';
+                        }
                     } else {
                         if (mobileMenuButton) mobileMenuButton.style.display = 'none';
                         if (mobileBackArrow) mobileBackArrow.style.display = 'none';
@@ -3774,7 +3817,18 @@
             if (testMessageInput) {
                 testMessageInput.addEventListener('input', function() {
                     this.style.height = 'auto';
-                    this.style.height = (this.scrollHeight) + 'px';
+                    const newHeight = Math.min(this.scrollHeight, 200); // Limit max height
+                    this.style.height = newHeight + 'px';
+                    
+                    // Adjust messages container padding if on mobile
+                    if (isMobile) {
+                        const messagesContainer = document.getElementById('messagesContainer');
+                        if (messagesContainer) {
+                            // Calculate extra padding needed based on textarea height
+                            const extraPadding = Math.max(0, newHeight - 100);
+                            messagesContainer.style.paddingBottom = (20 + extraPadding) + 'px';
+                        }
+                    }
                 });
             }
             
@@ -3831,6 +3885,14 @@
                 // Update user stats
                 if (statTickets) statTickets.textContent = Math.floor(Math.random() * 5) + 1;
                 if (statScore) statScore.textContent = "0%";
+                
+                // Reset message input height
+                if (testMessageInput) {
+                    testMessageInput.style.height = 'auto';
+                    if (isMobile) {
+                        testMessageInput.style.minHeight = '100px';
+                    }
+                }
                 
                 // Start with first question
                 setTimeout(() => {
