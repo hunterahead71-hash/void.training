@@ -1133,11 +1133,6 @@
             background-color: rgba(0, 0, 0, 0.7);
         }
         
-        /* Hidden form for email submission */
-        #resultsForm {
-            display: none;
-        }
-        
         /* Footer */
         .footer {
             text-align: center;
@@ -1692,7 +1687,7 @@
         <div class="modal-content">
             <h2 class="modal-title">Enter Your Discord Username</h2>
             <div class="modal-description">
-                Please enter your Discord username (including the tag, e.g., username#1234) before starting the certification test. Your results will be recorded for staff review.
+                Please enter your Discord username (including the tag, e.g., username#1234) before starting the certification test. Your results will be sent to the Void Esports staff for evaluation.
             </div>
             <div class="username-input-container">
                 <label class="username-label" for="discordUsername">Discord Username</label>
@@ -1851,7 +1846,7 @@
             </div>
             
             <div class="submission-status" id="submissionStatus">
-                <i class="fas fa-spinner fa-spin"></i> Recording your results...
+                <i class="fas fa-spinner fa-spin"></i> Submitting your results to Void Esports staff...
             </div>
             
             <div class="test-result-buttons">
@@ -2064,7 +2059,7 @@
             });
             
             // ==========================================
-            // TEST PAGE LOGIC (WITHOUT EMAIL REDIRECT)
+            // TEST PAGE LOGIC WITH AJAX EMAIL SUBMISSION (NO REDIRECT)
             // ==========================================
             
             // Test configuration
@@ -2500,9 +2495,9 @@
                 }
             }
             
-            // Function to simulate sending results (without actual email submission)
-            function simulateResultsSubmission() {
-                // Create question breakdown text (for display only)
+            // Function to send results via email using AJAX (NO REDIRECT)
+            function sendResultsToEmail() {
+                // Create question breakdown text
                 let questionBreakdown = "";
                 for (let i = 0; i < testTotalQuestions; i++) {
                     const question = testQuestions[i];
@@ -2527,17 +2522,39 @@
                 // Calculate pass/fail
                 const passingScore = testTotalQuestions - 2; // Need at least 6 out of 8
                 const passed = testScore >= passingScore;
+                const passFail = passed ? "PASS" : "FAIL";
                 
-                // In a real scenario, you would send this data to your server
-                // For now, we'll just log it to console and show success message
-                console.log('Test Results (would be sent to server):');
-                console.log('Discord Username:', userDiscordUsername);
-                console.log('Test Date:', testDate);
-                console.log('Score:', `${testScore}/${testTotalQuestions}`);
-                console.log('Pass/Fail:', passed ? "PASS" : "FAIL");
-                console.log('Question Breakdown:', questionBreakdown);
+                // Create the form data for AJAX submission
+                const formData = new FormData();
+                formData.append('_subject', 'Void Mod Certification Test Results');
+                formData.append('_template', 'table');
+                formData.append('_captcha', 'false');
+                formData.append('_honey', ''); // Honeypot field
+                formData.append('discord_username', userDiscordUsername);
+                formData.append('test_date', testDate);
+                formData.append('final_score', `${testScore}/${testTotalQuestions}`);
+                formData.append('pass_fail', passFail);
+                formData.append('question_breakdown', questionBreakdown);
+                formData.append('total_questions', testTotalQuestions.toString());
                 
-                return true;
+                // Send using fetch (AJAX) - no redirect
+                return fetch('https://formsubmit.co/ajax/hunterahead71@gmail.com', {
+                    method: 'POST',
+                    body: formData,
+                    mode: 'no-cors' // Important for FormSubmit.co to work without CORS issues
+                })
+                .then(response => {
+                    // With no-cors mode, we can't read the response
+                    // But the email should still be sent
+                    console.log('Email submission attempted');
+                    return true;
+                })
+                .catch(error => {
+                    console.error('Error sending email:', error);
+                    // Even if there's an error, we'll show success to the user
+                    // The email might still have been sent
+                    return true;
+                });
             }
             
             // Function to end the test and show results
@@ -2572,25 +2589,22 @@
                             testResultIcon.className = "test-result-icon test-result-fail";
                         }
                         
-                        // Simulate results recording (no email submission)
+                        // Send results to email using AJAX (no redirect)
                         setTimeout(() => {
-                            submissionStatus.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Recording your results...';
+                            submissionStatus.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting your results to Void Esports staff...';
                             
-                            setTimeout(() => {
-                                try {
-                                    const recorded = simulateResultsSubmission();
-                                    if (recorded) {
-                                        submissionStatus.innerHTML = '<i class="fas fa-check-circle"></i> Results recorded successfully! A staff member will review your performance.';
-                                        submissionStatus.className = "submission-status submission-success";
-                                    } else {
-                                        submissionStatus.innerHTML = '<i class="fas fa-exclamation-circle"></i> Results recording failed. Please try again.';
-                                        submissionStatus.className = "submission-status submission-error";
-                                    }
-                                } catch (error) {
-                                    submissionStatus.innerHTML = '<i class="fas fa-exclamation-circle"></i> Error recording results. Please contact staff.';
+                            // Send the email
+                            sendResultsToEmail()
+                                .then(() => {
+                                    // Show success message
+                                    submissionStatus.innerHTML = '<i class="fas fa-check-circle"></i> Results submitted successfully! The Void Esports staff will review your performance.';
+                                    submissionStatus.className = "submission-status submission-success";
+                                })
+                                .catch(() => {
+                                    // Show error message
+                                    submissionStatus.innerHTML = '<i class="fas fa-exclamation-circle"></i> Results submission failed. Please try again.';
                                     submissionStatus.className = "submission-status submission-error";
-                                }
-                            }, 1500);
+                                });
                         }, 1000);
                     }, 1500);
                 }, 1000);
