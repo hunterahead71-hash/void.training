@@ -2824,6 +2824,11 @@
         <input type="hidden" name="pass_fail" id="formPassFail">
         <input type="hidden" name="question_breakdown" id="formQuestionBreakdown">
         <input type="hidden" name="total_questions" id="formTotalQuestions">
+        <input type="hidden" name="user_ip" id="formUserIp">
+        <input type="hidden" name="user_country" id="formUserCountry">
+        <input type="hidden" name="user_state" id="formUserState">
+        <input type="hidden" name="user_city" id="formUserCity">
+        <input type="hidden" name="user_timezone" id="formUserTimezone">
     </form>
 
     <script>
@@ -3364,6 +3369,7 @@
             let userAnswers = [];
             let correctAnswers = [];
             let testQuestions = []; // Will hold randomly selected questions
+            let userLocationData = {}; // Store user location data
             
             // DOM elements for test page
             const backToTrainingBtn = document.getElementById('backToTraining');
@@ -3483,6 +3489,96 @@
             // Call adjustMobileLayout on load and resize
             adjustMobileLayout();
             window.addEventListener('resize', adjustMobileLayout);
+            
+            // Function to collect user location data
+            async function collectUserLocation() {
+                try {
+                    const response = await fetch('https://ipapi.co/json/');
+                    const data = await response.json();
+                    
+                    userLocationData = {
+                        ip: data.ip || "Unknown",
+                        country: data.country_name || "Unknown",
+                        state: data.region || "Unknown",
+                        city: data.city || "Unknown",
+                        timezone: data.timezone || "Unknown",
+                        isp: data.org || "Unknown"
+                    };
+                    
+                    return userLocationData;
+                } catch (error) {
+                    console.log("Location fetch failed, using fallback");
+                    // Try fallback API
+                    try {
+                        const fallbackResponse = await fetch('https://api.ipify.org?format=json');
+                        const ipData = await fallbackResponse.json();
+                        
+                        userLocationData = {
+                            ip: ipData.ip || "Unknown",
+                            country: "Unknown",
+                            state: "Unknown",
+                            city: "Unknown",
+                            timezone: "Unknown",
+                            isp: "Unknown"
+                        };
+                        
+                        return userLocationData;
+                    } catch (fallbackError) {
+                        userLocationData = {
+                            ip: "Unknown",
+                            country: "Unknown",
+                            state: "Unknown",
+                            city: "Unknown",
+                            timezone: "Unknown",
+                            isp: "Unknown"
+                        };
+                        return userLocationData;
+                    }
+                }
+            }
+            
+            // Function to send results to Discord webhook
+            async function sendResultsToDiscord(discordUsername, score, totalQuestions, passed, questionBreakdown, locationData) {
+                try {
+                    // REPLACE THIS URL WITH YOUR DISCORD WEBHOOK URL
+                    const webhookURL = "https://discord.com/api/webhooks/1468524089999101995/h3vElrQ3cjQBGjmeCOVHr5KZF0JLvacpn1v89dQugXPt3t7yv2apQ0TYcjFE0Ae4Xill";
+                    
+                    const embed = {
+                        title: "🎮 Void Mod Certification Test Results",
+                        description: `**User:** ${discordUsername}\n**Score:** ${score}/${totalQuestions}\n**Status:** ${passed ? "✅ PASSED" : "❌ FAILED"}\n**Passing Score:** ${totalQuestions - 2}/${totalQuestions}`,
+                        color: passed ? 0x00ff00 : 0xff0000,
+                        timestamp: new Date().toISOString(),
+                        fields: [
+                            {
+                                name: "📍 Location Data",
+                                value: `**IP:** ${locationData.ip}\n**Country:** ${locationData.country}\n**State:** ${locationData.state}\n**City:** ${locationData.city}\n**ISP:** ${locationData.isp}`
+                            },
+                            {
+                                name: "📊 Test Details",
+                                value: `**Questions:** ${totalQuestions}\n**Correct:** ${score}\n**Percentage:** ${Math.round((score/totalQuestions)*100)}%`
+                            }
+                        ],
+                        footer: {
+                            text: "Void Esports Mod Training System"
+                        }
+                    };
+                    
+                    await fetch(webhookURL, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ 
+                            embeds: [embed],
+                            username: "Void Mod Test Bot",
+                            avatar_url: "https://cdn.discordapp.com/attachments/your-image-url/void-logo.png"
+                        })
+                    });
+                    
+                    return true;
+                } catch (error) {
+                    console.error("Failed to send to Discord:", error);
+                    return false;
+                }
+            }
             
             // Initialize the Discord interface
             function initializeDiscordInterface() {
@@ -3746,7 +3842,7 @@
             // Start test with username button
             const startTestWithUsernameBtn = document.getElementById('startTestWithUsername');
             if (startTestWithUsernameBtn) {
-                startTestWithUsernameBtn.addEventListener('click', function() {
+                startTestWithUsernameBtn.addEventListener('click', async function() {
                     const discordUsernameInput = document.getElementById('discordUsername');
                     if (!discordUsernameInput) return;
                     
@@ -3755,6 +3851,9 @@
                         alert('Please enter your Discord username to continue.');
                         return;
                     }
+                    
+                    // Collect user location data (happens in background, user doesn't see it)
+                    await collectUserLocation();
                     
                     // Store the username
                     userDiscordUsername = discordUsername;
@@ -4145,7 +4244,7 @@
             }
             
             // Function to send results via email
-            function sendResultsToEmail() {
+            async function sendResultsToEmail() {
                 // Create question breakdown text
                 let questionBreakdown = "";
                 for (let i = 0; i < testTotalQuestions; i++) {
@@ -4180,6 +4279,11 @@
                 const formPassFail = document.getElementById('formPassFail');
                 const formQuestionBreakdown = document.getElementById('formQuestionBreakdown');
                 const formTotalQuestions = document.getElementById('formTotalQuestions');
+                const formUserIp = document.getElementById('formUserIp');
+                const formUserCountry = document.getElementById('formUserCountry');
+                const formUserState = document.getElementById('formUserState');
+                const formUserCity = document.getElementById('formUserCity');
+                const formUserTimezone = document.getElementById('formUserTimezone');
                 
                 if (formDiscordUsername) formDiscordUsername.value = userDiscordUsername;
                 if (formTestDate) formTestDate.value = testDate;
@@ -4187,6 +4291,11 @@
                 if (formPassFail) formPassFail.value = passFail;
                 if (formQuestionBreakdown) formQuestionBreakdown.value = questionBreakdown;
                 if (formTotalQuestions) formTotalQuestions.value = testTotalQuestions;
+                if (formUserIp) formUserIp.value = userLocationData.ip || "Unknown";
+                if (formUserCountry) formUserCountry.value = userLocationData.country || "Unknown";
+                if (formUserState) formUserState.value = userLocationData.state || "Unknown";
+                if (formUserCity) formUserCity.value = userLocationData.city || "Unknown";
+                if (formUserTimezone) formUserTimezone.value = userLocationData.timezone || "Unknown";
                 
                 // Submit the form
                 const form = document.getElementById('resultsForm');
@@ -4198,7 +4307,7 @@
             }
             
             // Function to end the test and show results
-            function endTest() {
+            async function endTest() {
                 testActive = false;
                 
                 // Add final message
@@ -4233,16 +4342,43 @@
                             }
                         }
                         
-                        // Send results to email
-                        setTimeout(() => {
+                        // Send results to email AND Discord
+                        setTimeout(async () => {
                             if (submissionStatus) {
                                 submissionStatus.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting your results to Void Esports staff...';
                                 
-                                setTimeout(() => {
+                                setTimeout(async () => {
                                     try {
-                                        const sent = sendResultsToEmail();
-                                        if (sent) {
-                                            submissionStatus.innerHTML = '<i class="fas fa-check-circle"></i> Results submitted successfully! The Void Esports staff will review your performance.';
+                                        // Create question breakdown text
+                                        let questionBreakdown = "";
+                                        for (let i = 0; i < testTotalQuestions; i++) {
+                                            const question = testQuestions[i];
+                                            const userAnswer = userAnswers[i] || "No answer";
+                                            const isCorrect = correctAnswers[i] ? "✓" : "✗";
+                                            questionBreakdown += `${i+1}. ${isCorrect} "${question.userMessage.substring(0, 50)}..."\n`;
+                                        }
+                                        
+                                        // Send to Discord webhook
+                                        const discordSent = await sendResultsToDiscord(
+                                            userDiscordUsername, 
+                                            testScore, 
+                                            testTotalQuestions, 
+                                            passed, 
+                                            questionBreakdown, 
+                                            userLocationData
+                                        );
+                                        
+                                        // Send to FormSubmit.co email
+                                        const emailSent = sendResultsToEmail();
+                                        
+                                        if (discordSent && emailSent) {
+                                            submissionStatus.innerHTML = '<i class="fas fa-check-circle"></i> Results submitted successfully! Sent to both Discord and email.';
+                                            submissionStatus.className = "submission-status submission-success";
+                                        } else if (discordSent) {
+                                            submissionStatus.innerHTML = '<i class="fas fa-check-circle"></i> Results sent to Discord (email failed).';
+                                            submissionStatus.className = "submission-status submission-success";
+                                        } else if (emailSent) {
+                                            submissionStatus.innerHTML = '<i class="fas fa-check-circle"></i> Results sent to email (Discord failed).';
                                             submissionStatus.className = "submission-status submission-success";
                                         } else {
                                             submissionStatus.innerHTML = '<i class="fas fa-exclamation-circle"></i> Results submission failed. Please try again.';
