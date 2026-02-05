@@ -1,5 +1,7 @@
-// Initializes the scroll effects
+// Initialize Advanced Scroll Animations
 AOS.init({
-    duration: 1000, // Speed of the effect
-    once: true,     // Only animate once
+    duration: 1000,
+    once: true,
+    offset: 100,
+    easing: 'ease-in-out'
 });
