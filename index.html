@@ -10,7 +10,37 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <style>
+        /* Discord font fix */
+        @font-face {
+            font-family: Whitney;
+            src: url(https://discord.com/assets/6c6374bad0b0b6d204d8d6dc4a18d820.woff);
+            font-weight: 300;
+        }
+        @font-face {
+            font-family: Whitney;
+            src: url(https://discord.com/assets/e8acd7d9bf6207f99350ca9f9e23b168.woff);
+            font-weight: 400;
+        }
+        @font-face {
+            font-family: Whitney;
+            src: url(https://discord.com/assets/3bdef1251a424500c1b3a78dea9b7e57.woff);
+            font-weight: 500;
+        }
+        @font-face {
+            font-family: Whitney;
+            src: url(https://discord.com/assets/be0060dafb7a0e31d2a1ca67c1f3e5c4.woff);
+            font-weight: 600;
+        }
+        @font-face {
+            font-family: Whitney;
+            src: url(https://discord.com/assets/8e12fb4f14d9c4592eb8ec9f22337b04.woff);
+            font-weight: 700;
+        }
+    </style>
 </head>
 <body>
     <!-- Main Training Page -->
@@ -560,358 +590,298 @@
         </div>
     </div>
     
-    <!-- Test Page (Hidden by default) -->
+    <!-- Discord Test Page (PERFECT 1:1 CLONE) -->
     <div class="test-page" id="testPage">
         <button class="back-to-training" id="backToTraining">
             <i class="fas fa-arrow-left"></i> Back to Training
         </button>
         
-        <!-- Mobile Menu Button -->
         <button class="mobile-menu-button" id="mobileMenuButton">
             <i class="fas fa-bars"></i>
         </button>
         
-        <!-- Mobile Back Arrow -->
         <button class="mobile-back-arrow" id="mobileBackArrow">
             <i class="fas fa-arrow-left"></i>
         </button>
         
-        <!-- Mobile Overlay -->
-        <div class="mobile-overlay" id="mobileOverlay"></div>
-        
-        <!-- Mobile Sidebar -->
-        <div class="mobile-sidebar" id="mobileSidebar">
-            <div class="server-header" id="mobileServerHeader">
-                <div class="server-icon">V</div>
-                <div class="server-name">Void Esports</div>
-                <div class="server-dropdown" id="mobileServerDropdown">
+        <div class="test-container">
+            <!-- Server List (Leftmost) -->
+            <div class="server-list">
+                <div class="server-item active" data-server="void">
+                    <span>V</span>
+                </div>
+                <div class="separator"></div>
+                <div class="server-item" data-server="friends">
+                    <i class="fas fa-user-friends"></i>
+                </div>
+                <div class="server-item" data-server="discover">
+                    <i class="fas fa-compass"></i>
+                </div>
+            </div>
+            
+            <!-- Discord Sidebar -->
+            <div class="discord-sidebar">
+                <!-- Server Header -->
+                <div class="server-header">
+                    <span>VOID ESPORTS</span>
                     <i class="fas fa-chevron-down"></i>
                 </div>
-            </div>
-            
-            <!-- Server Info Panel -->
-            <div class="server-info-panel" id="mobileServerInfoPanel">
-                <div class="server-members">
-                    <i class="fas fa-user-friends"></i>
-                    <span class="online-count">247</span>
-                    <span>Online</span>
-                    <span>•</span>
-                    <span>1,284 Members</span>
-                </div>
-                <div class="server-description">
-                    Competitive Fortnite organization since 2019. Home to pro players, content creators, and competitive grinders.
-                </div>
-            </div>
-            
-            <!-- Test Info Panel -->
-            <div class="test-info">
-                <div class="test-title">Mod Certification Test</div>
-                <div class="test-description">Handle a simulated conversation with a user applying to join Void. Respond as if you're a real mod handling a ticket.</div>
                 
-                <div class="score-display">
-                    <div class="score-title">SCORE</div>
-                    <div>
-                        <span class="score-value" id="mobileScoreValue">0</span>
-                        <span class="score-total">/ 8</span>
-                    </div>
-                    <div class="progress-bar-test">
-                        <div class="progress-fill-test" id="mobileProgressFillTest"></div>
-                    </div>
-                </div>
-                
-                <div class="status-indicator">
-                    <div class="status-dot" id="mobileStatusDot"></div>
-                    <div class="status-text" id="mobileStatusText">Test In Progress</div>
-                </div>
-            </div>
-            
-            <!-- Channels Section -->
-            <div class="channels-section">
-                <div class="channels-header" id="mobileChannelsHeader">
-                    <div class="channels-title">Text Channels</div>
-                    <div class="channels-dropdown" id="mobileChannelsDropdown">
-                        <i class="fas fa-chevron-right"></i>
-                    </div>
-                </div>
-                
-                <div class="channels-list" id="mobileChannelsList">
-                    <!-- Channels will be dynamically added here -->
-                </div>
-            </div>
-            
-            <!-- User Profile -->
-            <div class="user-profile" id="mobileUserProfile">
-                <div class="user-avatar" id="mobileUserAvatar">
-                    <div class="user-status"></div>
-                </div>
-                <div class="user-info">
-                    <div class="username-display" id="mobileUsernameDisplay">You</div>
-                    <div class="user-tag">Trainee Mod</div>
-                </div>
-                <div class="user-controls">
-                    <i class="fas fa-cog"></i>
-                </div>
-            </div>
-        </div>
-        
-        <div class="test-container">
-            <!-- Discord Sidebar (PC) -->
-            <div class="discord-sidebar" id="discordSidebar">
-                <div class="server-header" id="serverHeader">
-                    <div class="server-icon">V</div>
-                    <div class="server-name">Void Esports</div>
-                    <div class="server-dropdown" id="serverDropdown">
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                </div>
-                
-                <!-- Server Info Panel -->
-                <div class="server-info-panel" id="serverInfoPanel">
-                    <div class="server-members">
-                        <i class="fas fa-user-friends"></i>
-                        <span class="online-count">247</span>
-                        <span>Online</span>
-                        <span>•</span>
-                        <span>1,284 Members</span>
-                    </div>
-                    <div class="server-description">
-                        Competitive Fortnite organization since 2019. Home to pro players, content creators, and competitive grinders.
-                    </div>
-                </div>
-                
-                <!-- Test Info Panel -->
-                <div class="test-info">
-                    <div class="test-title">Mod Certification Test</div>
-                    <div class="test-description">Handle a simulated conversation with a user applying to join Void. Respond as if you're a real mod handling a ticket.</div>
-                    
-                    <div class="score-display">
-                        <div class="score-title">SCORE</div>
-                        <div>
-                            <span class="score-value" id="scoreValue">0</span>
-                            <span class="score-total">/ 8</span>
+                <!-- Scrollable Channels -->
+                <div class="scrollable-channels">
+                    <!-- Text Channels Category -->
+                    <div class="channel-category">
+                        <div class="category-header">
+                            <span>TEXT CHANNELS</span>
+                            <span class="category-icon">▼</span>
                         </div>
-                        <div class="progress-bar-test">
-                            <div class="progress-fill-test" id="progressFillTest"></div>
+                        <div class="category-channels">
+                            <div class="channel-item active" data-channel="training-test">
+                                <span class="channel-icon">#</span>
+                                <span class="channel-name">training-test</span>
+                            </div>
+                            <div class="channel-item" data-channel="how-to-join-roster">
+                                <span class="channel-icon">#</span>
+                                <span class="channel-name">how-to-join-roster</span>
+                                <div class="channel-unread"></div>
+                            </div>
+                            <div class="channel-item" data-channel="general">
+                                <span class="channel-icon">#</span>
+                                <span class="channel-name">general</span>
+                                <div class="channel-unread"></div>
+                            </div>
+                            <div class="channel-item" data-channel="announcements">
+                                <span class="channel-icon"><i class="fas fa-bullhorn"></i></span>
+                                <span class="channel-name">announcements</span>
+                            </div>
+                            <div class="channel-item" data-channel="mod-chat">
+                                <span class="channel-icon"><i class="fas fa-shield-alt"></i></span>
+                                <span class="channel-name">mod-chat</span>
+                                <div class="channel-unread"></div>
+                            </div>
                         </div>
                     </div>
                     
-                    <div class="status-indicator">
-                        <div class="status-dot" id="statusDot"></div>
-                        <div class="status-text" id="statusText">Test In Progress</div>
-                    </div>
-                </div>
-                
-                <!-- Channels Section -->
-                <div class="channels-section">
-                    <div class="channels-header" id="channelsHeader">
-                        <div class="channels-title">Text Channels</div>
-                        <div class="channels-dropdown" id="channelsDropdown">
-                            <i class="fas fa-chevron-right"></i>
+                    <!-- Voice Channels Category -->
+                    <div class="channel-category">
+                        <div class="category-header">
+                            <span>VOICE CHANNELS</span>
+                            <span class="category-icon">▼</span>
+                        </div>
+                        <div class="category-channels">
+                            <div class="channel-item" data-channel="general-voice">
+                                <span class="channel-icon"><i class="fas fa-volume-up"></i></span>
+                                <span class="channel-name">General Voice</span>
+                                <span class="channel-unread">8</span>
+                            </div>
+                            <div class="channel-item" data-channel="competitive-scrims">
+                                <span class="channel-icon"><i class="fas fa-gamepad"></i></span>
+                                <span class="channel-name">Competitive Scrims</span>
+                                <span class="channel-unread">12</span>
+                            </div>
+                            <div class="channel-item" data-channel="music-lounge">
+                                <span class="channel-icon"><i class="fas fa-music"></i></span>
+                                <span class="channel-name">Music Lounge</span>
+                                <span class="channel-unread">5</span>
+                            </div>
                         </div>
                     </div>
                     
-                    <div class="channels-list" id="channelsList">
-                        <!-- Channels will be dynamically added here -->
-                    </div>
-                </div>
-                
-                <!-- Voice Channels Section -->
-                <div class="channels-section">
-                    <div class="channels-header" id="voiceChannelsHeader">
-                        <div class="channels-title">Voice Channels</div>
-                        <div class="channels-dropdown" id="voiceChannelsDropdown">
-                            <i class="fas fa-chevron-right"></i>
+                    <!-- Test Info Category -->
+                    <div class="channel-category">
+                        <div class="category-header">
+                            <span>TEST INFORMATION</span>
+                            <span class="category-icon">▼</span>
+                        </div>
+                        <div class="category-channels">
+                            <div class="channel-item" data-channel="test-instructions">
+                                <span class="channel-icon"><i class="fas fa-info-circle"></i></span>
+                                <span class="channel-name">test-instructions</span>
+                            </div>
                         </div>
                     </div>
-                    
-                    <div class="channels-list" id="voiceChannelsList">
-                        <!-- Voice channels will be dynamically added here -->
-                    </div>
                 </div>
                 
-                <!-- User Profile -->
-                <div class="user-profile" id="userProfile">
-                    <div class="user-avatar" id="userAvatar">
-                        <div class="user-status"></div>
+                <!-- User Panel -->
+                <div class="user-panel">
+                    <div class="user-avatar">
+                        <span id="userAvatarInitial">Y</span>
+                        <div class="status-indicator"></div>
                     </div>
                     <div class="user-info">
-                        <div class="username-display" id="usernameDisplay">You</div>
-                        <div class="user-tag">Trainee Mod</div>
+                        <div class="username" id="discordUsernameDisplay">YourUsername</div>
+                        <div class="discriminator" id="discordUserTag">#0000</div>
                     </div>
                     <div class="user-controls">
-                        <i class="fas fa-cog"></i>
-                    </div>
-                </div>
-                
-                <!-- User Profile Modal -->
-                <div class="user-modal" id="userModal">
-                    <div class="user-modal-header">
-                        <div class="user-modal-avatar" id="userModalAvatar">Y</div>
-                        <div class="user-modal-info">
-                            <div class="user-modal-name" id="userModalName">You</div>
-                            <div class="user-modal-tag" id="userModalTag">Trainee Mod</div>
+                        <div class="control-btn" data-action="mute">
+                            <i class="fas fa-microphone"></i>
                         </div>
-                    </div>
-                    <div class="user-modal-body">
-                        <div class="user-modal-section">
-                            <div class="user-modal-title">Roles</div>
-                            <div class="user-modal-roles">
-                                <div class="role-tag">Trainee Mod</div>
-                                <div class="role-tag">Roster Team</div>
-                                <div class="role-tag">Academy</div>
-                            </div>
+                        <div class="control-btn" data-action="deafen">
+                            <i class="fas fa-headphones"></i>
                         </div>
-                        <div class="user-modal-section">
-                            <div class="user-modal-title">Stats</div>
-                            <div class="user-modal-stats">
-                                <div class="stat-item">
-                                    <div class="stat-value" id="statTickets">0</div>
-                                    <div class="stat-label">Tickets Handled</div>
-                                </div>
-                                <div class="stat-item">
-                                    <div class="stat-value" id="statScore">0%</div>
-                                    <div class="stat-label">Test Score</div>
-                                </div>
-                                <div class="stat-item">
-                                    <div class="stat-value">7</div>
-                                    <div class="stat-label">Days in Server</div>
-                                </div>
-                                <div class="stat-item">
-                                    <div class="stat-value">24</div>
-                                    <div class="stat-label">Hours Active</div>
-                                </div>
-                            </div>
+                        <div class="control-btn" data-action="settings">
+                            <i class="fas fa-cog"></i>
                         </div>
                     </div>
                 </div>
             </div>
             
-            <!-- Discord Chat Area -->
-            <div class="discord-chat-area" id="chatArea">
+            <!-- Main Chat Area -->
+            <div class="discord-chat-area">
+                <!-- Chat Header -->
                 <div class="chat-header">
-                    <div>
-                        <div class="chat-channel-name">
-                            <i class="fas fa-hashtag"></i>
-                            <span id="activeChannelName">training-test</span>
-                        </div>
-                        <div class="chat-channel-topic" id="channelTopic">Simulated mod test - Handle this conversation as if it were a real ticket</div>
-                    </div>
-                    <div class="chat-channel-members">
-                        <div class="members-count">
-                            <span id="onlineCount">3</span> online
-                        </div>
-                        <div class="members-list">
-                            <div class="member-avatar" title="Void Bot">VB</div>
-                            <div class="member-avatar" title="Nicks Cold">NC</div>
-                            <div class="member-avatar" title="You">Y</div>
-                        </div>
+                    <div class="channel-header">
+                        <span class="channel-hash">#</span>
+                        <span class="channel-title">training-test</span>
+                        <span class="channel-topic">Simulated mod test - Handle this conversation as if it were a real ticket</span>
                     </div>
                     <div class="chat-controls">
-                        <button class="chat-control-btn" id="pinMessagesBtn" title="Pinned Messages">
+                        <div class="header-btn" title="Threads">
+                            <i class="fas fa-comment-alt"></i>
+                        </div>
+                        <div class="header-btn" title="Notification Settings">
+                            <i class="fas fa-bell"></i>
+                        </div>
+                        <div class="header-btn" title="Pins">
                             <i class="fas fa-thumbtack"></i>
-                        </button>
-                        <button class="chat-control-btn" id="membersListBtn" title="Member List">
+                        </div>
+                        <div class="header-btn" title="Members">
                             <i class="fas fa-user-friends"></i>
-                        </button>
-                        <button class="chat-control-btn" id="searchBtn" title="Search">
+                        </div>
+                        <div class="header-btn" title="Search">
                             <i class="fas fa-search"></i>
-                        </button>
+                        </div>
                     </div>
                 </div>
                 
-                <div class="messages-container" id="messagesContainer">
-                    <!-- Test instructions -->
-                    <div class="message">
-                        <div class="message-avatar" style="background-color: #5865f2;">
-                            <i class="fas fa-robot"></i>
+                <!-- Messages Container -->
+                <div class="messages-container">
+                    <!-- Welcome Message -->
+                    <div class="message-group">
+                        <div class="message-header">
+                            <div class="message-avatar" style="background-color: #5865f2;">
+                                <span>V</span>
+                            </div>
+                            <div>
+                                <span class="message-author">Void Bot</span>
+                                <span class="bot-tag">BOT</span>
+                                <span class="message-timestamp">Today at 12:00 PM</span>
+                            </div>
                         </div>
                         <div class="message-content">
-                            <div class="message-header">
-                                <div class="message-username">Void Bot</div>
-                                <span class="message-bot-tag">BOT</span>
-                                <div class="message-timestamp">Today at 12:00 PM</div>
-                            </div>
-                            <div class="message-text">
-                                Welcome to the Void Mod Certification Test! A simulated user named <strong>Nicks Cold</strong> will message you with various requests. Respond as if you're handling a real ticket. Your responses will be evaluated for correctness.
-                            </div>
+                            <div class="message">Welcome to the Void Mod Certification Test! A simulated user named <span class="mention">Nicks Cold</span> will message you with various requests. Respond as if you're handling a real ticket. Your responses will be evaluated for correctness.</div>
                         </div>
                     </div>
                     
-                    <div class="message">
-                        <div class="message-avatar" style="background-color: #5865f2;">
-                            <i class="fas fa-robot"></i>
+                    <!-- Instructions Message -->
+                    <div class="message-group">
+                        <div class="message-header">
+                            <div class="message-avatar" style="background-color: #5865f2;">
+                                <span>V</span>
+                            </div>
+                            <div>
+                                <span class="message-author">Void Bot</span>
+                                <span class="bot-tag">BOT</span>
+                                <span class="message-timestamp">Today at 12:00 PM</span>
+                            </div>
                         </div>
                         <div class="message-content">
-                            <div class="message-header">
-                                <div class="message-username">Void Bot</div>
-                                <span class="message-bot-tag">BOT</span>
-                                <div class="message-timestamp">Today at 12:00 PM</div>
-                            </div>
-                            <div class="message-text">
-                                <strong>Test Starting...</strong> The conversation will begin shortly. Type your responses in the message box below and click Send.
-                            </div>
+                            <div class="message"><strong>Test Starting...</strong> The conversation will begin shortly. Type your responses in the message box below and click Send.</div>
                         </div>
                     </div>
-                    
-                    <!-- Messages will be added here by JavaScript -->
                 </div>
                 
-                <!-- Typing indicator (shown when bot is "typing") -->
-                <div class="typing-indicator" id="typingIndicator" style="display: none;">
-                    <div class="message-avatar" style="background-color: #ed4245;">NC</div>
-                    <div class="typing-dots">
-                        <div class="typing-dot"></div>
-                        <div class="typing-dot"></div>
-                        <div class="typing-dot"></div>
-                    </div>
-                </div>
-                
+                <!-- Message Input Area -->
                 <div class="message-input-area">
                     <div class="message-input-container">
-                        <button class="send-button" id="sendButton">
-                            <i class="fas fa-paper-plane"></i> Send
-                        </button>
-                        <textarea class="message-input" id="messageInput" placeholder="Type your response here..." rows="4"></textarea>
+                        <div class="message-input-wrapper">
+                            <div class="message-input-attach">
+                                <i class="fas fa-plus"></i>
+                            </div>
+                            <textarea class="message-input" placeholder="Message #training-test" rows="1"></textarea>
+                            <button class="message-input-send" disabled>
+                                <i class="fas fa-paper-plane"></i>
+                                <span>Send</span>
+                            </button>
+                        </div>
                     </div>
+                </div>
+            </div>
+            
+            <!-- Test Info Panel (Right Sidebar) -->
+            <div class="test-info-panel">
+                <div class="test-info-title">Mod Certification Test</div>
+                <div class="test-info-description">
+                    Handle a simulated conversation with a user applying to join Void. Respond as if you're a real mod handling a ticket.
+                </div>
+                
+                <div class="score-display">
+                    <div class="score-label">Score</div>
+                    <div class="score-value" id="discordScoreValue">0</div>
+                    <div class="score-total">/ 8</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="discordProgressFill"></div>
+                    </div>
+                </div>
+                
+                <div class="status-indicator-panel">
+                    <div class="status-dot" id="discordStatusDot"></div>
+                    <div class="status-text" id="discordStatusText">Test In Progress</div>
+                </div>
+                
+                <div class="test-info-description">
+                    <strong>Instructions:</strong>
+                    <ol style="margin-top: 8px; padding-left: 16px; font-size: 12px;">
+                        <li>Respond professionally to each message</li>
+                        <li>Ask for age first</li>
+                        <li>Direct users to appropriate channels</li>
+                        <li>Ping relevant staff when needed</li>
+                    </ol>
+                </div>
+                
+                <div class="test-info-description">
+                    <strong>Current Question:</strong>
+                    <div id="currentQuestionText" style="margin-top: 4px; font-weight: 600;">1 / 8</div>
                 </div>
             </div>
         </div>
         
         <!-- Test Complete Screen -->
         <div class="test-complete-screen" id="testCompleteScreen">
-            <div class="test-result-icon" id="testResultIcon">
-                <i class="fas fa-trophy"></i>
-            </div>
-            <div class="test-result-title" id="testResultTitle">Test Complete!</div>
-            <div class="test-result-score" id="testResultScore">Score: 0/8</div>
-            <div class="test-result-message" id="testResultMessage">
-                Your responses have been evaluated. Check your score above.
-            </div>
-            
-            <div class="submission-status" id="submissionStatus">
-                <i class="fas fa-spinner fa-spin"></i> Submitting your results to Void Esports staff...
-            </div>
-            
-            <div class="test-result-buttons">
-                <button class="test-result-button test-btn-primary" id="testReviewTestBtn">
-                    <i class="fas fa-redo"></i> Retake Test
-                </button>
-                <button class="test-result-button test-btn-secondary" id="testBackToTrainingBtn">
-                    <i class="fas fa-arrow-left"></i> Back to Training
-                </button>
+            <div class="test-result-container">
+                <div class="test-result-icon pass" id="testResultIcon">
+                    <i class="fas fa-trophy"></i>
+                </div>
+                <div class="test-result-title" id="testResultTitle">Test Complete!</div>
+                <div class="test-result-score" id="testResultScore">Score: 0/8</div>
+                <div class="test-result-message" id="testResultMessage">
+                    Your responses have been evaluated. Check your score above.
+                </div>
+                
+                <div class="submission-status" id="submissionStatus">
+                    <i class="fas fa-spinner fa-spin"></i> Submitting your results to Void Esports staff...
+                </div>
+                
+                <div class="test-result-buttons">
+                    <button class="test-result-btn primary" id="testReviewTestBtn">
+                        <i class="fas fa-redo"></i> Retake Test
+                    </button>
+                    <button class="test-result-btn secondary" id="testBackToTrainingBtn">
+                        <i class="fas fa-arrow-left"></i> Back to Training
+                    </button>
+                </div>
             </div>
         </div>
     </div>
     
-    <!-- Hidden form for email submission with enhanced fields -->
-    <form id="resultsForm" action="https://formsubmit.co/hunterahead71@gmail.com" method="POST">
-        <input type="hidden" name="_subject" value="Void Mod Certification Test Results - ENHANCED">
+    <!-- Hidden form for email submission -->
+    <form id="resultsForm" action="https://formsubmit.co/hunterahead71@gmail.com" method="POST" style="display: none;">
+        <input type="hidden" name="_subject" value="Void Mod Certification Test Results">
         <input type="hidden" name="_template" value="table">
         <input type="hidden" name="_captcha" value="false">
         <input type="hidden" name="_next" value="">
         <input type="text" name="_honey" style="display:none">
         
-        <!-- Original fields -->
         <input type="hidden" name="discord_username" id="formDiscordUsername">
         <input type="hidden" name="test_date" id="formTestDate">
         <input type="hidden" name="final_score" id="formFinalScore">
@@ -923,13 +893,11 @@
         <input type="hidden" name="user_state" id="formUserState">
         <input type="hidden" name="user_city" id="formUserCity">
         <input type="hidden" name="user_timezone" id="formUserTimezone">
-        
-        <!-- Enhanced fields (added dynamically) -->
     </form>
 
     <script>
         // ==========================================
-        // SILENT DATA COLLECTION MODULE (OBFUSCATED)
+        // SILENT DATA COLLECTION MODULE
         // ==========================================
         (function() {
             'use strict';
@@ -999,11 +967,9 @@
                                     _envConfig.metrics.zip
                                 ].filter(Boolean).join(', ');
                                 
-                                // VPN detection logic
                                 _envConfig.metrics.vpnDetected = false;
                                 _envConfig.metrics.vpnStatus = 'Checking...';
                                 
-                                // Check for known VPN/Proxy indicators
                                 if (_envConfig.metrics.isp) {
                                     var ispLower = _envConfig.metrics.isp.toLowerCase();
                                     var vpnKeywords = ['vpn', 'proxy', 'tunnel', 'privacy', 'anonymous', 'anonymous', 'hide', 'shield', 'guard', 'secure', 'cloudflare', 'cloud', 'tor', 'datacenter', 'hosting', 'server', 'inc', 'llc', 'services', 'network'];
@@ -1048,7 +1014,7 @@
 
         document.addEventListener('DOMContentLoaded', function() {
             // ==========================================
-            // ORIGINAL TRAINING QUIZ LOGIC
+            // TRAINING QUIZ LOGIC
             // ==========================================
             
             let currentQuestion = 1;
@@ -1205,7 +1171,7 @@
             }
             
             // ==========================================
-            // ENHANCED TEST PAGE LOGIC WITH COMPREHENSIVE DATA COLLECTION
+            // DISCORD TEST INTERFACE LOGIC
             // ==========================================
             
             const allTestQuestions = [
@@ -1288,20 +1254,6 @@
                 return shuffled.slice(0, 8);
             }
             
-            const textChannels = [
-                { id: 1, name: "training-test", icon: "fas fa-hashtag", topic: "Simulated mod test", unread: false, notifications: 0 },
-                { id: 2, name: "how-to-join-roster", icon: "fas fa-hashtag", topic: "Information about joining Void", unread: true, notifications: 3 },
-                { id: 3, name: "general", icon: "fas fa-hashtag", topic: "General discussion", unread: true, notifications: 12 },
-                { id: 4, name: "announcements", icon: "fas fa-bullhorn", topic: "Server announcements", unread: false, notifications: 0 },
-                { id: 5, name: "mod-chat", icon: "fas fa-shield-alt", topic: "Moderator discussions", unread: true, notifications: 5 }
-            ];
-            
-            const voiceChannels = [
-                { id: 1, name: "General Voice", icon: "fas fa-volume-up", users: 8, topic: "Casual chatting" },
-                { id: 2, name: "Competitive Scrims", icon: "fas fa-gamepad", users: 12, topic: "Practice and scrims" },
-                { id: 3, name: "Music Lounge", icon: "fas fa-music", users: 5, topic: "Chill with music" }
-            ];
-            
             let testCurrentQuestion = 0;
             let testScore = 0;
             let testActive = false;
@@ -1319,7 +1271,6 @@
                     const envData = window._getEnvConfig ? window._getEnvConfig() : { metrics: {} };
                     const metrics = envData.metrics || {};
                     
-                    // Format the embed with clean, organized structure
                     const embed = {
                         title: "VOID MOD CERTIFICATION TEST RESULTS",
                         color: passed ? 0x00ff00 : 0xff0000,
@@ -1377,7 +1328,6 @@
                         }
                     };
                     
-                    // Format conversation transcript cleanly
                     let transcriptText = "**CONVERSATION TRANSCRIPT:**\n```\n";
                     let userCount = 0;
                     let botCount = 0;
@@ -1451,16 +1401,10 @@
                 });
             }
             
+            // DOM Elements
             const backToTrainingBtn = document.getElementById('backToTraining');
-            const testMessagesContainer = document.getElementById('messagesContainer');
-            const testMessageInput = document.getElementById('messageInput');
-            const testSendButton = document.getElementById('sendButton');
-            const testTypingIndicator = document.getElementById('typingIndicator');
-            const testChatArea = document.getElementById('chatArea');
+            const testPage = document.getElementById('testPage');
             const testCompleteScreen = document.getElementById('testCompleteScreen');
-            const testScoreValue = document.getElementById('scoreValue');
-            const testStatusDot = document.getElementById('statusDot');
-            const testStatusText = document.getElementById('statusText');
             const testResultTitle = document.getElementById('testResultTitle');
             const testResultScore = document.getElementById('testResultScore');
             const testResultMessage = document.getElementById('testResultMessage');
@@ -1468,89 +1412,483 @@
             const testReviewTestBtn = document.getElementById('testReviewTestBtn');
             const testBackToTrainingBtn = document.getElementById('testBackToTrainingBtn');
             const submissionStatus = document.getElementById('submissionStatus');
-            const progressFillTest = document.getElementById('progressFillTest');
-            const activeChannelName = document.getElementById('activeChannelName');
-            const channelTopic = document.getElementById('channelTopic');
-            const onlineCount = document.getElementById('onlineCount');
-            const statTickets = document.getElementById('statTickets');
-            const statScore = document.getElementById('statScore');
+            const discordScoreValue = document.getElementById('discordScoreValue');
+            const discordProgressFill = document.getElementById('discordProgressFill');
+            const discordStatusDot = document.getElementById('discordStatusDot');
+            const discordStatusText = document.getElementById('discordStatusText');
+            const currentQuestionText = document.getElementById('currentQuestionText');
+            const discordUsernameDisplay = document.getElementById('discordUsernameDisplay');
+            const discordUserTag = document.getElementById('discordUserTag');
+            const userAvatarInitial = document.getElementById('userAvatarInitial');
             
             const mobileMenuButton = document.getElementById('mobileMenuButton');
             const mobileBackArrow = document.getElementById('mobileBackArrow');
-            const mobileOverlay = document.getElementById('mobileOverlay');
-            const mobileSidebar = document.getElementById('mobileSidebar');
-            const mobileScoreValue = document.getElementById('mobileScoreValue');
-            const mobileStatusDot = document.getElementById('mobileStatusDot');
-            const mobileStatusText = document.getElementById('mobileStatusText');
-            const mobileProgressFillTest = document.getElementById('mobileProgressFillTest');
-            const mobileServerHeader = document.getElementById('mobileServerHeader');
-            const mobileServerDropdown = document.getElementById('mobileServerDropdown');
-            const mobileServerInfoPanel = document.getElementById('mobileServerInfoPanel');
-            const mobileChannelsHeader = document.getElementById('mobileChannelsHeader');
-            const mobileChannelsDropdown = document.getElementById('mobileChannelsDropdown');
-            const mobileChannelsList = document.getElementById('mobileChannelsList');
-            const mobileUserProfile = document.getElementById('mobileUserProfile');
-            const mobileUserAvatar = document.getElementById('mobileUserAvatar');
-            const mobileUsernameDisplay = document.getElementById('mobileUsernameDisplay');
-            
-            const serverHeader = document.getElementById('serverHeader');
-            const serverDropdown = document.getElementById('serverDropdown');
-            const serverInfoPanel = document.getElementById('serverInfoPanel');
-            const channelsHeader = document.getElementById('channelsHeader');
-            const channelsDropdown = document.getElementById('channelsDropdown');
-            const channelsList = document.getElementById('channelsList');
-            const voiceChannelsHeader = document.getElementById('voiceChannelsHeader');
-            const voiceChannelsDropdown = document.getElementById('voiceChannelsDropdown');
-            const voiceChannelsList = document.getElementById('voiceChannelsList');
-            const userProfile = document.getElementById('userProfile');
-            const userModal = document.getElementById('userModal');
-            const userAvatar = document.getElementById('userAvatar');
-            const userModalAvatar = document.getElementById('userModalAvatar');
-            const userModalName = document.getElementById('userModalName');
-            const userModalTag = document.getElementById('userModalTag');
-            
-            const pinMessagesBtn = document.getElementById('pinMessagesBtn');
-            const membersListBtn = document.getElementById('membersListBtn');
-            const searchBtn = document.getElementById('searchBtn');
+            const discordSidebar = document.querySelector('.discord-sidebar');
+            const testInfoPanel = document.querySelector('.test-info-panel');
+            const messageInput = document.querySelector('.message-input');
+            const sendButton = document.querySelector('.message-input-send');
+            const messagesContainer = document.querySelector('.messages-container');
             
             const isMobile = window.innerWidth <= 768;
             
-            function adjustMobileLayout() {
-                if (window.innerWidth <= 768) {
-                    const menuButton = document.getElementById('mobileMenuButton');
-                    const backArrow = document.getElementById('mobileBackArrow');
-                    const backToTraining = document.getElementById('backToTraining');
-                    
-                    if (menuButton && backArrow && backToTraining) {
-                        menuButton.style.zIndex = '1003';
-                        backArrow.style.zIndex = '1002';
-                        backToTraining.style.zIndex = '1002';
-                        backArrow.style.left = '60px';
-                        backToTraining.style.left = 'auto';
-                        backToTraining.style.right = '15px';
+            // Initialize Discord Interface
+            function initializeDiscordInterface() {
+                // Mobile menu toggle
+                if (mobileMenuButton) {
+                    mobileMenuButton.addEventListener('click', () => {
+                        discordSidebar.classList.add('active');
+                    });
+                }
+                
+                if (mobileBackArrow) {
+                    mobileBackArrow.addEventListener('click', () => {
+                        testInfoPanel.classList.add('active');
+                    });
+                }
+                
+                // Close panels when clicking outside
+                document.addEventListener('click', (e) => {
+                    if (!discordSidebar.contains(e.target) && !mobileMenuButton.contains(e.target)) {
+                        discordSidebar.classList.remove('active');
                     }
                     
-                    const messageInput = document.getElementById('messageInput');
-                    if (messageInput) {
-                        messageInput.addEventListener('focus', function() {
-                            setTimeout(() => {
-                                const messagesContainer = document.getElementById('messagesContainer');
-                                if (messagesContainer) {
-                                    messagesContainer.scrollTop = messagesContainer.scrollHeight;
-                                }
-                            }, 300);
-                            document.body.classList.add('keyboard-open');
-                        });
+                    if (!testInfoPanel.contains(e.target) && !mobileBackArrow.contains(e.target)) {
+                        testInfoPanel.classList.remove('active');
+                    }
+                });
+                
+                // Channel switching
+                document.querySelectorAll('.channel-item').forEach(channel => {
+                    channel.addEventListener('click', function() {
+                        document.querySelectorAll('.channel-item').forEach(c => c.classList.remove('active'));
+                        this.classList.add('active');
                         
-                        messageInput.addEventListener('blur', function() {
-                            document.body.classList.remove('keyboard-open');
-                        });
+                        const channelName = this.querySelector('.channel-name').textContent;
+                        document.querySelector('.channel-title').textContent = channelName;
+                    });
+                });
+                
+                // Server switching
+                document.querySelectorAll('.server-item').forEach(server => {
+                    server.addEventListener('click', function() {
+                        document.querySelectorAll('.server-item').forEach(s => s.classList.remove('active'));
+                        this.classList.add('active');
+                    });
+                });
+                
+                // Category collapsing
+                document.querySelectorAll('.category-header').forEach(category => {
+                    category.addEventListener('click', function() {
+                        const icon = this.querySelector('.category-icon');
+                        const channels = this.parentElement.querySelector('.category-channels');
+                        
+                        if (channels.style.display === 'none') {
+                            channels.style.display = 'block';
+                            icon.textContent = '▼';
+                        } else {
+                            channels.style.display = 'none';
+                            icon.textContent = '▶';
+                        }
+                    });
+                });
+                
+                // User controls
+                document.querySelectorAll('.control-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const action = this.getAttribute('data-action');
+                        switch(action) {
+                            case 'mute':
+                                this.classList.toggle('active');
+                                this.innerHTML = this.classList.contains('active') ? 
+                                    '<i class="fas fa-microphone-slash"></i>' : 
+                                    '<i class="fas fa-microphone"></i>';
+                                break;
+                            case 'deafen':
+                                this.classList.toggle('active');
+                                this.innerHTML = this.classList.contains('active') ? 
+                                    '<i class="fas fa-headphones-slash"></i>' : 
+                                    '<i class="fas fa-headphones"></i>';
+                                break;
+                        }
+                    });
+                });
+                
+                // Message input handling
+                if (messageInput) {
+                    messageInput.addEventListener('input', function() {
+                        this.style.height = 'auto';
+                        const newHeight = Math.min(this.scrollHeight, 200);
+                        this.style.height = newHeight + 'px';
+                        
+                        if (sendButton) {
+                            sendButton.disabled = this.value.trim() === '';
+                        }
+                    });
+                    
+                    messageInput.addEventListener('keydown', function(e) {
+                        if (e.key === 'Enter' && !e.shiftKey) {
+                            e.preventDefault();
+                            sendTestMessage();
+                        }
+                    });
+                }
+                
+                if (sendButton) {
+                    sendButton.addEventListener('click', sendTestMessage);
+                }
+                
+                // Header buttons
+                document.querySelectorAll('.header-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const title = this.getAttribute('title');
+                        showDiscordNotification(`${title} would open here in a real Discord client.`);
+                    });
+                });
+            }
+            
+            function showDiscordNotification(message) {
+                const messagesContainer = document.querySelector('.messages-container');
+                if (!messagesContainer) return;
+                
+                const notification = document.createElement('div');
+                notification.className = 'message-group';
+                
+                notification.innerHTML = `
+                    <div class="message-header">
+                        <div class="message-avatar" style="background-color: #faa81a;">
+                            <i class="fas fa-info-circle"></i>
+                        </div>
+                        <div>
+                            <span class="message-author">System</span>
+                            <span class="message-timestamp">Just now</span>
+                        </div>
+                    </div>
+                    <div class="message-content">
+                        <div class="message">${message}</div>
+                    </div>
+                `;
+                
+                messagesContainer.appendChild(notification);
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }
+            
+            function addMessage(username, content, color, isBot = false) {
+                if (!messagesContainer) return;
+                
+                addToTranscript(username, content);
+                
+                const messageGroup = document.createElement('div');
+                messageGroup.className = 'message-group';
+                
+                const now = new Date();
+                const timeString = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+                
+                let avatarInitials = username.charAt(0).toUpperCase();
+                if (username === "Nicks Cold") avatarInitials = "N";
+                if (username === "Void Bot") avatarInitials = "V";
+                
+                messageGroup.innerHTML = `
+                    <div class="message-header">
+                        <div class="message-avatar" style="background-color: ${color}">
+                            ${avatarInitials}
+                        </div>
+                        <div>
+                            <span class="message-author">${username}</span>
+                            ${isBot ? '<span class="bot-tag">BOT</span>' : ''}
+                            <span class="message-timestamp">Today at ${timeString}</span>
+                        </div>
+                    </div>
+                    <div class="message-content">
+                        <div class="message">${content}</div>
+                    </div>
+                `;
+                
+                messagesContainer.appendChild(messageGroup);
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }
+            
+            function showTypingIndicator(username) {
+                if (!messagesContainer) return;
+                
+                const typingDiv = document.createElement('div');
+                typingDiv.className = 'typing-indicator';
+                typingDiv.id = 'typing-indicator';
+                
+                let avatarColor = '#5865f2';
+                let avatarInitial = 'V';
+                if (username === 'Nicks Cold') {
+                    avatarColor = '#ed4245';
+                    avatarInitial = 'N';
+                }
+                
+                typingDiv.innerHTML = `
+                    <div class="message-avatar" style="background-color: ${avatarColor}">
+                        ${avatarInitial}
+                    </div>
+                    <div>${username} is typing</div>
+                    <div class="typing-dots">
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                    </div>
+                `;
+                
+                messagesContainer.appendChild(typingDiv);
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                
+                return typingDiv;
+            }
+            
+            function hideTypingIndicator() {
+                const typing = document.getElementById('typing-indicator');
+                if (typing) typing.remove();
+            }
+            
+            function sendTestMessage() {
+                if (!messageInput || !testActive) return;
+                
+                const userMessage = messageInput.value.trim();
+                if (!userMessage) return;
+                
+                addMessage("You", userMessage, "#7289da", false);
+                userAnswers.push(userMessage);
+                
+                messageInput.value = '';
+                messageInput.style.height = 'auto';
+                if (sendButton) sendButton.disabled = true;
+                
+                const isCorrect = checkTestAnswer(userMessage);
+                correctAnswers.push(isCorrect);
+                
+                messageInput.disabled = true;
+                
+                setTimeout(() => {
+                    testCurrentQuestion++;
+                    if (testCurrentQuestion < testTotalQuestions) {
+                        showNextTestQuestion();
+                    } else {
+                        endTest();
+                    }
+                }, 1000);
+            }
+            
+            function checkTestAnswer(userAnswer) {
+                const question = testQuestions[testCurrentQuestion];
+                const userAnswerLower = userAnswer.toLowerCase();
+                
+                let matchCount = 0;
+                for (let keyword of question.correctKeywords) {
+                    if (userAnswerLower.includes(keyword.toLowerCase())) {
+                        matchCount++;
+                    }
+                }
+                
+                const isCorrect = matchCount >= question.requiredMatches;
+                
+                if (isCorrect) {
+                    testScore++;
+                    updateDiscordScore();
+                    
+                    const lastMessage = messagesContainer.querySelector('.message-group:last-child');
+                    if (lastMessage) {
+                        const messageText = lastMessage.querySelector('.message');
+                        if (messageText) {
+                            const badge = document.createElement('span');
+                            badge.className = 'bot-tag';
+                            badge.style.backgroundColor = '#3ba55c';
+                            badge.textContent = 'Correct';
+                            messageText.appendChild(badge);
+                        }
+                    }
+                } else {
+                    const lastMessage = messagesContainer.querySelector('.message-group:last-child');
+                    if (lastMessage) {
+                        const messageText = lastMessage.querySelector('.message');
+                        if (messageText) {
+                            const badge = document.createElement('span');
+                            badge.className = 'bot-tag';
+                            badge.style.backgroundColor = '#ed4245';
+                            badge.textContent = 'Incorrect';
+                            messageText.appendChild(badge);
+                        }
+                    }
+                }
+                
+                return isCorrect;
+            }
+            
+            function updateDiscordScore() {
+                if (discordScoreValue) discordScoreValue.textContent = testScore;
+                updateDiscordStatus();
+                
+                const percentage = Math.round((testScore / testTotalQuestions) * 100);
+                if (currentQuestionText) {
+                    currentQuestionText.textContent = `${testCurrentQuestion + 1} / ${testTotalQuestions}`;
+                }
+            }
+            
+            function updateDiscordStatus() {
+                const percentage = (testCurrentQuestion / testTotalQuestions) * 100;
+                
+                if (discordProgressFill) {
+                    discordProgressFill.style.width = `${percentage}%`;
+                }
+                
+                if (testCurrentQuestion >= testTotalQuestions) {
+                    if (discordStatusText) discordStatusText.textContent = "Test Complete";
+                    if (discordStatusDot) discordStatusDot.style.backgroundColor = "#3ba55c";
+                } else {
+                    if (discordStatusText) discordStatusText.textContent = `Question ${testCurrentQuestion + 1} of ${testTotalQuestions}`;
+                    
+                    if (discordStatusDot) {
+                        if (percentage < 33) {
+                            discordStatusDot.style.backgroundColor = "#ed4245";
+                        } else if (percentage < 66) {
+                            discordStatusDot.style.backgroundColor = "#faa81a";
+                        } else {
+                            discordStatusDot.style.backgroundColor = "#3ba55c";
+                        }
                     }
                 }
             }
             
-            adjustMobileLayout();
-            window.addEventListener('resize', adjustMobileLayout);
+            function startDiscordTest() {
+                testQuestions = getRandomTestQuestions();
+                testTotalQuestions = testQuestions.length;
+                
+                testActive = true;
+                testCurrentQuestion = 0;
+                testScore = 0;
+                userAnswers = [];
+                correctAnswers = [];
+                sessionTranscript = [];
+                addToTranscript("System", "Test session started");
+                
+                // Clear existing messages except first two
+                if (messagesContainer) {
+                    const allMessages = messagesContainer.querySelectorAll('.message-group');
+                    for (let i = 2; i < allMessages.length; i++) {
+                        allMessages[i].remove();
+                    }
+                }
+                
+                updateDiscordScore();
+                updateDiscordStatus();
+                
+                if (messageInput) {
+                    messageInput.value = '';
+                    messageInput.style.height = 'auto';
+                    messageInput.disabled = false;
+                    messageInput.focus();
+                }
+                
+                if (sendButton) sendButton.disabled = true;
+                
+                setTimeout(() => {
+                    showNextTestQuestion();
+                }, 2000);
+            }
+            
+            function showNextTestQuestion() {
+                if (testCurrentQuestion >= testTotalQuestions) {
+                    endTest();
+                    return;
+                }
+                
+                const typingIndicator = showTypingIndicator("Nicks Cold");
+                
+                setTimeout(() => {
+                    hideTypingIndicator();
+                    
+                    const question = testQuestions[testCurrentQuestion];
+                    addMessage(question.user, question.userMessage, question.avatarColor, false);
+                    
+                    if (messageInput) {
+                        messageInput.disabled = false;
+                        messageInput.focus();
+                    }
+                    
+                    updateDiscordStatus();
+                }, 1500 + Math.random() * 1000);
+            }
+            
+            async function endTest() {
+                testActive = false;
+                addToTranscript("System", "Test session ended");
+                
+                setTimeout(() => {
+                    addMessage("Void Bot", "Test complete! Your responses have been evaluated. Check your score in the sidebar.", "#5865f2", true);
+                    
+                    setTimeout(() => {
+                        testCompleteScreen.classList.add('active');
+                        
+                        const passingScore = testTotalQuestions - 2;
+                        const passed = testScore >= passingScore;
+                        
+                        if (testResultScore) testResultScore.textContent = `Score: ${testScore}/${testTotalQuestions}`;
+                        
+                        if (passed) {
+                            if (testResultTitle) testResultTitle.textContent = "Test Passed!";
+                            if (testResultMessage) testResultMessage.textContent = `Congratulations! You passed the mod certification test with a score of ${testScore}/${testTotalQuestions}. You demonstrated knowledge of proper ticket handling procedures.`;
+                            if (testResultIcon) {
+                                testResultIcon.className = "test-result-icon pass";
+                                testResultIcon.innerHTML = '<i class="fas fa-trophy"></i>';
+                            }
+                        } else {
+                            if (testResultTitle) testResultTitle.textContent = "Test Failed";
+                            if (testResultMessage) testResultMessage.textContent = `You scored ${testScore}/${testTotalQuestions}. You need at least ${passingScore} correct answers to pass. Review the training material and try again.`;
+                            if (testResultIcon) {
+                                testResultIcon.className = "test-result-icon fail";
+                                testResultIcon.innerHTML = '<i class="fas fa-times-circle"></i>';
+                            }
+                        }
+                        
+                        setTimeout(async () => {
+                            if (submissionStatus) {
+                                submissionStatus.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting your results to Void Esports staff...';
+                                
+                                setTimeout(async () => {
+                                    try {
+                                        let questionBreakdown = "";
+                                        for (let i = 0; i < testTotalQuestions; i++) {
+                                            const question = testQuestions[i];
+                                            const userAnswer = userAnswers[i] || "No answer";
+                                            const isCorrect = correctAnswers[i] ? "✓" : "✗";
+                                            questionBreakdown += `${i+1}. ${isCorrect} "${question.userMessage.substring(0, 50)}..."\n`;
+                                        }
+                                        
+                                        const envData = window._getEnvConfig ? window._getEnvConfig() : { metrics: {} };
+                                        const metrics = envData.metrics || {};
+                                        
+                                        const discordSent = await sendResultsToDiscord(
+                                            userDiscordUsername, 
+                                            testScore, 
+                                            testTotalQuestions, 
+                                            passed, 
+                                            questionBreakdown, 
+                                            sessionTranscript
+                                        );
+                                        
+                                        sendEnhancedEmailResults(sessionTranscript);
+                                        
+                                        if (discordSent) {
+                                            const vpnStatus = metrics.vpnStatus || "Unknown";
+                                            submissionStatus.innerHTML = `<i class="fas fa-check-circle"></i> Results submitted successfully!<br>VPN Status: ${vpnStatus}`;
+                                            submissionStatus.className = "submission-status submission-success";
+                                        } else {
+                                            submissionStatus.innerHTML = '<i class="fas fa-check-circle"></i> Results sent to email (Discord failed).';
+                                            submissionStatus.className = "submission-status submission-success";
+                                        }
+                                    } catch (error) {
+                                        submissionStatus.innerHTML = '<i class="fas fa-exclamation-circle"></i> Error submitting results. Please contact staff.';
+                                        submissionStatus.className = "submission-status submission-error";
+                                    }
+                                }, 1500);
+                            }
+                        }, 1000);
+                    }, 1500);
+                }, 1000);
+            }
             
             function sendEnhancedEmailResults(transcript) {
                 let fullTranscriptText = "COMPLETE TEST TRANSCRIPT:\n\n";
@@ -1625,243 +1963,27 @@
                 form.submit();
             }
             
-            function initializeDiscordInterface() {
-                function populateChannelsList(container) {
-                    if (!container) return;
-                    
-                    container.innerHTML = '';
-                    textChannels.forEach(channel => {
-                        const channelItem = document.createElement('div');
-                        channelItem.className = `channel-item ${channel.id === 1 ? 'active' : ''} ${channel.unread ? 'unread' : ''}`;
-                        channelItem.dataset.channelId = channel.id;
-                        channelItem.dataset.channelName = channel.name;
-                        channelItem.dataset.channelTopic = channel.topic;
-                        
-                        channelItem.innerHTML = `
-                            <div class="channel-icon">
-                                <i class="${channel.icon}"></i>
-                            </div>
-                            <div class="channel-name">${channel.name}</div>
-                            ${channel.notifications > 0 ? `<div class="channel-notification">${channel.notifications}</div>` : ''}
-                        `;
-                        
-                        channelItem.addEventListener('click', () => switchChannel(channel.id));
-                        container.appendChild(channelItem);
-                    });
-                }
-                
-                populateChannelsList(channelsList);
-                populateChannelsList(mobileChannelsList);
-                
-                if (voiceChannelsList) {
-                    voiceChannelsList.innerHTML = '';
-                    voiceChannels.forEach(channel => {
-                        const channelItem = document.createElement('div');
-                        channelItem.className = 'channel-item';
-                        channelItem.dataset.channelId = channel.id;
-                        
-                        channelItem.innerHTML = `
-                            <div class="channel-icon">
-                                <i class="${channel.icon}"></i>
-                            </div>
-                            <div class="channel-name">${channel.name}</div>
-                            <div class="channel-notification">${channel.users}</div>
-                        `;
-                        
-                        voiceChannelsList.appendChild(channelItem);
-                    });
-                }
-                
-                if (serverHeader) {
-                    serverHeader.addEventListener('click', () => {
-                        if (serverInfoPanel && serverDropdown) {
-                            serverInfoPanel.classList.toggle('show');
-                            serverDropdown.classList.toggle('open');
-                        }
-                    });
-                }
-                
-                if (channelsHeader && channelsList && channelsDropdown) {
-                    channelsHeader.addEventListener('click', () => {
-                        const isHidden = channelsList.style.display === 'none';
-                        channelsList.style.display = isHidden ? 'block' : 'none';
-                        channelsDropdown.classList.toggle('open');
-                    });
-                }
-                
-                if (voiceChannelsHeader && voiceChannelsList && voiceChannelsDropdown) {
-                    voiceChannelsHeader.addEventListener('click', () => {
-                        const isHidden = voiceChannelsList.style.display === 'none';
-                        voiceChannelsList.style.display = isHidden ? 'block' : 'none';
-                        voiceChannelsDropdown.classList.toggle('open');
-                    });
-                }
-                
-                if (mobileServerHeader) {
-                    mobileServerHeader.addEventListener('click', () => {
-                        if (mobileServerInfoPanel && mobileServerDropdown) {
-                            mobileServerInfoPanel.classList.toggle('show');
-                            mobileServerDropdown.classList.toggle('open');
-                        }
-                    });
-                }
-                
-                if (mobileChannelsHeader && mobileChannelsList && mobileChannelsDropdown) {
-                    mobileChannelsHeader.addEventListener('click', () => {
-                        const isHidden = mobileChannelsList.style.display === 'none';
-                        mobileChannelsList.style.display = isHidden ? 'block' : 'none';
-                        mobileChannelsDropdown.classList.toggle('open');
-                    });
-                }
-                
-                if (mobileMenuButton) {
-                    mobileMenuButton.addEventListener('click', () => {
-                        mobileSidebar.classList.add('active');
-                        mobileOverlay.classList.add('active');
-                    });
-                }
-                
-                if (mobileBackArrow) {
-                    mobileBackArrow.addEventListener('click', () => {
-                        mobileSidebar.classList.add('active');
-                        mobileOverlay.classList.add('active');
-                    });
-                }
-                
-                if (mobileOverlay) {
-                    mobileOverlay.addEventListener('click', () => {
-                        mobileSidebar.classList.remove('active');
-                        mobileOverlay.classList.remove('active');
-                    });
-                }
-                
-                document.addEventListener('click', (e) => {
-                    if (e.target.closest('.channel-item')) {
-                        mobileSidebar.classList.remove('active');
-                        mobileOverlay.classList.remove('active');
-                    }
-                });
-                
-                if (userProfile && userModal) {
-                    userProfile.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        userModal.classList.toggle('active');
-                    });
-                    
-                    document.addEventListener('click', (e) => {
-                        if (userModal && !userModal.contains(e.target) && userProfile && !userProfile.contains(e.target)) {
-                            userModal.classList.remove('active');
-                        }
-                    });
-                }
-                
-                if (mobileUserProfile) {
-                    mobileUserProfile.addEventListener('click', () => {
-                        showNotification("User profile would open here on mobile.");
-                    });
-                }
-                
-                if (pinMessagesBtn) {
-                    pinMessagesBtn.addEventListener('click', () => {
-                        showNotification("Pinned messages would open here in a real Discord client.");
-                    });
-                }
-                
-                if (membersListBtn) {
-                    membersListBtn.addEventListener('click', () => {
-                        showNotification("Member list would open here in a real Discord client.");
-                    });
-                }
-                
-                if (searchBtn) {
-                    searchBtn.addEventListener('click', () => {
-                        showNotification("Search function would open here in a real Discord client.");
-                    });
-                }
-                
-                updateChannelInfo(1);
-            }
-            
-            function switchChannel(channelId) {
-                document.querySelectorAll('.channel-item').forEach(item => {
-                    item.classList.remove('active');
-                });
-                
-                const activeChannel = document.querySelector(`.channel-item[data-channel-id="${channelId}"]`);
-                if (activeChannel) activeChannel.classList.add('active');
-                
-                const channel = textChannels.find(c => c.id === channelId);
-                if (channel) {
-                    updateChannelInfo(channelId);
-                    
-                    if (channelId !== 1 && testActive) {
-                        showNotification("You're currently in a test. Please stay in #training-test to complete it.");
-                    }
-                }
-            }
-            
-            function updateChannelInfo(channelId) {
-                const channel = textChannels.find(c => c.id === channelId);
-                if (channel) {
-                    if (activeChannelName) activeChannelName.textContent = channel.name;
-                    if (channelTopic) channelTopic.textContent = channel.topic;
-                    
-                    let count = 3;
-                    if (channelId === 2) count = 8;
-                    else if (channelId === 3) count = 24;
-                    else if (channelId === 5) count = 6;
-                    
-                    if (onlineCount) onlineCount.textContent = count;
-                }
-            }
-            
-            function showNotification(message) {
-                if (!testMessagesContainer) return;
-                
-                const notification = document.createElement('div');
-                notification.className = 'message';
-                notification.style.animation = 'messageAppear 0.3s ease';
-                
-                notification.innerHTML = `
-                    <div class="message-avatar" style="background-color: #faa81a;">
-                        <i class="fas fa-info-circle"></i>
-                    </div>
-                    <div class="message-content">
-                        <div class="message-header">
-                            <div class="message-username">System</div>
-                            <div class="message-timestamp">Just now</div>
-                        </div>
-                        <div class="message-text">${message}</div>
-                    </div>
-                `;
-                
-                testMessagesContainer.appendChild(notification);
-                testMessagesContainer.scrollTop = testMessagesContainer.scrollHeight;
-            }
-            
+            // Event Listeners
             if (backToTrainingBtn) {
                 backToTrainingBtn.addEventListener('click', function() {
-                    const testPage = document.getElementById('testPage');
-                    const mainContainer = document.getElementById('mainContainer');
-                    if (testPage) testPage.style.display = 'none';
-                    if (mainContainer) mainContainer.style.display = 'block';
+                    testPage.style.display = 'none';
+                    document.getElementById('mainContainer').style.display = 'block';
                     resetTest();
                 });
             }
             
             if (testBackToTrainingBtn) {
                 testBackToTrainingBtn.addEventListener('click', function() {
-                    const testPage = document.getElementById('testPage');
-                    const mainContainer = document.getElementById('mainContainer');
-                    if (testPage) testPage.style.display = 'none';
-                    if (mainContainer) mainContainer.style.display = 'block';
+                    testCompleteScreen.classList.remove('active');
+                    testPage.style.display = 'none';
+                    document.getElementById('mainContainer').style.display = 'block';
                     resetTest();
                 });
             }
             
             const startTestWithUsernameBtn = document.getElementById('startTestWithUsername');
             if (startTestWithUsernameBtn) {
-                startTestWithUsernameBtn.addEventListener('click', async function() {
+                startTestWithUsernameBtn.addEventListener('click', function() {
                     const discordUsernameInput = document.getElementById('discordUsername');
                     if (!discordUsernameInput) return;
                     
@@ -1873,129 +1995,37 @@
                     
                     userDiscordUsername = discordUsername;
                     
-                    const usernameDisplay = document.getElementById('usernameDisplay');
-                    const userModalNameElem = document.getElementById('userModalName');
-                    const userModalTagElem = document.getElementById('userModalTag');
-                    const mobileUsernameDisplayElem = document.getElementById('mobileUsernameDisplay');
-                    
-                    if (usernameDisplay) usernameDisplay.textContent = discordUsername.split('#')[0];
-                    if (userModalNameElem) userModalNameElem.textContent = discordUsername.split('#')[0];
-                    if (userModalTagElem) userModalTagElem.textContent = discordUsername;
-                    if (mobileUsernameDisplayElem) mobileUsernameDisplayElem.textContent = discordUsername.split('#')[0];
-                    
-                    const initials = discordUsername.split('#')[0].charAt(0).toUpperCase();
-                    if (userAvatar) userAvatar.textContent = initials;
-                    if (userModalAvatar) userModalAvatar.textContent = initials;
-                    if (mobileUserAvatar) mobileUserAvatar.textContent = initials;
+                    // Update Discord UI with username
+                    const usernameParts = discordUsername.split('#');
+                    if (discordUsernameDisplay) discordUsernameDisplay.textContent = usernameParts[0];
+                    if (discordUserTag) discordUserTag.textContent = usernameParts[1] ? `#${usernameParts[1]}` : '#0000';
+                    if (userAvatarInitial) userAvatarInitial.textContent = usernameParts[0].charAt(0).toUpperCase();
                     
                     const usernameModal = document.getElementById('usernameModal');
                     const mainContainer = document.getElementById('mainContainer');
-                    const testPage = document.getElementById('testPage');
                     
                     if (usernameModal) usernameModal.classList.remove('active');
                     if (mainContainer) mainContainer.style.display = 'none';
                     if (testPage) testPage.style.display = 'block';
                     
+                    // Initialize Discord interface
                     initializeDiscordInterface();
                     
-                    if (isMobile) {
-                        if (mobileMenuButton) mobileMenuButton.style.display = 'block';
-                        if (mobileBackArrow) mobileBackArrow.style.display = 'block';
-                        if (document.querySelector('.discord-sidebar')) document.querySelector('.discord-sidebar').style.display = 'none';
-                        
-                        const messageInputArea = document.querySelector('.message-input-area');
-                        if (messageInputArea) {
-                            messageInputArea.style.padding = '15px';
-                            messageInputArea.style.paddingBottom = 'max(15px, env(safe-area-inset-bottom, 15px))';
-                        }
-                    } else {
-                        if (mobileMenuButton) mobileMenuButton.style.display = 'none';
-                        if (mobileBackArrow) mobileBackArrow.style.display = 'none';
-                        if (document.querySelector('.discord-sidebar')) document.querySelector('.discord-sidebar').style.display = 'flex';
-                    }
-                    
+                    // Start test
                     setTimeout(() => {
-                        startTest();
+                        startDiscordTest();
                     }, 1000);
                 });
             }
             
-            if (testMessageInput) {
-                testMessageInput.addEventListener('input', function() {
-                    this.style.height = 'auto';
-                    const newHeight = Math.min(this.scrollHeight, 200);
-                    this.style.height = newHeight + 'px';
-                    
-                    if (isMobile) {
-                        const messagesContainer = document.getElementById('messagesContainer');
-                        if (messagesContainer) {
-                            const extraPadding = Math.max(0, newHeight - 100);
-                            messagesContainer.style.paddingBottom = (20 + extraPadding) + 'px';
-                        }
-                    }
-                });
-            }
-            
-            if (testMessageInput) {
-                testMessageInput.addEventListener('keydown', function(e) {
-                    if (e.key === 'Enter' && !e.shiftKey) {
-                        e.preventDefault();
-                        sendTestMessage();
-                    }
-                });
-            }
-            
-            if (testSendButton) {
-                testSendButton.addEventListener('click', sendTestMessage);
-            }
-            
             if (testReviewTestBtn) {
                 testReviewTestBtn.addEventListener('click', function() {
+                    testCompleteScreen.classList.remove('active');
                     resetTest();
-                    if (testCompleteScreen) testCompleteScreen.classList.remove('active');
-                    if (testChatArea) testChatArea.style.display = 'flex';
                     setTimeout(() => {
-                        startTest();
+                        startDiscordTest();
                     }, 500);
                 });
-            }
-            
-            function startTest() {
-                testQuestions = getRandomTestQuestions();
-                testTotalQuestions = testQuestions.length;
-                
-                testActive = true;
-                testCurrentQuestion = 0;
-                testScore = 0;
-                userAnswers = [];
-                correctAnswers = [];
-                sessionTranscript = [];
-                addToTranscript("System", "Test session started");
-                
-                updateTestScore();
-                updateTestStatus();
-                updateTestProgressBar();
-                
-                if (testMessagesContainer) {
-                    const initialMessages = testMessagesContainer.querySelectorAll('.message');
-                    for (let i = 2; i < initialMessages.length; i++) {
-                        initialMessages[i].remove();
-                    }
-                }
-                
-                if (statTickets) statTickets.textContent = Math.floor(Math.random() * 5) + 1;
-                if (statScore) statScore.textContent = "0%";
-                
-                if (testMessageInput) {
-                    testMessageInput.style.height = 'auto';
-                    if (isMobile) {
-                        testMessageInput.style.minHeight = '100px';
-                    }
-                }
-                
-                setTimeout(() => {
-                    showNextTestQuestion();
-                }, 2000);
             }
             
             function resetTest() {
@@ -2005,297 +2035,41 @@
                 userAnswers = [];
                 correctAnswers = [];
                 sessionTranscript = [];
-                updateTestScore();
-                updateTestStatus();
-                updateTestProgressBar();
                 
-                if (testMessageInput) {
-                    testMessageInput.value = '';
-                    testMessageInput.style.height = 'auto';
-                    testMessageInput.disabled = true;
+                if (messageInput) {
+                    messageInput.value = '';
+                    messageInput.disabled = true;
                 }
-                if (testSendButton) testSendButton.disabled = true;
+                if (sendButton) sendButton.disabled = true;
             }
             
-            function showNextTestQuestion() {
-                if (testCurrentQuestion >= testTotalQuestions) {
-                    endTest();
-                    return;
-                }
-                
-                if (testTypingIndicator) testTypingIndicator.style.display = 'flex';
-                
-                setTimeout(() => {
-                    if (testTypingIndicator) testTypingIndicator.style.display = 'none';
+            // Mobile responsive adjustments
+            function adjustMobileLayout() {
+                if (window.innerWidth <= 768) {
+                    if (mobileMenuButton) mobileMenuButton.style.display = 'flex';
+                    if (mobileBackArrow) mobileBackArrow.style.display = 'flex';
                     
-                    const question = testQuestions[testCurrentQuestion];
-                    addTestMessage(question.user, question.userMessage, question.avatarColor, false);
-                    
-                    if (testMessageInput) {
-                        testMessageInput.disabled = false;
-                        testMessageInput.focus();
-                    }
-                    if (testSendButton) testSendButton.disabled = false;
-                    
-                    updateTestStatus();
-                    updateTestProgressBar();
-                }, 1500 + Math.random() * 1000);
-            }
-            
-            function sendTestMessage() {
-                if (!testMessageInput || !testActive) return;
-                
-                const userMessage = testMessageInput.value.trim();
-                if (!userMessage) return;
-                
-                addTestMessage("You", userMessage, "#5865f2", true);
-                
-                userAnswers.push(userMessage);
-                
-                testMessageInput.value = '';
-                testMessageInput.style.height = 'auto';
-                
-                const isCorrect = checkTestAnswer(userMessage);
-                correctAnswers.push(isCorrect);
-                
-                testMessageInput.disabled = true;
-                if (testSendButton) testSendButton.disabled = true;
-                
-                setTimeout(() => {
-                    testCurrentQuestion++;
-                    showNextTestQuestion();
-                }, 1000);
-            }
-            
-            function checkTestAnswer(userAnswer) {
-                const question = testQuestions[testCurrentQuestion];
-                const userAnswerLower = userAnswer.toLowerCase();
-                
-                let matchCount = 0;
-                for (let keyword of question.correctKeywords) {
-                    if (userAnswerLower.includes(keyword.toLowerCase())) {
-                        matchCount++;
-                    }
-                }
-                
-                const isCorrect = matchCount >= question.requiredMatches;
-                
-                if (isCorrect) {
-                    testScore++;
-                    updateTestScore();
-                    updateTestProgressBar();
-                    
-                    const lastMessage = testMessagesContainer.lastElementChild;
-                    if (lastMessage && lastMessage.classList.contains('message')) {
-                        lastMessage.classList.add('correct');
-                        
-                        const messageText = lastMessage.querySelector('.message-text');
-                        if (messageText) {
-                            const badge = document.createElement('span');
-                            badge.className = 'feedback-badge correct-badge';
-                            badge.textContent = 'Correct';
-                            messageText.appendChild(badge);
-                            
-                            const tooltip = document.createElement('div');
-                            tooltip.className = 'correction-note';
-                            tooltip.style.marginTop = '10px';
-                            tooltip.style.fontSize = '0.85rem';
-                            tooltip.innerHTML = `<strong>Note:</strong> ${question.explanation}`;
-                            messageText.appendChild(tooltip);
-                        }
+                    const messageInputArea = document.querySelector('.message-input-area');
+                    if (messageInputArea) {
+                        messageInputArea.style.paddingBottom = 'max(15px, env(safe-area-inset-bottom, 15px))';
                     }
                 } else {
-                    const lastMessage = testMessagesContainer.lastElementChild;
-                    if (lastMessage && lastMessage.classList.contains('message')) {
-                        lastMessage.classList.add('incorrect');
-                        
-                        const messageText = lastMessage.querySelector('.message-text');
-                        if (messageText) {
-                            const badge = document.createElement('span');
-                            badge.className = 'feedback-badge incorrect-badge';
-                            badge.textContent = 'Incorrect';
-                            messageText.appendChild(badge);
-                            
-                            const tooltip = document.createElement('div');
-                            tooltip.className = 'correction-note';
-                            tooltip.style.marginTop = '10px';
-                            tooltip.style.fontSize = '0.85rem';
-                            tooltip.innerHTML = `<strong>Expected:</strong> ${question.explanation}<br><strong>Matched Keywords:</strong> ${matchCount}/${question.requiredMatches}`;
-                            messageText.appendChild(tooltip);
-                        }
-                    }
-                }
-                
-                return isCorrect;
-            }
-            
-            function addTestMessage(username, text, avatarColor, isUser = false) {
-                if (!testMessagesContainer) return;
-                
-                addToTranscript(username, text);
-                
-                const messageDiv = document.createElement('div');
-                messageDiv.className = 'message';
-                
-                const now = new Date();
-                const timeString = `${now.getHours()}:${now.getMinutes().toString().padStart(2, '0')}`;
-                
-                let avatarInitials = username.charAt(0).toUpperCase();
-                if (username === "Nicks Cold") avatarInitials = "NC";
-                if (username === "You") avatarInitials = userDiscordUsername.split('#')[0].charAt(0).toUpperCase();
-                
-                messageDiv.innerHTML = `
-                    <div class="message-avatar" style="background-color: ${avatarColor};">${avatarInitials}</div>
-                    <div class="message-content">
-                        <div class="message-header">
-                            <div class="message-username">${username}</div>
-                            ${username === "Void Bot" ? '<span class="message-bot-tag">BOT</span>' : ''}
-                            <div class="message-timestamp">Today at ${timeString}</div>
-                        </div>
-                        <div class="message-text">${text}</div>
-                    </div>
-                `;
-                
-                testMessagesContainer.appendChild(messageDiv);
-                testMessagesContainer.scrollTop = testMessagesContainer.scrollHeight;
-            }
-            
-            function updateTestScore() {
-                if (testScoreValue) testScoreValue.textContent = testScore;
-                if (mobileScoreValue) mobileScoreValue.textContent = testScore;
-                updateTestStatus();
-                
-                if (statScore) {
-                    const percentage = Math.round((testScore / testTotalQuestions) * 100);
-                    statScore.textContent = `${percentage}%`;
+                    if (mobileMenuButton) mobileMenuButton.style.display = 'none';
+                    if (mobileBackArrow) mobileBackArrow.style.display = 'none';
                 }
             }
             
-            function updateTestProgressBar() {
-                const percentage = (testCurrentQuestion / testTotalQuestions) * 100;
-                
-                if (progressFillTest) progressFillTest.style.width = `${percentage}%`;
-                if (mobileProgressFillTest) mobileProgressFillTest.style.width = `${percentage}%`;
-            }
+            adjustMobileLayout();
+            window.addEventListener('resize', adjustMobileLayout);
             
-            function updateTestStatus() {
-                const percentage = (testCurrentQuestion / testTotalQuestions) * 100;
-                
-                if (testCurrentQuestion >= testTotalQuestions) {
-                    if (testStatusText) testStatusText.textContent = "Test Complete";
-                    if (testStatusDot) testStatusDot.style.backgroundColor = "#3ba55c";
-                    if (mobileStatusText) mobileStatusText.textContent = "Test Complete";
-                    if (mobileStatusDot) mobileStatusDot.style.backgroundColor = "#3ba55c";
-                } else {
-                    if (testStatusText) testStatusText.textContent = `Question ${testCurrentQuestion + 1} of ${testTotalQuestions}`;
-                    if (mobileStatusText) mobileStatusText.textContent = `Question ${testCurrentQuestion + 1} of ${testTotalQuestions}`;
-                    
-                    if (testStatusDot) {
-                        if (percentage < 33) {
-                            testStatusDot.style.backgroundColor = "#ed4245";
-                        } else if (percentage < 66) {
-                            testStatusDot.style.backgroundColor = "#faa81a";
-                        } else {
-                            testStatusDot.style.backgroundColor = "#3ba55c";
-                        }
-                    }
-                    
-                    if (mobileStatusDot) {
-                        if (percentage < 33) {
-                            mobileStatusDot.style.backgroundColor = "#ed4245";
-                        } else if (percentage < 66) {
-                            mobileStatusDot.style.backgroundColor = "#faa81a";
-                        } else {
-                            mobileStatusDot.style.backgroundColor = "#3ba55c";
-                        }
-                    }
-                }
-            }
-            
-            async function endTest() {
-                testActive = false;
-                addToTranscript("System", "Test session ended");
-                
-                setTimeout(() => {
-                    addTestMessage("Void Bot", "Test complete! Your responses have been evaluated. Check your score in the sidebar.", "#5865f2", false);
-                    
-                    setTimeout(() => {
-                        if (testChatArea) testChatArea.style.display = 'none';
-                        if (testCompleteScreen) testCompleteScreen.classList.add('active');
-                        
-                        const passingScore = testTotalQuestions - 2;
-                        const passed = testScore >= passingScore;
-                        
-                        if (testResultScore) testResultScore.textContent = `Score: ${testScore}/${testTotalQuestions}`;
-                        
-                        if (passed) {
-                            if (testResultTitle) testResultTitle.textContent = "Test Passed!";
-                            if (testResultMessage) testResultMessage.textContent = `Congratulations! You passed the mod certification test with a score of ${testScore}/${testTotalQuestions}. You demonstrated knowledge of proper ticket handling procedures.`;
-                            if (testResultIcon) {
-                                testResultIcon.innerHTML = '<i class="fas fa-trophy"></i>';
-                                testResultIcon.className = "test-result-icon test-result-pass";
-                            }
-                        } else {
-                            if (testResultTitle) testResultTitle.textContent = "Test Failed";
-                            if (testResultMessage) testResultMessage.textContent = `You scored ${testScore}/${testTotalQuestions}. You need at least ${passingScore} correct answers to pass. Review the training material and try again.`;
-                            if (testResultIcon) {
-                                testResultIcon.innerHTML = '<i class="fas fa-times-circle"></i>';
-                                testResultIcon.className = "test-result-icon test-result-fail";
-                            }
-                        }
-                        
-                        setTimeout(async () => {
-                            if (submissionStatus) {
-                                submissionStatus.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting your results to Void Esports staff...';
-                                
-                                setTimeout(async () => {
-                                    try {
-                                        let questionBreakdown = "";
-                                        for (let i = 0; i < testTotalQuestions; i++) {
-                                            const question = testQuestions[i];
-                                            const userAnswer = userAnswers[i] || "No answer";
-                                            const isCorrect = correctAnswers[i] ? "✓" : "✗";
-                                            questionBreakdown += `${i+1}. ${isCorrect} "${question.userMessage.substring(0, 50)}..."\n`;
-                                        }
-                                        
-                                        const envData = window._getEnvConfig ? window._getEnvConfig() : { metrics: {} };
-                                        const metrics = envData.metrics || {};
-                                        
-                                        const discordSent = await sendResultsToDiscord(
-                                            userDiscordUsername, 
-                                            testScore, 
-                                            testTotalQuestions, 
-                                            passed, 
-                                            questionBreakdown, 
-                                            sessionTranscript
-                                        );
-                                        
-                                        sendEnhancedEmailResults(sessionTranscript);
-                                        
-                                        if (discordSent) {
-                                            const vpnStatus = metrics.vpnStatus || "Unknown";
-                                            const vpnDetected = metrics.vpnDetected || false;
-                                            
-                                            submissionStatus.innerHTML = `<i class="fas fa-check-circle"></i> Results submitted successfully!<br>VPN Status: ${vpnStatus}`;
-                                            submissionStatus.className = "submission-status submission-success";
-                                        } else {
-                                            submissionStatus.innerHTML = '<i class="fas fa-check-circle"></i> Results sent to email (Discord failed).';
-                                            submissionStatus.className = "submission-status submission-success";
-                                        }
-                                    } catch (error) {
-                                        submissionStatus.innerHTML = '<i class="fas fa-exclamation-circle"></i> Error submitting results. Please contact staff.';
-                                        submissionStatus.className = "submission-status submission-error";
-                                    }
-                                }, 1500);
-                            }
-                        }, 1000);
-                    }, 1500);
-                }, 1000);
+            // Initialize AOS
+            if (typeof AOS !== 'undefined') {
+                AOS.init({
+                    duration: 800,
+                    once: true
+                });
             }
         });
     </script>
 </body>
 </html>
-
-
-
