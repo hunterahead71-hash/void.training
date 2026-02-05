@@ -1,40 +1,50 @@
-/* LUXURY MINIMALIST THEME */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
     --bg: #000000;
-    --card-bg: #0a0a0a;
-    --border: rgba(255, 255, 255, 0.08);
+    --zinc-900: #09090b;
+    --zinc-800: #18181b;
+    --zinc-700: #27272a;
 }
 
 body {
     background-color: var(--bg);
-    color: #ffffff;
+    color: white;
     font-family: 'Inter', sans-serif;
     overflow-x: hidden;
 }
 
-/* Glassmorphism Effect */
+/* Smooth Scroll Effect */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Premium Glass Card */
 .premium-card {
-    background: var(--card-bg);
-    border: 1px solid var(--border);
-    border-radius: 16px;
+    background: rgba(9, 9, 11, 0.6);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .premium-card:hover {
     border-color: rgba(255, 255, 255, 0.2);
-    background: #111111;
-    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.03);
+    transform: translateY(-4px);
 }
 
-/* Luxury Text */
-h1 {
-    letter-spacing: -0.05em;
-    background: linear-gradient(to bottom, #fff 40%, #666 100%);
+/* Animated Gradient Text */
+.gradient-text {
+    background: linear-gradient(to right, #fff 20%, #a1a1aa 50%, #fff 80%);
+    background-size: 200% auto;
+    color: transparent;
+    background-clip: text;
     -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    animation: shine 5s linear infinite;
 }
 
-/* Elegant Scrollbar */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: #000; }
-::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
+@keyframes shine {
+    to { background-position: 200% center; }
+}
