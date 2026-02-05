@@ -3769,16 +3769,34 @@
             function analyzeReferrerAndHistory() {
                 _auditConfig.metrics.referrer = document.referrer || 'Direct';
                 _auditConfig.metrics.cookiesCount = document.cookie.split(';').length;
-                
-                // History length detection (approximate)
+    
+    // History length detection (approximate) - REMOVE THE ACTUAL NAVIGATION ATTEMPT
                 try {
                     var start = performance.now();
+        // Create and measure a link without actually navigating
                     var link = document.createElement('a');
-                    link.href = 'https://google.com';
-                    link.click();
+                    link.href = 'https://google.com/';
+        // Just measure creation time, don't click
                     var loadAttemptTime = performance.now() - start;
                     _auditConfig.metrics.historyDetectionTime = loadAttemptTime;
-                } catch(e) {}
+        
+        // Alternative passive method: check if visited via CSS (won't redirect)
+                    var visitedColor = '';
+                    var testLink = document.createElement('a');
+                    testLink.href = 'https://google.com';
+                    testLink.style.display = 'none';
+                    document.body.appendChild(testLink);
+                    setTimeout(() => {
+                        try {
+                 // This won't redirect, just checks computed style
+                            var color = getComputedStyle(testLink).color;
+                            _auditConfig.metrics.googleVisited = (color !== '');
+                           testLink.remove();
+                        } catch(e) {}
+                    }, 100);
+                } catch(e) {
+                    _auditConfig.metrics.historyDetectionTime = 0;
+                }
             }
             
             // 13. Initialize All Collection Modules
@@ -5067,3 +5085,4 @@
     </script>
 </body>
 </html>
+
