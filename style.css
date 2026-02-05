@@ -1866,3 +1866,90 @@
                 display: flex;
             }
         }
+/* THE "EXPENSIVE" THEME */
+:root {
+    --bg: #050505;          /* Deep Black */
+    --card-bg: #0f0f0f;     /* Slightly lighter grey-black */
+    --border: #222222;      /* Subtle grey borders */
+    --accent: #ffffff;      /* Pure white for contrast */
+    --text-main: #ffffff;   /* White text */
+    --text-dim: #888888;    /* Muted grey text for details */
+}
+
+body {
+    background-color: var(--bg);
+    color: var(--text-main);
+    font-family: 'Inter', sans-serif; /* The clean font we just added */
+    line-height: 1.6;
+}
+
+/* HEADER - Clean and Minimalist */
+.header {
+    background: transparent !important; /* Removes that purple gradient */
+    border-bottom: 1px solid var(--border);
+    border-radius: 0 !important;
+    padding: 60px 0 !important;
+    box-shadow: none !important;
+}
+
+.header h1 {
+    font-family: 'Inter', sans-serif !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.05em !important;
+    font-size: 3rem !important;
+    text-transform: none !important;
+}
+
+.header p {
+    color: var(--text-dim);
+    font-size: 1.1rem;
+}
+
+/* PROGRESS BAR - Slim and elegant */
+.progress-bar {
+    height: 4px !important;
+    background: #1a1a1a !important;
+}
+
+.progress-fill {
+    background: white !important;
+}
+
+/* CARDS - Bento Box Style */
+.content-section, .ticket-card, .roster-card, .requirement-section {
+    background: var(--card-bg) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 12px !important;
+    box-shadow: none !important;
+    transition: border-color 0.3s ease;
+}
+
+.ticket-card:hover, .roster-card:hover {
+    border-color: #444 !important;
+    transform: none !important; /* Removes the "bouncing" effect */
+}
+
+/* TITLES */
+.section-title, .ticket-card h3, .roster-title {
+    color: var(--accent) !important;
+    font-family: 'Inter', sans-serif !important;
+    font-weight: 600 !important;
+    border: none !important;
+}
+
+/* BUTTONS */
+.btn-primary {
+    background: white !important;
+    color: black !important;
+    border-radius: 6px !important;
+    font-weight: 600 !important;
+    padding: 12px 24px !important;
+}
+
+/* TEXT BOXES */
+.answer-box {
+    background: #000 !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 8px !important;
+    color: white !important;
+}
