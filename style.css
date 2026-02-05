@@ -1,0 +1,126 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Geist+Mono:wght@300;400&display=swap');
+
+:root {
+    --bg: #000000;
+    --card-bg: #0a0a0a;
+    --card-hover: #111111;
+    --border: rgba(255, 255, 255, 0.1);
+    --border-bright: rgba(255, 255, 255, 0.2);
+    --text-main: #ffffff;
+    --text-dim: #a1a1a1;
+    --accent: #ffffff;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+}
+
+body {
+    background-color: var(--bg);
+    color: var(--text-main);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.5;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 80px 20px;
+}
+
+/* HIGH-END HEADER */
+.header {
+    background: transparent !important; /* Removes the purple block */
+    text-align: left;
+    padding: 0 0 60px 0;
+    box-shadow: none !important;
+}
+
+.header h1 {
+    font-family: 'Inter', sans-serif; /* Professional, not robotic */
+    font-weight: 800;
+    font-size: 3.5rem;
+    letter-spacing: -0.05em;
+    color: white;
+}
+
+.header p {
+    color: var(--text-dim);
+    font-size: 1.1rem;
+    max-width: 600px;
+    margin: 10px 0;
+}
+
+/* BENTO GRID CARDS */
+.content-section {
+    background: transparent;
+    border: none;
+    padding: 0;
+    margin-bottom: 80px;
+    backdrop-filter: none;
+}
+
+.section-title {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--text-dim);
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 10px;
+    margin-bottom: 30px;
+}
+
+.roster-categories {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 Column Bento Grid */
+    gap: 16px;
+}
+
+.roster-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    transition: all 0.2s ease;
+}
+
+.roster-card:hover {
+    border-color: var(--border-bright);
+    background: var(--card-hover);
+}
+
+.roster-title {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: white !important;
+}
+
+.roster-requirements li {
+    font-size: 0.9rem;
+    color: var(--text-dim);
+    list-style: none;
+    padding: 4px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+}
+
+/* CLEAN BUTTONS */
+.btn-primary {
+    background: white !important;
+    color: black !important;
+    border-radius: 6px;
+    font-weight: 600;
+    padding: 12px 24px;
+    text-transform: none;
+    letter-spacing: normal;
+}
+
+.btn-primary:hover {
+    background: #e5e5e5 !important;
+    transform: none;
+}
