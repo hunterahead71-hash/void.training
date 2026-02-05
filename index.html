@@ -76,127 +76,40 @@
         
         <!-- Roster Categories Section -->
         <div class="content-section">
-            <h2 class="section-title"><i class="fas fa-layer-group"></i> Roster Categories & Requirements</h2>
-            
-            <div class="roster-categories">
-                <!-- Pro Roster -->
-                <div class="roster-card">
-                    <div class="roster-header">
-                        <div class="roster-icon">🏆</div>
-                        <div class="roster-title">Pro Roster</div>
-                    </div>
-                    <ul class="roster-requirements">
-                        <li>25,000+ Power Ranking</li>
-                        <li>$1,000+ in Official Fortnite Earnings</li>
-                        <li>Place and earn consistently</li>
-                        <li>Represent Us In Game and On Your Socials</li>
-                    </ul>
-                </div>
-                
-                <!-- Semi-Pro -->
-                <div class="roster-card">
-                    <div class="roster-header">
-                        <div class="roster-icon">🎮</div>
-                        <div class="roster-title">Semi-Pro</div>
-                    </div>
-                    <ul class="roster-requirements">
-                        <li>10,000-25,000 PR</li>
-                        <li>Place Consistently</li>
-                        <li>Represent us in Game</li>
-                        <li>Use our Fortnite Code</li>
-                        <li>Must have earnings</li>
-                    </ul>
-                </div>
-                
-                <!-- Academy Roster -->
-                <div class="roster-card">
-                    <div class="roster-header">
-                        <div class="roster-icon">🎓</div>
-                        <div class="roster-title">Academy Roster</div>
-                    </div>
-                    <ul class="roster-requirements">
-                        <li>500-10,000 PR</li>
-                        <li>Place Consistently</li>
-                        <li>Represent us in Game</li>
-                        <li>Use our Fortnite Code</li>
-                    </ul>
-                </div>
-                
-                <!-- Creative Roster -->
-                <div class="roster-card">
-                    <div class="roster-header">
-                        <div class="roster-icon">🎨</div>
-                        <div class="roster-title">Creative Roster</div>
-                    </div>
-                    <ul class="roster-requirements">
-                        <li>Smooth/Fast Mechanics</li>
-                        <li>Must Be Unique</li>
-                        <li>Must Be Able To Provide Clips When Asked</li>
-                        <li>Represent Us In Game and On Your Socials</li>
-                    </ul>
-                </div>
-                
-                <!-- Streamer -->
-                <div class="roster-card">
-                    <div class="roster-header">
-                        <div class="roster-icon">🎙️</div>
-                        <div class="roster-title">Streamer</div>
-                    </div>
-                    <ul class="roster-requirements">
-                        <li>1k+ Followers/Subscribers</li>
-                        <li>Average 25+ Viewers Per Stream</li>
-                        <li>Stream At Least 4x Per Week</li>
-                        <li>Use Our Hashtags in Bio/Descriptions</li>
-                        <li>Represent Us In Game and On Your Socials</li>
-                    </ul>
-                </div>
-                
-                <!-- Content Creator -->
-                <div class="roster-card">
-                    <div class="roster-header">
-                        <div class="roster-icon">🎥</div>
-                        <div class="roster-title">Content Creator</div>
-                    </div>
-                    <ul class="roster-requirements">
-                        <li>>1k Followers on Twitch/YouTube</li>
-                        <li>>10k Followers on TikTok</li>
-                        <li>Original/High Quality Posts</li>
-                        <li>Willing to Help Out With Void Content</li>
-                        <li>Must Post Actively</li>
-                        <li>Represent Us In Game and On Your Socials</li>
-                    </ul>
-                </div>
-                
-                <!-- Junior Content Creator -->
-                <div class="roster-card">
-                    <div class="roster-header">
-                        <div class="roster-icon">🎬</div>
-                        <div class="roster-title">Junior Content Creator</div>
-                    </div>
-                    <ul class="roster-requirements">
-                        <li>>500 Followers On Twitch/YouTube</li>
-                        <li>>3k Followers On TikTok</li>
-                        <li>Posts Are Original and High Quality</li>
-                        <li>Willing To Grind to Become a Main Roster Content Creator</li>
-                        <li>Represent Us In Game and On Your Socials</li>
-                    </ul>
-                </div>
-                
-                <!-- GFX/VFX -->
-                <div class="roster-card">
-                    <div class="roster-header">
-                        <div class="roster-icon">🖌️</div>
-                        <div class="roster-title">GFX/VFX</div>
-                    </div>
-                    <ul class="roster-requirements">
-                        <li>Experience With Editing</li>
-                        <li>Portfolio Required</li>
-                        <li>High-Quality Work (1440p or Higher)</li>
-                        <li>Willing To Do Free Work For Staff/Roster</li>
-                        <li>Deliver When Asked</li>
-                    </ul>
-                </div>
-            </div>
+           <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="roster-grid">
+    <!-- Pro Roster Card -->
+    <div class="premium-card p-8 rounded-2xl" data-aos="fade-up" data-aos-delay="100">
+        <div class="text-3xl mb-4">🏆</div>
+        <h3 class="text-xl font-bold mb-2">Pro Roster</h3>
+        <p class="text-zinc-400 text-sm mb-4">The elite tier of Void Esports.</p>
+        <ul class="space-y-2 text-sm text-zinc-500">
+            <li class="flex items-center"><span class="w-1.5 h-1.5 bg-white rounded-full mr-2"></span> 25,000+ PR</li>
+            <li class="flex items-center"><span class="w-1.5 h-1.5 bg-white rounded-full mr-2"></span> $1,000+ Earnings</li>
+        </ul>
+    </div>
+
+    <!-- Semi Pro -->
+    <div class="premium-card p-8 rounded-2xl" data-aos="fade-up" data-aos-delay="200">
+        <div class="text-3xl mb-4">🎮</div>
+        <h3 class="text-xl font-bold mb-2">Semi-Pro</h3>
+        <p class="text-zinc-400 text-sm mb-4">Developing talent with proven stats.</p>
+        <ul class="space-y-2 text-sm text-zinc-500">
+            <li class="flex items-center"><span class="w-1.5 h-1.5 bg-white rounded-full mr-2"></span> 10,000-25,000 PR</li>
+            <li class="flex items-center"><span class="w-1.5 h-1.5 bg-white rounded-full mr-2"></span> Consistent Placement</li>
+        </ul>
+    </div>
+
+    <!-- Academy -->
+    <div class="premium-card p-8 rounded-2xl" data-aos="fade-up" data-aos-delay="300">
+        <div class="text-3xl mb-4">🎓</div>
+        <h3 class="text-xl font-bold mb-2">Academy</h3>
+        <p class="text-zinc-400 text-sm mb-4">The future of our roster.</p>
+        <ul class="space-y-2 text-sm text-zinc-500">
+            <li class="flex items-center"><span class="w-1.5 h-1.5 bg-white rounded-full mr-2"></span> 500-10,000 PR</li>
+            <li class="flex items-center"><span class="w-1.5 h-1.5 bg-white rounded-full mr-2"></span> Use Code: team.void</li>
+        </ul>
+    </div>
+</div>
             
             <!-- New Mod Requirements Section -->
             <div class="mod-requirements">
@@ -2298,4 +2211,5 @@
     </script>
 </body>
 </html>
+
 
