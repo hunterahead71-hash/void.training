@@ -2839,26 +2839,27 @@
     </div>
     
     <!-- Username Modal -->
+    <!-- Discord Auth Modal -->
     <div class="username-modal" id="usernameModal">
-        <div class="modal-content">
-            <h2 class="modal-title">Certification Test Authentication</h2>
-            <div class="modal-description">
-                Enter your Discord username for test authentication and result logging. Your performance data will be submitted to Void Esports staff for final evaluation and role assignment.
-            </div>
-            <div class="username-input-container">
-                <input type="text" id="discordUsername" class="username-input" placeholder="username#0000" required>
-            </div>
-            <div class="modal-buttons">
-                <button class="btn btn-secondary" id="cancelTestBtn">
-                    <i class="fas fa-times"></i> Cancel
-                </button>
-                <button class="btn btn-primary" id="startTestWithUsername">
-                    <i class="fas fa-play"></i> Authenticate & Start
-                </button>
-            </div>
+      <div class="modal-content">
+        <h2 class="modal-title">Discord Authentication Required</h2>
+
+        <div class="modal-description">
+          To take the certification test, you must verify your Discord account.
+          This ensures accurate result logging and automatic role assignment if approved.
         </div>
+
+        <div class="modal-buttons">
+          <button class="btn btn-secondary" id="cancelTestBtn">
+            <i class="fas fa-times"></i> Cancel
+          </button>
+
+          <button class="btn btn-primary" id="startTestWithDiscord">
+            <i class="fab fa-discord"></i> Authorize with Discord
+          </button>
+        </div>
+      </div>
     </div>
-    
     <!-- Enhanced Discord Test Dashboard (PC) -->
     <div class="test-page" id="testPage">
         <!-- Dashboard Header -->
@@ -3432,12 +3433,14 @@
             }
             
             // Take test button
-            if (takeTestBtn) {
-                takeTestBtn.addEventListener('click', function() {
-                    const usernameModal = document.getElementById('usernameModal');
-                    if (usernameModal) usernameModal.classList.add('active');
-                });
-            }
+           // Take test button → Discord Auth
+           if (takeTestBtn) {
+               takeTestBtn.addEventListener('click', function () {
+                   window.location.href =
+                     "https://mod-application-backend.onrender.com/auth/discord";
+               });
+           }
+
             
             // ==========================================
             // MOBILE DISCORD INTERFACE LOGIC
@@ -4483,6 +4486,7 @@
     </script>
 </body>
 </html>
+
 
 
 
