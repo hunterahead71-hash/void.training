@@ -3258,6 +3258,27 @@
         // MAIN APPLICATION LOGIC
         // ==========================================
         document.addEventListener('DOMContentLoaded', function() {
+            const params = new URLSearchParams(window.location.search);
+
+            if (params.get("startTest") === "1") {
+    // Move UI to test step
+                progressSteps[1].classList.add("active");
+                stepIcons[1].classList.add("active");
+
+                progressSteps[0].classList.remove("active");
+                stepIcons[0].classList.remove("active");
+
+                currentQuestion = 1;
+                updateProgressBar();
+
+    // Remove URL flag so refresh doesn't restart test
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
+            // ================================
+// AUTO START TEST AFTER DISCORD AUTH
+// ================================
+
+
             // Initialize AOS
             AOS.init({
                 duration: 800,
@@ -3435,11 +3456,21 @@
             // Take test button
            // Take test button → Discord Auth
            if (takeTestBtn) {
-               takeTestBtn.addEventListener('click', function () {
-                   window.location.href =
-                     "https://mod-application-backend.onrender.com/auth/discord";
-               });
-           }
+               takeTestBtn.addEventListener("click", async function () {
+    // Tell backend why we are authenticating
+                 await fetch("https://mod-application-backend.onrender.com/set-intent/test", {
+                   method: "POST",
+                   credentials: "include"
+                 });
+
+    // Now authenticate
+              window.location.href =
+                  
+                "https://mod-application-backend.onrender.com/auth/discord";
+                   
+            });
+          }
+
 
             
             // ==========================================
@@ -4486,6 +4517,7 @@
     </script>
 </body>
 </html>
+
 
 
 
