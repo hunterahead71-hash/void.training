@@ -17,6 +17,87 @@
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/components.css">
     <link rel="stylesheet" href="css/responsive.css">
+    
+    <style>
+        .completion-screen {
+            display: none;
+            text-align: center;
+            padding: 140px 0;
+            animation: fadeIn 0.8s ease;
+        }
+        
+        .completion-screen.active {
+            display: block;
+        }
+        
+        .completion-icon {
+            font-size: 96px;
+            color: #ff0033;
+            margin-bottom: 60px;
+            animation: float 8s ease-in-out infinite;
+            filter: drop-shadow(0 0 30px rgba(255, 0, 51, 0.5));
+        }
+        
+        .completion-title {
+            font-family: var(--font-heading);
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 32px;
+            color: white;
+            background: linear-gradient(135deg, white, var(--void-neon));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .completion-message {
+            font-size: 1.25rem;
+            max-width: 800px;
+            margin: 0 auto 80px;
+            color: rgba(255, 255, 255, 0.75);
+            line-height: 1.8;
+        }
+        
+        .completion-buttons {
+            display: flex;
+            gap: 24px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn-test {
+            background: transparent;
+            color: #00ffea;
+            border: 2px solid #00ffea;
+            padding: 16px 36px;
+            border-radius: 14px;
+            font-weight: 700;
+            font-size: 1.0625rem;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            font-family: var(--font-heading);
+        }
+        
+        .btn-test:hover {
+            background: rgba(0, 255, 234, 0.1);
+            box-shadow: 0 0 30px rgba(0, 255, 234, 0.3);
+            transform: translateY(-4px);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            33% { transform: translateY(-20px) rotate(5deg); }
+            66% { transform: translateY(10px) rotate(-5deg); }
+        }
+    </style>
 </head>
 <body class="font-satoshi">
     <!-- Admin Login Button -->
@@ -76,6 +157,8 @@
         });
         
         async function loadPartials() {
+            console.log("Loading partials...");
+            
             const partials = {
                 'header-section': 'partials/header.html',
                 'ticket-types-section': 'partials/ticket-types.html',
@@ -85,7 +168,25 @@
                 'footer-section': 'partials/footer.html'
             };
             
+            // Load completion screen FIRST so it's ready
+            try {
+                const completionResponse = await fetch('partials/completion.html');
+                if (completionResponse.ok) {
+                    const completionHtml = await completionResponse.text();
+                    const completionScreen = document.getElementById('completion-screen');
+                    if (completionScreen) {
+                        completionScreen.innerHTML = completionHtml;
+                        console.log("Completion screen loaded");
+                    }
+                }
+            } catch (error) {
+                console.error("Error loading completion screen:", error);
+            }
+            
+            // Load other partials
             for (const [elementId, filePath] of Object.entries(partials)) {
+                if (elementId === 'completion-screen') continue; // Already loaded
+                
                 try {
                     const response = await fetch(filePath);
                     if (response.ok) {
@@ -93,10 +194,11 @@
                         const element = document.getElementById(elementId);
                         if (element) {
                             element.innerHTML = html;
+                            console.log(`Loaded ${filePath}`);
                             
-                            // Initialize quiz immediately after loading
+                            // Initialize quiz after loading
                             if (elementId === 'quizSection' && typeof initializeQuiz === 'function') {
-                                setTimeout(initializeQuiz, 100);
+                                setTimeout(initializeQuiz, 300);
                             }
                         }
                     } else {
@@ -106,6 +208,8 @@
                     console.error(`Error loading ${filePath}:`, error);
                 }
             }
+            
+            console.log("All partials loaded");
         }
     </script>
 </body>
