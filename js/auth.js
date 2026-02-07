@@ -110,7 +110,7 @@ class AuthManager {
                 takeTestBtn.disabled = true;
             }
             
-            // Set test intent - USING GET INSTEAD OF POST
+            // Set test intent
             console.log("Setting test intent...");
             const response = await fetch(`${this.baseUrl}/set-test-intent`, {
                 method: 'GET',
@@ -138,6 +138,30 @@ class AuthManager {
             }
         }
     }
+    
+    async startAdminLogin() {
+        try {
+            console.log("Starting admin login flow...");
+            
+            // Show loading on admin button if it exists
+            const adminLoginBtn = document.getElementById('adminLoginBtn');
+            if (adminLoginBtn) {
+                const originalText = adminLoginBtn.innerHTML;
+                adminLoginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging in...';
+                
+                // Reset after 2 seconds if something goes wrong
+                setTimeout(() => {
+                    adminLoginBtn.innerHTML = originalText;
+                }, 2000);
+            }
+            
+            // Redirect directly to admin Discord OAuth
+            window.location.href = `${this.baseUrl}/auth/discord/admin`;
+        } catch (error) {
+            console.error("Admin login error:", error);
+            alert("Failed to start admin login. Please try again.");
+        }
+    }
 }
 
 // Initialize auth manager
@@ -149,5 +173,19 @@ document.addEventListener('click', function(e) {
         e.preventDefault();
         console.log("Take test button clicked");
         window.authManager.startTest();
+    }
+});
+
+// Update admin login button to use our auth manager
+document.addEventListener('DOMContentLoaded', function() {
+    const adminLoginBtn = document.getElementById('adminLoginBtn');
+    if (adminLoginBtn) {
+        // Replace the href with onclick
+        adminLoginBtn.href = "#";
+        adminLoginBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            console.log("Admin login button clicked");
+            window.authManager.startAdminLogin();
+        });
     }
 });
