@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bot Status Check</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            padding: 20px; 
+            background: #36393f;
+            color: white;
+        }
+        .status-card {
+            background: #202225;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 10px 0;
+        }
+        .status-online { border-left: 5px solid #3ba55c; }
+        .status-offline { border-left: 5px solid #ed4245; }
+        .status-loading { border-left: 5px solid #faa81a; }
+        .btn {
+            padding: 10px 20px;
+            background: #5865f2;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        pre {
+            background: #2f3136;
+            padding: 15px;
+            border-radius: 5px;
+            overflow: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>🤖 Bot Status Checker</h1>
+    
+    <div class="status-card status-loading" id="statusCard">
+        <h2>Loading bot status...</h2>
+    </div>
+    
+    <button class="btn" onclick="checkStatus()">🔄 Refresh Status</button>
+    <button class="btn" onclick="testBot()">🧪 Test Bot Functions</button>
+    
+    <div id="results"></div>
+    
+    <script>
+        const baseUrl = 'https://mod-application-backend.onrender.com';
+        
+        async function checkStatus() {
+            const statusCard = document.getElementById('statusCard');
+            statusCard.innerHTML = '<h2>Checking bot status...</h2>';
+            statusCard.className = 'status-card status-loading';
+            
+            try {
+                const response = await fetch(`${baseUrl}/bot/debug`);
+                const data = await response.json();
+                
+                let statusHtml = '';
+                
+                if (data.bot.connected) {
+                    statusHtml = `
+                        <h2 style="color: #3ba55c;">✅ Bot Online</h2>
+                        <p><strong>Bot User:</strong> ${data.bot.user}</p>
+                        <p><strong>Uptime:</strong> ${Math.floor(data.bot.uptime / 1000 / 60)} minutes</p>
+                    `;
+                    statusCard.className = 'status-card status-online';
+                } else {
+                    statusHtml = `
+                        <h2 style="color: #ed4245;">❌ Bot Offline</h2>
+                        <p>Bot is not connected to Discord</p>
+                    `;
+                    statusCard.className = 'status-card status-offline';
+                }
+                
+                statusHtml += `
+                    <h3>Environment Check:</h3>
+                    <p>Guild ID: ${data.environment.guildId}</p>
+                    <p>Mod Role ID: ${data.environment.modRoleId}</p>
+                    <p>Bot Token: ${data.environment.botToken}</p>
+                    
+                    <h3>Invite Link:</h3>
+                    <p><a href="${data.instructions.inviteLink}" target="_blank">${data.instructions.inviteLink}</a></p>
+                `;
+                
+                statusCard.innerHTML = statusHtml;
+                
+            } catch (error) {
+                statusCard.innerHTML = `<h2 style="color: #ed4245;">❌ Error</h2><p>${error.message}</p>`;
+                statusCard.className = 'status-card status-offline';
+            }
+        }
+        
+        async function testBot() {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '<div class="status-card status-loading"><h3>Testing bot functions...</h3></div>';
+            
+            const testUserId = prompt('Enter a Discord User ID to test with:');
+            if (!testUserId) return;
+            
+            try {
+                const response = await fetch(`${baseUrl}/bot/test-assign-role`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        userId: testUserId,
+                        testUsername: 'Test User'
+                    })
+                });
+                
+                const result = await response.json();
+                
+                let resultHtml = '<div class="status-card">';
+                resultHtml += '<h3>🧪 Test Results</h3>';
+                resultHtml += `<pre>${JSON.stringify(result, null, 2)}</pre>`;
+                resultHtml += '</div>';
+                
+                resultsDiv.innerHTML = resultHtml;
+                
+            } catch (error) {
+                resultsDiv.innerHTML = `<div class="status-card status-offline"><h3>❌ Test Failed</h3><p>${error.message}</p></div>`;
+            }
+        }
+        
+        // Auto-check on load
+        checkStatus();
+    </script>
+</body>
+</html>
