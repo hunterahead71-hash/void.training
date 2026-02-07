@@ -1,4 +1,4 @@
-// Discord Test Interface Logic (PC)
+// Discord Test Interface Logic (PC) - FIXED VERSION
 document.addEventListener('DOMContentLoaded', function() {
     // Test state variables for PC
     let testCurrentQuestion = 0;
@@ -12,13 +12,14 @@ document.addEventListener('DOMContentLoaded', function() {
     let testQuestions = [];
     let sessionTranscript = [];
     let testStartTime;
+    let usedQuestionIds = new Set(); // Track used questions to prevent duplicates
     
-    // Test questions pool
+    // Test questions pool - FIXED: Removed duplicates and enhanced questions
     const allTestQuestions = [
         {
             id: 1,
             userMessage: "Hi i want to join void",
-            correctKeywords: ["age", "how old", "years old", "roster", "channel", "requirement", "fit", "category", "join", "hello", "hi", "help", "assist", "requirements", "first", "initial"],
+            correctKeywords: ["age", "how old", "years old", "roster", "channel", "requirement", "fit", "category", "join", "hello", "hi", "help", "assist", "requirements", "first", "initial", "welcome"],
             requiredMatches: 2,
             user: "Nicks Cold",
             avatarColor: "#ed4245",
@@ -27,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function() {
         {
             id: 2,
             userMessage: "i want to join as a pro",
-            correctKeywords: ["tracker", "fortnite tracker", "stats", "ranking", "pr", "send", "trapped", "cheif", "ping", "earnings", "wait", "pro", "information"],
+            correctKeywords: ["tracker", "fortnite tracker", "stats", "ranking", "pr", "send", "trapped", "chief", "ping", "earnings", "wait", "pro", "information", "verify", "proof", "power ranking"],
             requiredMatches: 2,
             user: "Nicks Cold",
             avatarColor: "#ed4245",
@@ -36,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function() {
         {
             id: 3,
             userMessage: "i want to join as creative roster",
-            correctKeywords: ["clip", "video", "footage", "freebuilding", "send", "creativedepartment", "ping", "wait", "at least 2", "freebuild", "review"],
+            correctKeywords: ["clip", "video", "footage", "freebuilding", "send", "creativedepartment", "ping", "wait", "at least 2", "freebuild", "review", "creative", "skills", "show"],
             requiredMatches: 2,
             user: "Nicks Cold",
             avatarColor: "#ed4245",
@@ -45,7 +46,7 @@ document.addEventListener('DOMContentLoaded', function() {
         {
             id: 4,
             userMessage: "i want to join as academy player",
-            correctKeywords: ["tracker", "fortnite tracker", "send", "verify", "username", "name change", "add void", "team.void", "proof", "academy", "requirements"],
+            correctKeywords: ["tracker", "fortnite tracker", "send", "verify", "username", "name change", "add void", "team.void", "proof", "academy", "requirements", "power ranking", "pr", "represent"],
             requiredMatches: 2,
             user: "Nicks Cold",
             avatarColor: "#ed4245",
@@ -54,7 +55,7 @@ document.addEventListener('DOMContentLoaded', function() {
         {
             id: 5,
             userMessage: "im 12 years old is that okay?",
-            correctKeywords: ["cheif", "trapped", "ping", "underage", "minimum age", "13", "not allowed", "ban", "sorry", "violation"],
+            correctKeywords: ["cheif", "trapped", "ping", "underage", "minimum age", "13", "not allowed", "ban", "sorry", "violation", "rules", "discord tos", "terms of service"],
             requiredMatches: 2,
             user: "Nicks Cold",
             avatarColor: "#ed4245",
@@ -63,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function() {
         {
             id: 6,
             userMessage: "i want to join as void grinder",
-            correctKeywords: ["username", "discord name", "add void", "team.void", "proof", "change", "grinder", "represent"],
+            correctKeywords: ["username", "discord name", "add void", "team.void", "proof", "change", "grinder", "represent", "name", "fortnite name", "in-game"],
             requiredMatches: 2,
             user: "Nicks Cold",
             avatarColor: "#ed4245",
@@ -72,7 +73,7 @@ document.addEventListener('DOMContentLoaded', function() {
         {
             id: 7,
             userMessage: "i will nuke this server",
-            correctKeywords: ["cheif", "trapped", "ping", "threat", "dangerous", "ban", "immediately", "security", "nuke", "unacceptable"],
+            correctKeywords: ["cheif", "trapped", "ping", "threat", "dangerous", "ban", "immediately", "security", "nuke", "unacceptable", "report", "admin", "danger"],
             requiredMatches: 2,
             user: "Nicks Cold",
             avatarColor: "#ed4245",
@@ -81,18 +82,49 @@ document.addEventListener('DOMContentLoaded', function() {
         {
             id: 8,
             userMessage: "i wanna join as a content creator",
-            correctKeywords: ["social", "social media", "links", "send", "contentdep", "ping", "wait", "followers", "content", "review"],
+            correctKeywords: ["social", "social media", "links", "send", "contentdep", "ping", "wait", "followers", "content", "review", "youtube", "twitch", "tiktok", "platform"],
             requiredMatches: 2,
             user: "Nicks Cold",
             avatarColor: "#ed4245",
             explanation: "Ask for social media links and ping @contentdep for content creator applications."
+        },
+        {
+            id: 9,
+            userMessage: "what are the requirements for semi-pro?",
+            correctKeywords: ["power ranking", "pr", "10k", "25k", "earnings", "tracker", "fortnite", "consistently", "represent", "code", "requirements", "explain"],
+            requiredMatches: 2,
+            user: "Nicks Cold",
+            avatarColor: "#ed4245",
+            explanation: "Explain the semi-pro requirements: 10,000-25,000 PR, consistent placement, represent us in game, use Fortnite code, must have earnings."
+        },
+        {
+            id: 10,
+            userMessage: "how do i apply for streamer?",
+            correctKeywords: ["followers", "viewers", "average", "stream", "social media", "links", "contentdep", "ping", "requirements", "twitch", "youtube", "schedule"],
+            requiredMatches: 2,
+            user: "Nicks Cold",
+            avatarColor: "#ed4245",
+            explanation: "Ask for follower count, average viewers, streaming schedule, and social media links, then ping @contentdep."
         }
     ];
     
-    // Get random test questions
+    // Get random test questions WITHOUT duplicates
     function getRandomTestQuestions() {
-        const shuffled = [...allTestQuestions].sort(() => 0.5 - Math.random());
-        return shuffled.slice(0, 8);
+        const availableQuestions = allTestQuestions.filter(q => !usedQuestionIds.has(q.id));
+        const shuffled = [...availableQuestions].sort(() => 0.5 - Math.random());
+        const selected = shuffled.slice(0, 8);
+        
+        // Reset used IDs if we've used all questions
+        if (availableQuestions.length < 8) {
+            usedQuestionIds.clear();
+            const allShuffled = [...allTestQuestions].sort(() => 0.5 - Math.random());
+            const newSelected = allShuffled.slice(0, 8);
+            newSelected.forEach(q => usedQuestionIds.add(q.id));
+            return newSelected;
+        }
+        
+        selected.forEach(q => usedQuestionIds.add(q.id));
+        return selected;
     }
     
     // Initialize Discord interface (PC)
@@ -124,7 +156,9 @@ document.addEventListener('DOMContentLoaded', function() {
             messageInput.addEventListener('keydown', function(e) {
                 if (e.key === 'Enter' && !e.shiftKey) {
                     e.preventDefault();
-                    sendTestMessage();
+                    if (!sendButton.disabled) {
+                        sendTestMessage();
+                    }
                 }
             });
         }
@@ -174,6 +208,22 @@ document.addEventListener('DOMContentLoaded', function() {
             if (userAvatarInitial) userAvatarInitial.textContent = window.userDiscordUsername.charAt(0).toUpperCase();
         }
         
+        // Fix font issues for icons
+        const style = document.createElement('style');
+        style.textContent = `
+            .test-page i,
+            .test-page .fas,
+            .test-page .fab,
+            .test-page .fa {
+                font-family: 'Font Awesome 6 Free', 'Font Awesome 6 Brands', 'FontAwesome' !important;
+            }
+            .user-controls .control-btn i,
+            .chat-controls .header-btn i {
+                font-family: 'Font Awesome 6 Free', 'FontAwesome' !important;
+            }
+        `;
+        document.head.appendChild(style);
+        
         // Start test automatically if we have user data
         if (window.userDiscordUsername && window.userDiscordUsername !== 'User') {
             console.log("Auto-starting test for:", window.userDiscordUsername);
@@ -212,7 +262,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
             </div>
             <div class="message-content">
-                <div class="message">${content}</div>
+                <div class="message">${content.replace(/\n/g, '<br>')}</div>
             </div>
         `;
         
@@ -232,6 +282,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Send test message (PC)
     function sendTestMessage() {
         const messageInput = document.querySelector('.message-input');
+        const sendButton = document.querySelector('.message-input-send');
+        
         if (!messageInput || !testActive) return;
         
         const userMessage = messageInput.value.trim();
@@ -242,7 +294,6 @@ document.addEventListener('DOMContentLoaded', function() {
         
         messageInput.value = '';
         messageInput.style.height = 'auto';
-        const sendButton = document.querySelector('.message-input-send');
         if (sendButton) sendButton.disabled = true;
         
         const isCorrect = checkTestAnswer(userMessage);
@@ -257,11 +308,13 @@ document.addEventListener('DOMContentLoaded', function() {
             } else {
                 endTest();
             }
-        }, 1000);
+        }, 1500);
     }
     
     // Check test answer (PC)
     function checkTestAnswer(userAnswer) {
+        if (testCurrentQuestion >= testQuestions.length) return false;
+        
         const question = testQuestions[testCurrentQuestion];
         const userAnswerLower = userAnswer.toLowerCase();
         
@@ -293,6 +346,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 }
             }
+            
+            // Show correct feedback
+            addMessage("Void Bot", `✅ Correct! ${question.explanation}`, "#5865f2", true);
         } else {
             const messagesContainer = document.querySelector('.messages-container');
             if (messagesContainer) {
@@ -309,6 +365,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 }
             }
+            
+            // Show incorrect feedback
+            addMessage("Void Bot", `❌ Not quite right. ${question.explanation}`, "#5865f2", true);
         }
         
         return isCorrect;
@@ -331,6 +390,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function startDiscordTest() {
         console.log("Starting Discord test...");
         
+        usedQuestionIds.clear();
         testQuestions = getRandomTestQuestions();
         testTotalQuestions = testQuestions.length;
         testStartTime = Date.now();
@@ -367,7 +427,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Show welcome message
         setTimeout(() => {
-            addMessage("Void Bot", `Welcome to the Void Esports Moderator Certification Test, ${window.userDiscordUsername}! You'll be presented with 8 simulated scenarios. Respond as you would as a moderator. Good luck!`, "#5865f2", true);
+            addMessage("Void Bot", `Welcome to the Void Esports Moderator Certification Test, ${window.userDiscordUsername}! You'll be presented with ${testTotalQuestions} simulated scenarios. Respond as you would as a moderator. Good luck!`, "#5865f2", true);
             
             // Start question sequence
             setTimeout(() => {
@@ -434,7 +494,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     
                     if (testResultMessage) {
                         testResultMessage.textContent = passed 
-                            ? `Congratulations! You passed with a score of ${testScore}/${testTotalQuestions}.` 
+                            ? `Congratulations! You passed with a score of ${testScore}/${testTotalQuestions}. Minimum passing score is ${passingScore}.` 
                             : `You scored ${testScore}/${testTotalQuestions}. Minimum passing score is ${passingScore}.`;
                     }
                     
@@ -456,7 +516,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 submissionStatus.className = "submission-status";
                             }
                             
-                            // Send to your backend API
+                            // Prepare application data
                             const applicationData = {
                                 answers: conversationLog,
                                 score: `${testScore}/${testTotalQuestions}`,
@@ -476,6 +536,9 @@ document.addEventListener('DOMContentLoaded', function() {
                                 })
                             };
                             
+                            console.log("Submitting application data:", applicationData);
+                            
+                            // Send to backend API
                             const backendResponse = await fetch("https://mod-application-backend.onrender.com/apply", {
                                 method: "POST",
                                 credentials: "include",
@@ -485,9 +548,12 @@ document.addEventListener('DOMContentLoaded', function() {
                                 body: JSON.stringify(applicationData)
                             });
                             
-                            const backendResult = await backendResponse.json();
+                            console.log("Backend response status:", backendResponse.status);
                             
                             if (backendResponse.ok) {
+                                const backendResult = await backendResponse.json();
+                                console.log("Backend result:", backendResult);
+                                
                                 if (submissionStatus) {
                                     submissionStatus.innerHTML = '<i class="fas fa-check-circle"></i> Results submitted successfully!';
                                     submissionStatus.className = "submission-status submission-success";
@@ -496,18 +562,36 @@ document.addEventListener('DOMContentLoaded', function() {
                                 // Redirect to success page after 3 seconds
                                 setTimeout(() => {
                                     const successUrl = `success.html?discord_username=${encodeURIComponent(window.userDiscordUsername)}&final_score=${testScore}/${testTotalQuestions}&pass_fail=${passed ? 'PASS' : 'FAIL'}&test_date=${encodeURIComponent(new Date().toLocaleString())}&user_id=${window.userDiscordId}`;
+                                    console.log("Redirecting to:", successUrl);
                                     window.location.href = successUrl;
                                 }, 3000);
                                 
                             } else {
-                                throw new Error("Backend submission failed");
+                                const errorText = await backendResponse.text();
+                                console.error("Backend submission failed:", errorText);
+                                throw new Error(`Backend submission failed: ${backendResponse.status} ${errorText}`);
                             }
                         } catch (error) {
                             console.error('Submission error:', error);
                             
                             if (submissionStatus) {
-                                submissionStatus.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Submission failed. Please contact staff.';
+                                submissionStatus.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Submission error: ${error.message}. Please contact staff.`;
                                 submissionStatus.className = "submission-status submission-error";
+                            }
+                            
+                            // Show retry button
+                            const testResultButtons = document.querySelector('.test-result-buttons');
+                            if (testResultButtons) {
+                                const retryBtn = document.createElement('button');
+                                retryBtn.className = 'test-result-btn primary';
+                                retryBtn.style.marginTop = '10px';
+                                retryBtn.innerHTML = '<i class="fas fa-redo"></i> Retry Submission';
+                                retryBtn.onclick = async () => {
+                                    retryBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Retrying...';
+                                    retryBtn.disabled = true;
+                                    await endTest(); // Recursively call endTest to retry
+                                };
+                                testResultButtons.appendChild(retryBtn);
                             }
                         }
                     }, 1000);
@@ -523,6 +607,7 @@ document.addEventListener('DOMContentLoaded', function() {
         userAnswers = [];
         correctAnswers = [];
         sessionTranscript = [];
+        usedQuestionIds.clear();
         
         const discordScoreValue = document.getElementById('discordScoreValue');
         const discordProgressFill = document.getElementById('discordProgressFill');
