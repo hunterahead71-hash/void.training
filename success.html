@@ -3,338 +3,220 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Test Submission Successful - Void Esports</title>
+    <title>Test Submitted Successfully | Void Esports</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root {
-            --void-blood: #ff0033;
-            --void-neon: #00ffea;
-            --discord-bg: #36393f;
-            --discord-primary: #202225;
-            --discord-green: #3ba55c;
-            --discord-red: #ed4245;
-            --discord-yellow: #faa81a;
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
         body {
-            font-family: 'Whitney', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-            background: var(--discord-bg);
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #000010 0%, #0a0a1a 50%, #1a002a 100%);
             color: white;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
+            margin: 0;
             padding: 20px;
         }
         
         .success-container {
+            background: rgba(20, 20, 40, 0.9);
+            border-radius: 20px;
+            padding: 50px;
             max-width: 800px;
             width: 100%;
-            background: var(--discord-primary);
-            border-radius: 16px;
-            padding: 60px 40px;
             text-align: center;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 2px solid #ff0033;
+            box-shadow: 0 0 50px rgba(255, 0, 51, 0.3);
         }
         
         .success-icon {
-            font-size: 96px;
-            margin-bottom: 40px;
-            animation: float 6s ease-in-out infinite;
+            font-size: 80px;
+            color: #00ffea;
+            margin-bottom: 30px;
+            animation: float 3s ease-in-out infinite;
         }
         
-        .success-icon.pass {
-            color: var(--discord-green);
-            filter: drop-shadow(0 0 30px rgba(59, 165, 92, 0.5));
-        }
-        
-        .success-icon.fail {
-            color: var(--discord-yellow);
-            filter: drop-shadow(0 0 30px rgba(250, 168, 26, 0.5));
-        }
-        
-        .success-title {
-            font-size: 48px;
-            font-weight: 800;
+        h1 {
+            color: white;
+            font-size: 42px;
             margin-bottom: 20px;
-            background: linear-gradient(135deg, var(--void-blood), var(--void-neon));
+            background: linear-gradient(135deg, #ff0033, #00ffea);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
         }
         
-        .success-message {
-            font-size: 20px;
-            color: rgba(255, 255, 255, 0.8);
-            line-height: 1.6;
-            margin-bottom: 40px;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        
-        .result-details {
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 12px;
-            padding: 30px;
-            margin: 40px 0;
+        .user-info {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 30px 0;
             text-align: left;
         }
         
-        .detail-row {
+        .info-row {
             display: flex;
             justify-content: space-between;
-            padding: 15px 0;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
         
-        .detail-row:last-child {
+        .info-row:last-child {
             border-bottom: none;
+            margin-bottom: 0;
         }
         
-        .detail-label {
-            color: rgba(255, 255, 255, 0.6);
-            font-weight: 600;
+        .label {
+            color: #00ffea;
+            font-weight: bold;
         }
         
-        .detail-value {
+        .value {
             color: white;
-            font-weight: 700;
         }
         
-        .pass-badge {
-            background: rgba(59, 165, 92, 0.2);
-            color: var(--discord-green);
-            padding: 8px 20px;
-            border-radius: 20px;
-            font-weight: 700;
-            display: inline-block;
-            border: 1px solid var(--discord-green);
+        .score-display {
+            font-size: 60px;
+            font-weight: bold;
+            margin: 30px 0;
+            color: #00ffea;
+            text-shadow: 0 0 20px rgba(0, 255, 234, 0.5);
         }
         
-        .fail-badge {
-            background: rgba(250, 168, 26, 0.2);
-            color: var(--discord-yellow);
-            padding: 8px 20px;
-            border-radius: 20px;
-            font-weight: 700;
-            display: inline-block;
-            border: 1px solid var(--discord-yellow);
-        }
-        
-        .next-steps {
-            background: rgba(88, 101, 242, 0.1);
-            border-radius: 12px;
-            padding: 25px;
-            margin: 40px 0;
-            border-left: 4px solid var(--discord-green);
-        }
-        
-        .next-steps h3 {
-            color: var(--void-neon);
-            margin-bottom: 15px;
-            font-size: 22px;
-        }
-        
-        .next-steps ul {
-            list-style: none;
-            padding-left: 20px;
-        }
-        
-        .next-steps li {
+        .message {
+            font-size: 18px;
+            line-height: 1.6;
             color: rgba(255, 255, 255, 0.8);
-            margin-bottom: 12px;
-            padding-left: 10px;
-            position: relative;
+            margin-bottom: 40px;
         }
         
-        .next-steps li:before {
-            content: '→';
-            position: absolute;
-            left: -15px;
-            color: var(--void-neon);
-        }
-        
-        .action-buttons {
+        .buttons {
             display: flex;
             gap: 20px;
             justify-content: center;
-            margin-top: 50px;
             flex-wrap: wrap;
         }
         
-        .action-btn {
-            padding: 18px 36px;
+        .btn {
+            padding: 15px 30px;
             border-radius: 12px;
-            font-weight: 700;
-            font-size: 18px;
-            cursor: pointer;
-            border: none;
-            transition: all 0.3s ease;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 16px;
             display: inline-flex;
             align-items: center;
-            gap: 12px;
-            text-decoration: none;
-            font-family: 'Whitney', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            gap: 10px;
+            transition: all 0.3s ease;
         }
         
-        .action-btn.primary {
-            background: var(--void-blood);
+        .btn-primary {
+            background: linear-gradient(135deg, #ff0033, #cc0029);
             color: white;
+            border: none;
         }
         
-        .action-btn.primary:hover {
-            background: #ff3355;
-            transform: translateY(-4px);
-            box-shadow: 0 10px 30px rgba(255, 0, 51, 0.4);
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(255, 0, 51, 0.4);
         }
         
-        .action-btn.secondary {
+        .btn-secondary {
             background: transparent;
-            color: white;
-            border: 2px solid rgba(255, 255, 255, 0.2);
+            color: #00ffea;
+            border: 2px solid #00ffea;
         }
         
-        .action-btn.secondary:hover {
-            border-color: var(--void-neon);
+        .btn-secondary:hover {
             background: rgba(0, 255, 234, 0.1);
-            transform: translateY(-4px);
+            transform: translateY(-3px);
+        }
+        
+        .footer {
+            margin-top: 40px;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 14px;
         }
         
         @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            33% { transform: translateY(-15px) rotate(5deg); }
-            66% { transform: translateY(10px) rotate(-5deg); }
-        }
-        
-        @media (max-width: 768px) {
-            .success-container {
-                padding: 40px 20px;
-            }
-            
-            .success-title {
-                font-size: 36px;
-            }
-            
-            .success-message {
-                font-size: 18px;
-            }
-            
-            .action-buttons {
-                flex-direction: column;
-            }
-            
-            .action-btn {
-                width: 100%;
-                justify-content: center;
-            }
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
         }
     </style>
 </head>
 <body>
     <div class="success-container">
-        <div class="success-icon" id="successIcon">
-            <i class="fas fa-trophy"></i>
+        <div class="success-icon">
+            <i class="fas fa-check-circle"></i>
         </div>
         
-        <h1 class="success-title" id="successTitle">Test Submission Complete</h1>
+        <h1>Test Submitted Successfully!</h1>
         
-        <p class="success-message" id="successMessage">
-            Your moderator certification test has been submitted successfully. The results are being reviewed by our admin team.
-        </p>
+        <div class="message">
+            Your moderator certification test has been submitted for review. The results will be evaluated by our admin team shortly.
+            You will receive a Discord DM when your application has been processed.
+        </div>
         
-        <div class="result-details">
-            <div class="detail-row">
-                <span class="detail-label">Discord Username:</span>
-                <span class="detail-value" id="usernameDisplay">Loading...</span>
+        <div class="user-info">
+            <div class="info-row">
+                <span class="label">Discord Username:</span>
+                <span class="value" id="usernameDisplay">Loading...</span>
             </div>
-            <div class="detail-row">
-                <span class="detail-label">Test Score:</span>
-                <span class="detail-value" id="scoreDisplay">Loading...</span>
+            <div class="info-row">
+                <span class="label">Test Score:</span>
+                <span class="value" id="scoreDisplay">Loading...</span>
             </div>
-            <div class="detail-row">
-                <span class="detail-label">Result:</span>
-                <span class="detail-value">
-                    <span id="resultBadge" class="pass-badge">PASS</span>
-                </span>
+            <div class="info-row">
+                <span class="label">Test Date:</span>
+                <span class="value" id="dateDisplay">Loading...</span>
             </div>
-            <div class="detail-row">
-                <span class="detail-label">Submission Date:</span>
-                <span class="detail-value" id="dateDisplay">Loading...</span>
+            <div class="info-row">
+                <span class="label">Status:</span>
+                <span class="value" style="color: #f59e0b;">⏳ Pending Review</span>
             </div>
         </div>
         
-        <div class="next-steps">
-            <h3><i class="fas fa-info-circle"></i> What happens next?</h3>
-            <ul>
-                <li>Your test results will be reviewed by our admin team within 24-48 hours</li>
-                <li>You will receive a Discord DM with the final decision</li>
-                <li>If accepted, you'll be granted the moderator role in our Discord server</li>
-                <li>Check the #announcements channel for any updates</li>
-            </ul>
-        </div>
-        
-        <div class="action-buttons">
-            <a href="https://hunterahead71-hash.github.io/void.training/" class="action-btn secondary">
+        <div class="buttons">
+            <a href="https://hunterahead71-hash.github.io/void.training/" class="btn btn-primary">
                 <i class="fas fa-home"></i> Return to Training
             </a>
-            <a href="https://discord.gg/dqHF9HPucf" class="action-btn primary" target="_blank">
+            <a href="https://discord.gg/dqHF9HPucf" class="btn btn-secondary" target="_blank">
                 <i class="fab fa-discord"></i> Join Discord Server
             </a>
+            <a href="https://mod-application-backend.onrender.com/auth/discord" class="btn btn-secondary">
+                <i class="fas fa-redo"></i> Retake Test
+            </a>
+        </div>
+        
+        <div class="footer">
+            <p>Void Esports Mod Certification System • Made by Nicks Cold</p>
+            <p>© 2026 Void Esports. All rights reserved.</p>
         </div>
     </div>
-
+    
     <script>
         // Get URL parameters
         const urlParams = new URLSearchParams(window.location.search);
-        const discordUsername = urlParams.get('discord_username') || 'User';
-        const finalScore = urlParams.get('final_score') || '0/8';
-        const passFail = urlParams.get('pass_fail') || 'FAIL';
-        const testDate = urlParams.get('test_date') || new Date().toLocaleString();
-        const userId = urlParams.get('user_id') || '0000';
+        const username = urlParams.get('discord_username') || 'User';
+        const score = urlParams.get('final_score') || '0/8';
+        const date = urlParams.get('test_date') || new Date().toLocaleString();
+        const passFail = urlParams.get('pass_fail') || 'UNKNOWN';
         
-        // Update UI with data
-        document.getElementById('usernameDisplay').textContent = discordUsername;
-        document.getElementById('scoreDisplay').textContent = finalScore;
-        document.getElementById('dateDisplay').textContent = testDate;
+        // Update display
+        document.getElementById('usernameDisplay').textContent = username;
+        document.getElementById('scoreDisplay').textContent = score;
+        document.getElementById('dateDisplay').textContent = date;
         
-        // Update result badge and icon
-        const successIcon = document.getElementById('successIcon');
-        const successTitle = document.getElementById('successTitle');
-        const successMessage = document.getElementById('successMessage');
-        const resultBadge = document.getElementById('resultBadge');
-        
+        // Color code based on pass/fail
+        const scoreDisplay = document.getElementById('scoreDisplay');
         if (passFail === 'PASS') {
-            successIcon.className = 'success-icon pass';
-            successIcon.innerHTML = '<i class="fas fa-trophy"></i>';
-            successTitle.textContent = 'Congratulations! Test Passed';
-            successMessage.textContent = `You passed the moderator certification test with a score of ${finalScore}! Your application is being reviewed and you should hear back within 24-48 hours.`;
-            resultBadge.className = 'pass-badge';
-            resultBadge.textContent = 'PASS';
-        } else {
-            successIcon.className = 'success-icon fail';
-            successIcon.innerHTML = '<i class="fas fa-redo"></i>';
-            successTitle.textContent = 'Test Completed';
-            successMessage.textContent = `You scored ${finalScore}. While this doesn't meet the passing threshold, you can retake the test after reviewing the training materials. The minimum passing score is 6/8.`;
-            resultBadge.className = 'fail-badge';
-            resultBadge.textContent = 'FAIL';
+            scoreDisplay.style.color = '#3ba55c';
+        } else if (passFail === 'FAIL') {
+            scoreDisplay.style.color = '#ed4245';
         }
         
-        // Log submission
-        console.log('Test submission details:', {
-            discordUsername,
-            finalScore,
-            passFail,
-            testDate,
-            userId
-        });
+        // Clear URL parameters
+        window.history.replaceState({}, document.title, window.location.pathname);
     </script>
 </body>
 </html>
