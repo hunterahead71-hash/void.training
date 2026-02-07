@@ -161,6 +161,11 @@ document.addEventListener('DOMContentLoaded', function() {
         takeTestBtn.addEventListener("click", async function() {
             console.log("Take test button clicked");
             
+            // Show loading state
+            const originalText = takeTestBtn.innerHTML;
+            takeTestBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Starting test...';
+            takeTestBtn.disabled = true;
+            
             try {
                 // Set test intent in backend session
                 const response = await fetch("https://mod-application-backend.onrender.com/set-intent/test", {
@@ -181,6 +186,8 @@ document.addEventListener('DOMContentLoaded', function() {
             } catch (error) {
                 console.error("Auth setup error:", error);
                 alert("Failed to start authentication. Please try again.");
+                takeTestBtn.innerHTML = originalText;
+                takeTestBtn.disabled = false;
             }
         });
     }
