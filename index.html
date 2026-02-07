@@ -10,7 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100;200;300;400;500;600;700;800&display=swap" rel="stylesheet">
     
-    <!-- Icons & Animations -->
+    <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <!-- Custom CSS -->
@@ -19,15 +19,35 @@
     <link rel="stylesheet" href="css/responsive.css">
     
     <style>
+        .quiz-instructions {
+            background: linear-gradient(135deg, rgba(255, 0, 51, 0.15), rgba(0, 255, 234, 0.05));
+            border: 1px solid rgba(255, 0, 51, 0.2);
+            border-radius: 20px;
+            padding: 48px;
+            margin: 80px 0;
+        }
+        
+        .quiz-instructions h3 {
+            font-family: var(--font-heading);
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 24px;
+            color: white;
+        }
+        
+        .question-card {
+            display: none;
+        }
+        
+        .answer-feedback {
+            display: none;
+        }
+        
         .completion-screen {
             display: none;
             text-align: center;
             padding: 140px 0;
             animation: fadeIn 0.8s ease;
-        }
-        
-        .completion-screen.active {
-            display: block;
         }
         
         .completion-icon {
@@ -127,90 +147,659 @@
         </div>
         
         <!-- Header -->
-        <div id="header-section"></div>
+        <div class="header" id="header">
+            <h1>Void Mod Training</h1>
+            <p>Comprehensive certification program for new Void Esports moderators. Master ticket handling, roster management, and community moderation through interactive scenarios and real-time testing.</p>
+            
+            <div class="progress-container">
+                <div class="progress-step active">
+                    <div class="step-icon active"><i class="fas fa-book"></i></div>
+                    <span>Learn</span>
+                </div>
+                
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                
+                <div class="progress-step">
+                    <div class="step-icon"><i class="fas fa-question-circle"></i></div>
+                    <span>Practice</span>
+                </div>
+                
+                <div class="progress-bar">
+                    <div class="progress-fill"></div>
+                </div>
+                
+                <div class="progress-step">
+                    <div class="step-icon"><i class="fas fa-flag-checkered"></i></div>
+                    <span>Complete</span>
+                </div>
+            </div>
+            
+            <div class="made-by">
+                Made by Nicks Cold
+            </div>
+        </div>
         
         <!-- Ticket Types Section -->
-        <div id="ticket-types-section"></div>
+        <div class="content-section" id="ticket-types">
+            <h2 class="section-title"><i class="fas fa-ticket-alt"></i> Ticket Types</h2>
+            
+            <div class="intro-text">
+                Your first and foremost responsibility as a mod is to efficiently manage the ticket system in Void Esports. We operate with two primary ticket categories, each requiring specific handling protocols.
+            </div>
+            
+            <div class="ticket-types">
+                <div class="ticket-card">
+                    <h3><i class="fas fa-users"></i> General Ticket</h3>
+                    <p>These are created by community members for support inquiries, moderator assistance, or reporting issues. Handle with professionalism and follow escalation procedures for complex matters.</p>
+                </div>
+                
+                <div class="ticket-card">
+                    <h3><i class="fas fa-user-plus"></i> Roster Ticket</h3>
+                    <p>Application channel for users seeking to join Void Esports. Initial response must include age verification and direction to appropriate resources. Follow structured onboarding workflow.</p>
+                </div>
+            </div>
+            
+            <div class="intro-text">
+                <strong>Protocol:</strong> All ticket responses should begin with professional greeting and age inquiry. Direct new applicants to the appropriate channels and maintain detailed records of all interactions.
+            </div>
+        </div>
         
         <!-- Roster Categories Section -->
-        <div id="roster-categories-section"></div>
+        <div class="content-section" id="roster-categories">
+            <h2 class="section-title"><i class="fas fa-layer-group"></i> Roster Categories & Requirements</h2>
+            
+            <div class="roster-categories">
+                <!-- Pro Roster -->
+                <div class="roster-card">
+                    <div class="roster-header">
+                        <div class="roster-icon">🏆</div>
+                        <div class="roster-title">Pro Roster</div>
+                    </div>
+                    <ul class="roster-requirements">
+                        <li>25,000+ Power Ranking</li>
+                        <li>$1,000+ in Official Fortnite Earnings</li>
+                        <li>Place and earn consistently</li>
+                        <li>Represent Us In Game and On Your Socials</li>
+                    </ul>
+                </div>
+                
+                <!-- Semi-Pro -->
+                <div class="roster-card">
+                    <div class="roster-header">
+                        <div class="roster-icon">🎮</div>
+                        <div class="roster-title">Semi-Pro</div>
+                    </div>
+                    <ul class="roster-requirements">
+                        <li>10,000-25,000 PR</li>
+                        <li>Place Consistently</li>
+                        <li>Represent us in Game</li>
+                        <li>Use our Fortnite Code</li>
+                        <li>Must have earnings</li>
+                    </ul>
+                </div>
+                
+                <!-- Academy Roster -->
+                <div class="roster-card">
+                    <div class="roster-header">
+                        <div class="roster-icon">🎓</div>
+                        <div class="roster-title">Academy Roster</div>
+                    </div>
+                    <ul class="roster-requirements">
+                        <li>500-10,000 PR</li>
+                        <li>Place Consistently</li>
+                        <li>Represent us in Game</li>
+                        <li>Use our Fortnite Code</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Quiz Instructions -->
+            <div class="quiz-instructions" id="quiz">
+                <h3><i class="fas fa-info-circle"></i> Interactive Training Phase</h3>
+                <p>Proceed to the practical assessment module. You'll encounter simulated scenarios requiring appropriate moderator responses. Each question evaluates application of the protocols detailed above.</p>
+                <button class="btn btn-primary" id="startQuizBtn">
+                    <i class="fas fa-play-circle"></i> Begin Practical Assessment
+                </button>
+            </div>
+        </div>
         
-        <!-- Training Quiz Section -->
-        <div class="training-quiz" id="quizSection" style="display: none;"></div>
+        <!-- Training Quiz Section (HIDDEN BY DEFAULT) -->
+        <div class="training-quiz" id="quizSection" style="display: none;">
+            <h2 class="section-title"><i class="fas fa-graduation-cap"></i> Practical Assessment</h2>
+            
+            <!-- Question 1 -->
+            <div class="question-card" id="question1">
+                <div class="question-header">
+                    <div class="question-title">Scenario 1: General Roster Inquiry</div>
+                    <div class="question-number">Question 1 of 7</div>
+                </div>
+                
+                <div class="question-description">
+                    <p>A user creates a roster ticket with the message: <em>"I want to join the team, what should I do?"</em></p>
+                    <p><strong>Task:</strong> Compose your initial response as the handling moderator.</p>
+                </div>
+                
+                <textarea class="answer-box" placeholder="Write your professional moderator response here..."></textarea>
+                
+                <div class="quiz-buttons">
+                    <button class="btn btn-secondary" id="skipBtn">
+                        <i class="fas fa-forward"></i> Skip Question
+                    </button>
+                    <button class="btn btn-primary check-answer-btn" data-question="1">
+                        <i class="fas fa-check-circle"></i> Evaluate Response
+                    </button>
+                </div>
+                
+                <div class="answer-feedback" id="feedback1">
+                    <div class="feedback-title"><i class="fas fa-lightbulb"></i> Protocol Compliance</div>
+                    <div class="correct-answer">
+                        <p><strong>Optimal Response:</strong> "Hello! What's your age and how may I assist you today? Please review the requirements in 🎯┃how-to-join-roster and identify which category best fits your qualifications."</p>
+                    </div>
+                    <div class="correction-note">
+                        <p><strong>Key Elements:</strong> Age inquiry (mandatory), professional greeting, direction to appropriate resource channel, invitation for self-assessment.</p>
+                        <p><strong>Avoid:</strong> Immediate approval, vague directions, omitting age verification.</p>
+                    </div>
+                    <div class="quiz-buttons" style="margin-top: 20px;">
+                        <button class="btn btn-success next-question-btn" data-next="2">
+                            <i class="fas fa-arrow-right"></i> Next Scenario
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Question 2 -->
+            <div class="question-card" id="question2">
+                <div class="question-header">
+                    <div class="question-title">Scenario 2: Pro/Semi-Pro Application</div>
+                    <div class="question-number">Question 2 of 7</div>
+                </div>
+                
+                <div class="question-description">
+                    <p>A user submits an application for Pro or Semi-Pro roster position.</p>
+                    <p><strong>Task:</strong> Outline your verification and escalation procedure.</p>
+                </div>
+                
+                <textarea class="answer-box" placeholder="Detail your step-by-step handling process..."></textarea>
+                
+                <div class="quiz-buttons">
+                    <button class="btn btn-secondary prev-question-btn" data-prev="1">
+                        <i class="fas fa-arrow-left"></i> Previous
+                    </button>
+                    <button class="btn btn-primary check-answer-btn" data-question="2">
+                        <i class="fas fa-check-circle"></i> Evaluate Response
+                    </button>
+                </div>
+                
+                <div class="answer-feedback" id="feedback2">
+                    <div class="feedback-title"><i class="fas fa-lightbulb"></i> Protocol Compliance</div>
+                    <div class="correct-answer">
+                        <p><strong>Procedure:</strong> Request Fortnite tracker and earnings verification. Validate authenticity. Ping @trapped or relevant senior staff for review. Maintain ticket until senior response.</p>
+                    </div>
+                    <div class="quiz-buttons" style="margin-top: 20px;">
+                        <button class="btn btn-success next-question-btn" data-next="3">
+                            <i class="fas fa-arrow-right"></i> Next Scenario
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Question 3 -->
+            <div class="question-card" id="question3">
+                <div class="question-header">
+                    <div class="question-title">Scenario 3: Academy Player Verification</div>
+                    <div class="question-number">Question 3 of 7</div>
+                </div>
+                
+                <div class="question-description">
+                    <p>An Academy roster applicant meets PR requirements.</p>
+                    <p><strong>Task:</strong> Describe the onboarding workflow including representation requirements.</p>
+                </div>
+                
+                <textarea class="answer-box" placeholder="Document the verification and onboarding steps..."></textarea>
+                
+                <div class="quiz-buttons">
+                    <button class="btn btn-secondary prev-question-btn" data-prev="2">
+                        <i class="fas fa-arrow-left"></i> Previous
+                    </button>
+                    <button class="btn btn-primary check-answer-btn" data-question="3">
+                        <i class="fas fa-check-circle"></i> Evaluate Response
+                    </button>
+                </div>
+                
+                <div class="answer-feedback" id="feedback3">
+                    <div class="feedback-title"><i class="fas fa-lightbulb"></i> Protocol Compliance</div>
+                    <div class="correct-answer">
+                        <p><strong>Workflow:</strong> 1) Verify Fortnite tracker authenticity and PR. 2) Request username change to include "Void". 3) Require "team.void" item shop proof. 4) Photo verification. 5) Welcome and role assignment via senior staff ping.</p>
+                    </div>
+                    <div class="quiz-buttons" style="margin-top: 20px;">
+                        <button class="btn btn-success next-question-btn" data-next="4">
+                            <i class="fas fa-arrow-right"></i> Next Scenario
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Question 4 -->
+            <div class="question-card" id="question4">
+                <div class="question-header">
+                    <div class="question-title">Scenario 4: Content Creator Application</div>
+                    <div class="question-number">Question 4 of 7</div>
+                </div>
+                
+                <div class="question-description">
+                    <p>A user applies for Streamer or Content Creator position.</p>
+                    <p><strong>Task:</strong> Formulate your review and escalation process.</p>
+                </div>
+                
+                <textarea class="answer-box" placeholder="Write your handling protocol..."></textarea>
+                
+                <div class="quiz-buttons">
+                    <button class="btn btn-secondary prev-question-btn" data-prev="3">
+                        <i class="fas fa-arrow-left"></i> Previous
+                    </button>
+                    <button class="btn btn-primary check-answer-btn" data-question="4">
+                        <i class="fas fa-check-circle"></i> Evaluate Response
+                    </button>
+                </div>
+                
+                <div class="answer-feedback" id="feedback4">
+                    <div class="feedback-title"><i class="fas fa-lightbulb"></i> Protocol Compliance</div>
+                    <div class="correct-answer">
+                        <p><strong>Process:</strong> Confirm they meet follower/viewer requirements. Request social media links. Ping @content department for evaluation. Instruct applicant to await department review.</p>
+                    </div>
+                    <div class="quiz-buttons" style="margin-top: 20px;">
+                        <button class="btn btn-success next-question-btn" data-next="5">
+                            <i class="fas fa-arrow-right"></i> Next Scenario
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Question 5 -->
+            <div class="question-card" id="question5">
+                <div class="question-header">
+                    <div class="question-title">Scenario 5: GFX/VFX Portfolio Review</div>
+                    <div class="question-number">Question 5 of 7</div>
+                </div>
+                
+                <div class="question-description">
+                    <p>A GFX/VFX applicant submits their portfolio.</p>
+                    <p><strong>Task:</strong> Detail the verification and escalation steps.</p>
+                </div>
+                
+                <textarea class="answer-box" placeholder="Outline your evaluation procedure..."></textarea>
+                
+                <div class="quiz-buttons">
+                    <button class="btn btn-secondary prev-question-btn" data-prev="4">
+                        <i class="fas fa-arrow-left"></i> Previous
+                    </button>
+                    <button class="btn btn-primary check-answer-btn" data-question="5">
+                        <i class="fas fa-check-circle"></i> Evaluate Response
+                    </button>
+                </div>
+                
+                <div class="answer-feedback" id="feedback5">
+                    <div class="feedback-title"><i class="fas fa-lightbulb"></i> Protocol Compliance</div>
+                    <div class="correct-answer">
+                        <p><strong>Procedure:</strong> Request portfolio and proof of work. Assess quality and resolution requirements. Ping @gfx-vfx lead for technical evaluation. Notify applicant of pending review.</p>
+                    </div>
+                    <div class="quiz-buttons" style="margin-top: 20px;">
+                        <button class="btn btn-success next-question-btn" data-next="6">
+                            <i class="fas fa-arrow-right"></i> Next Scenario
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Question 6 -->
+            <div class="question-card" id="question6">
+                <div class="question-header">
+                    <div class="question-title">Scenario 6: Creative Roster Submission</div>
+                    <div class="question-number">Question 6 of 7</div>
+                </div>
+                
+                <div class="question-description">
+                    <p>A Creative roster applicant provides freebuilding clips.</p>
+                    <p><strong>Task:</strong> Specify the review requirements and escalation.</p>
+                </div>
+                
+                <textarea class="answer-box" placeholder="Describe your clip verification process..."></textarea>
+                
+                <div class="quiz-buttons">
+                    <button class="btn btn-secondary prev-question-btn" data-prev="5">
+                        <i class="fas fa-arrow-left"></i> Previous
+                    </button>
+                    <button class="btn btn-primary check-answer-btn" data-question="6">
+                        <i class="fas fa-check-circle"></i> Evaluate Response
+                    </button>
+                </div>
+                
+                <div class="answer-feedback" id="feedback6">
+                    <div class="feedback-title"><i class="fas fa-lightbulb"></i> Protocol Compliance</div>
+                    <div class="correct-answer">
+                        <p><strong>Requirements:</strong> Minimum two freebuilding clips demonstrating mechanics and uniqueness. Ping @creativedepartment for skill assessment. Inform applicant of review timeline.</p>
+                    </div>
+                    <div class="quiz-buttons" style="margin-top: 20px;">
+                        <button class="btn btn-success next-question-btn" data-next="7">
+                            <i class="fas fa-arrow-right"></i> Next Scenario
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Question 7 -->
+            <div class="question-card" id="question7">
+                <div class="question-header">
+                    <div class="question-title">Scenario 7: Grinder Application Processing</div>
+                    <div class="question-number">Question 7 of 7</div>
+                </div>
+                
+                <div class="question-description">
+                    <p>A Grinder applicant seeks representation.</p>
+                    <p><strong>Task:</strong> Outline the username and verification requirements.</p>
+                </div>
+                
+                <textarea class="answer-box" placeholder="Specify representation requirements..."></textarea>
+                
+                <div class="quiz-buttons">
+                    <button class="btn btn-secondary prev-question-btn" data-prev="6">
+                        <i class="fas fa-arrow-left"></i> Previous
+                    </button>
+                    <button class="btn btn-primary check-answer-btn" data-question="7">
+                        <i class="fas fa-check-circle"></i> Evaluate Response
+                    </button>
+                </div>
+                
+                <div class="answer-feedback" id="feedback7">
+                    <div class="feedback-title"><i class="fas fa-lightbulb"></i> Protocol Compliance</div>
+                    <div class="correct-answer">
+                        <p><strong>Requirements:</strong> Discord and Fortnite username must include "Void". Proof of "team.void" item shop usage required. Verification via screenshot before role assignment.</p>
+                    </div>
+                    <div class="quiz-buttons" style="margin-top: 20px;">
+                        <button class="btn btn-success" id="completeQuizBtn">
+                            <i class="fas fa-flag-checkered"></i> Complete Assessment
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
         
-        <!-- Completion Screen -->
-        <div id="completion-screen"></div>
+        <!-- Completion Screen (HIDDEN BY DEFAULT) -->
+        <div class="completion-screen" id="completionScreen">
+            <div class="completion-icon">
+                <i class="fas fa-trophy"></i>
+            </div>
+            <h2 class="completion-title">Assessment Complete</h2>
+            <div class="completion-message">
+                <p>You have successfully completed the theoretical training module. Your responses have been logged for evaluation against protocol standards.</p>
+                <p>Proceed to the certification test for practical simulation. This final phase replicates real ticket handling with scoring based on protocol adherence, professionalism, and escalation accuracy.</p>
+            </div>
+            <div class="completion-buttons">
+                <button class="btn btn-primary" id="restartQuizBtn">
+                    <i class="fas fa-redo"></i> Review Training
+                </button>
+                <button class="btn btn-test" id="takeTestBtn">
+                    <i class="fas fa-vial"></i> Begin Certification Test
+                </button>
+            </div>
+        </div>
         
         <!-- Footer -->
-        <div id="footer-section"></div>
+        <div class="footer">
+            <p>Void Esports Mod Certification System • Made by Nicks Cold</p>
+            <p>© 2026 Void Esports. All rights reserved.</p>
+            <p>Founded by Frank • Ranked 25th in NAC • 13k+ Discord Members</p>
+            <p>Community: <a href="https://discord.gg/dqHF9HPucf" style="color: #7289da; text-decoration: none;">discord.gg/dqHF9HPucf</a></p>
+            <div class="footer-credit">System Architecture: Enhanced Audit Layer Active</div>
+        </div>
     </div>
 
-    <!-- JavaScript Files -->
-    <script src="js/utils.js"></script>
-    <script src="js/main.js"></script>
-    <script src="js/quiz.js"></script>
-    
+    <!-- JavaScript -->
     <script>
-        // Load partials
+        // SIMPLE QUIZ LOGIC - EVERYTHING IN ONE FILE
         document.addEventListener('DOMContentLoaded', function() {
-            loadPartials();
-        });
-        
-        async function loadPartials() {
-            console.log("Loading partials...");
+            console.log("Page loaded - initializing quiz");
             
-            const partials = {
-                'header-section': 'partials/header.html',
-                'ticket-types-section': 'partials/ticket-types.html',
-                'roster-categories-section': 'partials/roster-categories.html',
-                'quizSection': 'partials/quiz.html',
-                'completion-screen': 'partials/completion.html',
-                'footer-section': 'partials/footer.html'
-            };
+            // Initialize: Hide all questions except first
+            document.querySelectorAll('.question-card').forEach(q => q.style.display = 'none');
             
-            // Load completion screen FIRST so it's ready
-            try {
-                const completionResponse = await fetch('partials/completion.html');
-                if (completionResponse.ok) {
-                    const completionHtml = await completionResponse.text();
-                    const completionScreen = document.getElementById('completion-screen');
-                    if (completionScreen) {
-                        completionScreen.innerHTML = completionHtml;
-                        console.log("Completion screen loaded");
+            // Start quiz button
+            const startQuizBtn = document.getElementById('startQuizBtn');
+            if (startQuizBtn) {
+                startQuizBtn.addEventListener('click', function() {
+                    console.log("Start quiz clicked");
+                    const quizSection = document.getElementById('quizSection');
+                    if (quizSection) {
+                        quizSection.style.display = 'block';
+                        startQuizBtn.style.display = 'none';
+                        
+                        // Show first question
+                        document.querySelectorAll('.question-card').forEach(q => q.style.display = 'none');
+                        document.getElementById('question1').style.display = 'block';
+                        
+                        quizSection.scrollIntoView({ behavior: 'smooth' });
                     }
-                }
-            } catch (error) {
-                console.error("Error loading completion screen:", error);
+                });
             }
             
-            // Load other partials
-            for (const [elementId, filePath] of Object.entries(partials)) {
-                if (elementId === 'completion-screen') continue; // Already loaded
-                
-                try {
-                    const response = await fetch(filePath);
-                    if (response.ok) {
-                        const html = await response.text();
-                        const element = document.getElementById(elementId);
-                        if (element) {
-                            element.innerHTML = html;
-                            console.log(`Loaded ${filePath}`);
-                            
-                            // Initialize quiz after loading
-                            if (elementId === 'quizSection' && typeof initializeQuiz === 'function') {
-                                setTimeout(initializeQuiz, 300);
-                            }
+            // Check answer buttons
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.check-answer-btn')) {
+                    const btn = e.target.closest('.check-answer-btn');
+                    const questionNum = btn.getAttribute('data-question');
+                    console.log(`Check answer ${questionNum} clicked`);
+                    
+                    const feedback = document.getElementById(`feedback${questionNum}`);
+                    if (feedback) {
+                        feedback.style.display = 'block';
+                        feedback.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    }
+                }
+            });
+            
+            // Next question buttons
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.next-question-btn')) {
+                    e.preventDefault();
+                    const btn = e.target.closest('.next-question-btn');
+                    const nextNum = btn.getAttribute('data-next');
+                    console.log(`Next to question ${nextNum}`);
+                    
+                    // Hide current question
+                    document.querySelectorAll('.question-card').forEach(q => q.style.display = 'none');
+                    
+                    // Show next question
+                    const nextQuestion = document.getElementById(`question${nextNum}`);
+                    if (nextQuestion) {
+                        nextQuestion.style.display = 'block';
+                        nextQuestion.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }
+            });
+            
+            // Previous question buttons
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.prev-question-btn')) {
+                    e.preventDefault();
+                    const btn = e.target.closest('.prev-question-btn');
+                    const prevNum = btn.getAttribute('data-prev');
+                    console.log(`Previous to question ${prevNum}`);
+                    
+                    // Hide current question
+                    document.querySelectorAll('.question-card').forEach(q => q.style.display = 'none');
+                    
+                    // Show previous question
+                    const prevQuestion = document.getElementById(`question${prevNum}`);
+                    if (prevQuestion) {
+                        prevQuestion.style.display = 'block';
+                        prevQuestion.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }
+            });
+            
+            // Skip button
+            const skipBtn = document.getElementById('skipBtn');
+            if (skipBtn) {
+                skipBtn.addEventListener('click', function() {
+                    console.log("Skip clicked");
+                    
+                    // Find current question
+                    let currentNum = 1;
+                    for (let i = 1; i <= 7; i++) {
+                        const q = document.getElementById(`question${i}`);
+                        if (q && q.style.display === 'block') {
+                            currentNum = i;
+                            break;
                         }
-                    } else {
-                        console.error(`Failed to load ${filePath}:`, response.status);
                     }
-                } catch (error) {
-                    console.error(`Error loading ${filePath}:`, error);
-                }
+                    
+                    // Hide current
+                    document.querySelectorAll('.question-card').forEach(q => q.style.display = 'none');
+                    
+                    // Show next (or loop to first)
+                    const nextNum = currentNum < 7 ? currentNum + 1 : 1;
+                    const nextQuestion = document.getElementById(`question${nextNum}`);
+                    if (nextQuestion) {
+                        nextQuestion.style.display = 'block';
+                        nextQuestion.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
             }
             
-            console.log("All partials loaded");
-        }
+            // Complete quiz button (IN QUESTION 7)
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('#completeQuizBtn')) {
+                    e.preventDefault();
+                    console.log("Complete Assessment button clicked!");
+                    
+                    // Hide quiz section
+                    const quizSection = document.getElementById('quizSection');
+                    if (quizSection) {
+                        quizSection.style.display = 'none';
+                    }
+                    
+                    // Show completion screen
+                    const completionScreen = document.getElementById('completionScreen');
+                    if (completionScreen) {
+                        completionScreen.style.display = 'block';
+                        completionScreen.scrollIntoView({ behavior: 'smooth' });
+                    }
+                }
+            });
+            
+            // Restart quiz button (IN COMPLETION SCREEN)
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('#restartQuizBtn')) {
+                    e.preventDefault();
+                    console.log("Restart quiz clicked");
+                    
+                    // Hide completion screen
+                    const completionScreen = document.getElementById('completionScreen');
+                    if (completionScreen) {
+                        completionScreen.style.display = 'none';
+                    }
+                    
+                    // Reset quiz
+                    document.querySelectorAll('.question-card').forEach(q => q.style.display = 'none');
+                    document.querySelectorAll('.answer-feedback').forEach(f => f.style.display = 'none');
+                    document.querySelectorAll('.answer-box').forEach(box => box.value = '');
+                    
+                    // Show first question
+                    document.getElementById('question1').style.display = 'block';
+                    
+                    // Show quiz section
+                    const quizSection = document.getElementById('quizSection');
+                    if (quizSection) {
+                        quizSection.style.display = 'block';
+                        quizSection.scrollIntoView({ behavior: 'smooth' });
+                    }
+                    
+                    // Show start button again
+                    const startQuizBtn = document.getElementById('startQuizBtn');
+                    if (startQuizBtn) {
+                        startQuizBtn.style.display = 'inline-flex';
+                    }
+                }
+            });
+            
+            // Take test button (IN COMPLETION SCREEN)
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('#takeTestBtn')) {
+                    e.preventDefault();
+                    console.log("Take test button clicked");
+                    
+                    const takeTestBtn = e.target.closest('#takeTestBtn');
+                    
+                    // Show loading state
+                    const originalText = takeTestBtn.innerHTML;
+                    takeTestBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Starting test...';
+                    takeTestBtn.disabled = true;
+                    
+                    // Set test intent and redirect
+                    fetch("https://mod-application-backend.onrender.com/set-intent/test", {
+                        method: "POST",
+                        credentials: "include",
+                        headers: {
+                            "Content-Type": "application/json"
+                        }
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            console.log("Redirecting to Discord OAuth...");
+                            // Redirect to Discord OAuth
+                            window.location.href = "https://mod-application-backend.onrender.com/auth/discord";
+                        } else {
+                            throw new Error("Failed to set test intent");
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Auth setup error:", error);
+                        alert("Failed to start authentication. Please try again.");
+                        takeTestBtn.innerHTML = originalText;
+                        takeTestBtn.disabled = false;
+                    });
+                }
+            });
+            
+            // Navigation highlighting
+            const navItems = document.querySelectorAll('.nav-item');
+            window.addEventListener('scroll', function() {
+                const sections = document.querySelectorAll('.content-section, .training-quiz, .completion-screen');
+                let current = '';
+                
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.clientHeight;
+                    
+                    if (window.scrollY >= (sectionTop - 200)) {
+                        current = section.id || '';
+                    }
+                });
+                
+                navItems.forEach(item => {
+                    item.classList.remove('active');
+                    const target = item.getAttribute('data-target');
+                    
+                    if (target === current) {
+                        item.classList.add('active');
+                    }
+                });
+                
+                // Default to header if at top
+                if (window.scrollY < 100) {
+                    navItems.forEach(item => {
+                        item.classList.remove('active');
+                        if (item.getAttribute('data-target') === 'header') {
+                            item.classList.add('active');
+                        }
+                    });
+                }
+            });
+            
+            console.log("Quiz initialized successfully");
+        });
     </script>
 </body>
 </html>
