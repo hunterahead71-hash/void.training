@@ -1,3 +1,4 @@
+
 // Auth management for frontend - FIXED VERSION
 document.addEventListener('DOMContentLoaded', function() {
     console.log("Auth.js loaded");
@@ -53,10 +54,11 @@ document.addEventListener('DOMContentLoaded', function() {
             if (testPage) {
                 testPage.style.display = 'block';
                 
-                // Update UI with Discord username
+                // Update UI with Discord username immediately
                 const discordUsernameDisplay = document.getElementById('discordUsernameDisplay');
                 const discordUserTag = document.getElementById('discordUserTag');
                 const userAvatarInitial = document.getElementById('userAvatarInitial');
+                const userAvatarInitialText = document.getElementById('userAvatarInitialText');
                 
                 if (discordUsernameDisplay) {
                     discordUsernameDisplay.textContent = discordUsername;
@@ -69,19 +71,34 @@ document.addEventListener('DOMContentLoaded', function() {
                     userAvatarInitial.textContent = discordUsername.charAt(0).toUpperCase();
                 }
                 
-                // Initialize Discord interface
-                if (typeof initializeDiscordInterface === 'function') {
-                    console.log("Initializing Discord interface");
-                    initializeDiscordInterface();
-                }
+                // Set a global flag to indicate test should start
+                window.shouldStartDiscordTest = true;
                 
-                // Start test after a short delay
-                setTimeout(() => {
-                    if (typeof startDiscordTest === 'function') {
-                        console.log("Starting Discord test");
-                        startDiscordTest();
-                    }
-                }, 1500);
+                // If discord-test.js is already loaded, start the test directly
+                if (typeof initializeDiscordInterface === 'function') {
+                    console.log("Discord interface already loaded, starting test...");
+                    initializeDiscordInterface();
+                    
+                    // Start test after a short delay
+                    setTimeout(() => {
+                        if (typeof startDiscordTest === 'function') {
+                            console.log("Starting Discord test");
+                            startDiscordTest();
+                        }
+                    }, 1500);
+                } else {
+                    console.log("Waiting for discord-test.js to load...");
+                    // Set up a listener for when discord-test.js loads
+                    window.addEventListener('discordTestLoaded', function() {
+                        console.log("discord-test.js loaded via event");
+                        if (typeof initializeDiscordInterface === 'function' && typeof startDiscordTest === 'function') {
+                            initializeDiscordInterface();
+                            setTimeout(() => {
+                                startDiscordTest();
+                            }, 1500);
+                        }
+                    });
+                }
             }
         }
         
