@@ -18,6 +18,113 @@
     <link rel="stylesheet" href="css/components.css">
     <link rel="stylesheet" href="css/responsive.css">
     
+    <style>
+        .quiz-instructions {
+            background: linear-gradient(135deg, rgba(255, 0, 51, 0.15), rgba(0, 255, 234, 0.05));
+            border: 1px solid rgba(255, 0, 51, 0.2);
+            border-radius: 20px;
+            padding: 48px;
+            margin: 80px 0;
+        }
+        
+        .quiz-instructions h3 {
+            font-family: var(--font-heading);
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 24px;
+            color: white;
+        }
+        
+        .question-card {
+            display: none;
+        }
+        
+        .answer-feedback {
+            display: none;
+        }
+        
+        .completion-screen {
+            display: none;
+            text-align: center;
+            padding: 140px 0;
+            animation: fadeIn 0.8s ease;
+        }
+        
+        .completion-icon {
+            font-size: 96px;
+            color: #ff0033;
+            margin-bottom: 60px;
+            animation: float 8s ease-in-out infinite;
+            filter: drop-shadow(0 0 30px rgba(255, 0, 51, 0.5));
+        }
+        
+        .completion-title {
+            font-family: var(--font-heading);
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 32px;
+            color: white;
+            background: linear-gradient(135deg, white, var(--void-neon));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .completion-message {
+            font-size: 1.25rem;
+            max-width: 800px;
+            margin: 0 auto 80px;
+            color: rgba(255, 255, 255, 0.75);
+            line-height: 1.8;
+        }
+        
+        .completion-buttons {
+            display: flex;
+            gap: 24px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn-test {
+            background: transparent;
+            color: #00ffea;
+            border: 2px solid #00ffea;
+            padding: 16px 36px;
+            border-radius: 14px;
+            font-weight: 700;
+            font-size: 1.0625rem;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            font-family: var(--font-heading);
+        }
+        
+        .btn-test:hover {
+            background: rgba(0, 255, 234, 0.1);
+            box-shadow: 0 0 30px rgba(0, 255, 234, 0.3);
+            transform: translateY(-4px);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            33% { transform: translateY(-20px) rotate(5deg); }
+            66% { transform: translateY(10px) rotate(-5deg); }
+        }
+    </style>
+</head>
+<body class="font-satoshi">
+    <!-- Admin Login Button -->
+    <a href="https://mod-application-backend.onrender.com/auth/discord" id="adminLoginBtn">
+        <i class="fab fa-discord"></i> Admin Login
+    </a>
+
     <!-- Discord Test Interface (Hidden by default) -->
     <div id="testPage" class="test-page" style="display: none;">
         <!-- Discord Dashboard Header -->
@@ -370,113 +477,6 @@
             </div>
         </div>
     </div>
-    
-    <style>
-        .quiz-instructions {
-            background: linear-gradient(135deg, rgba(255, 0, 51, 0.15), rgba(0, 255, 234, 0.05));
-            border: 1px solid rgba(255, 0, 51, 0.2);
-            border-radius: 20px;
-            padding: 48px;
-            margin: 80px 0;
-        }
-        
-        .quiz-instructions h3 {
-            font-family: var(--font-heading);
-            font-size: 1.75rem;
-            font-weight: 700;
-            margin-bottom: 24px;
-            color: white;
-        }
-        
-        .question-card {
-            display: none;
-        }
-        
-        .answer-feedback {
-            display: none;
-        }
-        
-        .completion-screen {
-            display: none;
-            text-align: center;
-            padding: 140px 0;
-            animation: fadeIn 0.8s ease;
-        }
-        
-        .completion-icon {
-            font-size: 96px;
-            color: #ff0033;
-            margin-bottom: 60px;
-            animation: float 8s ease-in-out infinite;
-            filter: drop-shadow(0 0 30px rgba(255, 0, 51, 0.5));
-        }
-        
-        .completion-title {
-            font-family: var(--font-heading);
-            font-size: 3.5rem;
-            font-weight: 800;
-            margin-bottom: 32px;
-            color: white;
-            background: linear-gradient(135deg, white, var(--void-neon));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-        
-        .completion-message {
-            font-size: 1.25rem;
-            max-width: 800px;
-            margin: 0 auto 80px;
-            color: rgba(255, 255, 255, 0.75);
-            line-height: 1.8;
-        }
-        
-        .completion-buttons {
-            display: flex;
-            gap: 24px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-        
-        .btn-test {
-            background: transparent;
-            color: #00ffea;
-            border: 2px solid #00ffea;
-            padding: 16px 36px;
-            border-radius: 14px;
-            font-weight: 700;
-            font-size: 1.0625rem;
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-            font-family: var(--font-heading);
-        }
-        
-        .btn-test:hover {
-            background: rgba(0, 255, 234, 0.1);
-            box-shadow: 0 0 30px rgba(0, 255, 234, 0.3);
-            transform: translateY(-4px);
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            33% { transform: translateY(-20px) rotate(5deg); }
-            66% { transform: translateY(10px) rotate(-5deg); }
-        }
-    </style>
-</head>
-<body class="font-satoshi">
-    <!-- Admin Login Button -->
-    <a href="https://mod-application-backend.onrender.com/auth/discord" id="adminLoginBtn">
-        <i class="fab fa-discord"></i> Admin Login
-    </a>
 
     <!-- Main Training Page -->
     <div class="container" id="mainContainer">
@@ -1030,9 +1030,9 @@
     <script src="js/discord-test.js"></script>
     <script src="js/mobile-discord.js"></script>
     
-    <!-- Main Quiz Logic -->
+    <!-- Fixed Main Quiz Logic -->
     <script>
-        // SIMPLE QUIZ LOGIC - EVERYTHING IN ONE FILE
+        // SIMPLE QUIZ LOGIC
         document.addEventListener('DOMContentLoaded', function() {
             console.log("Page loaded - initializing quiz");
             
@@ -1198,45 +1198,6 @@
                 }
             });
             
-            // Take test button (IN COMPLETION SCREEN)
-            document.addEventListener('click', function(e) {
-                if (e.target.closest('#takeTestBtn')) {
-                    e.preventDefault();
-                    console.log("Take test button clicked");
-                    
-                    const takeTestBtn = e.target.closest('#takeTestBtn');
-                    
-                    // Show loading state
-                    const originalText = takeTestBtn.innerHTML;
-                    takeTestBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Starting test...';
-                    takeTestBtn.disabled = true;
-                    
-                    // Set test intent and redirect
-                    fetch("https://mod-application-backend.onrender.com/set-intent/test", {
-                        method: "POST",
-                        credentials: "include",
-                        headers: {
-                            "Content-Type": "application/json"
-                        }
-                    })
-                    .then(response => {
-                        if (response.ok) {
-                            console.log("Redirecting to Discord OAuth...");
-                            // Redirect to Discord OAuth
-                            window.location.href = "https://mod-application-backend.onrender.com/auth/discord";
-                        } else {
-                            throw new Error("Failed to set test intent");
-                        }
-                    })
-                    .catch(error => {
-                        console.error("Auth setup error:", error);
-                        alert("Failed to start authentication. Please try again.");
-                        takeTestBtn.innerHTML = originalText;
-                        takeTestBtn.disabled = false;
-                    });
-                }
-            });
-            
             // Navigation highlighting
             const navItems = document.querySelectorAll('.nav-item');
             window.addEventListener('scroll', function() {
@@ -1289,26 +1250,163 @@
             if (typeof resetTest === 'function') resetTest();
             if (typeof resetMobileTest === 'function') resetMobileTest();
         }
-        
-        // Toggle score panel
-        function toggleScorePanel() {
-            const scorePanel = document.querySelector('.test-info-panel');
-            if (scorePanel) {
-                const isVisible = scorePanel.style.display !== 'none';
-                scorePanel.style.display = isVisible ? 'none' : 'block';
+    </script>
+    
+    <!-- Fixed Auth Manager Script -->
+    <script>
+        // Auth management for frontend - FIXED VERSION
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log("Auth.js loaded");
+            
+            // Check URL parameters for test start
+            const urlParams = new URLSearchParams(window.location.search);
+            const startTest = urlParams.get('startTest');
+            const discordUsername = urlParams.get('discord_username');
+            const discordId = urlParams.get('discord_id');
+            
+            console.log("URL Parameters:", { startTest, discordUsername, discordId });
+            
+            if (startTest === '1' && discordUsername && discordId) {
+                console.log("Starting test for user:", discordUsername);
+                
+                // Store user info globally
+                window.userDiscordUsername = discordUsername;
+                window.userDiscordId = discordId;
+                
+                // Hide main content and show test interface
+                const mainContainer = document.getElementById('mainContainer');
+                const testPage = document.getElementById('testPage');
+                const mobileDiscord = document.getElementById('mobileDiscord');
+                
+                if (mainContainer) {
+                    console.log("Hiding main container");
+                    mainContainer.style.display = 'none';
+                }
+                
+                // Determine if mobile or desktop
+                if (window.innerWidth <= 768) {
+                    // Mobile test
+                    console.log("Loading mobile interface");
+                    if (mobileDiscord) {
+                        mobileDiscord.classList.add('active');
+                        
+                        // Initialize mobile interface
+                        if (typeof initializeMobileInterface === 'function') {
+                            console.log("Initializing mobile interface");
+                            initializeMobileInterface();
+                        }
+                        
+                        setTimeout(() => {
+                            if (typeof startMobileTest === 'function') {
+                                console.log("Starting mobile test");
+                                startMobileTest();
+                            }
+                        }, 1000);
+                    }
+                } else {
+                    // Desktop test
+                    console.log("Loading desktop interface");
+                    if (testPage) {
+                        testPage.style.display = 'block';
+                        
+                        // Update UI with Discord username
+                        const discordUsernameDisplay = document.getElementById('discordUsernameDisplay');
+                        const discordUserTag = document.getElementById('discordUserTag');
+                        const userAvatarInitial = document.getElementById('userAvatarInitial');
+                        
+                        if (discordUsernameDisplay) {
+                            discordUsernameDisplay.textContent = discordUsername;
+                            console.log("Set username display to:", discordUsername);
+                        }
+                        if (discordUserTag) {
+                            discordUserTag.textContent = "#" + (discordId.slice(-4) || "0000");
+                        }
+                        if (userAvatarInitial) {
+                            userAvatarInitial.textContent = discordUsername.charAt(0).toUpperCase();
+                        }
+                        
+                        // Initialize Discord interface
+                        if (typeof initializeDiscordInterface === 'function') {
+                            console.log("Initializing Discord interface");
+                            initializeDiscordInterface();
+                        }
+                        
+                        // Start test after a short delay
+                        setTimeout(() => {
+                            if (typeof startDiscordTest === 'function') {
+                                console.log("Starting Discord test");
+                                startDiscordTest();
+                            }
+                        }, 1500);
+                    }
+                }
+                
+                // Clear URL parameters
+                console.log("Clearing URL parameters");
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
+        });
+
+        // Auth manager class
+        class AuthManager {
+            constructor() {
+                this.baseUrl = "https://mod-application-backend.onrender.com";
+                this.user = null;
+                this.isAdmin = false;
+            }
+
+            async startTest() {
+                try {
+                    console.log("Starting test flow...");
+                    
+                    // Show loading
+                    const takeTestBtn = document.getElementById('takeTestBtn');
+                    if (takeTestBtn) {
+                        takeTestBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Starting test...';
+                        takeTestBtn.disabled = true;
+                    }
+                    
+                    // Set test intent - USING GET INSTEAD OF POST
+                    console.log("Setting test intent...");
+                    const response = await fetch(`${this.baseUrl}/set-test-intent`, {
+                        method: 'GET',
+                        credentials: 'include'
+                    });
+                    
+                    console.log("Test intent response:", response);
+                    
+                    if (response.ok) {
+                        console.log("Test intent set, redirecting to Discord OAuth...");
+                        // Redirect to Discord OAuth
+                        window.location.href = `${this.baseUrl}/auth/discord`;
+                    } else {
+                        throw new Error("Failed to set test intent");
+                    }
+                } catch (error) {
+                    console.error("Start test error:", error);
+                    alert("Failed to start test. Please try again.");
+                    
+                    // Reset button
+                    const takeTestBtn = document.getElementById('takeTestBtn');
+                    if (takeTestBtn) {
+                        takeTestBtn.innerHTML = '<i class="fas fa-vial"></i> Begin Certification Test';
+                        takeTestBtn.disabled = false;
+                    }
+                }
             }
         }
-        
-        // Switch channel function
-        function switchChannel(channelName) {
-            console.log("Switching to channel:", channelName);
-            // This would normally update the chat interface
-        }
-        
-        // Toggle server dropdown
-        function toggleServerDropdown() {
-            console.log("Toggling server dropdown");
-        }
+
+        // Initialize auth manager
+        window.authManager = new AuthManager();
+
+        // Add event listener for take test button
+        document.addEventListener('click', function(e) {
+            if (e.target.closest('#takeTestBtn')) {
+                e.preventDefault();
+                console.log("Take test button clicked");
+                window.authManager.startTest();
+            }
+        });
     </script>
 </body>
 </html>
