@@ -18,6 +18,359 @@
     <link rel="stylesheet" href="css/components.css">
     <link rel="stylesheet" href="css/responsive.css">
     
+    <!-- Discord Test Interface (Hidden by default) -->
+    <div id="testPage" class="test-page" style="display: none;">
+        <!-- Discord Dashboard Header -->
+        <div class="dashboard-header">
+            <div class="dashboard-title">
+                <i class="fab fa-discord"></i> VOID ESPORTS - MOD CERTIFICATION TEST
+            </div>
+            <button class="back-to-training" onclick="exitTest()">
+                <i class="fas fa-arrow-left"></i> Back to Training
+            </button>
+        </div>
+        
+        <!-- Discord Interface Container -->
+        <div class="test-container">
+            <!-- Server List (Left) -->
+            <div class="server-list">
+                <div class="server-item active">
+                    <i class="fab fa-discord"></i>
+                </div>
+                <div class="separator"></div>
+                <div class="server-item">
+                    <span>V</span>
+                    <div class="notification"></div>
+                </div>
+                <div class="server-item">
+                    <span>A</span>
+                </div>
+                <div class="server-item">
+                    <span>S</span>
+                </div>
+            </div>
+            
+            <!-- Discord Sidebar -->
+            <div class="discord-sidebar">
+                <!-- Server Header -->
+                <div class="server-header" onclick="toggleServerDropdown()">
+                    <i class="fas fa-chevron-down"></i> Void Esports
+                </div>
+                
+                <!-- Scrollable Channels -->
+                <div class="scrollable-channels">
+                    <!-- Channels -->
+                    <div class="channel-category">
+                        <div class="category-header">
+                            <span>TICKET SYSTEM</span>
+                            <i class="fas fa-chevron-down category-icon"></i>
+                        </div>
+                        <div class="channel-item active" onclick="switchChannel('mod-tickets')">
+                            <i class="fas fa-hashtag channel-icon"></i>
+                            <span class="channel-name">🎫・mod-tickets</span>
+                        </div>
+                        <div class="channel-item" onclick="switchChannel('roster-tickets')">
+                            <i class="fas fa-hashtag channel-icon"></i>
+                            <span class="channel-name">👥・roster-tickets</span>
+                        </div>
+                    </div>
+                    
+                    <div class="channel-category">
+                        <div class="category-header">
+                            <span>INFORMATION</span>
+                            <i class="fas fa-chevron-down category-icon"></i>
+                        </div>
+                        <div class="channel-item" onclick="switchChannel('rules')">
+                            <i class="fas fa-hashtag channel-icon"></i>
+                            <span class="channel-name">📜・rules</span>
+                        </div>
+                        <div class="channel-item" onclick="switchChannel('announcements')">
+                            <i class="fas fa-hashtag channel-icon"></i>
+                            <span class="channel-name">📢・announcements</span>
+                        </div>
+                        <div class="channel-item" onclick="switchChannel('how-to-join')">
+                            <i class="fas fa-hashtag channel-icon"></i>
+                            <span class="channel-name">🎯・how-to-join-roster</span>
+                        </div>
+                    </div>
+                    
+                    <div class="channel-category">
+                        <div class="category-header">
+                            <span>STAFF</span>
+                            <i class="fas fa-chevron-down category-icon"></i>
+                        </div>
+                        <div class="channel-item" onclick="switchChannel('staff-chat')">
+                            <i class="fas fa-hashtag channel-icon"></i>
+                            <span class="channel-name">💬・staff-chat</span>
+                        </div>
+                        <div class="channel-item" onclick="switchChannel('staff-commands')">
+                            <i class="fas fa-hashtag channel-icon"></i>
+                            <span class="channel-name">⚙️・staff-commands</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- User Panel -->
+                <div class="user-panel">
+                    <div class="user-avatar" id="userAvatarInitial">
+                        <span id="userAvatarInitialText">U</span>
+                        <div class="status-indicator"></div>
+                    </div>
+                    <div class="user-info">
+                        <div class="username" id="discordUsernameDisplay">User</div>
+                        <div class="discriminator" id="discordUserTag">#0000</div>
+                    </div>
+                    <div class="user-controls">
+                        <div class="control-btn">
+                            <i class="fas fa-microphone"></i>
+                        </div>
+                        <div class="control-btn">
+                            <i class="fas fa-headphones"></i>
+                        </div>
+                        <div class="control-btn">
+                            <i class="fas fa-cog"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Discord Chat Area -->
+            <div class="discord-chat-area">
+                <!-- Chat Header -->
+                <div class="chat-header">
+                    <div class="channel-header">
+                        <i class="fas fa-hashtag channel-hash"></i>
+                        <div class="channel-title">🎫・mod-tickets</div>
+                        <div class="channel-topic">Test your moderator skills in simulated scenarios</div>
+                    </div>
+                    <div class="chat-controls">
+                        <div class="header-btn">
+                            <i class="fas fa-user-plus"></i>
+                        </div>
+                        <div class="header-btn">
+                            <i class="fas fa-inbox"></i>
+                        </div>
+                        <div class="header-btn">
+                            <i class="fas fa-question-circle"></i>
+                        </div>
+                        <div class="header-btn" id="scoreBtn" onclick="toggleScorePanel()">
+                            <i class="fas fa-chart-bar"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Messages Container -->
+                <div class="messages-container">
+                    <!-- Welcome Message -->
+                    <div class="message-group">
+                        <div class="message-header">
+                            <div class="message-avatar" style="background-color: #5865f2">
+                                V
+                            </div>
+                            <div>
+                                <span class="message-author">Void Bot</span>
+                                <span class="bot-tag">BOT</span>
+                                <span class="message-timestamp">Today at 00:00</span>
+                            </div>
+                        </div>
+                        <div class="message-content">
+                            <div class="message">Welcome to the Void Esports Moderator Certification Test. This is a simulated Discord environment where you'll respond to moderator scenarios.</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Instructions -->
+                    <div class="message-group">
+                        <div class="message-header">
+                            <div class="message-avatar" style="background-color: #5865f2">
+                                V
+                            </div>
+                            <div>
+                                <span class="message-author">Void Bot</span>
+                                <span class="bot-tag">BOT</span>
+                                <span class="message-timestamp">Today at 00:00</span>
+                            </div>
+                        </div>
+                        <div class="message-content">
+                            <div class="message">You'll receive 8 different scenarios. Respond as you would as a real moderator. Your responses will be evaluated based on protocol adherence.</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Message Input -->
+                <div class="message-input-area">
+                    <div class="message-input-container">
+                        <div class="message-input-wrapper">
+                            <textarea class="message-input" placeholder="Message #🎫・mod-tickets" rows="1"></textarea>
+                            <button class="message-input-send" disabled>
+                                <i class="fas fa-paper-plane"></i> Send
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Test Info Panel (Right) -->
+            <div class="test-info-panel">
+                <div class="score-display">
+                    <span class="score-label">TEST SCORE</span>
+                    <div class="score-value" id="discordScoreValue">0</div>
+                    <div class="score-total">/ 8</div>
+                    
+                    <div class="progress-bar-container">
+                        <div class="progress-fill-bar" id="discordProgressFill"></div>
+                    </div>
+                    
+                    <div style="margin-top: 30px; font-size: 14px; color: #72767d;">
+                        <p><i class="fas fa-info-circle"></i> Need 6/8 to pass</p>
+                        <p style="margin-top: 10px;">Response time matters!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Test Complete Screen (Hidden) -->
+        <div class="test-complete-screen" id="testCompleteScreen">
+            <div class="test-result-container">
+                <div class="test-result-icon" id="testResultIcon">
+                    <i class="fas fa-trophy"></i>
+                </div>
+                <h1 class="test-result-title" id="testResultTitle">Test Complete!</h1>
+                <div class="test-result-score" id="testResultScore">Score: 0/8</div>
+                <p class="test-result-message" id="testResultMessage">
+                    Your test has been completed and results are being processed.
+                </p>
+                
+                <div class="submission-status" id="submissionStatus">
+                    <i class="fas fa-spinner fa-spin"></i> Submitting results...
+                </div>
+                
+                <div class="test-result-buttons">
+                    <button class="test-result-btn primary" id="testReviewTestBtn">
+                        <i class="fas fa-redo"></i> Review Test
+                    </button>
+                    <button class="test-result-btn secondary" id="testBackToTrainingBtn">
+                        <i class="fas fa-home"></i> Back to Training
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Mobile Discord Interface (Hidden by default) -->
+    <div id="mobileDiscord" class="mobile-discord">
+        <!-- Mobile Header -->
+        <div class="mobile-header">
+            <div class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </div>
+            <div class="mobile-server-icon">
+                V
+            </div>
+            <div class="mobile-channel-name" id="mobileChannelName">🎫・mod-tickets</div>
+            <div class="mobile-header-actions">
+                <div class="mobile-header-btn" id="mobileScoreBtn">
+                    <i class="fas fa-chart-bar"></i>
+                </div>
+                <div class="mobile-header-btn" id="mobileExitBtn">
+                    <i class="fas fa-sign-out-alt"></i>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Messages Container -->
+        <div class="mobile-messages-container" id="mobileMessagesContainer">
+            <!-- Messages will be added here dynamically -->
+        </div>
+        
+        <!-- Mobile Input Area -->
+        <div class="mobile-input-area">
+            <textarea class="mobile-message-input" id="mobileMessageInput" placeholder="Message #🎫・mod-tickets" rows="1"></textarea>
+            <button class="mobile-send-btn" id="mobileSendBtn" disabled>
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+        
+        <!-- Mobile Sidebar Menu -->
+        <div class="mobile-sidebar" id="mobileSidebar">
+            <div class="mobile-sidebar-header">
+                <div class="mobile-sidebar-title">Void Esports</div>
+                <div class="mobile-close-sidebar" id="mobileCloseSidebar">
+                    <i class="fas fa-times"></i>
+                </div>
+            </div>
+            
+            <div class="mobile-scrollable-channels">
+                <div class="mobile-channel-item active">
+                    <i class="fas fa-hashtag mobile-channel-icon"></i>
+                    <span class="mobile-channel-name-sidebar">🎫・mod-tickets</span>
+                </div>
+                <div class="mobile-channel-item">
+                    <i class="fas fa-hashtag mobile-channel-icon"></i>
+                    <span class="mobile-channel-name-sidebar">👥・roster-tickets</span>
+                </div>
+                <div class="mobile-channel-item">
+                    <i class="fas fa-hashtag mobile-channel-icon"></i>
+                    <span class="mobile-channel-name-sidebar">📜・rules</span>
+                </div>
+                <div class="mobile-channel-item">
+                    <i class="fas fa-hashtag mobile-channel-icon"></i>
+                    <span class="mobile-channel-name-sidebar">🎯・how-to-join</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Score Panel -->
+        <div class="mobile-score-panel" id="mobileScorePanel">
+            <div class="mobile-score-header">
+                <div class="mobile-score-title">Test Score</div>
+                <div class="mobile-close-score" id="mobileCloseScore">
+                    <i class="fas fa-times"></i>
+                </div>
+            </div>
+            
+            <div class="mobile-score-display">
+                <div class="mobile-score-value" id="mobileScoreValue">0</div>
+                <div class="mobile-score-total">/ 8</div>
+                
+                <div class="mobile-progress-bar-container">
+                    <div class="mobile-progress-fill-bar" id="mobileProgressFill"></div>
+                </div>
+            </div>
+            
+            <div style="color: #72767d; font-size: 14px; margin-top: 20px;">
+                <p><i class="fas fa-info-circle"></i> Need 6/8 to pass</p>
+                <p style="margin-top: 10px;">Complete all 8 scenarios</p>
+            </div>
+        </div>
+        
+        <!-- Mobile Test Complete Screen -->
+        <div class="mobile-test-complete" id="mobileTestComplete">
+            <div class="mobile-test-result-container">
+                <div class="mobile-test-result-icon" id="mobileTestResultIcon">
+                    <i class="fas fa-trophy"></i>
+                </div>
+                <h1 class="mobile-test-result-title" id="mobileTestResultTitle">Test Complete!</h1>
+                <div class="mobile-test-result-score" id="mobileTestResultScore">Score: 0/8</div>
+                <p class="mobile-test-result-message" id="mobileTestResultMessage">
+                    Your test has been completed and results are being processed.
+                </p>
+                
+                <div class="mobile-submission-status" id="mobileSubmissionStatus">
+                    <i class="fas fa-spinner fa-spin"></i> Submitting...
+                </div>
+                
+                <div class="mobile-test-result-buttons">
+                    <button class="mobile-test-result-btn primary" id="mobileTestReviewBtn">
+                        <i class="fas fa-redo"></i> Review Test
+                    </button>
+                    <button class="mobile-test-result-btn secondary" id="mobileTestBackBtn">
+                        <i class="fas fa-home"></i> Back to Training
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
     <style>
         .quiz-instructions {
             background: linear-gradient(135deg, rgba(255, 0, 51, 0.15), rgba(0, 255, 234, 0.05));
@@ -252,6 +605,122 @@
                         <li>Represent us in Game</li>
                         <li>Use our Fortnite Code</li>
                     </ul>
+                </div>
+                
+                <!-- Creative Roster -->
+                <div class="roster-card">
+                    <div class="roster-header">
+                        <div class="roster-icon">🎨</div>
+                        <div class="roster-title">Creative Roster</div>
+                    </div>
+                    <ul class="roster-requirements">
+                        <li>Smooth/Fast Mechanics</li>
+                        <li>Must Be Unique</li>
+                        <li>Must Be Able To Provide Clips When Asked</li>
+                        <li>Represent Us In Game and On Your Socials</li>
+                    </ul>
+                </div>
+                
+                <!-- Streamer -->
+                <div class="roster-card">
+                    <div class="roster-header">
+                        <div class="roster-icon">🎙️</div>
+                        <div class="roster-title">Streamer</div>
+                    </div>
+                    <ul class="roster-requirements">
+                        <li>1k+ Followers/Subscribers</li>
+                        <li>Average 25+ Viewers Per Stream</li>
+                        <li>Stream At Least 4x Per Week</li>
+                        <li>Use Our Hashtags in Bio/Descriptions</li>
+                        <li>Represent Us In Game and On Your Socials</li>
+                    </ul>
+                </div>
+                
+                <!-- Content Creator -->
+                <div class="roster-card">
+                    <div class="roster-header">
+                        <div class="roster-icon">🎥</div>
+                        <div class="roster-title">Content Creator</div>
+                    </div>
+                    <ul class="roster-requirements">
+                        <li>>1k Followers on Twitch/YouTube</li>
+                        <li>>10k Followers on TikTok</li>
+                        <li>Original/High Quality Posts</li>
+                        <li>Willing to Help Out With Void Content</li>
+                        <li>Must Post Actively</li>
+                        <li>Represent Us In Game and On Your Socials</li>
+                    </ul>
+                </div>
+                
+                <!-- Junior Content Creator -->
+                <div class="roster-card">
+                    <div class="roster-header">
+                        <div class="roster-icon">🎬</div>
+                        <div class="roster-title">Junior Content Creator</div>
+                    </div>
+                    <ul class="roster-requirements">
+                        <li>>500 Followers On Twitch/YouTube</li>
+                        <li>>3k Followers On TikTok</li>
+                        <li>Posts Are Original and High Quality</li>
+                        <li>Willing To Grind to Become a Main Roster Content Creator</li>
+                        <li>Represent Us In Game and On Your Socials</li>
+                    </ul>
+                </div>
+                
+                <!-- GFX/VFX -->
+                <div class="roster-card">
+                    <div class="roster-header">
+                        <div class="roster-icon">🖌️</div>
+                        <div class="roster-title">GFX/VFX</div>
+                    </div>
+                    <ul class="roster-requirements">
+                        <li>Experience With Editing</li>
+                        <li>Portfolio Required</li>
+                        <li>High-Quality Work (1440p or Higher)</li>
+                        <li>Willing To Do Free Work For Staff/Roster</li>
+                        <li>Deliver When Asked</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Mod Requirements Section -->
+            <div class="mod-requirements" id="mod-requirements">
+                <h2 class="section-title"><i class="fas fa-tasks"></i> Mod Responsibilities & Commands</h2>
+                
+                <div class="requirement-section">
+                    <h3 class="requirement-title"><i class="fas fa-exclamation-triangle"></i> Warn / Report Command</h3>
+                    <div class="requirement-content">
+                        <p>Use <code class="inline-code">*warn user-id reason</code> command exclusively in the <strong>#staff-commands</strong> channel for minor rule violations. For major or repeated infractions, utilize the <code class="inline-code">/report</code> command with detailed documentation.</p>
+                    </div>
+                </div>
+                
+                <div class="requirement-section">
+                    <h3 class="requirement-title"><i class="fas fa-bed"></i> LOA (Leave On Application)</h3>
+                    <div class="requirement-content">
+                        <p>When unavailable due to illness or personal circumstances, use the <code class="inline-code">/loa command</code> with clear duration and reason. Prior notification to senior staff is mandatory for extended absences.</p>
+                    </div>
+                </div>
+                
+                <div class="requirement-section">
+                    <h3 class="requirement-title"><i class="fas fa-sign-in-alt"></i> Shift Management</h3>
+                    <div class="requirement-content">
+                        <p>Begin each moderation session with <code class="inline-code">/login command</code> and conclude with <code class="inline-code">/logout command</code>. Failure to log hours will result in activity discrepancies and potential disciplinary action.</p>
+                    </div>
+                </div>
+                
+                <div class="requirement-section">
+                    <h3 class="requirement-title"><i class="fas fa-chart-line"></i> Weekly Performance Metrics</h3>
+                    <div class="requirement-content">
+                        <p>Maintain minimum weekly thresholds to retain moderator status:</p>
+                        <ul class="requirement-list">
+                            <li><strong>10 Tickets</strong> - Process support tickets</li>
+                            <li><strong>400 Messages</strong> - Active community engagement</li>
+                            <li><strong>5 Dyno Modlogs</strong> - Documented moderator actions</li>
+                            <li><strong>8 Hour Shift</strong> - Minimum weekly activity</li>
+                            <li><strong>2 Hours VC Time</strong> - Voice channel participation</li>
+                        </ul>
+                        <div class="weekly-requirements">Performance below these standards triggers review and possible demotion.</div>
+                    </div>
                 </div>
             </div>
             
@@ -556,7 +1025,12 @@
         </div>
     </div>
 
-    <!-- JavaScript -->
+    <!-- JavaScript Files -->
+    <script src="js/auth.js"></script>
+    <script src="js/discord-test.js"></script>
+    <script src="js/mobile-discord.js"></script>
+    
+    <!-- Main Quiz Logic -->
     <script>
         // SIMPLE QUIZ LOGIC - EVERYTHING IN ONE FILE
         document.addEventListener('DOMContentLoaded', function() {
@@ -800,6 +1274,41 @@
             
             console.log("Quiz initialized successfully");
         });
+        
+        // Test exit function
+        function exitTest() {
+            const testPage = document.getElementById('testPage');
+            const mobileDiscord = document.getElementById('mobileDiscord');
+            const mainContainer = document.getElementById('mainContainer');
+            
+            if (testPage) testPage.style.display = 'none';
+            if (mobileDiscord) mobileDiscord.classList.remove('active');
+            if (mainContainer) mainContainer.style.display = 'block';
+            
+            // Reset test state
+            if (typeof resetTest === 'function') resetTest();
+            if (typeof resetMobileTest === 'function') resetMobileTest();
+        }
+        
+        // Toggle score panel
+        function toggleScorePanel() {
+            const scorePanel = document.querySelector('.test-info-panel');
+            if (scorePanel) {
+                const isVisible = scorePanel.style.display !== 'none';
+                scorePanel.style.display = isVisible ? 'none' : 'block';
+            }
+        }
+        
+        // Switch channel function
+        function switchChannel(channelName) {
+            console.log("Switching to channel:", channelName);
+            // This would normally update the chat interface
+        }
+        
+        // Toggle server dropdown
+        function toggleServerDropdown() {
+            console.log("Toggling server dropdown");
+        }
     </script>
 </body>
 </html>
