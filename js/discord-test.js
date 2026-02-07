@@ -163,28 +163,23 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
         
-        // Initialize test if we have user data
-        const urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.get('startTest') === '1') {
-            window.userDiscordUsername = urlParams.get('discord_username') || 'User';
-            window.userDiscordId = urlParams.get('discord_id') || '0000';
-            
-            // Update UI with Discord username
-            const discordUsernameDisplay = document.getElementById('discordUsernameDisplay');
-            const discordUserTag = document.getElementById('discordUserTag');
-            const userAvatarInitial = document.getElementById('userAvatarInitial');
-            
+        // Update UI with Discord username if available
+        const discordUsernameDisplay = document.getElementById('discordUsernameDisplay');
+        const discordUserTag = document.getElementById('discordUserTag');
+        const userAvatarInitial = document.getElementById('userAvatarInitial');
+        
+        if (window.userDiscordUsername) {
             if (discordUsernameDisplay) discordUsernameDisplay.textContent = window.userDiscordUsername;
             if (discordUserTag) discordUserTag.textContent = "#" + (window.userDiscordId.slice(-4) || "0000");
             if (userAvatarInitial) userAvatarInitial.textContent = window.userDiscordUsername.charAt(0).toUpperCase();
-            
-            // Clear URL parameters
-            window.history.replaceState({}, document.title, window.location.pathname);
-            
-            // Start test after a delay
+        }
+        
+        // Start test automatically if we have user data
+        if (window.userDiscordUsername && window.userDiscordUsername !== 'User') {
+            console.log("Auto-starting test for:", window.userDiscordUsername);
             setTimeout(() => {
                 startDiscordTest();
-            }, 1500);
+            }, 1000);
         }
     }
     
@@ -370,10 +365,15 @@ document.addEventListener('DOMContentLoaded', function() {
         const sendButton = document.querySelector('.message-input-send');
         if (sendButton) sendButton.disabled = true;
         
-        // Start question sequence
+        // Show welcome message
         setTimeout(() => {
-            showNextTestQuestion();
-        }, 2000);
+            addMessage("Void Bot", `Welcome to the Void Esports Moderator Certification Test, ${window.userDiscordUsername}! You'll be presented with 8 simulated scenarios. Respond as you would as a moderator. Good luck!`, "#5865f2", true);
+            
+            // Start question sequence
+            setTimeout(() => {
+                showNextTestQuestion();
+            }, 2000);
+        }, 1000);
     }
     
     // Show next test question (PC)
@@ -453,79 +453,55 @@ document.addEventListener('DOMContentLoaded', function() {
                         try {
                             if (submissionStatus) {
                                 submissionStatus.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting results...';
+                                submissionStatus.className = "submission-status";
                             }
                             
-                            // 1. Send to Discord webhook
-                            const discordSuccess = await sendResultsToDiscord(
-                                window.userDiscordUsername, 
-                                testScore, 
-                                testTotalQuestions, 
-                                passed, 
-                                conversationLog
-                            );
+                            // Send to your backend API
+                            const applicationData = {
+                                answers: conversationLog,
+                                score: `${testScore}/${testTotalQuestions}`,
+                                discordUsername: window.userDiscordUsername,
+                                totalQuestions: testTotalQuestions,
+                                correctAnswers: testScore,
+                                wrongAnswers: testTotalQuestions - testScore,
+                                testResults: JSON.stringify({
+                                    transcript: conversationLog,
+                                    userAnswers: userAnswers,
+                                    correctAnswers: correctAnswers,
+                                    questions: testQuestions.map(q => ({
+                                        id: q.id,
+                                        userMessage: q.userMessage,
+                                        explanation: q.explanation
+                                    }))
+                                })
+                            };
                             
-                            // 2. Send to your backend API
-                            try {
-                                const applicationData = {
-                                    answers: conversationLog,
-                                    score: `${testScore}/${testTotalQuestions}`,
-                                    discordUsername: window.userDiscordUsername,
-                                    totalQuestions: testTotalQuestions,
-                                    correctAnswers: testScore,
-                                    wrongAnswers: testTotalQuestions - testScore,
-                                    testResults: JSON.stringify({
-                                        transcript: conversationLog,
-                                        userAnswers: userAnswers,
-                                        correctAnswers: correctAnswers,
-                                        questions: testQuestions.map(q => ({
-                                            id: q.id,
-                                            userMessage: q.userMessage,
-                                            explanation: q.explanation
-                                        }))
-                                    })
-                                };
-                                
-                                const backendResponse = await fetch("https://mod-application-backend.onrender.com/apply", {
-                                    method: "POST",
-                                    credentials: "include",
-                                    headers: {
-                                        "Content-Type": "application/json"
-                                    },
-                                    body: JSON.stringify(applicationData)
-                                });
-                                
-                                const backendResult = await backendResponse.json();
-                                
-                                if (backendResponse.ok) {
-                                    if (submissionStatus) {
-                                        submissionStatus.innerHTML = '<i class="fas fa-check-circle"></i> Results submitted successfully!';
-                                        submissionStatus.className = "submission-status submission-success";
-                                    }
-                                    
-                                    // Redirect to success page after 3 seconds
-                                    setTimeout(() => {
-                                        const successUrl = `success.html?discord_username=${encodeURIComponent(window.userDiscordUsername)}&final_score=${testScore}/${testTotalQuestions}&pass_fail=${passed ? 'PASS' : 'FAIL'}&test_date=${encodeURIComponent(new Date().toLocaleString())}&user_id=${window.userDiscordId}`;
-                                        window.location.href = successUrl;
-                                    }, 3000);
-                                    
-                                } else {
-                                    throw new Error("Backend submission failed");
-                                }
-                            } catch (backendError) {
-                                console.error("Backend submission error:", backendError);
-                                
+                            const backendResponse = await fetch("https://mod-application-backend.onrender.com/apply", {
+                                method: "POST",
+                                credentials: "include",
+                                headers: {
+                                    "Content-Type": "application/json"
+                                },
+                                body: JSON.stringify(applicationData)
+                            });
+                            
+                            const backendResult = await backendResponse.json();
+                            
+                            if (backendResponse.ok) {
                                 if (submissionStatus) {
-                                    submissionStatus.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Results logged but backend submission failed.';
-                                    submissionStatus.className = "submission-status submission-error";
+                                    submissionStatus.innerHTML = '<i class="fas fa-check-circle"></i> Results submitted successfully!';
+                                    submissionStatus.className = "submission-status submission-success";
                                 }
                                 
-                                // Still redirect to success page
+                                // Redirect to success page after 3 seconds
                                 setTimeout(() => {
                                     const successUrl = `success.html?discord_username=${encodeURIComponent(window.userDiscordUsername)}&final_score=${testScore}/${testTotalQuestions}&pass_fail=${passed ? 'PASS' : 'FAIL'}&test_date=${encodeURIComponent(new Date().toLocaleString())}&user_id=${window.userDiscordId}`;
                                     window.location.href = successUrl;
                                 }, 3000);
+                                
+                            } else {
+                                throw new Error("Backend submission failed");
                             }
-                            
                         } catch (error) {
                             console.error('Submission error:', error);
                             
@@ -538,74 +514,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }, 1500);
         }, 1000);
-    }
-    
-    // DISCORD WEBHOOK FUNCTION
-    async function sendResultsToDiscord(discordUsername, score, totalQuestions, passed, conversationLog) {
-        try {
-            // Replace with your actual Discord webhook URL
-            const webhookURL = "https://discord.com/api/webhooks/YOUR_WEBHOOK_URL_HERE";
-            
-            if (webhookURL.includes("YOUR_WEBHOOK")) {
-                console.log("Discord webhook not configured");
-                return false;
-            }
-            
-            let formattedConversation = "```\n";
-            const lines = conversationLog.split('\n');
-            for (let i = 0; i < Math.min(lines.length, 30); i++) {
-                formattedConversation += lines[i] + '\n';
-            }
-            if (lines.length > 30) {
-                formattedConversation += `... and ${lines.length - 30} more lines\n`;
-            }
-            formattedConversation += "```";
-            
-            const mainEmbed = {
-                title: "📬 VOID MOD CERTIFICATION TEST RESULTS",
-                color: passed ? 0x00ff00 : 0xff0000,
-                timestamp: new Date().toISOString(),
-                fields: [
-                    {
-                        name: "👤 CANDIDATE",
-                        value: `**Username:** \`${discordUsername}\``,
-                        inline: false
-                    },
-                    {
-                        name: "📊 SCORE",
-                        value: `**Score:** \`${score}/${totalQuestions}\`\n**Percentage:** \`${Math.round((score/totalQuestions)*100)}%\`\n**Result:** ${passed ? "✅ PASS" : "❌ FAIL"}`,
-                        inline: false
-                    },
-                    {
-                        name: "💬 CONVERSATION LOG",
-                        value: formattedConversation,
-                        inline: false
-                    }
-                ],
-                footer: {
-                    text: "Void Esports • Mod Certification System",
-                    icon_url: "https://cdn.discordapp.com/embed/avatars/0.png"
-                }
-            };
-            
-            const payload = { 
-                embeds: [mainEmbed],
-                username: "Void Mod Certification",
-                avatar_url: "https://cdn.discordapp.com/embed/avatars/0.png",
-                content: `📊 **MOD CERTIFICATION TEST COMPLETE**\n👤 **Candidate:** ${discordUsername}\n📝 **Score:** ${score}/${totalQuestions} ${passed ? '✅ **PASS**' : '❌ **FAIL**'}`
-            };
-            
-            const response = await fetch(webhookURL, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(payload)
-            });
-            
-            return response.ok;
-        } catch (error) {
-            console.error("Discord webhook error:", error);
-            return false;
-        }
     }
     
     function resetTest() {
