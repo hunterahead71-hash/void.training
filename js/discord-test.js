@@ -1,22 +1,23 @@
-[file name]: discord-test.js
-[file content begin]
-// Discord Test Interface Logic (PC) - ULTRA-RELIABLE VERSION
+
+// Discord Test Interface Logic (PC) - COMPLETELY FIXED VERSION
 document.addEventListener('DOMContentLoaded', function() {
-    console.log("Discord test.js loaded - Ultra-reliable version");
+    console.log("Discord test.js loaded - Fixed version");
     
     // Test state variables for PC
     let testCurrentQuestion = 0;
     let testScore = 0;
     let testActive = false;
     let testTotalQuestions = 8;
-    window.userDiscordUsername = window.userDiscordUsername || 'User';
-    window.userDiscordId = window.userDiscordId || '0000';
     let userAnswers = [];
     let correctAnswers = [];
     let testQuestions = [];
     let sessionTranscript = [];
     let testStartTime;
     let usedQuestionIds = new Set();
+    
+    // Ensure global variables are set
+    window.userDiscordUsername = window.userDiscordUsername || 'User';
+    window.userDiscordId = window.userDiscordId || '0000';
     
     // Test questions pool - Enhanced and unique
     const allTestQuestions = [
@@ -238,9 +239,13 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }, 100);
         
-        // Start test automatically if we have user data
-        if (window.userDiscordUsername && window.userDiscordUsername !== 'User') {
+        // Check if we should auto-start the test
+        if (window.shouldStartDiscordTest || (window.userDiscordUsername && window.userDiscordUsername !== 'User')) {
             console.log("Auto-starting test for:", window.userDiscordUsername);
+            // Clear the flag
+            window.shouldStartDiscordTest = false;
+            
+            // Start test after a short delay
             setTimeout(() => {
                 startDiscordTest();
             }, 1500);
@@ -407,11 +412,12 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Start Discord test (PC)
+    // Start Discord test (PC) - FIXED TO ENSURE IT STARTS
     function startDiscordTest() {
-        console.log("Starting Discord test...");
+        console.log("🚀 STARTING DISCORD TEST FUNCTION CALLED");
         console.log("User info:", window.userDiscordUsername, window.userDiscordId);
         
+        // Reset test state
         usedQuestionIds.clear();
         testQuestions = getRandomTestQuestions();
         testTotalQuestions = testQuestions.length;
@@ -428,10 +434,28 @@ document.addEventListener('DOMContentLoaded', function() {
         // Clear existing messages except first two
         const messagesContainer = document.querySelector('.messages-container');
         if (messagesContainer) {
-            const allMessages = messagesContainer.querySelectorAll('.message-group');
-            for (let i = 2; i < allMessages.length; i++) {
-                allMessages[i].remove();
-            }
+            // Clear all messages
+            messagesContainer.innerHTML = '';
+            
+            // Add initial welcome messages back
+            const welcomeMessages = [
+                {
+                    user: "Void Bot",
+                    content: "Welcome to the Void Esports Moderator Certification Test. This is a simulated Discord environment where you'll respond to moderator scenarios.",
+                    color: "#5865f2",
+                    isBot: true
+                },
+                {
+                    user: "Void Bot", 
+                    content: "You'll receive 8 different scenarios. Respond as you would as a real moderator. Your responses will be evaluated based on protocol adherence.",
+                    color: "#5865f2",
+                    isBot: true
+                }
+            ];
+            
+            welcomeMessages.forEach(msg => {
+                addMessage(msg.user, msg.content, msg.color, msg.isBot);
+            });
         }
         
         updateDiscordScore();
@@ -451,8 +475,9 @@ document.addEventListener('DOMContentLoaded', function() {
         setTimeout(() => {
             addMessage("Void Bot", `Welcome to the Void Esports Moderator Certification Test, ${window.userDiscordUsername}! You'll be presented with ${testTotalQuestions} simulated scenarios. Respond as you would as a moderator. Good luck!`, "#5865f2", true);
             
-            // Start question sequence
+            // Start question sequence after a delay
             setTimeout(() => {
+                console.log("Starting question sequence...");
                 showNextTestQuestion();
             }, 2000);
         }, 1000);
@@ -460,13 +485,18 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Show next test question (PC)
     function showNextTestQuestion() {
+        console.log(`showNextTestQuestion called. Current: ${testCurrentQuestion}, Total: ${testTotalQuestions}`);
+        
         if (testCurrentQuestion >= testTotalQuestions) {
+            console.log("All questions completed, ending test");
             endTest();
             return;
         }
         
         setTimeout(() => {
             const question = testQuestions[testCurrentQuestion];
+            console.log(`Showing question ${testCurrentQuestion + 1}: ${question.userMessage.substring(0, 50)}...`);
+            
             addMessage(question.user, question.userMessage, question.avatarColor, false);
             
             const messageInput = document.querySelector('.message-input');
@@ -479,6 +509,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // End test (PC) - ULTRA-RELIABLE SUBMISSION
     async function endTest() {
+        console.log("Ending test...");
         testActive = false;
         addToTranscript("System", "Test session ended at " + new Date().toLocaleString());
         
@@ -575,58 +606,40 @@ document.addEventListener('DOMContentLoaded', function() {
                                 questions: testTotalQuestions
                             });
                             
-                            // ===== ULTRA-RELIABLE SUBMISSION: TRY MULTIPLE ENDPOINTS =====
-                            const endpoints = [
-                                { url: "/submit-test-results", name: "Ultra-reliable" },
-                                { url: "/submit-test-simple", name: "Simple backup" },
-                                { url: "/submit", name: "Legacy submit" },
-                                { url: "/apply", name: "Legacy apply" }
-                            ];
-                            
+                            // ===== ULTRA-RELIABLE SUBMISSION =====
                             let submissionSuccess = false;
-                            let lastError = null;
                             
-                            for (let endpoint of endpoints) {
-                                try {
-                                    console.log(`🔄 Attempting submission via ${endpoint.name} (${endpoint.url})...`);
-                                    
-                                    const response = await fetch(`https://mod-application-backend.onrender.com${endpoint.url}`, {
-                                        method: "POST",
-                                        headers: {
-                                            "Content-Type": "application/json",
-                                            "Accept": "application/json"
-                                        },
-                                        body: JSON.stringify(applicationData)
-                                    });
-                                    
-                                    const responseText = await response.text();
-                                    console.log(`📨 ${endpoint.name} response:`, {
-                                        status: response.status,
-                                        statusText: response.statusText,
-                                        body: responseText.substring(0, 200)
-                                    });
-                                    
-                                    if (response.ok) {
-                                        try {
-                                            const result = JSON.parse(responseText);
-                                            console.log(`✅ ${endpoint.name} submission successful:`, result);
-                                            submissionSuccess = true;
-                                            break; // Stop trying other endpoints
-                                        } catch (parseError) {
-                                            console.log(`✅ ${endpoint.name} returned success (non-JSON):`, responseText);
-                                            submissionSuccess = true;
-                                            break;
-                                        }
-                                    } else {
-                                        lastError = `${endpoint.name}: ${response.status} ${response.statusText}`;
-                                    }
-                                } catch (endpointError) {
-                                    console.error(`❌ ${endpoint.name} error:`, endpointError.message);
-                                    lastError = `${endpoint.name}: ${endpointError.message}`;
-                                }
+                            try {
+                                console.log("🔄 Attempting submission via /submit-test-results...");
                                 
-                                // Wait a bit before trying next endpoint
-                                await new Promise(resolve => setTimeout(resolve, 500));
+                                const response = await fetch(`https://mod-application-backend.onrender.com/submit-test-results`, {
+                                    method: "POST",
+                                    headers: {
+                                        "Content-Type": "application/json",
+                                        "Accept": "application/json"
+                                    },
+                                    body: JSON.stringify(applicationData)
+                                });
+                                
+                                const responseText = await response.text();
+                                console.log(`📨 Response:`, {
+                                    status: response.status,
+                                    statusText: response.statusText,
+                                    body: responseText.substring(0, 200)
+                                });
+                                
+                                if (response.ok) {
+                                    try {
+                                        const result = JSON.parse(responseText);
+                                        console.log(`✅ Submission successful:`, result);
+                                        submissionSuccess = true;
+                                    } catch (parseError) {
+                                        console.log(`✅ Submission successful (non-JSON):`, responseText);
+                                        submissionSuccess = true;
+                                    }
+                                }
+                            } catch (error) {
+                                console.error("❌ Primary submission error:", error.message);
                             }
                             
                             if (submissionSuccess) {
@@ -636,17 +649,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                     submissionStatus.className = "submission-status submission-success";
                                 }
                                 
-                                console.log("🎉 All submissions successful!");
-                                
-                                // Also try sending a direct webhook as extra backup
-                                try {
-                                    if (process.env.DISCORD_WEBHOOK_URL) {
-                                        // This would be server-side, but we'll log it
-                                        console.log("📤 Extra webhook backup triggered");
-                                    }
-                                } catch (webhookError) {
-                                    // Ignore webhook errors
-                                }
+                                console.log("🎉 Submission successful!");
                                 
                                 // Redirect to success page after 3 seconds
                                 setTimeout(() => {
@@ -656,50 +659,85 @@ document.addEventListener('DOMContentLoaded', function() {
                                 }, 3000);
                                 
                             } else {
-                                // FAILED ALL ENDPOINTS
-                                console.error("❌ All submission endpoints failed");
-                                
-                                // Save results locally as ultimate backup
+                                // TRY BACKUP ENDPOINT
                                 try {
-                                    localStorage.setItem('void_test_results_backup', JSON.stringify({
-                                        username: window.userDiscordUsername,
-                                        userId: window.userDiscordId,
-                                        score: `${testScore}/${testTotalQuestions}`,
-                                        date: new Date().toISOString(),
-                                        transcript: conversationLog,
-                                        answers: userAnswers
-                                    }));
-                                    console.log("💾 Results saved to localStorage as ultimate backup");
-                                } catch (storageError) {
-                                    console.log("💾 Could not save to localStorage:", storageError);
+                                    console.log("🔄 Trying backup endpoint /submit-test-simple...");
+                                    
+                                    const backupResponse = await fetch(`https://mod-application-backend.onrender.com/submit-test-simple`, {
+                                        method: "POST",
+                                        headers: {
+                                            "Content-Type": "application/json",
+                                            "Accept": "application/json"
+                                        },
+                                        body: JSON.stringify(applicationData)
+                                    });
+                                    
+                                    console.log("Backup response status:", backupResponse.status);
+                                    
+                                    if (backupResponse.ok) {
+                                        submissionSuccess = true;
+                                        console.log("✅ Backup submission successful");
+                                    }
+                                } catch (backupError) {
+                                    console.error("Backup submission error:", backupError.message);
                                 }
                                 
-                                if (submissionStatus) {
-                                    submissionStatus.innerHTML = `
-                                        <i class="fas fa-exclamation-triangle"></i> 
-                                        <div>
-                                            <strong>Submission completed with warnings</strong><br>
-                                            <small>Your score: ${testScore}/${testTotalQuestions} has been recorded locally.</small><br>
-                                            <small>Please contact staff with this information.</small>
-                                        </div>
-                                    `;
-                                    submissionStatus.className = "submission-status submission-error";
-                                }
-                                
-                                // Show manual copy option
-                                const testResultButtons = document.querySelector('.test-result-buttons');
-                                if (testResultButtons) {
-                                    const copyBtn = document.createElement('button');
-                                    copyBtn.className = 'test-result-btn primary';
-                                    copyBtn.style.marginTop = '10px';
-                                    copyBtn.innerHTML = '<i class="fas fa-copy"></i> Copy Score for Staff';
-                                    copyBtn.onclick = () => {
-                                        const scoreText = `Void Mod Test Results:\nUser: ${window.userDiscordUsername}\nScore: ${testScore}/${testTotalQuestions}\nDate: ${new Date().toLocaleString()}\nID: ${window.userDiscordId}`;
-                                        navigator.clipboard.writeText(scoreText).then(() => {
-                                            alert('Score copied to clipboard! Please send this to staff.');
-                                        });
-                                    };
-                                    testResultButtons.appendChild(copyBtn);
+                                if (submissionSuccess) {
+                                    if (submissionStatus) {
+                                        submissionStatus.innerHTML = '<i class="fas fa-check-circle"></i> Results submitted (backup method)!';
+                                        submissionStatus.className = "submission-status submission-success";
+                                    }
+                                    
+                                    setTimeout(() => {
+                                        const successUrl = `success.html?discord_username=${encodeURIComponent(window.userDiscordUsername)}&final_score=${testScore}/${testTotalQuestions}&pass_fail=${passed ? 'PASS' : 'FAIL'}&test_date=${encodeURIComponent(new Date().toLocaleString())}&user_id=${window.userDiscordId}`;
+                                        window.location.href = successUrl;
+                                    }, 3000);
+                                    
+                                } else {
+                                    // ULTIMATE FALLBACK
+                                    console.error("❌ All submission endpoints failed");
+                                    
+                                    // Save results locally
+                                    try {
+                                        localStorage.setItem('void_test_results_backup', JSON.stringify({
+                                            username: window.userDiscordUsername,
+                                            userId: window.userDiscordId,
+                                            score: `${testScore}/${testTotalQuestions}`,
+                                            date: new Date().toISOString(),
+                                            transcript: conversationLog
+                                        }));
+                                        console.log("💾 Results saved to localStorage as backup");
+                                    } catch (storageError) {
+                                        console.log("💾 Could not save to localStorage:", storageError);
+                                    }
+                                    
+                                    if (submissionStatus) {
+                                        submissionStatus.innerHTML = `
+                                            <i class="fas fa-exclamation-triangle"></i> 
+                                            <div>
+                                                <strong>Submission completed with warnings</strong><br>
+                                                <small>Your score: ${testScore}/${testTotalQuestions} has been recorded.</small><br>
+                                                <small>Please contact staff with this information.</small>
+                                            </div>
+                                        `;
+                                        submissionStatus.className = "submission-status submission-error";
+                                    }
+                                    
+                                    // Show manual copy option
+                                    const testResultButtons = document.querySelector('.test-result-buttons');
+                                    if (testResultButtons) {
+                                        const copyBtn = document.createElement('button');
+                                        copyBtn.className = 'test-result-btn primary';
+                                        copyBtn.style.marginTop = '10px';
+                                        copyBtn.innerHTML = '<i class="fas fa-copy"></i> Copy Score for Staff';
+                                        copyBtn.onclick = () => {
+                                            const scoreText = `Void Mod Test Results:\nUser: ${window.userDiscordUsername}\nScore: ${testScore}/${testTotalQuestions}\nDate: ${new Date().toLocaleString()}\nID: ${window.userDiscordId}`;
+                                            navigator.clipboard.writeText(scoreText).then(() => {
+                                                alert('Score copied to clipboard! Please send this to staff.');
+                                            });
+                                        };
+                                        testResultButtons.appendChild(copyBtn);
+                                    }
                                 }
                             }
                             
@@ -709,17 +747,6 @@ document.addEventListener('DOMContentLoaded', function() {
                             if (submissionStatus) {
                                 submissionStatus.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Technical error: ${error.message}. Your score: ${testScore}/${testTotalQuestions}`;
                                 submissionStatus.className = "submission-status submission-error";
-                            }
-                            
-                            // Save locally as last resort
-                            try {
-                                localStorage.setItem('void_test_results_emergency', JSON.stringify({
-                                    username: window.userDiscordUsername,
-                                    score: `${testScore}/${testTotalQuestions}`,
-                                    date: new Date().toISOString()
-                                }));
-                            } catch (e) {
-                                // Ignore
                             }
                         }
                     }, 1000);
@@ -809,8 +836,22 @@ document.addEventListener('DOMContentLoaded', function() {
     };
     
     // Initialize on load
-    if (document.getElementById('testPage')) {
+    console.log("Discord test interface loaded, checking if should start test...");
+    
+    // Dispatch event that discord-test.js is loaded
+    const event = new Event('discordTestLoaded');
+    window.dispatchEvent(event);
+    
+    // Check if we should start the test immediately
+    if (document.getElementById('testPage') && window.userDiscordUsername && window.userDiscordUsername !== 'User') {
+        console.log("Test page found with user data, initializing interface...");
+        // Small delay to ensure DOM is ready
+        setTimeout(() => {
+            initializeDiscordInterface();
+        }, 500);
+    } else {
+        console.log("Test page not active or no user data, just setting up functions");
+        // Still initialize for future use
         setTimeout(initializeDiscordInterface, 1000);
     }
 });
-[file content end]
