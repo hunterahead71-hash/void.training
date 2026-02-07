@@ -38,6 +38,7 @@
 }
 
 /* ===== NAVIGATION SIDEBAR ===== */
+/* In components.css - Navigation Sidebar */
 .nav-sidebar {
     position: fixed;
     left: 32px;
