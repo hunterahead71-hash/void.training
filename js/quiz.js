@@ -1,164 +1,200 @@
 // Quiz Functionality
 document.addEventListener('DOMContentLoaded', function() {
-    // Training quiz variables
-    const totalQuestions = 7;
-    let currentQuestion = 1;
-    
-    // DOM elements
-    const startQuizBtn = document.getElementById('startQuizBtn');
-    const quizSection = document.getElementById('quizSection');
-    const progressFill = document.getElementById('progressFill');
-    const progressSteps = document.querySelectorAll('.progress-step');
-    const stepIcons = document.querySelectorAll('.step-icon');
-    const completionScreen = document.getElementById('completionScreen');
-    const restartQuizBtn = document.getElementById('restartQuizBtn');
-    const skipBtn = document.getElementById('skipBtn');
-    const takeTestBtn = document.getElementById('takeTestBtn');
-    const completeQuizBtn = document.getElementById('completeQuizBtn');
-    
-    // Update progress bar
-    function updateQuizProgress() {
-        if (progressFill) {
-            const progressPercentage = (currentQuestion / totalQuestions) * 100;
-            progressFill.style.width = `${progressPercentage}%`;
-        }
-    }
-    
-    // Show specific question
-    function showQuestion(questionNum) {
-        questionNum = parseInt(questionNum);
-        if (questionNum < 1) questionNum = 1;
-        if (questionNum > totalQuestions) questionNum = totalQuestions;
-        
-        for (let i = 1; i <= totalQuestions; i++) {
-            const question = document.getElementById(`question${i}`);
-            if (question) question.classList.remove('active');
-        }
-        
-        const targetQuestion = document.getElementById(`question${questionNum}`);
-        if (targetQuestion) {
-            targetQuestion.classList.add('active');
-            currentQuestion = questionNum;
-            updateQuizProgress();
-            targetQuestion.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-    }
+    console.log("Quiz.js loaded");
     
     // Start quiz button
+    const startQuizBtn = document.getElementById('startQuizBtn');
     if (startQuizBtn) {
         startQuizBtn.addEventListener('click', function() {
+            console.log("Start quiz clicked");
+            const quizSection = document.getElementById('quizSection');
             if (quizSection) {
                 quizSection.style.display = 'block';
                 startQuizBtn.style.display = 'none';
-                
-                if (progressSteps.length > 1 && stepIcons.length > 1) {
-                    progressSteps[0].classList.remove('active');
-                    stepIcons[0].classList.remove('active');
-                    progressSteps[1].classList.add('active');
-                    stepIcons[1].classList.add('active');
-                }
-                
                 quizSection.scrollIntoView({ behavior: 'smooth' });
             }
         });
     }
     
     // Check answer buttons
-    for (let i = 1; i <= totalQuestions; i++) {
+    for (let i = 1; i <= 7; i++) {
         const checkBtn = document.getElementById(`checkAnswer${i}`);
         if (checkBtn) {
             checkBtn.addEventListener('click', function() {
+                console.log(`Check answer ${i} clicked`);
                 const feedback = document.getElementById(`feedback${i}`);
                 if (feedback) {
-                    feedback.classList.add('show');
-                    updateQuizProgress();
+                    feedback.style.display = 'block';
                 }
             });
         }
     }
     
-    // Navigation between questions
+    // Next question buttons
     document.querySelectorAll('.next-question').forEach(button => {
-        button.addEventListener('click', function() {
-            const nextQuestion = this.getAttribute('data-next');
-            showQuestion(nextQuestion);
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            const nextNum = this.getAttribute('data-next');
+            console.log(`Next to question ${nextNum}`);
+            
+            // Hide current question
+            const currentId = `question${nextNum - 1}`;
+            const currentQuestion = document.getElementById(currentId);
+            if (currentQuestion) {
+                currentQuestion.style.display = 'none';
+            }
+            
+            // Show next question
+            const nextId = `question${nextNum}`;
+            const nextQuestion = document.getElementById(nextId);
+            if (nextQuestion) {
+                nextQuestion.style.display = 'block';
+                nextQuestion.scrollIntoView({ behavior: 'smooth' });
+            }
         });
     });
     
+    // Previous question buttons
     document.querySelectorAll('.prev-question').forEach(button => {
-        button.addEventListener('click', function() {
-            const prevQuestion = this.getAttribute('data-prev');
-            showQuestion(prevQuestion);
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            const prevNum = this.getAttribute('data-prev');
+            console.log(`Previous to question ${prevNum}`);
+            
+            // Hide current question
+            const currentId = `question${parseInt(prevNum) + 1}`;
+            const currentQuestion = document.getElementById(currentId);
+            if (currentQuestion) {
+                currentQuestion.style.display = 'none';
+            }
+            
+            // Show previous question
+            const prevId = `question${prevNum}`;
+            const prevQuestion = document.getElementById(prevId);
+            if (prevQuestion) {
+                prevQuestion.style.display = 'block';
+                prevQuestion.scrollIntoView({ behavior: 'smooth' });
+            }
         });
     });
     
     // Skip button
+    const skipBtn = document.getElementById('skipBtn');
     if (skipBtn) {
-        skipBtn.addEventListener('click', function() {
-            showQuestion(currentQuestion + 1);
+        skipBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            console.log("Skip clicked");
+            
+            // Find current visible question
+            let currentQuestion = 1;
+            for (let i = 1; i <= 7; i++) {
+                const question = document.getElementById(`question${i}`);
+                if (question && question.style.display === 'block') {
+                    currentQuestion = i;
+                    break;
+                }
+            }
+            
+            // Hide current
+            const currentId = `question${currentQuestion}`;
+            const currentElement = document.getElementById(currentId);
+            if (currentElement) {
+                currentElement.style.display = 'none';
+            }
+            
+            // Show next
+            const nextId = `question${currentQuestion + 1}`;
+            const nextElement = document.getElementById(nextId);
+            if (nextElement) {
+                nextElement.style.display = 'block';
+                nextElement.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                // If no more questions, complete quiz
+                completeQuizBtn.click();
+            }
         });
     }
     
-    // Complete quiz
+    // Complete quiz button
+    const completeQuizBtn = document.getElementById('completeQuizBtn');
     if (completeQuizBtn) {
-        completeQuizBtn.addEventListener('click', function() {
-            if (progressSteps.length > 2 && stepIcons.length > 2) {
-                progressSteps[1].classList.remove('active');
-                stepIcons[1].classList.remove('active');
-                progressSteps[2].classList.add('active');
-                stepIcons[2].classList.add('active');
-            }
+        completeQuizBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            console.log("Complete quiz clicked");
+            
+            const quizSection = document.getElementById('quizSection');
+            const completionScreen = document.getElementById('completionScreen');
             
             if (quizSection) {
                 quizSection.style.display = 'none';
             }
             
             if (completionScreen) {
-                completionScreen.classList.add('active');
+                completionScreen.style.display = 'block';
                 completionScreen.scrollIntoView({ behavior: 'smooth' });
             }
-            
-            if (progressFill) progressFill.style.width = '100%';
         });
     }
     
-    // Restart quiz
+    // Restart quiz button
+    const restartQuizBtn = document.getElementById('restartQuizBtn');
     if (restartQuizBtn) {
-        restartQuizBtn.addEventListener('click', function() {
-            showQuestion(1);
+        restartQuizBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            console.log("Restart quiz clicked");
             
-            for (let i = 1; i <= totalQuestions; i++) {
-                const feedback = document.getElementById(`feedback${i}`);
-                if (feedback) feedback.classList.remove('show');
+            // Hide all questions except first
+            for (let i = 2; i <= 7; i++) {
+                const question = document.getElementById(`question${i}`);
+                if (question) {
+                    question.style.display = 'none';
+                }
             }
             
+            // Show first question
+            const firstQuestion = document.getElementById('question1');
+            if (firstQuestion) {
+                firstQuestion.style.display = 'block';
+            }
+            
+            // Hide all feedback
+            for (let i = 1; i <= 7; i++) {
+                const feedback = document.getElementById(`feedback${i}`);
+                if (feedback) {
+                    feedback.style.display = 'none';
+                }
+            }
+            
+            // Clear answer boxes
             document.querySelectorAll('.answer-box').forEach(box => {
                 box.value = '';
             });
             
-            if (completionScreen) completionScreen.classList.remove('active');
+            // Hide completion screen
+            const completionScreen = document.getElementById('completionScreen');
+            if (completionScreen) {
+                completionScreen.style.display = 'none';
+            }
+            
+            // Show quiz section
+            const quizSection = document.getElementById('quizSection');
             if (quizSection) {
                 quizSection.style.display = 'block';
                 quizSection.scrollIntoView({ behavior: 'smooth' });
             }
             
-            if (progressSteps.length > 0 && stepIcons.length > 0) {
-                progressSteps[0].classList.add('active');
-                stepIcons[0].classList.add('active');
-                progressSteps[1].classList.remove('active');
-                stepIcons[1].classList.remove('active');
-                progressSteps[2].classList.remove('active');
-                stepIcons[2].classList.remove('active');
+            // Show start button again
+            if (startQuizBtn) {
+                startQuizBtn.style.display = 'inline-flex';
             }
-            
-            currentQuestion = 1;
-            updateQuizProgress();
         });
     }
     
     // Take test button → Discord Auth
+    const takeTestBtn = document.getElementById('takeTestBtn');
     if (takeTestBtn) {
-        takeTestBtn.addEventListener("click", async function() {
+        takeTestBtn.addEventListener("click", async function(e) {
+            e.preventDefault();
             console.log("Take test button clicked");
             
             // Show loading state
@@ -191,8 +227,4 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
-    
-    // Export functions to window
-    window.showQuestion = showQuestion;
-    window.updateQuizProgress = updateQuizProgress;
 });
