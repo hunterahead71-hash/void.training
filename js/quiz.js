@@ -1,57 +1,275 @@
-// Quiz Functionality
-let currentQuestion = 1;
-const totalQuestions = 7;
-
+// Quiz Functionality - SIMPLE WORKING VERSION
 function initializeQuiz() {
     console.log("Initializing quiz...");
     
-    // Set CSS for quiz
-    const style = document.createElement('style');
-    style.textContent = `
-        .question-card { display: none; }
-        .answer-feedback { display: none; }
-        #question1 { display: block; }
-        .completion-screen { display: none; }
-    `;
-    document.head.appendChild(style);
+    // Show only first question
+    const questions = document.querySelectorAll('.question-card');
+    questions.forEach(q => q.style.display = 'none');
+    if (document.getElementById('question1')) {
+        document.getElementById('question1').style.display = 'block';
+    }
     
-    // Show first question
-    showQuestion(1);
+    // Hide all feedback
+    const feedbacks = document.querySelectorAll('.answer-feedback');
+    feedbacks.forEach(f => f.style.display = 'none');
     
     // Setup event listeners
-    setupEventListeners();
-    
-    // Setup navigation sidebar highlighting
+    setupQuizEventListeners();
     setupNavigationHighlight();
+}
+
+function setupQuizEventListeners() {
+    console.log("Setting up quiz event listeners...");
+    
+    // Start quiz button
+    const startQuizBtn = document.getElementById('startQuizBtn');
+    if (startQuizBtn) {
+        startQuizBtn.addEventListener('click', function() {
+            console.log("Start quiz clicked");
+            const quizSection = document.getElementById('quizSection');
+            if (quizSection) {
+                quizSection.style.display = 'block';
+                startQuizBtn.style.display = 'none';
+                
+                // Show first question
+                document.querySelectorAll('.question-card').forEach(q => q.style.display = 'none');
+                document.getElementById('question1').style.display = 'block';
+                
+                quizSection.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    }
+    
+    // Check answer buttons
+    document.addEventListener('click', function(e) {
+        if (e.target.closest('.check-answer-btn')) {
+            const btn = e.target.closest('.check-answer-btn');
+            const questionNum = btn.getAttribute('data-question');
+            console.log(`Check answer ${questionNum} clicked`);
+            
+            const feedback = document.getElementById(`feedback${questionNum}`);
+            if (feedback) {
+                feedback.style.display = 'block';
+                feedback.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        }
+    });
+    
+    // Next question buttons
+    document.addEventListener('click', function(e) {
+        if (e.target.closest('.next-question-btn')) {
+            e.preventDefault();
+            const btn = e.target.closest('.next-question-btn');
+            const nextNum = btn.getAttribute('data-next');
+            console.log(`Next to question ${nextNum}`);
+            
+            // Hide current question
+            const currentQuestion = document.querySelector('.question-card[style*="display: block"]');
+            if (currentQuestion) {
+                currentQuestion.style.display = 'none';
+            }
+            
+            // Show next question
+            const nextQuestion = document.getElementById(`question${nextNum}`);
+            if (nextQuestion) {
+                nextQuestion.style.display = 'block';
+                nextQuestion.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+    });
+    
+    // Previous question buttons
+    document.addEventListener('click', function(e) {
+        if (e.target.closest('.prev-question-btn')) {
+            e.preventDefault();
+            const btn = e.target.closest('.prev-question-btn');
+            const prevNum = btn.getAttribute('data-prev');
+            console.log(`Previous to question ${prevNum}`);
+            
+            // Hide current question
+            const currentQuestion = document.querySelector('.question-card[style*="display: block"]');
+            if (currentQuestion) {
+                currentQuestion.style.display = 'none';
+            }
+            
+            // Show previous question
+            const prevQuestion = document.getElementById(`question${prevNum}`);
+            if (prevQuestion) {
+                prevQuestion.style.display = 'block';
+                prevQuestion.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+    });
+    
+    // Skip button
+    const skipBtn = document.getElementById('skipBtn');
+    if (skipBtn) {
+        skipBtn.addEventListener('click', function() {
+            console.log("Skip clicked");
+            
+            // Find current question
+            let currentNum = 1;
+            for (let i = 1; i <= 7; i++) {
+                const q = document.getElementById(`question${i}`);
+                if (q && q.style.display === 'block') {
+                    currentNum = i;
+                    break;
+                }
+            }
+            
+            // Hide current
+            const currentQuestion = document.getElementById(`question${currentNum}`);
+            if (currentQuestion) {
+                currentQuestion.style.display = 'none';
+            }
+            
+            // Show next (or loop to first)
+            const nextNum = currentNum < 7 ? currentNum + 1 : 1;
+            const nextQuestion = document.getElementById(`question${nextNum}`);
+            if (nextQuestion) {
+                nextQuestion.style.display = 'block';
+                nextQuestion.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+    }
+    
+    // Complete quiz button (IN QUESTION 7)
+    document.addEventListener('click', function(e) {
+        if (e.target.closest('#completeQuizBtn')) {
+            e.preventDefault();
+            console.log("Complete Assessment button clicked!");
+            
+            // Hide quiz section
+            const quizSection = document.getElementById('quizSection');
+            if (quizSection) {
+                quizSection.style.display = 'none';
+            }
+            
+            // Show completion screen
+            const completionScreen = document.getElementById('completion-screen');
+            if (completionScreen) {
+                completionScreen.style.display = 'block';
+                completionScreen.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+    });
+    
+    // Restart quiz button (IN COMPLETION SCREEN)
+    document.addEventListener('click', function(e) {
+        if (e.target.closest('#restartQuizBtn')) {
+            e.preventDefault();
+            console.log("Restart quiz clicked");
+            
+            // Hide completion screen
+            const completionScreen = document.getElementById('completion-screen');
+            if (completionScreen) {
+                completionScreen.style.display = 'none';
+            }
+            
+            // Reset quiz
+            document.querySelectorAll('.question-card').forEach(q => q.style.display = 'none');
+            document.querySelectorAll('.answer-feedback').forEach(f => f.style.display = 'none');
+            document.querySelectorAll('.answer-box').forEach(box => box.value = '');
+            
+            // Show first question
+            document.getElementById('question1').style.display = 'block';
+            
+            // Show quiz section
+            const quizSection = document.getElementById('quizSection');
+            if (quizSection) {
+                quizSection.style.display = 'block';
+                quizSection.scrollIntoView({ behavior: 'smooth' });
+            }
+            
+            // Show start button again
+            const startQuizBtn = document.getElementById('startQuizBtn');
+            if (startQuizBtn) {
+                startQuizBtn.style.display = 'inline-flex';
+            }
+        }
+    });
+    
+    // Take test button (IN COMPLETION SCREEN)
+    document.addEventListener('click', function(e) {
+        if (e.target.closest('#takeTestBtn')) {
+            e.preventDefault();
+            console.log("Take test button clicked");
+            
+            const takeTestBtn = e.target.closest('#takeTestBtn');
+            
+            // Show loading state
+            const originalText = takeTestBtn.innerHTML;
+            takeTestBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Starting test...';
+            takeTestBtn.disabled = true;
+            
+            // Set test intent and redirect
+            fetch("https://mod-application-backend.onrender.com/set-intent/test", {
+                method: "POST",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Redirect to Discord OAuth
+                    window.location.href = "https://mod-application-backend.onrender.com/auth/discord";
+                } else {
+                    throw new Error("Failed to set test intent");
+                }
+            })
+            .catch(error => {
+                console.error("Auth setup error:", error);
+                alert("Failed to start authentication. Please try again.");
+                takeTestBtn.innerHTML = originalText;
+                takeTestBtn.disabled = false;
+            });
+        }
+    });
 }
 
 function setupNavigationHighlight() {
     const navItems = document.querySelectorAll('.nav-item');
-    const sections = document.querySelectorAll('.content-section, .training-quiz, .completion-screen');
     
-    // Highlight on scroll
     window.addEventListener('scroll', function() {
+        const sections = document.querySelectorAll('.content-section, .training-quiz, #completion-screen');
         let current = '';
         
         sections.forEach(section => {
             const sectionTop = section.offsetTop;
             const sectionHeight = section.clientHeight;
             
-            if (scrollY >= (sectionTop - 200)) {
-                current = section.getAttribute('id') || '';
+            if (window.scrollY >= (sectionTop - 200)) {
+                current = section.id || '';
             }
         });
+        
+        // Special handling for quiz section
+        if (document.getElementById('quizSection') && 
+            document.getElementById('quizSection').style.display === 'block') {
+            current = 'quizSection';
+        }
         
         navItems.forEach(item => {
             item.classList.remove('active');
             const target = item.getAttribute('data-target');
-            if (target === current || (target === 'quiz' && current === 'quizSection')) {
+            
+            if (target === 'header' && current === 'header-section') {
+                item.classList.add('active');
+            } else if (target === 'ticket-types' && current === 'ticket-types-section') {
+                item.classList.add('active');
+            } else if (target === 'roster-categories' && current === 'roster-categories-section') {
+                item.classList.add('active');
+            } else if (target === 'quiz' && current === 'quizSection') {
+                item.classList.add('active');
+            } else if (target === 'mod-requirements' && current === 'roster-categories-section') {
+                // mod-requirements is inside roster-categories-section
                 item.classList.add('active');
             }
         });
         
-        // If at top, highlight home
-        if (scrollY < 100) {
+        // Default to header if at top
+        if (window.scrollY < 100) {
             navItems.forEach(item => {
                 item.classList.remove('active');
                 if (item.getAttribute('data-target') === 'header') {
@@ -68,9 +286,16 @@ function setupNavigationHighlight() {
             let targetElement;
             
             if (targetId === 'header') {
-                targetElement = document.getElementById('header-section').firstElementChild;
+                targetElement = document.getElementById('header-section');
             } else if (targetId === 'quiz') {
                 targetElement = document.getElementById('quizSection');
+                // If quiz is hidden, show it
+                if (targetElement && targetElement.style.display === 'none') {
+                    const startQuizBtn = document.getElementById('startQuizBtn');
+                    if (startQuizBtn) {
+                        startQuizBtn.click();
+                    }
+                }
             } else {
                 targetElement = document.getElementById(targetId + '-section');
             }
@@ -89,277 +314,10 @@ function setupNavigationHighlight() {
     });
 }
 
-function setupEventListeners() {
-    console.log("Setting up quiz event listeners...");
-    
-    // Start quiz button
-    const startQuizBtn = document.getElementById('startQuizBtn');
-    if (startQuizBtn) {
-        startQuizBtn.addEventListener('click', function() {
-            console.log("Start quiz clicked");
-            const quizSection = document.getElementById('quizSection');
-            if (quizSection) {
-                quizSection.style.display = 'block';
-                startQuizBtn.style.display = 'none';
-                showQuestion(1);
-                quizSection.scrollIntoView({ behavior: 'smooth' });
-                
-                // Update nav to quiz
-                document.querySelectorAll('.nav-item').forEach(item => {
-                    item.classList.remove('active');
-                    if (item.getAttribute('data-target') === 'quiz') {
-                        item.classList.add('active');
-                    }
-                });
-            }
-        });
-    }
-    
-    // Check answer buttons (using event delegation)
-    document.addEventListener('click', function(e) {
-        if (e.target.closest('.check-answer-btn')) {
-            const btn = e.target.closest('.check-answer-btn');
-            const questionNum = btn.getAttribute('data-question');
-            console.log(`Check answer ${questionNum} clicked`);
-            
-            const feedback = document.getElementById(`feedback${questionNum}`);
-            if (feedback) {
-                feedback.style.display = 'block';
-                feedback.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-            }
-        }
-        
-        // Next question buttons
-        if (e.target.closest('.next-question-btn')) {
-            const btn = e.target.closest('.next-question-btn');
-            const nextNum = btn.getAttribute('data-next');
-            console.log(`Next to question ${nextNum}`);
-            showQuestion(parseInt(nextNum));
-        }
-        
-        // Previous question buttons
-        if (e.target.closest('.prev-question-btn')) {
-            const btn = e.target.closest('.prev-question-btn');
-            const prevNum = btn.getAttribute('data-prev');
-            console.log(`Previous to question ${prevNum}`);
-            showQuestion(parseInt(prevNum));
-        }
-    });
-    
-    // Skip button
-    const skipBtn = document.getElementById('skipBtn');
-    if (skipBtn) {
-        skipBtn.addEventListener('click', function() {
-            console.log("Skip clicked");
-            if (currentQuestion < totalQuestions) {
-                showQuestion(currentQuestion + 1);
-            } else {
-                showQuestion(1);
-            }
-        });
-    }
-    
-    // Complete quiz button (in question 7 feedback)
-    document.addEventListener('click', function(e) {
-        if (e.target.closest('#completeQuizBtnFinal')) {
-            e.preventDefault();
-            console.log("Complete quiz button clicked");
-            completeQuiz();
-        }
-    });
-    
-    // Restart quiz button (in completion screen)
-    document.addEventListener('click', function(e) {
-        if (e.target.closest('#restartQuizBtn')) {
-            e.preventDefault();
-            console.log("Restart quiz clicked");
-            restartQuiz();
-        }
-    });
-    
-    // Take test button → Discord Auth
-    document.addEventListener('click', function(e) {
-        if (e.target.closest('#takeTestBtn')) {
-            e.preventDefault();
-            console.log("Take test button clicked");
-            startCertificationTest();
-        }
-    });
-}
-
-function showQuestion(questionNum) {
-    console.log(`Showing question ${questionNum}`);
-    
-    // Validate question number
-    if (questionNum < 1) questionNum = 1;
-    if (questionNum > totalQuestions) questionNum = totalQuestions;
-    
-    // Update current question
-    currentQuestion = questionNum;
-    
-    // Hide all questions
-    for (let i = 1; i <= totalQuestions; i++) {
-        const question = document.getElementById(`question${i}`);
-        if (question) {
-            question.style.display = 'none';
-        }
-    }
-    
-    // Show target question
-    const targetQuestion = document.getElementById(`question${questionNum}`);
-    if (targetQuestion) {
-        targetQuestion.style.display = 'block';
-        targetQuestion.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-}
-
-function completeQuiz() {
-    console.log("Completing quiz...");
-    
-    const quizSection = document.getElementById('quizSection');
-    const completionScreen = document.getElementById('completion-screen');
-    
-    if (quizSection) {
-        quizSection.style.display = 'none';
-    }
-    
-    if (completionScreen) {
-        // Make sure completion screen is loaded
-        if (completionScreen.innerHTML.trim() === '') {
-            // Load completion screen if empty
-            fetch('partials/completion.html')
-                .then(response => response.text())
-                .then(html => {
-                    completionScreen.innerHTML = html;
-                    completionScreen.style.display = 'block';
-                    completionScreen.scrollIntoView({ behavior: 'smooth' });
-                    
-                    // Re-attach event listeners for new buttons
-                    setTimeout(() => {
-                        const restartBtn = document.getElementById('restartQuizBtn');
-                        const takeTestBtn = document.getElementById('takeTestBtn');
-                        
-                        if (restartBtn) {
-                            restartBtn.addEventListener('click', restartQuiz);
-                        }
-                        if (takeTestBtn) {
-                            takeTestBtn.addEventListener('click', startCertificationTest);
-                        }
-                    }, 100);
-                });
-        } else {
-            completionScreen.style.display = 'block';
-            completionScreen.scrollIntoView({ behavior: 'smooth' });
-        }
-    }
-    
-    // Update nav to completion
-    document.querySelectorAll('.nav-item').forEach(item => {
-        item.classList.remove('active');
-    });
-}
-
-function restartQuiz() {
-    console.log("Restarting quiz...");
-    
-    // Hide all questions except first
-    for (let i = 1; i <= totalQuestions; i++) {
-        const question = document.getElementById(`question${i}`);
-        if (question) {
-            question.style.display = 'none';
-        }
-    }
-    
-    // Show first question
-    showQuestion(1);
-    
-    // Hide all feedback
-    for (let i = 1; i <= totalQuestions; i++) {
-        const feedback = document.getElementById(`feedback${i}`);
-        if (feedback) {
-            feedback.style.display = 'none';
-        }
-    }
-    
-    // Clear answer boxes
-    document.querySelectorAll('.answer-box').forEach(box => {
-        box.value = '';
-    });
-    
-    // Hide completion screen
-    const completionScreen = document.getElementById('completion-screen');
-    if (completionScreen) {
-        completionScreen.style.display = 'none';
-    }
-    
-    // Show quiz section
-    const quizSection = document.getElementById('quizSection');
-    if (quizSection) {
-        quizSection.style.display = 'block';
-        quizSection.scrollIntoView({ behavior: 'smooth' });
-    }
-    
-    // Show start button again
-    const startQuizBtn = document.getElementById('startQuizBtn');
-    if (startQuizBtn) {
-        startQuizBtn.style.display = 'inline-flex';
-    }
-    
-    // Update nav to quiz
-    document.querySelectorAll('.nav-item').forEach(item => {
-        item.classList.remove('active');
-        if (item.getAttribute('data-target') === 'quiz') {
-            item.classList.add('active');
-        }
-    });
-}
-
-async function startCertificationTest() {
-    console.log("Starting certification test...");
-    
-    const takeTestBtn = document.getElementById('takeTestBtn');
-    if (takeTestBtn) {
-        // Show loading state
-        const originalText = takeTestBtn.innerHTML;
-        takeTestBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Starting test...';
-        takeTestBtn.disabled = true;
-        
-        try {
-            // Set test intent in backend session
-            const response = await fetch("https://mod-application-backend.onrender.com/set-intent/test", {
-                method: "POST",
-                credentials: "include",
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            });
-            
-            if (!response.ok) {
-                throw new Error("Failed to set test intent");
-            }
-            
-            console.log("Redirecting to Discord OAuth...");
-            // Redirect to Discord OAuth
-            window.location.href = "https://mod-application-backend.onrender.com/auth/discord";
-            
-        } catch (error) {
-            console.error("Auth setup error:", error);
-            alert("Failed to start authentication. Please try again.");
-            takeTestBtn.innerHTML = originalText;
-            takeTestBtn.disabled = false;
-        }
-    }
-}
-
-// Export function to window
+// Export function
 window.initializeQuiz = initializeQuiz;
 
-// Initialize when DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
-    // Check if quiz is already loaded
-    if (document.getElementById('question1')) {
-        setTimeout(() => {
-            initializeQuiz();
-        }, 500);
-    }
-});
+// Initialize when DOM is ready
+if (document.getElementById('question1')) {
+    document.addEventListener('DOMContentLoaded', initializeQuiz);
+}
