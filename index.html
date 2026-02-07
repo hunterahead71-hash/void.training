@@ -107,6 +107,37 @@
             transform: translateY(-4px);
         }
         
+        .skip-all-container {
+            text-align: center;
+            margin: 40px 0;
+            padding: 30px;
+            background: rgba(255, 0, 51, 0.1);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 0, 51, 0.3);
+        }
+        
+        .skip-all-btn {
+            background: transparent;
+            color: #ff0033;
+            border: 2px solid #ff0033;
+            padding: 14px 32px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-family: var(--font-heading);
+        }
+        
+        .skip-all-btn:hover {
+            background: rgba(255, 0, 51, 0.1);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(255, 0, 51, 0.2);
+        }
+        
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
@@ -121,7 +152,7 @@
 </head>
 <body class="font-satoshi">
     <!-- Admin Login Button -->
-    <a href="https://mod-application-backend.onrender.com/auth/discord" id="adminLoginBtn">
+    <a href="https://mod-application-backend.onrender.com/auth/discord/admin" id="adminLoginBtn">
         <i class="fab fa-discord"></i> Admin Login
     </a>
 
@@ -731,12 +762,23 @@
                 <button class="btn btn-primary" id="startQuizBtn">
                     <i class="fas fa-play-circle"></i> Begin Practical Assessment
                 </button>
+                <button class="btn btn-secondary" id="skipAllQuizBtn" style="margin-left: 15px;">
+                    <i class="fas fa-forward"></i> Skip All Questions
+                </button>
             </div>
         </div>
         
         <!-- Training Quiz Section (HIDDEN BY DEFAULT) -->
         <div class="training-quiz" id="quizSection" style="display: none;">
             <h2 class="section-title"><i class="fas fa-graduation-cap"></i> Practical Assessment</h2>
+            
+            <!-- Skip All Container -->
+            <div class="skip-all-container">
+                <p>Don't want to answer all questions? You can skip directly to the test.</p>
+                <button class="skip-all-btn" id="skipAllQuestionsBtn">
+                    <i class="fas fa-forward"></i> Skip All Questions & Go to Test
+                </button>
+            </div>
             
             <!-- Question 1 -->
             <div class="question-card" id="question1">
@@ -1030,11 +1072,11 @@
     <script src="js/discord-test.js"></script>
     <script src="js/mobile-discord.js"></script>
     
-    <!-- Fixed Main Quiz Logic -->
+    <!-- Fixed Main Quiz Logic with Skip All -->
     <script>
-        // SIMPLE QUIZ LOGIC
+        // SIMPLE QUIZ LOGIC WITH SKIP ALL
         document.addEventListener('DOMContentLoaded', function() {
-            console.log("Page loaded - initializing quiz");
+            console.log("Page loaded - initializing quiz with skip all");
             
             // Initialize: Hide all questions except first
             document.querySelectorAll('.question-card').forEach(q => q.style.display = 'none');
@@ -1056,6 +1098,48 @@
                         quizSection.scrollIntoView({ behavior: 'smooth' });
                     }
                 });
+            }
+            
+            // Skip All Questions button in quiz instructions
+            const skipAllQuizBtn = document.getElementById('skipAllQuizBtn');
+            if (skipAllQuizBtn) {
+                skipAllQuizBtn.addEventListener('click', function() {
+                    console.log("Skip all from instructions clicked");
+                    skipToCompletion();
+                });
+            }
+            
+            // Skip All Questions button in quiz section
+            const skipAllQuestionsBtn = document.getElementById('skipAllQuestionsBtn');
+            if (skipAllQuestionsBtn) {
+                skipAllQuestionsBtn.addEventListener('click', function() {
+                    console.log("Skip all from quiz section clicked");
+                    skipToCompletion();
+                });
+            }
+            
+            // Skip to completion function
+            function skipToCompletion() {
+                // Hide quiz section
+                const quizSection = document.getElementById('quizSection');
+                if (quizSection) {
+                    quizSection.style.display = 'none';
+                }
+                
+                // Hide quiz instructions button
+                if (startQuizBtn) {
+                    startQuizBtn.style.display = 'none';
+                }
+                if (skipAllQuizBtn) {
+                    skipAllQuizBtn.style.display = 'none';
+                }
+                
+                // Show completion screen
+                const completionScreen = document.getElementById('completionScreen');
+                if (completionScreen) {
+                    completionScreen.style.display = 'block';
+                    completionScreen.scrollIntoView({ behavior: 'smooth' });
+                }
             }
             
             // Check answer buttons
@@ -1195,6 +1279,12 @@
                     if (startQuizBtn) {
                         startQuizBtn.style.display = 'inline-flex';
                     }
+                    
+                    // Show skip all button again
+                    const skipAllQuizBtn = document.getElementById('skipAllQuizBtn');
+                    if (skipAllQuizBtn) {
+                        skipAllQuizBtn.style.display = 'inline-flex';
+                    }
                 }
             });
             
@@ -1233,7 +1323,7 @@
                 }
             });
             
-            console.log("Quiz initialized successfully");
+            console.log("Quiz initialized successfully with skip all functionality");
         });
         
         // Test exit function
@@ -1366,7 +1456,7 @@
                         takeTestBtn.disabled = true;
                     }
                     
-                    // Set test intent - USING GET INSTEAD OF POST
+                    // Set test intent
                     console.log("Setting test intent...");
                     const response = await fetch(`${this.baseUrl}/set-test-intent`, {
                         method: 'GET',
@@ -1394,6 +1484,18 @@
                     }
                 }
             }
+            
+            async startAdminLogin() {
+                try {
+                    console.log("Starting admin login flow...");
+                    
+                    // Redirect directly to admin Discord OAuth
+                    window.location.href = `${this.baseUrl}/auth/discord/admin`;
+                } catch (error) {
+                    console.error("Admin login error:", error);
+                    alert("Failed to start admin login. Please try again.");
+                }
+            }
         }
 
         // Initialize auth manager
@@ -1407,6 +1509,16 @@
                 window.authManager.startTest();
             }
         });
+        
+        // Update admin login button to use our auth manager
+        const adminLoginBtn = document.getElementById('adminLoginBtn');
+        if (adminLoginBtn) {
+            adminLoginBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                console.log("Admin login button clicked");
+                window.authManager.startAdminLogin();
+            });
+        }
     </script>
 </body>
 </html>
