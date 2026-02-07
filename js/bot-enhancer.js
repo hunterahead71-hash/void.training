@@ -1,9 +1,10 @@
 // BOT ENHANCER - Advanced Discord Bot Manager
-const { Client, GatewayIntentBits, EmbedBuilder, ChannelType, PermissionsBitField, REST, Routes } = require('discord.js');
+// BOT ENHANCER - Advanced Discord Bot Manager
+const { EmbedBuilder, PermissionsBitField } = require('discord.js');
 
 class EnhancedBotManager {
-    constructor(bot) {
-        this.bot = bot;
+    constructor(botClient) {
+        this.bot = botClient;
         this.ready = false;
         this.initialized = false;
         this.lastActivity = Date.now();
@@ -14,7 +15,7 @@ class EnhancedBotManager {
         // Activity monitoring
         this.activityCheckInterval = setInterval(() => {
             this.checkBotActivity();
-        }, 30000); // Check every 30 seconds
+        }, 30000);
         
         // Initialize enhanced features
         this.init();
