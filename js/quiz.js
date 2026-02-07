@@ -150,82 +150,118 @@ function setupQuizEventListeners() {
             if (completionScreen) {
                 completionScreen.style.display = 'block';
                 completionScreen.scrollIntoView({ behavior: 'smooth' });
+                
+                // Make sure completion screen has content
+                if (completionScreen.innerHTML.trim() === '' || !completionScreen.querySelector('.completion-screen')) {
+                    console.log("Loading completion screen content...");
+                    loadCompletionScreen();
+                }
             }
         }
     });
     
-    // Restart quiz button (IN COMPLETION SCREEN)
-    document.addEventListener('click', function(e) {
-        if (e.target.closest('#restartQuizBtn')) {
-            e.preventDefault();
-            console.log("Restart quiz clicked");
-            
-            // Hide completion screen
-            const completionScreen = document.getElementById('completion-screen');
-            if (completionScreen) {
-                completionScreen.style.display = 'none';
+    // Load completion screen function
+    async function loadCompletionScreen() {
+        try {
+            const response = await fetch('partials/completion.html');
+            if (response.ok) {
+                const html = await response.text();
+                const completionScreen = document.getElementById('completion-screen');
+                if (completionScreen) {
+                    completionScreen.innerHTML = html;
+                    
+                    // Re-attach event listeners after loading
+                    setTimeout(() => {
+                        setupCompletionScreenListeners();
+                    }, 100);
+                }
             }
-            
-            // Reset quiz
-            document.querySelectorAll('.question-card').forEach(q => q.style.display = 'none');
-            document.querySelectorAll('.answer-feedback').forEach(f => f.style.display = 'none');
-            document.querySelectorAll('.answer-box').forEach(box => box.value = '');
-            
-            // Show first question
-            document.getElementById('question1').style.display = 'block';
-            
-            // Show quiz section
-            const quizSection = document.getElementById('quizSection');
-            if (quizSection) {
-                quizSection.style.display = 'block';
-                quizSection.scrollIntoView({ behavior: 'smooth' });
-            }
-            
-            // Show start button again
-            const startQuizBtn = document.getElementById('startQuizBtn');
-            if (startQuizBtn) {
-                startQuizBtn.style.display = 'inline-flex';
-            }
+        } catch (error) {
+            console.error("Error loading completion screen:", error);
         }
-    });
+    }
     
-    // Take test button (IN COMPLETION SCREEN)
-    document.addEventListener('click', function(e) {
-        if (e.target.closest('#takeTestBtn')) {
-            e.preventDefault();
-            console.log("Take test button clicked");
-            
-            const takeTestBtn = e.target.closest('#takeTestBtn');
-            
-            // Show loading state
-            const originalText = takeTestBtn.innerHTML;
-            takeTestBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Starting test...';
-            takeTestBtn.disabled = true;
-            
-            // Set test intent and redirect
-            fetch("https://mod-application-backend.onrender.com/set-intent/test", {
-                method: "POST",
-                credentials: "include",
-                headers: {
-                    "Content-Type": "application/json"
+    // Setup completion screen listeners
+    function setupCompletionScreenListeners() {
+        console.log("Setting up completion screen listeners...");
+        
+        // Restart quiz button
+        const restartBtn = document.getElementById('restartQuizBtn');
+        if (restartBtn) {
+            restartBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                console.log("Restart quiz clicked");
+                
+                // Hide completion screen
+                const completionScreen = document.getElementById('completion-screen');
+                if (completionScreen) {
+                    completionScreen.style.display = 'none';
                 }
-            })
-            .then(response => {
-                if (response.ok) {
-                    // Redirect to Discord OAuth
-                    window.location.href = "https://mod-application-backend.onrender.com/auth/discord";
-                } else {
-                    throw new Error("Failed to set test intent");
+                
+                // Reset quiz
+                document.querySelectorAll('.question-card').forEach(q => q.style.display = 'none');
+                document.querySelectorAll('.answer-feedback').forEach(f => f.style.display = 'none');
+                document.querySelectorAll('.answer-box').forEach(box => box.value = '');
+                
+                // Show first question
+                document.getElementById('question1').style.display = 'block';
+                
+                // Show quiz section
+                const quizSection = document.getElementById('quizSection');
+                if (quizSection) {
+                    quizSection.style.display = 'block';
+                    quizSection.scrollIntoView({ behavior: 'smooth' });
                 }
-            })
-            .catch(error => {
-                console.error("Auth setup error:", error);
-                alert("Failed to start authentication. Please try again.");
-                takeTestBtn.innerHTML = originalText;
-                takeTestBtn.disabled = false;
+                
+                // Show start button again
+                const startQuizBtn = document.getElementById('startQuizBtn');
+                if (startQuizBtn) {
+                    startQuizBtn.style.display = 'inline-flex';
+                }
             });
         }
-    });
+        
+        // Take test button
+        const takeTestBtn = document.getElementById('takeTestBtn');
+        if (takeTestBtn) {
+            takeTestBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                console.log("Take test button clicked");
+                
+                // Show loading state
+                const originalText = takeTestBtn.innerHTML;
+                takeTestBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Starting test...';
+                takeTestBtn.disabled = true;
+                
+                // Set test intent and redirect
+                fetch("https://mod-application-backend.onrender.com/set-intent/test", {
+                    method: "POST",
+                    credentials: "include",
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                })
+                .then(response => {
+                    if (response.ok) {
+                        console.log("Redirecting to Discord OAuth...");
+                        // Redirect to Discord OAuth
+                        window.location.href = "https://mod-application-backend.onrender.com/auth/discord";
+                    } else {
+                        throw new Error("Failed to set test intent");
+                    }
+                })
+                .catch(error => {
+                    console.error("Auth setup error:", error);
+                    alert("Failed to start authentication. Please try again.");
+                    takeTestBtn.innerHTML = originalText;
+                    takeTestBtn.disabled = false;
+                });
+            });
+        }
+    }
+    
+    // Setup completion screen listeners on initial load
+    setTimeout(setupCompletionScreenListeners, 500);
 }
 
 function setupNavigationHighlight() {
