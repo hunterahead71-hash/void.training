@@ -63,10 +63,25 @@ window.authManager = new AuthManager();
 document.addEventListener('DOMContentLoaded', async function() {
   // Check URL parameters for test start
   const urlParams = new URLSearchParams(window.location.search);
-  if (urlParams.get('startTest') === '1') {
-    // User has been authenticated, show test interface
-    window.userDiscordUsername = urlParams.get('discord_username') || 'User';
-    window.userDiscordId = urlParams.get('discord_id') || '0000';
+  const startTest = urlParams.get('startTest');
+  const discordUsername = urlParams.get('discord_username');
+  const discordId = urlParams.get('discord_id');
+  const authToken = urlParams.get('auth_token');
+  const timestamp = urlParams.get('timestamp');
+  
+  if (startTest === '1' && discordUsername && discordId) {
+    console.log("Starting test for user:", discordUsername);
+    
+    // Store user info globally
+    window.userDiscordUsername = discordUsername;
+    window.userDiscordId = discordId;
+    
+    // Validate timestamp (test link should be used within 5 minutes)
+    if (timestamp && (Date.now() - parseInt(timestamp)) > 5 * 60 * 1000) {
+      console.log("Test link expired, redirecting to home");
+      window.location.href = "https://hunterahead71-hash.github.io/void.training/";
+      return;
+    }
     
     // Hide main content and show test interface
     const mainContainer = document.getElementById('mainContainer');
@@ -101,6 +116,13 @@ document.addEventListener('DOMContentLoaded', async function() {
         if (typeof initializeDiscordInterface === 'function') {
           initializeDiscordInterface();
         }
+        
+        // Start test after a short delay
+        setTimeout(() => {
+          if (typeof startDiscordTest === 'function') {
+            startDiscordTest();
+          }
+        }, 1500);
       }
     }
     
