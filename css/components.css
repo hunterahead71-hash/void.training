@@ -1447,27 +1447,70 @@
     font-weight: 900;
 }
 
-/* Fix for rectangle icons */
-.fa-microphone:before { content: "\\f130"; }
-.fa-headphones:before { content: "\\f025"; }
-.fa-cog:before { content: "\\f013"; }
-.fa-user-plus:before { content: "\\f234"; }
-.fa-inbox:before { content: "\\f01c"; }
-.fa-question-circle:before { content: "\\f059"; }
-.fa-chart-bar:before { content: "\\f080"; }
-.fa-bars:before { content: "\\f0c9"; }
-.fa-sign-out-alt:before { content: "\\f2f5"; }
-.fa-times:before { content: "\\f00d"; }
-.fa-paper-plane:before { content: "\\f1d8"; }
-.fa-chevron-down:before { content: "\\f078"; }
-.fa-chevron-up:before { content: "\\f077"; }
-.fa-hashtag:before { content: "\\f292"; }
-.fa-spinner:before { content: "\\f110"; }
-.fa-check:before { content: "\\f00c"; }
-.fa-times-circle:before { content: "\\f057"; }
-.fa-trophy:before { content: "\\f091"; }
-.fa-redo:before { content: "\\f01e"; }
-.fa-home:before { content: "\\f015"; }
-.fa-exclamation-triangle:before { content: "\\f071"; }
-.fa-check-circle:before { content: "\\f058"; }
-.fa-arrow-left:before { content: "\\f060"; }
+/* ===== COMPLETE FONTAWESOME FIX ===== */
+@font-face {
+  font-family: 'Font Awesome 6 Free';
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/webfonts/fa-regular-400.woff2") format("woff2"),
+       url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/webfonts/fa-regular-400.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: 'Font Awesome 6 Free';
+  font-style: normal;
+  font-weight: 900;
+  font-display: block;
+  src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/webfonts/fa-solid-900.woff2") format("woff2"),
+       url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/webfonts/fa-solid-900.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: 'Font Awesome 6 Brands';
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/webfonts/fa-brands-400.woff2") format("woff2"),
+       url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/webfonts/fa-brands-400.ttf") format("truetype");
+}
+
+/* Force Font Awesome for all icon classes */
+.fa,
+.fas,
+.far,
+.fal,
+.fad,
+.fab,
+.fa-solid,
+.fa-regular,
+.fa-light,
+.fa-thin,
+.fa-duotone,
+.fa-brands {
+  font-family: 'Font Awesome 6 Free', 'Font Awesome 6 Brands', 'FontAwesome' !important;
+  font-style: normal;
+  font-variant: normal;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Specific test page fixes */
+.test-page i,
+.test-page .fas,
+.test-page .fab {
+  font-family: 'Font Awesome 6 Free', 'Font Awesome 6 Brands', 'FontAwesome' !important;
+}
+
+/* Fix for Discord test interface icons */
+.discord-chat-area .fas,
+.discord-chat-area .fab,
+.discord-chat-area .fa,
+.user-controls .fas,
+.chat-controls .fas,
+.header-btn .fas,
+.server-item .fas,
+.server-item .fab {
+  font-family: 'Font Awesome 6 Free', 'Font Awesome 6 Brands', 'FontAwesome' !important;
+}
