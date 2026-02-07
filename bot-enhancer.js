@@ -1,5 +1,4 @@
 // BOT ENHANCER - Advanced Discord Bot Manager
-// BOT ENHANCER - Advanced Discord Bot Manager
 const { EmbedBuilder, PermissionsBitField } = require('discord.js');
 
 class EnhancedBotManager {
@@ -12,12 +11,7 @@ class EnhancedBotManager {
         this.maxRetries = 5;
         this.pendingOperations = new Map();
         
-        // Activity monitoring
-        this.activityCheckInterval = setInterval(() => {
-            this.checkBotActivity();
-        }, 30000);
-        
-        // Initialize enhanced features
+        // Initialize
         this.init();
     }
     
@@ -25,33 +19,17 @@ class EnhancedBotManager {
         try {
             console.log('🤖 Initializing Enhanced Bot Manager...');
             
-            // Wait for bot to be ready
             this.bot.on('ready', () => {
                 this.ready = true;
                 this.initialized = true;
                 console.log(`✅ Bot ready as ${this.bot.user.tag} (Enhanced)`);
                 this.setBotPresence();
-                
-                // Process any pending operations
                 this.processPendingOperations();
             });
             
-            // Error handling
             this.bot.on('error', (error) => {
                 console.error('🤖 Bot Error:', error);
                 this.ready = false;
-                this.attemptReconnect();
-            });
-            
-            // Disconnect handling
-            this.bot.on('disconnect', () => {
-                console.log('🤖 Bot disconnected');
-                this.ready = false;
-            });
-            
-            // Reconnect handling
-            this.bot.on('reconnecting', () => {
-                console.log('🤖 Bot reconnecting...');
             });
             
             console.log('🤖 Bot Manager Initialized');
@@ -60,34 +38,13 @@ class EnhancedBotManager {
         }
     }
     
-    async attemptReconnect() {
-        if (this.retryCount >= this.maxRetries) {
-            console.error('🤖 Max reconnection attempts reached');
-            return;
-        }
-        
-        this.retryCount++;
-        console.log(`🤖 Reconnection attempt ${this.retryCount}/${this.maxRetries}`);
-        
-        setTimeout(async () => {
-            try {
-                await this.bot.login(process.env.DISCORD_BOT_TOKEN);
-                this.ready = true;
-                this.retryCount = 0;
-                console.log('🤖 Reconnected successfully');
-            } catch (error) {
-                console.error('🤖 Reconnection failed:', error.message);
-            }
-        }, 5000 * this.retryCount); // Exponential backoff
-    }
-    
     setBotPresence() {
         if (!this.bot.user) return;
         
         const activities = [
-            { name: 'Void Mod Applications', type: 3 }, // WATCHING
-            { name: 'Admin Dashboard', type: 0 }, // PLAYING
-            { name: 'Ticket System', type: 2 }, // LISTENING
+            { name: 'Void Mod Applications', type: 3 },
+            { name: 'Admin Dashboard', type: 0 },
+            { name: 'Ticket System', type: 2 },
         ];
         
         const activity = activities[Math.floor(Math.random() * activities.length)];
@@ -100,11 +57,9 @@ class EnhancedBotManager {
             status: 'online'
         });
         
-        console.log(`🤖 Bot presence set to: ${activity.name}`);
-        
-        // Rotate presence every 5 minutes
+        // Rotate every 5 minutes
         setInterval(() => {
-            if (this.ready) {
+            if (this.ready && this.bot.user) {
                 const newActivity = activities[Math.floor(Math.random() * activities.length)];
                 this.bot.user.setPresence({
                     activities: [{
@@ -115,15 +70,6 @@ class EnhancedBotManager {
                 });
             }
         }, 300000);
-    }
-    
-    checkBotActivity() {
-        if (!this.ready) {
-            console.log('⚠️ Bot is not ready, attempting to reconnect...');
-            this.attemptReconnect();
-        } else {
-            this.lastActivity = Date.now();
-        }
     }
     
     addPendingOperation(operationId, operation) {
@@ -148,7 +94,6 @@ class EnhancedBotManager {
                 console.error(`❌ Failed pending operation ${operationId}:`, error.message);
                 operation.attempts++;
                 
-                // Remove if too many attempts
                 if (operation.attempts >= 3) {
                     this.pendingOperations.delete(operationId);
                     console.log(`🗑️ Removed failed operation: ${operationId}`);
@@ -170,37 +115,25 @@ class EnhancedBotManager {
         }
     }
     
-    // Enhanced role assignment
     async assignRoleToUser(userId, roleId) {
         console.log(`🤖 Assigning role ${roleId} to user ${userId}`);
         
         try {
-            // Check bot readiness
-            if (!this.ready) {
-                throw new Error('Bot not ready');
-            }
+            if (!this.ready) throw new Error('Bot not ready');
             
-            // Get guild
             const guild = await this.bot.guilds.fetch(process.env.DISCORD_GUILD_ID);
-            if (!guild) {
-                throw new Error('Guild not found');
-            }
+            if (!guild) throw new Error('Guild not found');
             
-            // Get member
             let member;
             try {
                 member = await guild.members.fetch(userId);
             } catch (error) {
-                throw new Error(`User ${userId} not found in guild: ${error.message}`);
+                throw new Error(`User ${userId} not found in guild`);
             }
             
-            // Get role
             const role = guild.roles.cache.get(roleId);
-            if (!role) {
-                throw new Error(`Role ${roleId} not found`);
-            }
+            if (!role) throw new Error(`Role ${roleId} not found`);
             
-            // Check bot permissions
             const botMember = await guild.members.fetch(this.bot.user.id);
             if (!botMember.permissions.has(PermissionsBitField.Flags.ManageRoles)) {
                 throw new Error('Bot lacks ManageRoles permission');
@@ -210,11 +143,9 @@ class EnhancedBotManager {
                 throw new Error('Bot cannot assign role higher than its highest role');
             }
             
-            // Assign role
             await member.roles.add(role);
             console.log(`✅ Role ${role.name} assigned to ${member.user.tag}`);
             
-            // Update activity timestamp
             this.lastActivity = Date.now();
             
             return {
@@ -229,24 +160,19 @@ class EnhancedBotManager {
         }
     }
     
-    // Enhanced DM sending
     async sendDirectMessage(userId, messageData) {
         console.log(`🤖 Sending DM to user ${userId}`);
         
         try {
-            if (!this.ready) {
-                throw new Error('Bot not ready');
-            }
+            if (!this.ready) throw new Error('Bot not ready');
             
-            // Get user
             let user;
             try {
                 user = await this.bot.users.fetch(userId);
             } catch (error) {
-                throw new Error(`User ${userId} not found: ${error.message}`);
+                throw new Error(`User ${userId} not found`);
             }
             
-            // Create embed
             const embed = new EmbedBuilder()
                 .setTitle(messageData.title || 'Void Esports Notification')
                 .setDescription(messageData.description || '')
@@ -257,11 +183,6 @@ class EnhancedBotManager {
                 embed.setFooter({ text: messageData.footer });
             }
             
-            if (messageData.fields && messageData.fields.length > 0) {
-                embed.addFields(messageData.fields);
-            }
-            
-            // Send DM
             await user.send({ embeds: [embed] });
             console.log(`✅ DM sent to ${user.tag}`);
             
@@ -276,7 +197,6 @@ class EnhancedBotManager {
         } catch (error) {
             console.error(`❌ Failed to send DM: ${error.message}`);
             
-            // Check if user has DMs disabled
             if (error.code === 50007) {
                 console.log(`📵 User ${userId} has DMs disabled`);
                 return {
@@ -290,7 +210,6 @@ class EnhancedBotManager {
         }
     }
     
-    // Enhanced welcome message
     async sendWelcomeMessage(userId, username) {
         const welcomeData = {
             title: '🎉 Welcome to the Void Esports Mod Team!',
@@ -302,37 +221,14 @@ class EnhancedBotManager {
                 `3. Introduce yourself in #staff-introductions\n` +
                 `4. Join our next training session\n` +
                 `5. Start with ticket duty in #mod-tickets\n\n` +
-                `**Quick Start Guide:**\n` +
-                `• Use \`/login\` when starting your shift\n` +
-                `• Use \`/logout\` when ending your shift\n` +
-                `• Check #staff-commands for all commands\n` +
-                `• For questions, ping @Senior Staff in #staff-chat\n\n` +
                 `We're excited to have you on board! 🚀`,
             color: 0x3ba55c,
-            footer: 'Welcome to the Team!',
-            fields: [
-                {
-                    name: '📊 Next Steps',
-                    value: 'Complete orientation within 48 hours',
-                    inline: true
-                },
-                {
-                    name: '🎯 First Task',
-                    value: 'Read pinned messages in #staff-rules',
-                    inline: true
-                },
-                {
-                    name: '🆘 Need Help?',
-                    value: 'Ping @Senior Staff anytime',
-                    inline: true
-                }
-            ]
+            footer: 'Welcome to the Team!'
         };
         
         return await this.sendDirectMessage(userId, welcomeData);
     }
     
-    // Enhanced rejection message
     async sendRejectionMessage(userId, username, reason) {
         const rejectionData = {
             title: '❌ Application Status Update',
@@ -342,38 +238,15 @@ class EnhancedBotManager {
                 `**What you can do:**\n` +
                 `• You can reapply in **30 days**\n` +
                 `• Stay active in our community\n` +
-                `• Improve your knowledge of our rules\n` +
-                `• Consider volunteering in other areas\n\n` +
-                `**Tips for next time:**\n` +
-                `• Review all training materials thoroughly\n` +
-                `• Spend more time in our community\n` +
-                `• Ask questions if unsure about protocols\n\n` +
+                `• Improve your knowledge of our rules\n\n` +
                 `Thank you for your interest in joining the Void Esports team!`,
             color: 0xed4245,
-            footer: 'Better luck next time!',
-            fields: [
-                {
-                    name: '⏳ Reapply Date',
-                    value: `You can reapply after ${new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toLocaleDateString()}`,
-                    inline: false
-                },
-                {
-                    name: '📚 Resources',
-                    value: 'Check #how-to-join-roster for requirements',
-                    inline: true
-                },
-                {
-                    name: '💬 Questions?',
-                    value: 'Reach out to @Senior Staff',
-                    inline: true
-                }
-            ]
+            footer: 'Better luck next time!'
         };
         
         return await this.sendDirectMessage(userId, rejectionData);
     }
     
-    // Status check
     getStatus() {
         return {
             ready: this.ready,
