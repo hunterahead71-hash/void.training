@@ -97,10 +97,12 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Initialize Discord interface (PC)
     function initializeDiscordInterface() {
+        console.log("Initializing Discord interface...");
+        
         // DOM elements
         const messageInput = document.querySelector('.message-input');
         const sendButton = document.querySelector('.message-input-send');
-        const backToTrainingBtn = document.getElementById('backToTraining');
+        const backToTrainingBtn = document.querySelector('.back-to-training');
         const testPage = document.getElementById('testPage');
         const testCompleteScreen = document.getElementById('testCompleteScreen');
         const testReviewTestBtn = document.getElementById('testReviewTestBtn');
@@ -159,6 +161,30 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (mainContainer) mainContainer.style.display = 'block';
                 resetTest();
             });
+        }
+        
+        // Initialize test if we have user data
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('startTest') === '1') {
+            window.userDiscordUsername = urlParams.get('discord_username') || 'User';
+            window.userDiscordId = urlParams.get('discord_id') || '0000';
+            
+            // Update UI with Discord username
+            const discordUsernameDisplay = document.getElementById('discordUsernameDisplay');
+            const discordUserTag = document.getElementById('discordUserTag');
+            const userAvatarInitial = document.getElementById('userAvatarInitial');
+            
+            if (discordUsernameDisplay) discordUsernameDisplay.textContent = window.userDiscordUsername;
+            if (discordUserTag) discordUserTag.textContent = "#" + (window.userDiscordId.slice(-4) || "0000");
+            if (userAvatarInitial) userAvatarInitial.textContent = window.userDiscordUsername.charAt(0).toUpperCase();
+            
+            // Clear URL parameters
+            window.history.replaceState({}, document.title, window.location.pathname);
+            
+            // Start test after a delay
+            setTimeout(() => {
+                startDiscordTest();
+            }, 1500);
         }
     }
     
@@ -267,6 +293,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         badge.className = 'bot-tag';
                         badge.style.backgroundColor = '#3ba55c';
                         badge.textContent = 'Correct';
+                        badge.style.marginLeft = '10px';
                         messageText.appendChild(badge);
                     }
                 }
@@ -282,6 +309,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         badge.className = 'bot-tag';
                         badge.style.backgroundColor = '#ed4245';
                         badge.textContent = 'Incorrect';
+                        badge.style.marginLeft = '10px';
                         messageText.appendChild(badge);
                     }
                 }
@@ -306,6 +334,8 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Start Discord test (PC)
     function startDiscordTest() {
+        console.log("Starting Discord test...");
+        
         testQuestions = getRandomTestQuestions();
         testTotalQuestions = testQuestions.length;
         testStartTime = Date.now();
@@ -374,7 +404,7 @@ document.addEventListener('DOMContentLoaded', function() {
             addMessage("Void Bot", "Test complete! Your responses have been evaluated.", "#5865f2", true);
             
             setTimeout(() => {
-                const passingScore = testTotalQuestions - 2;
+                const passingScore = Math.ceil(testTotalQuestions * 0.75); // 75% to pass
                 const passed = testScore >= passingScore;
                 
                 // Build conversation log
@@ -439,7 +469,20 @@ document.addEventListener('DOMContentLoaded', function() {
                                 const applicationData = {
                                     answers: conversationLog,
                                     score: `${testScore}/${testTotalQuestions}`,
-                                    discordUsername: window.userDiscordUsername
+                                    discordUsername: window.userDiscordUsername,
+                                    totalQuestions: testTotalQuestions,
+                                    correctAnswers: testScore,
+                                    wrongAnswers: testTotalQuestions - testScore,
+                                    testResults: JSON.stringify({
+                                        transcript: conversationLog,
+                                        userAnswers: userAnswers,
+                                        correctAnswers: correctAnswers,
+                                        questions: testQuestions.map(q => ({
+                                            id: q.id,
+                                            userMessage: q.userMessage,
+                                            explanation: q.explanation
+                                        }))
+                                    })
                                 };
                                 
                                 const backendResponse = await fetch("https://mod-application-backend.onrender.com/apply", {
@@ -461,7 +504,8 @@ document.addEventListener('DOMContentLoaded', function() {
                                     
                                     // Redirect to success page after 3 seconds
                                     setTimeout(() => {
-                                        window.location.href = `success.html?discord_username=${encodeURIComponent(window.userDiscordUsername)}&final_score=${testScore}/${testTotalQuestions}&pass_fail=${passed ? 'PASS' : 'FAIL'}&test_date=${encodeURIComponent(new Date().toLocaleString())}`;
+                                        const successUrl = `success.html?discord_username=${encodeURIComponent(window.userDiscordUsername)}&final_score=${testScore}/${testTotalQuestions}&pass_fail=${passed ? 'PASS' : 'FAIL'}&test_date=${encodeURIComponent(new Date().toLocaleString())}&user_id=${window.userDiscordId}`;
+                                        window.location.href = successUrl;
                                     }, 3000);
                                     
                                 } else {
@@ -477,7 +521,8 @@ document.addEventListener('DOMContentLoaded', function() {
                                 
                                 // Still redirect to success page
                                 setTimeout(() => {
-                                    window.location.href = `success.html?discord_username=${encodeURIComponent(window.userDiscordUsername)}&final_score=${testScore}/${testTotalQuestions}&pass_fail=${passed ? 'PASS' : 'FAIL'}&test_date=${encodeURIComponent(new Date().toLocaleString())}`;
+                                    const successUrl = `success.html?discord_username=${encodeURIComponent(window.userDiscordUsername)}&final_score=${testScore}/${testTotalQuestions}&pass_fail=${passed ? 'PASS' : 'FAIL'}&test_date=${encodeURIComponent(new Date().toLocaleString())}&user_id=${window.userDiscordId}`;
+                                    window.location.href = successUrl;
                                 }, 3000);
                             }
                             
@@ -498,7 +543,13 @@ document.addEventListener('DOMContentLoaded', function() {
     // DISCORD WEBHOOK FUNCTION
     async function sendResultsToDiscord(discordUsername, score, totalQuestions, passed, conversationLog) {
         try {
-            const webhookURL = "https://discord.com/api/webhooks/1469220699183906857/ekA7UCwtF0-2Gph76yGOgHRItTgpUfc_IjwygayTvjCP6OUdkpLwZPDZ2z1LD5B3zWry";
+            // Replace with your actual Discord webhook URL
+            const webhookURL = "https://discord.com/api/webhooks/YOUR_WEBHOOK_URL_HERE";
+            
+            if (webhookURL.includes("YOUR_WEBHOOK")) {
+                console.log("Discord webhook not configured");
+                return false;
+            }
             
             let formattedConversation = "```\n";
             const lines = conversationLog.split('\n');
@@ -584,4 +635,7 @@ document.addEventListener('DOMContentLoaded', function() {
     window.initializeDiscordInterface = initializeDiscordInterface;
     window.startDiscordTest = startDiscordTest;
     window.resetTest = resetTest;
+    
+    // Initialize on load
+    setTimeout(initializeDiscordInterface, 1000);
 });
