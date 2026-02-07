@@ -3,176 +3,157 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Test Submitted Successfully | Void Esports</title>
+    <title>Test Submitted | Void Esports</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #000010 0%, #0a0a1a 50%, #1a002a 100%);
+            background: #000010;
             color: white;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0;
             padding: 20px;
+            background: linear-gradient(135deg, #000010 0%, #0a0a1a 50%, #1a002a 100%);
         }
-        
-        .success-container {
-            background: rgba(20, 20, 40, 0.9);
+        .success-box {
+            background: rgba(20, 20, 40, 0.95);
             border-radius: 20px;
-            padding: 50px;
-            max-width: 800px;
+            padding: 40px;
+            max-width: 600px;
             width: 100%;
             text-align: center;
             border: 2px solid #ff0033;
-            box-shadow: 0 0 50px rgba(255, 0, 51, 0.3);
+            box-shadow: 0 0 40px rgba(255, 0, 51, 0.3);
         }
-        
         .success-icon {
             font-size: 80px;
             color: #00ffea;
             margin-bottom: 30px;
-            animation: float 3s ease-in-out infinite;
+            animation: bounce 2s infinite;
         }
-        
         h1 {
-            color: white;
-            font-size: 42px;
+            font-size: 36px;
             margin-bottom: 20px;
             background: linear-gradient(135deg, #ff0033, #00ffea);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
         }
-        
-        .user-info {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            padding: 25px;
-            margin: 30px 0;
-            text-align: left;
+        p {
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            color: rgba(255, 255, 255, 0.8);
         }
-        
-        .info-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 15px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .info-row:last-child {
-            border-bottom: none;
-            margin-bottom: 0;
-        }
-        
-        .label {
-            color: #00ffea;
-            font-weight: bold;
-        }
-        
-        .value {
-            color: white;
-        }
-        
         .score-display {
-            font-size: 60px;
+            font-size: 48px;
             font-weight: bold;
             margin: 30px 0;
             color: #00ffea;
             text-shadow: 0 0 20px rgba(0, 255, 234, 0.5);
         }
-        
-        .message {
-            font-size: 18px;
-            line-height: 1.6;
-            color: rgba(255, 255, 255, 0.8);
-            margin-bottom: 40px;
-        }
-        
         .buttons {
             display: flex;
-            gap: 20px;
+            gap: 15px;
             justify-content: center;
             flex-wrap: wrap;
+            margin-top: 30px;
         }
-        
         .btn {
-            padding: 15px 30px;
-            border-radius: 12px;
+            padding: 15px 25px;
+            border-radius: 10px;
             text-decoration: none;
             font-weight: bold;
             font-size: 16px;
             display: inline-flex;
             align-items: center;
             gap: 10px;
-            transition: all 0.3s ease;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
         }
-        
         .btn-primary {
             background: linear-gradient(135deg, #ff0033, #cc0029);
             color: white;
-            border: none;
         }
-        
         .btn-primary:hover {
             transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(255, 0, 51, 0.4);
+            box-shadow: 0 10px 20px rgba(255, 0, 51, 0.4);
         }
-        
         .btn-secondary {
             background: transparent;
             color: #00ffea;
             border: 2px solid #00ffea;
         }
-        
         .btn-secondary:hover {
             background: rgba(0, 255, 234, 0.1);
             transform: translateY(-3px);
         }
-        
+        .info-box {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 30px 0;
+            text-align: left;
+        }
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .info-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+        .label {
+            color: #00ffea;
+            font-weight: bold;
+        }
+        .value {
+            color: white;
+        }
         .footer {
-            margin-top: 40px;
+            margin-top: 30px;
             color: rgba(255, 255, 255, 0.5);
             font-size: 14px;
         }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-20px); }
         }
     </style>
 </head>
 <body>
-    <div class="success-container">
+    <div class="success-box">
         <div class="success-icon">
             <i class="fas fa-check-circle"></i>
         </div>
         
-        <h1>Test Submitted Successfully!</h1>
+        <h1 id="title">Test Submitted!</h1>
         
-        <div class="message">
-            Your moderator certification test has been submitted for review. The results will be evaluated by our admin team shortly.
-            You will receive a Discord DM when your application has been processed.
-        </div>
+        <p id="message">
+            Your moderator certification test has been received. The admin team will review your results shortly.
+        </p>
         
-        <div class="user-info">
-            <div class="info-row">
-                <span class="label">Discord Username:</span>
-                <span class="value" id="usernameDisplay">Loading...</span>
+        <div class="score-display" id="scoreDisplay">0/8</div>
+        
+        <div class="info-box">
+            <div class="info-item">
+                <span class="label">Username:</span>
+                <span class="value" id="username">Loading...</span>
             </div>
-            <div class="info-row">
-                <span class="label">Test Score:</span>
-                <span class="value" id="scoreDisplay">Loading...</span>
-            </div>
-            <div class="info-row">
-                <span class="label">Test Date:</span>
-                <span class="value" id="dateDisplay">Loading...</span>
-            </div>
-            <div class="info-row">
+            <div class="info-item">
                 <span class="label">Status:</span>
                 <span class="value" style="color: #f59e0b;">⏳ Pending Review</span>
+            </div>
+            <div class="info-item">
+                <span class="label">Date:</span>
+                <span class="value" id="date">Loading...</span>
             </div>
         </div>
         
@@ -181,33 +162,43 @@
                 <i class="fas fa-home"></i> Return to Training
             </a>
             <a href="https://discord.gg/dqHF9HPucf" class="btn btn-secondary" target="_blank">
-                <i class="fab fa-discord"></i> Join Discord Server
-            </a>
-            <a href="https://mod-application-backend.onrender.com/auth/discord" class="btn btn-secondary">
-                <i class="fas fa-redo"></i> Retake Test
+                <i class="fab fa-discord"></i> Join Discord
             </a>
         </div>
         
         <div class="footer">
-            <p>Void Esports Mod Certification System • Made by Nicks Cold</p>
+            <p>Void Esports Mod Certification System</p>
             <p>© 2026 Void Esports. All rights reserved.</p>
         </div>
     </div>
     
     <script>
-        // Get URL parameters
+        // Try to get data from URL first
         const urlParams = new URLSearchParams(window.location.search);
-        const username = urlParams.get('discord_username') || 'User';
-        const score = urlParams.get('final_score') || '0/8';
-        const date = urlParams.get('test_date') || new Date().toLocaleString();
+        const username = urlParams.get('discord_username') || localStorage.getItem('last_test_user') || 'User';
+        const score = urlParams.get('final_score') || localStorage.getItem('last_test_score') || '0/8';
         const passFail = urlParams.get('pass_fail') || 'UNKNOWN';
+        const testDate = urlParams.get('test_date') || localStorage.getItem('last_test_date') || new Date().toLocaleString();
         
         // Update display
-        document.getElementById('usernameDisplay').textContent = username;
+        document.getElementById('username').textContent = username;
         document.getElementById('scoreDisplay').textContent = score;
-        document.getElementById('dateDisplay').textContent = date;
+        document.getElementById('date').textContent = testDate;
         
-        // Color code based on pass/fail
+        // Update title based on pass/fail
+        if (passFail === 'PASS') {
+            document.getElementById('title').textContent = 'Test Passed!';
+            document.getElementById('message').textContent = 'Congratulations! You passed the mod test. The admin team will review your results.';
+            document.querySelector('.success-icon').innerHTML = '<i class="fas fa-trophy"></i>';
+            document.querySelector('.success-icon').style.color = '#3ba55c';
+        } else if (passFail === 'FAIL') {
+            document.getElementById('title').textContent = 'Test Failed';
+            document.getElementById('message').textContent = 'You did not pass this time. You can retake the test after reviewing the training material.';
+            document.querySelector('.success-icon').innerHTML = '<i class="fas fa-times-circle"></i>';
+            document.querySelector('.success-icon').style.color = '#ed4245';
+        }
+        
+        // Color score based on pass/fail
         const scoreDisplay = document.getElementById('scoreDisplay');
         if (passFail === 'PASS') {
             scoreDisplay.style.color = '#3ba55c';
@@ -217,6 +208,9 @@
         
         // Clear URL parameters
         window.history.replaceState({}, document.title, window.location.pathname);
+        
+        // Log success
+        console.log('Success page loaded with:', { username, score, passFail });
     </script>
 </body>
 </html>
