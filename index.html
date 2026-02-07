@@ -94,13 +94,9 @@
                         if (element) {
                             element.innerHTML = html;
                             
-                            // If this is the quiz section, initialize it
-                            if (elementId === 'quizSection') {
-                                setTimeout(() => {
-                                    if (typeof initializeQuiz === 'function') {
-                                        initializeQuiz();
-                                    }
-                                }, 100);
+                            // Initialize quiz immediately after loading
+                            if (elementId === 'quizSection' && typeof initializeQuiz === 'function') {
+                                setTimeout(initializeQuiz, 100);
                             }
                         }
                     } else {
