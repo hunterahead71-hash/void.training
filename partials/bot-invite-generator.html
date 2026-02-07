@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bot Invite Link Generator</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0a1a 0%, #1a002a 100%);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .container {
+            background: rgba(32, 34, 37, 0.95);
+            border-radius: 12px;
+            padding: 40px;
+            max-width: 800px;
+            width: 100%;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 0, 51, 0.3);
+        }
+        h1 {
+            color: #ff0033;
+            margin-bottom: 10px;
+            font-size: 2.5rem;
+            text-align: center;
+        }
+        .subtitle {
+            color: #00ffea;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
+        .step {
+            background: rgba(54, 57, 63, 0.7);
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-left: 4px solid #5865f2;
+        }
+        .step-number {
+            display: inline-block;
+            background: #5865f2;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .step-title {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: white;
+        }
+        .code-block {
+            background: #202225;
+            border: 1px solid #40444b;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+            overflow-x: auto;
+            color: #00ffea;
+        }
+        .input-group {
+            margin: 20px 0;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #888;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 12px 15px;
+            background: #202225;
+            border: 2px solid #40444b;
+            border-radius: 8px;
+            color: white;
+            font-size: 1rem;
+        }
+        input:focus {
+            outline: none;
+            border-color: #00ffea;
+        }
+        .btn {
+            background: #ff0033;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+            transition: all 0.3s;
+        }
+        .btn:hover {
+            background: #cc0029;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 0, 51, 0.3);
+        }
+        .result {
+            margin-top: 25px;
+            padding: 20px;
+            background: rgba(59, 165, 92, 0.1);
+            border-radius: 8px;
+            border: 1px solid #3ba55c;
+            display: none;
+        }
+        .result h3 {
+            color: #3ba55c;
+            margin-bottom: 10px;
+        }
+        .result a {
+            color: #00ffea;
+            word-break: break-all;
+            text-decoration: none;
+            display: block;
+            padding: 10px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        .result a:hover {
+            text-decoration: underline;
+        }
+        .permissions-list {
+            list-style: none;
+            margin: 15px 0;
+        }
+        .permissions-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .permissions-list li:before {
+            content: "✅ ";
+            color: #3ba55c;
+            margin-right: 10px;
+        }
+        .note {
+            background: rgba(245, 158, 11, 0.1);
+            border-left: 4px solid #f59e0b;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+            font-size: 0.9rem;
+        }
+        .troubleshooting {
+            background: rgba(237, 66, 69, 0.1);
+            border-left: 4px solid #ed4245;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+        .troubleshooting h4 {
+            color: #ed4245;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🤖 VOID ESPORTS BOT SETUP</h1>
+        <div class="subtitle">Generate the correct Discord bot invite link</div>
+        
+        <div class="step">
+            <div class="step-number">1</div>
+            <div class="step-title">Get Your Client ID</div>
+            <p>Go to <a href="https://discord.com/developers/applications" style="color: #5865f2;" target="_blank">Discord Developer Portal</a> → Click your application → OAuth2 → Copy the "Client ID"</p>
+        </div>
+        
+        <div class="step">
+            <div class="step-number">2</div>
+            <div class="step-title">Generate Invite Link</div>
+            
+            <div class="input-group">
+                <label for="clientId">Enter Your Client ID:</label>
+                <input type="text" id="clientId" placeholder="123456789012345678">
+            </div>
+            
+            <button class="btn" onclick="generateLink()">Generate Bot Invite Link</button>
+            
+            <div class="note">
+                <strong>⚠️ Important:</strong> Make sure you're using the actual numeric Client ID, not "CLIENT_ID"
+            </div>
+        </div>
+        
+        <div class="step">
+            <div class="step-number">3</div>
+            <div class="step-title">Bot Permissions Needed</div>
+            <ul class="permissions-list">
+                <li>Manage Roles</li>
+                <li>Read Messages</li>
+                <li>Send Messages</li>
+                <li>Embed Links</li>
+                <li>Attach Files</li>
+                <li>Read Message History</li>
+                <li>Add Reactions</li>
+            </ul>
+            <p>These permissions will be automatically included in the generated link.</p>
+        </div>
+        
+        <div class="result" id="resultSection">
+            <h3>✅ Your Bot Invite Link:</h3>
+            <a href="" id="inviteLink" target="_blank"></a>
+            
+            <div style="margin-top: 20px;">
+                <strong>Quick Copy:</strong>
+                <div class="code-block" id="linkText"></div>
+                <button class="btn" onclick="copyLink()" style="background: #5865f2;">📋 Copy Link to Clipboard</button>
+            </div>
+            
+            <div class="troubleshooting">
+                <h4>❌ Still getting errors?</h4>
+                <p>Make sure:</p>
+                <ul>
+                    <li>Your Client ID is correct (numeric, 18+ digits)</li>
+                    <li>You created a bot in the application (Bot → Add Bot)</li>
+                    <li>You're the server owner or have "Manage Server" permission</li>
+                    <li>Try the manual link: <code>https://discord.com/oauth2/authorize?client_id=YOUR_ID&permissions=268435456&scope=bot%20applications.commands</code></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="step">
+            <div class="step-number">4</div>
+            <div class="step-title">Manual Setup (Alternative)</div>
+            <div class="code-block">
+// Manual invite link formula:<br>
+https://discord.com/api/oauth2/authorize?client_id=<strong>YOUR_CLIENT_ID</strong>&permissions=268435456&scope=bot%20applications.commands
+            </div>
+            <p>Replace <strong>YOUR_CLIENT_ID</strong> with your actual numeric Client ID</p>
+        </div>
+    </div>
+    
+    <script>
+        function generateLink() {
+            const clientId = document.getElementById('clientId').value.trim();
+            
+            if (!clientId) {
+                alert('Please enter your Client ID');
+                return;
+            }
+            
+            // Validate it's a snowflake (Discord ID)
+            if (!/^\d{17,20}$/.test(clientId)) {
+                alert('Invalid Client ID. It should be a numeric value (17-20 digits).');
+                return;
+            }
+            
+            // Permissions needed: 268435456 (Manage Roles + Send Messages + Read Messages)
+            const permissions = '268435456';
+            const scope = 'bot%20applications.commands';
+            
+            const inviteLink = `https://discord.com/api/oauth2/authorize?client_id=${clientId}&permissions=${permissions}&scope=${scope}`;
+            
+            document.getElementById('inviteLink').href = inviteLink;
+            document.getElementById('inviteLink').textContent = inviteLink;
+            document.getElementById('linkText').textContent = inviteLink;
+            document.getElementById('resultSection').style.display = 'block';
+            
+            // Scroll to result
+            document.getElementById('resultSection').scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        function copyLink() {
+            const link = document.getElementById('inviteLink').textContent;
+            navigator.clipboard.writeText(link).then(() => {
+                alert('Link copied to clipboard!');
+            });
+        }
+    </script>
+</body>
+</html>
