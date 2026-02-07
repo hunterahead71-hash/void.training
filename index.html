@@ -93,19 +93,23 @@
                         const element = document.getElementById(elementId);
                         if (element) {
                             element.innerHTML = html;
+                            
+                            // If this is the quiz section, initialize it
+                            if (elementId === 'quizSection') {
+                                setTimeout(() => {
+                                    if (typeof initializeQuiz === 'function') {
+                                        initializeQuiz();
+                                    }
+                                }, 100);
+                            }
                         }
+                    } else {
+                        console.error(`Failed to load ${filePath}:`, response.status);
                     }
                 } catch (error) {
                     console.error(`Error loading ${filePath}:`, error);
                 }
             }
-            
-            // Initialize quiz after loading
-            setTimeout(() => {
-                if (typeof initializeQuiz === 'function') {
-                    initializeQuiz();
-                }
-            }, 500);
         }
     </script>
 </body>
