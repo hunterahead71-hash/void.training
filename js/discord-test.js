@@ -1,5 +1,7 @@
-// Discord Test Interface Logic (PC) - FIXED VERSION
+// Discord Test Interface Logic (PC) - COMPLETELY FIXED VERSION
 document.addEventListener('DOMContentLoaded', function() {
+    console.log("Discord test.js loaded - Fixed version");
+    
     // Test state variables for PC
     let testCurrentQuestion = 0;
     let testScore = 0;
@@ -12,9 +14,9 @@ document.addEventListener('DOMContentLoaded', function() {
     let testQuestions = [];
     let sessionTranscript = [];
     let testStartTime;
-    let usedQuestionIds = new Set(); // Track used questions to prevent duplicates
+    let usedQuestionIds = new Set();
     
-    // Test questions pool - FIXED: Removed duplicates and enhanced questions
+    // Test questions pool - Enhanced and unique
     const allTestQuestions = [
         {
             id: 1,
@@ -105,6 +107,24 @@ document.addEventListener('DOMContentLoaded', function() {
             user: "Nicks Cold",
             avatarColor: "#ed4245",
             explanation: "Ask for follower count, average viewers, streaming schedule, and social media links, then ping @contentdep."
+        },
+        {
+            id: 11,
+            userMessage: "can i join as a graphic designer?",
+            correctKeywords: ["portfolio", "gfx", "vfx", "work", "samples", "gfx-vfx", "ping", "experience", "quality", "resolution", "send"],
+            requiredMatches: 2,
+            user: "Nicks Cold",
+            avatarColor: "#ed4245",
+            explanation: "Ask for their portfolio and ping @gfx-vfx department for review."
+        },
+        {
+            id: 12,
+            userMessage: "i'm 15 with 15k PR, can i join?",
+            correctKeywords: ["age", "academy", "tracker", "pr", "verify", "requirements", "semi-pro", "power ranking", "check"],
+            requiredMatches: 2,
+            user: "Nicks Cold",
+            avatarColor: "#ed4245",
+            explanation: "Verify age (15 is acceptable), ask for Fortnite tracker to check PR, then direct to appropriate roster category."
         }
     ];
     
@@ -114,7 +134,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const shuffled = [...availableQuestions].sort(() => 0.5 - Math.random());
         const selected = shuffled.slice(0, 8);
         
-        // Reset used IDs if we've used all questions
         if (availableQuestions.length < 8) {
             usedQuestionIds.clear();
             const allShuffled = [...allTestQuestions].sort(() => 0.5 - Math.random());
@@ -201,35 +220,28 @@ document.addEventListener('DOMContentLoaded', function() {
         const discordUsernameDisplay = document.getElementById('discordUsernameDisplay');
         const discordUserTag = document.getElementById('discordUserTag');
         const userAvatarInitial = document.getElementById('userAvatarInitial');
+        const userAvatarInitialText = document.getElementById('userAvatarInitialText');
         
         if (window.userDiscordUsername) {
             if (discordUsernameDisplay) discordUsernameDisplay.textContent = window.userDiscordUsername;
             if (discordUserTag) discordUserTag.textContent = "#" + (window.userDiscordId.slice(-4) || "0000");
-            if (userAvatarInitial) userAvatarInitial.textContent = window.userDiscordUsername.charAt(0).toUpperCase();
+            if (userAvatarInitialText) userAvatarInitialText.textContent = window.userDiscordUsername.charAt(0).toUpperCase();
         }
         
-        // Fix font issues for icons
-        const style = document.createElement('style');
-        style.textContent = `
-            .test-page i,
-            .test-page .fas,
-            .test-page .fab,
-            .test-page .fa {
-                font-family: 'Font Awesome 6 Free', 'Font Awesome 6 Brands', 'FontAwesome' !important;
-            }
-            .user-controls .control-btn i,
-            .chat-controls .header-btn i {
-                font-family: 'Font Awesome 6 Free', 'FontAwesome' !important;
-            }
-        `;
-        document.head.appendChild(style);
+        // Fix for Font Awesome icons - ensure proper display
+        setTimeout(() => {
+            const icons = document.querySelectorAll('.fa, .fas, .fab');
+            icons.forEach(icon => {
+                icon.style.fontFamily = "'Font Awesome 6 Free', 'Font Awesome 6 Brands', 'FontAwesome'";
+            });
+        }, 100);
         
         // Start test automatically if we have user data
         if (window.userDiscordUsername && window.userDiscordUsername !== 'User') {
             console.log("Auto-starting test for:", window.userDiscordUsername);
             setTimeout(() => {
                 startDiscordTest();
-            }, 1000);
+            }, 1500);
         }
     }
     
@@ -249,6 +261,7 @@ document.addEventListener('DOMContentLoaded', function() {
         let avatarInitials = username.charAt(0).toUpperCase();
         if (username === "Nicks Cold") avatarInitials = "N";
         if (username === "Void Bot") avatarInitials = "V";
+        if (username === "You") avatarInitials = window.userDiscordUsername ? window.userDiscordUsername.charAt(0).toUpperCase() : "U";
         
         messageGroup.innerHTML = `
             <div class="message-header">
@@ -342,13 +355,16 @@ document.addEventListener('DOMContentLoaded', function() {
                         badge.style.backgroundColor = '#3ba55c';
                         badge.textContent = 'Correct';
                         badge.style.marginLeft = '10px';
+                        badge.style.fontFamily = "'Font Awesome 6 Free', 'Font Awesome 6 Brands', 'FontAwesome'";
                         messageText.appendChild(badge);
                     }
                 }
             }
             
             // Show correct feedback
-            addMessage("Void Bot", `✅ Correct! ${question.explanation}`, "#5865f2", true);
+            setTimeout(() => {
+                addMessage("Void Bot", `✅ Correct! ${question.explanation}`, "#5865f2", true);
+            }, 500);
         } else {
             const messagesContainer = document.querySelector('.messages-container');
             if (messagesContainer) {
@@ -361,13 +377,16 @@ document.addEventListener('DOMContentLoaded', function() {
                         badge.style.backgroundColor = '#ed4245';
                         badge.textContent = 'Incorrect';
                         badge.style.marginLeft = '10px';
+                        badge.style.fontFamily = "'Font Awesome 6 Free', 'Font Awesome 6 Brands', 'FontAwesome'";
                         messageText.appendChild(badge);
                     }
                 }
             }
             
             // Show incorrect feedback
-            addMessage("Void Bot", `❌ Not quite right. ${question.explanation}`, "#5865f2", true);
+            setTimeout(() => {
+                addMessage("Void Bot", `❌ Not quite right. ${question.explanation}`, "#5865f2", true);
+            }, 500);
         }
         
         return isCorrect;
@@ -389,6 +408,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Start Discord test (PC)
     function startDiscordTest() {
         console.log("Starting Discord test...");
+        console.log("User info:", window.userDiscordUsername, window.userDiscordId);
         
         usedQuestionIds.clear();
         testQuestions = getRandomTestQuestions();
@@ -455,7 +475,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 1500 + Math.random() * 1000);
     }
     
-    // End test (PC)
+    // End test (PC) - COMPLETELY FIXED SUBMISSION
     async function endTest() {
         testActive = false;
         addToTranscript("System", "Test session ended at " + new Date().toLocaleString());
@@ -464,7 +484,7 @@ document.addEventListener('DOMContentLoaded', function() {
             addMessage("Void Bot", "Test complete! Your responses have been evaluated.", "#5865f2", true);
             
             setTimeout(() => {
-                const passingScore = Math.ceil(testTotalQuestions * 0.75); // 75% to pass
+                const passingScore = Math.ceil(testTotalQuestions * 0.75);
                 const passed = testScore >= passingScore;
                 
                 // Build conversation log
@@ -508,7 +528,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         }
                     }
                     
-                    // Submit results
+                    // Submit results - FIXED VERSION
                     setTimeout(async () => {
                         try {
                             if (submissionStatus) {
@@ -521,6 +541,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 answers: conversationLog,
                                 score: `${testScore}/${testTotalQuestions}`,
                                 discordUsername: window.userDiscordUsername,
+                                discordId: window.userDiscordId,
                                 totalQuestions: testTotalQuestions,
                                 correctAnswers: testScore,
                                 wrongAnswers: testTotalQuestions - testScore,
@@ -536,27 +557,62 @@ document.addEventListener('DOMContentLoaded', function() {
                                 })
                             };
                             
-                            console.log("Submitting application data:", applicationData);
+                            console.log("Preparing to submit application data:", {
+                                user: window.userDiscordUsername,
+                                score: `${testScore}/${testTotalQuestions}`,
+                                questions: testTotalQuestions
+                            });
                             
-                            // Send to backend API
-                            const backendResponse = await fetch("https://mod-application-backend.onrender.com/apply", {
+                            // ===== FIRST ATTEMPT: DIRECT SUBMISSION (NO SESSION REQUIRED) =====
+                            console.log("Attempting direct submission to /submit-test endpoint...");
+                            const directResponse = await fetch("https://mod-application-backend.onrender.com/submit-test", {
                                 method: "POST",
-                                credentials: "include",
                                 headers: {
-                                    "Content-Type": "application/json"
+                                    "Content-Type": "application/json",
+                                    "Accept": "application/json"
                                 },
                                 body: JSON.stringify(applicationData)
                             });
                             
-                            console.log("Backend response status:", backendResponse.status);
+                            const directResponseText = await directResponse.text();
+                            console.log("Direct submission response:", {
+                                status: directResponse.status,
+                                statusText: directResponse.statusText,
+                                body: directResponseText
+                            });
                             
-                            if (backendResponse.ok) {
-                                const backendResult = await backendResponse.json();
-                                console.log("Backend result:", backendResult);
+                            if (directResponse.ok) {
+                                const directResult = JSON.parse(directResponseText);
+                                console.log("Direct submission successful:", directResult);
                                 
                                 if (submissionStatus) {
                                     submissionStatus.innerHTML = '<i class="fas fa-check-circle"></i> Results submitted successfully!';
                                     submissionStatus.className = "submission-status submission-success";
+                                }
+                                
+                                // ===== SECOND ATTEMPT: SESSION-BASED (FOR COMPATIBILITY) =====
+                                try {
+                                    console.log("Attempting session-based submission as backup...");
+                                    const sessionResponse = await fetch("https://mod-application-backend.onrender.com/apply", {
+                                        method: "POST",
+                                        credentials: "include",
+                                        headers: {
+                                            "Content-Type": "application/json",
+                                            "Accept": "application/json"
+                                        },
+                                        body: JSON.stringify(applicationData)
+                                    });
+                                    
+                                    console.log("Session submission response status:", sessionResponse.status);
+                                    
+                                    if (!sessionResponse.ok) {
+                                        const sessionError = await sessionResponse.text();
+                                        console.log("Session submission failed (non-critical):", sessionError);
+                                    } else {
+                                        console.log("Session submission also successful");
+                                    }
+                                } catch (sessionError) {
+                                    console.log("Session submission error (non-critical):", sessionError.message);
                                 }
                                 
                                 // Redirect to success page after 3 seconds
@@ -567,16 +623,67 @@ document.addEventListener('DOMContentLoaded', function() {
                                 }, 3000);
                                 
                             } else {
-                                const errorText = await backendResponse.text();
-                                console.error("Backend submission failed:", errorText);
-                                throw new Error(`Backend submission failed: ${backendResponse.status} ${errorText}`);
+                                console.error("Direct submission failed, trying session-based endpoint...");
+                                
+                                // ===== FALLBACK: SESSION-BASED SUBMISSION =====
+                                const fallbackResponse = await fetch("https://mod-application-backend.onrender.com/apply", {
+                                    method: "POST",
+                                    credentials: "include",
+                                    headers: {
+                                        "Content-Type": "application/json",
+                                        "Accept": "application/json"
+                                    },
+                                    body: JSON.stringify(applicationData)
+                                });
+                                
+                                const fallbackResponseText = await fallbackResponse.text();
+                                console.log("Fallback (session) submission response:", {
+                                    status: fallbackResponse.status,
+                                    statusText: fallbackResponse.statusText,
+                                    body: fallbackResponseText
+                                });
+                                
+                                if (fallbackResponse.ok) {
+                                    const fallbackResult = JSON.parse(fallbackResponseText);
+                                    console.log("Fallback submission successful:", fallbackResult);
+                                    
+                                    if (submissionStatus) {
+                                        submissionStatus.innerHTML = '<i class="fas fa-check-circle"></i> Results submitted successfully!';
+                                        submissionStatus.className = "submission-status submission-success";
+                                    }
+                                    
+                                    // Redirect to success page
+                                    setTimeout(() => {
+                                        const successUrl = `success.html?discord_username=${encodeURIComponent(window.userDiscordUsername)}&final_score=${testScore}/${testTotalQuestions}&pass_fail=${passed ? 'PASS' : 'FAIL'}&test_date=${encodeURIComponent(new Date().toLocaleString())}&user_id=${window.userDiscordId}`;
+                                        window.location.href = successUrl;
+                                    }, 3000);
+                                    
+                                } else {
+                                    console.error("Both submission methods failed");
+                                    throw new Error(`Submission failed: Direct (${directResponse.status}), Session (${fallbackResponse.status})`);
+                                }
                             }
+                            
                         } catch (error) {
                             console.error('Submission error:', error);
                             
                             if (submissionStatus) {
-                                submissionStatus.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Submission error: ${error.message}. Please contact staff.`;
+                                submissionStatus.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Submission error: ${error.message}. Your results have been saved locally. Please contact staff with your score: ${testScore}/${testTotalQuestions}`;
                                 submissionStatus.className = "submission-status submission-error";
+                            }
+                            
+                            // Save results locally as fallback
+                            try {
+                                localStorage.setItem('void_test_results', JSON.stringify({
+                                    username: window.userDiscordUsername,
+                                    userId: window.userDiscordId,
+                                    score: `${testScore}/${testTotalQuestions}`,
+                                    date: new Date().toISOString(),
+                                    transcript: sessionTranscript
+                                }));
+                                console.log("Results saved to localStorage as backup");
+                            } catch (storageError) {
+                                console.log("Could not save to localStorage:", storageError);
                             }
                             
                             // Show retry button
@@ -624,11 +731,64 @@ document.addEventListener('DOMContentLoaded', function() {
         if (sendButton) sendButton.disabled = true;
     }
     
+    // Switch channel function
+    window.switchChannel = function(channelName) {
+        console.log("Switching to channel:", channelName);
+        const channelItems = document.querySelectorAll('.channel-item');
+        channelItems.forEach(item => item.classList.remove('active'));
+        
+        const chatHeader = document.querySelector('.chat-header');
+        const channelTitle = document.querySelector('.channel-title');
+        
+        if (channelTitle && chatHeader) {
+            switch(channelName) {
+                case 'mod-tickets':
+                    channelTitle.textContent = '🎫・mod-tickets';
+                    document.querySelector('.channel-topic').textContent = 'Test your moderator skills in simulated scenarios';
+                    break;
+                case 'roster-tickets':
+                    channelTitle.textContent = '👥・roster-tickets';
+                    document.querySelector('.channel-topic').textContent = 'Practice handling roster applications';
+                    break;
+                case 'rules':
+                    channelTitle.textContent = '📜・rules';
+                    document.querySelector('.channel-topic').textContent = 'Read the server rules and guidelines';
+                    break;
+            }
+        }
+        
+        // Activate the clicked channel
+        document.querySelector(`.channel-item[onclick*="${channelName}"]`)?.classList.add('active');
+    }
+    
+    // Toggle score panel
+    window.toggleScorePanel = function() {
+        const testInfoPanel = document.querySelector('.test-info-panel');
+        if (testInfoPanel) {
+            testInfoPanel.style.display = testInfoPanel.style.display === 'none' ? 'flex' : 'none';
+        }
+    }
+    
+    // Toggle server dropdown
+    window.toggleServerDropdown = function() {
+        console.log("Server dropdown toggled");
+    }
+    
     // Export functions to window
     window.initializeDiscordInterface = initializeDiscordInterface;
     window.startDiscordTest = startDiscordTest;
     window.resetTest = resetTest;
+    window.exitTest = function() {
+        const testPage = document.getElementById('testPage');
+        const mainContainer = document.getElementById('mainContainer');
+        
+        if (testPage) testPage.style.display = 'none';
+        if (mainContainer) mainContainer.style.display = 'block';
+        resetTest();
+    };
     
     // Initialize on load
-    setTimeout(initializeDiscordInterface, 1000);
+    if (document.getElementById('testPage')) {
+        setTimeout(initializeDiscordInterface, 1000);
+    }
 });
