@@ -130,8 +130,56 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Initialize mobile interface
-    function initializeMobileInterface() {
-        console.log("Mobile interface initialized");
+    // ================= MOBILE DISCORD INTERFACE =================
+
+let mobileTestInitialized = false;
+let mobileTestActive = false;
+
+function initializeMobileInterface() {
+    if (mobileTestInitialized) {
+        console.warn("Mobile interface already initialized. Skipping.");
+        return;
+    }
+    mobileTestInitialized = true;
+
+    const mobileSendBtn = document.getElementById('mobileSendBtn');
+    const mobileMessageInput = document.getElementById('mobileMessageInput');
+
+    if (mobileSendBtn) mobileSendBtn.disabled = true;
+
+    if (mobileMessageInput && mobileSendBtn) {
+        mobileMessageInput.addEventListener('input', () => {
+            mobileSendBtn.disabled = !mobileTestActive || mobileMessageInput.value.trim() === '';
+        });
+
+        mobileMessageInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                if (mobileTestActive && mobileMessageInput.value.trim()) {
+                    sendMobileMessage();
+                }
+            }
+        });
+
+        mobileSendBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (mobileTestActive && mobileMessageInput.value.trim()) {
+                sendMobileMessage();
+            }
+        });
+    }
+}
+
+function startMobileTest() {
+    console.log("✅ Mobile test officially started");
+    mobileTestActive = true;
+
+    const mobileSendBtn = document.getElementById('mobileSendBtn');
+    if (mobileSendBtn) mobileSendBtn.disabled = true;
+
+    askNextMobileQuestion();
+}
+
         
         // Mobile DOM elements
         const mobileMenuBtn = document.getElementById('mobileMenuBtn');
