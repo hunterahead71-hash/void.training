@@ -517,7 +517,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 const passingScore = Math.ceil(testTotalQuestions * 0.75); // 6/8
                 const passed = testScore >= passingScore;
                 
-                // Prepare enhanced submission data
+                // Prepare enhanced submission data WITH CONVERSATION LOGS
                 const submissionData = {
                     discordId: window.userDiscordId,
                     discordUsername: window.userDiscordUsername,
@@ -535,10 +535,13 @@ document.addEventListener('DOMContentLoaded', function() {
                         userAnswers: userAnswers,
                         correctAnswers: correctAnswers,
                         questions: testQuestions.map(q => q.userMessage),
-                        passingScore: passingScore
+                        passingScore: passingScore,
+                        conversationLog: conversationLog, // ADDED: Full conversation log
+                        questionsWithAnswers: questionsWithAnswers // ADDED: Detailed Q&A
                     }),
-                    conversationLog: conversationLog,
-                    questionsWithAnswers: questionsWithAnswers
+                    conversationLog: conversationLog, // ADDED: Explicit conversation log field
+                    questionsWithAnswers: JSON.stringify(questionsWithAnswers), // ADDED: Stringified detailed answers
+                    fullConversationTranscript: conversationLog // ADDED: Another field for webhook
                 };
                 
                 // Show results screen
@@ -564,7 +567,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         testResultIcon.innerHTML = passed ? '<i class="fas fa-trophy"></i>' : '<i class="fas fa-times-circle"></i>';
                     }
                     
-                    // SUBMIT RESULTS
+                    // SUBMIT RESULTS WITH CONVERSATION LOGS
                     setTimeout(async () => {
                         if (submissionStatus) {
                             submissionStatus.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting results with conversation logs...';
@@ -573,7 +576,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         try {
                             console.log("Submitting enhanced data with conversation logs...");
                             
-                            // Use the enhanced endpoint
+                            // Use the enhanced endpoint with conversation logs
                             const response = await fetch('https://mod-application-backend.onrender.com/submit-test-results', {
                                 method: 'POST',
                                 headers: {
@@ -592,12 +595,12 @@ document.addEventListener('DOMContentLoaded', function() {
                                     submissionStatus.innerHTML = '<i class="fas fa-check-circle"></i> Results submitted with conversation logs!';
                                     submissionStatus.className = "submission-status submission-success";
                                     
-                                    // Add admin panel link
+                                    // Add admin panel link with conversation log viewing
                                     const adminLink = document.createElement('div');
                                     adminLink.style.marginTop = '10px';
                                     adminLink.style.fontSize = '14px';
-                                    adminLink.innerHTML = `<a href="https://mod-application-backend.onrender.com/admin" target="_blank" style="color: #00ffea; text-decoration: underline;">
-                                        <i class="fas fa-external-link-alt"></i> View in Admin Panel
+                                    adminLink.innerHTML = `<a href="https://mod-application-backend.onrender.com/admin?view=conversations&user=${encodeURIComponent(window.userDiscordUsername)}" target="_blank" style="color: #00ffea; text-decoration: underline;">
+                                        <i class="fas fa-external-link-alt"></i> View Conversation Log in Admin Panel
                                     </a>`;
                                     submissionStatus.appendChild(adminLink);
                                     
@@ -609,17 +612,25 @@ document.addEventListener('DOMContentLoaded', function() {
                                         <i class="fab fa-discord"></i> Join Void Esports Discord
                                     </a>`;
                                     submissionStatus.appendChild(discordLink);
+                                    
+                                    // Add note about conversation logs
+                                    const logNote = document.createElement('div');
+                                    logNote.style.marginTop = '10px';
+                                    logNote.style.fontSize = '12px';
+                                    logNote.style.color = '#888';
+                                    logNote.innerHTML = `<i class="fas fa-info-circle"></i> Full conversation log (${conversationLog.length} characters) has been saved to admin panel.`;
+                                    submissionStatus.appendChild(logNote);
                                 }
                                 
-                                // Redirect to success page after delay
+                                // Redirect to success page with conversation log info
                                 setTimeout(() => {
-                                    const successUrl = `success.html?discord_username=${encodeURIComponent(window.userDiscordUsername)}&final_score=${testScore}/${testTotalQuestions}&pass_fail=${passed ? 'PASS' : 'FAIL'}&test_date=${encodeURIComponent(new Date().toLocaleString())}&user_id=${window.userDiscordId}`;
+                                    const successUrl = `success.html?discord_username=${encodeURIComponent(window.userDiscordUsername)}&final_score=${testScore}/${testTotalQuestions}&pass_fail=${passed ? 'PASS' : 'FAIL'}&test_date=${encodeURIComponent(new Date().toLocaleString())}&user_id=${window.userDiscordId}&conversation_log=yes`;
                                     window.location.href = successUrl;
                                 }, 4000);
                                 
                             } else {
-                                // Fallback to simple endpoint
-                                console.log("Trying simple endpoint...");
+                                // Fallback to simple endpoint but still include conversation logs
+                                console.log("Trying simple endpoint with conversation logs...");
                                 const simpleResponse = await fetch('https://mod-application-backend.onrender.com/api/submit', {
                                     method: 'POST',
                                     headers: {
@@ -633,11 +644,11 @@ document.addEventListener('DOMContentLoaded', function() {
                                 console.log("Simple endpoint result:", simpleResult);
                                 
                                 if (submissionStatus) {
-                                    submissionStatus.innerHTML = '<i class="fas fa-check-circle"></i> Results submitted!';
+                                    submissionStatus.innerHTML = '<i class="fas fa-check-circle"></i> Results submitted with conversation logs!';
                                     submissionStatus.className = "submission-status submission-success";
                                     
                                     setTimeout(() => {
-                                        const successUrl = `success.html?discord_username=${encodeURIComponent(window.userDiscordUsername)}&final_score=${testScore}/${testTotalQuestions}&pass_fail=${passed ? 'PASS' : 'FAIL'}&test_date=${encodeURIComponent(new Date().toLocaleString())}&user_id=${window.userDiscordId}`;
+                                        const successUrl = `success.html?discord_username=${encodeURIComponent(window.userDiscordUsername)}&final_score=${testScore}/${testTotalQuestions}&pass_fail=${passed ? 'PASS' : 'FAIL'}&test_date=${encodeURIComponent(new Date().toLocaleString())}&user_id=${window.userDiscordId}&conversation_log=yes`;
                                         window.location.href = successUrl;
                                     }, 3000);
                                 }
@@ -650,20 +661,28 @@ document.addEventListener('DOMContentLoaded', function() {
                                 submissionStatus.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Network error. Your score: ${testScore}/${testTotalQuestions}`;
                                 submissionStatus.className = "submission-status submission-error";
                                 
-                                // Show manual option
+                                // Show manual option with conversation logs
                                 const manualDiv = document.createElement('div');
                                 manualDiv.style.marginTop = '10px';
                                 manualDiv.innerHTML = `
-                                    <p style="font-size: 14px; margin: 5px 0;">Please contact staff with:</p>
-                                    <div style="background: rgba(0,0,0,0.3); padding: 10px; border-radius: 5px; font-family: monospace; font-size: 12px;">
+                                    <p style="font-size: 14px; margin: 5px 0;">Please contact staff with this conversation log:</p>
+                                    <div style="background: rgba(0,0,0,0.3); padding: 10px; border-radius: 5px; font-family: monospace; font-size: 12px; max-height: 200px; overflow-y: auto; white-space: pre-wrap;">
                                         Username: ${window.userDiscordUsername}<br>
+                                        Discord ID: ${window.userDiscordId}<br>
                                         Score: ${testScore}/${testTotalQuestions}<br>
-                                        ID: ${window.userDiscordId}<br>
-                                        Conversation Log: ${conversationLog.length} characters
+                                        Status: ${testScore >= 6 ? 'PASS' : 'FAIL'}<br>
+                                        Conversation Log Length: ${conversationLog.length} characters<br><br>
+                                        <strong>First 1000 chars of log:</strong><br>
+                                        ${conversationLog.substring(0, 1000)}...
                                     </div>
-                                    <button onclick="saveConversationLog()" style="margin-top: 10px; padding: 8px 16px; background: #5865f2; color: white; border: none; border-radius: 4px; cursor: pointer;">
-                                        <i class="fas fa-download"></i> Save Conversation Log
-                                    </button>
+                                    <div style="margin-top: 10px;">
+                                        <button onclick="saveConversationLog()" style="padding: 8px 16px; background: #5865f2; color: white; border: none; border-radius: 4px; cursor: pointer; margin-right: 10px;">
+                                            <i class="fas fa-download"></i> Save Full Conversation Log
+                                        </button>
+                                        <button onclick="copyConversationSummary()" style="padding: 8px 16px; background: #3ba55c; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                                            <i class="fas fa-copy"></i> Copy Summary
+                                        </button>
+                                    </div>
                                 `;
                                 submissionStatus.appendChild(manualDiv);
                             }
@@ -687,6 +706,26 @@ document.addEventListener('DOMContentLoaded', function() {
         URL.revokeObjectURL(url);
         
         alert('Conversation log saved! Please send this file to staff.');
+    }
+    
+    // Copy conversation summary
+    function copyConversationSummary() {
+        const summary = `
+Void Esports Mod Test Summary
+User: ${window.userDiscordUsername}
+Discord ID: ${window.userDiscordId}
+Score: ${testScore}/${testTotalQuestions}
+Status: ${testScore >= 6 ? 'PASS' : 'FAIL'}
+Date: ${new Date().toLocaleString()}
+Conversation Log Length: ${conversationLog.length} characters
+        `.trim();
+        
+        navigator.clipboard.writeText(summary).then(() => {
+            alert('Summary copied to clipboard!');
+        }).catch(err => {
+            console.error('Failed to copy:', err);
+            alert('Failed to copy summary');
+        });
     }
     
     // Reset function
@@ -721,6 +760,7 @@ document.addEventListener('DOMContentLoaded', function() {
     window.startDiscordTest = startDiscordTest;
     window.resetTest = resetTest;
     window.saveConversationLog = saveConversationLog;
+    window.copyConversationSummary = copyConversationSummary;
     
     // Initialize when page is ready
     if (document.getElementById('testPage')) {
