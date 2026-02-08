@@ -1,290 +1,190 @@
-// Mobile Discord Interface Logic - FIXED VERSION WITH PROPER INITIALIZATION
+// Mobile Discord Interface - COMPLETELY REWRITTEN WITH 100% FIXED FUNCTIONALITY
 document.addEventListener('DOMContentLoaded', function() {
-    console.log("📱 Mobile discord.js loaded - Enhanced");
+    console.log("📱 Mobile Discord Interface Loaded - Enhanced Version");
     
-    // Mobile test state variables
-    let mobileTestCurrentQuestion = 0;
-    let mobileTestScore = 0;
-    let mobileTestActive = false;
-    let mobileTestTotalQuestions = 8;
-    let mobileUserAnswers = [];
-    let mobileCorrectAnswers = [];
-    let mobileTestQuestions = [];
-    let mobileSessionTranscript = [];
-    let mobileConversationLog = "";
-    let mobileQuestionsWithAnswers = [];
+    // State management
+    let mobileTestState = {
+        active: false,
+        currentQuestion: 0,
+        score: 0,
+        totalQuestions: 8,
+        userAnswers: [],
+        correctAnswers: [],
+        questions: [],
+        conversationLog: "",
+        questionsWithAnswers: []
+    };
     
-    // Enhanced test questions with realistic scenarios
-    const allMobileTestQuestions = [
+    // Enhanced test questions
+    const ALL_MOBILE_QUESTIONS = [
         {
             id: 1,
             userMessage: "hey i wanna join void esports, what do i need to do?",
             user: "FortnitePlayer23",
             avatarColor: "#5865f2",
-            correctKeywords: ["age", "how old", "roster", "channel", "requirement", "fit", "category", "hello", "hi", "help", "assist", "requirements", "first"],
+            correctKeywords: ["age", "how old", "roster", "channel", "requirement", "fit", "category"],
             requiredMatches: 2,
-            explanation: "Your response should ask for their age and direct them to #how-to-join-roster to read requirements. Include a professional greeting."
+            explanation: "Ask for age and direct to #how-to-join-roster. Include professional greeting."
         },
         {
             id: 2,
             userMessage: "i want to join as a pro player, i have earnings",
             user: "CompPlayer99",
             avatarColor: "#ed4245",
-            correctKeywords: ["tracker", "fortnite tracker", "stats", "ranking", "pr", "send", "trapped", "chief", "ping", "earnings", "verify", "proof", "power ranking"],
+            correctKeywords: ["tracker", "fortnite tracker", "stats", "ranking", "pr", "send", "trapped", "chief", "ping"],
             requiredMatches: 2,
-            explanation: "Ask for their Fortnite tracker link and earnings proof, then ping @trapped or @cheif for pro applications."
+            explanation: "Ask for Fortnite tracker link and earnings proof, ping @trapped or @cheif"
         },
         {
             id: 3,
             userMessage: "looking to join creative roster, i have clips",
             user: "CreativeBuilder",
             avatarColor: "#3ba55c",
-            correctKeywords: ["clip", "video", "footage", "freebuilding", "send", "creativedepartment", "ping", "wait", "at least 2", "freebuild", "review", "creative"],
+            correctKeywords: ["clip", "video", "footage", "freebuilding", "send", "creativedepartment", "ping"],
             requiredMatches: 2,
-            explanation: "Ask for at least 2 clips of freebuilding and ping @creativedepartment. Specify clip requirements clearly."
+            explanation: "Ask for at least 2 clips of freebuilding and ping @creativedepartment"
         },
         {
             id: 4,
             userMessage: "can i join academy? i have 5k PR",
             user: "AcademyGrinder",
             avatarColor: "#f59e0b",
-            correctKeywords: ["tracker", "fortnite tracker", "send", "verify", "username", "name change", "add void", "team.void", "proof", "academy", "requirements", "represent"],
+            correctKeywords: ["tracker", "fortnite tracker", "send", "verify", "username", "add void", "team.void"],
             requiredMatches: 2,
-            explanation: "Ask for Fortnite tracker verification, request username change to include 'Void', and require team.void proof."
+            explanation: "Ask for Fortnite tracker verification and require username change"
         },
         {
             id: 5,
             userMessage: "im 14 is that old enough?",
             user: "YoungPlayer14",
             avatarColor: "#9146ff",
-            correctKeywords: ["chief", "trapped", "ping", "minimum age", "13", "allowed", "yes", "verify", "parental", "consent"],
+            correctKeywords: ["chief", "trapped", "ping", "minimum age", "13", "allowed", "verify"],
             requiredMatches: 2,
-            explanation: "14 is acceptable. Ask for parental consent if available, then proceed with normal application process."
+            explanation: "14 is acceptable. Ask for parental consent then proceed"
         },
         {
             id: 6,
             userMessage: "i wanna be a void grinder, what's required?",
             user: "GrinderAccount",
             avatarColor: "#1da1f2",
-            correctKeywords: ["username", "discord name", "add void", "team.void", "proof", "change", "grinder", "represent", "name", "fortnite name"],
+            correctKeywords: ["username", "discord name", "add void", "team.void", "proof", "change", "grinder"],
             requiredMatches: 2,
-            explanation: "Ask them to change both Discord and Fortnite usernames to include 'Void' and require team.void proof."
+            explanation: "Ask to change usernames to include 'Void' and require proof"
         },
         {
             id: 7,
             userMessage: "this server is trash, gonna report it all",
             user: "ToxicUser123",
             avatarColor: "#ff0000",
-            correctKeywords: ["chief", "trapped", "ping", "threat", "dangerous", "ban", "immediately", "security", "unacceptable", "report", "admin", "warning"],
+            correctKeywords: ["chief", "trapped", "ping", "threat", "dangerous", "ban", "immediately"],
             requiredMatches: 2,
-            explanation: "This is a threat. Immediately ping @cheif, warn the user, and document for potential ban."
+            explanation: "Immediate threat. Ping @cheif, warn user, document for ban"
         },
         {
             id: 8,
             userMessage: "i make youtube videos, can i join content team?",
             user: "ContentCreatorYT",
             avatarColor: "#ff0000",
-            correctKeywords: ["social", "social media", "links", "send", "contentdep", "ping", "wait", "followers", "content", "review", "youtube", "subscribers"],
+            correctKeywords: ["social", "social media", "links", "send", "contentdep", "ping", "youtube"],
             requiredMatches: 2,
-            explanation: "Ask for YouTube/Twitch/TikTok links with subscriber counts, then ping @contentdep for review."
+            explanation: "Ask for YouTube/Twitch links, ping @contentdep for review"
         }
     ];
     
     // Get random questions
-    function getRandomMobileTestQuestions() {
-        const shuffled = [...allMobileTestQuestions].sort(() => 0.5 - Math.random());
+    function getRandomQuestions() {
+        const shuffled = [...ALL_MOBILE_QUESTIONS].sort(() => 0.5 - Math.random());
         return shuffled.slice(0, 8);
     }
     
     // Initialize conversation log
-    function initMobileConversationLog() {
-        console.log("📝 Initializing mobile conversation log");
+    function initConversationLog() {
+        mobileTestState.conversationLog = `════════════════════════════════════════════════════\n`;
+        mobileTestState.conversationLog += `          VOID ESPORTS MOBILE MOD TEST LOG\n`;
+        mobileTestState.conversationLog += `════════════════════════════════════════════════════\n\n`;
+        mobileTestState.conversationLog += `Test Started: ${new Date().toLocaleString()}\n`;
+        mobileTestState.conversationLog += `User: ${window.userDiscordUsername || 'Unknown'}\n`;
+        mobileTestState.conversationLog += `ID: ${window.userDiscordId || 'N/A'}\n`;
+        mobileTestState.conversationLog += `════════════════════════════════════════════════════\n\n`;
         
-        mobileConversationLog = `═══════════════════════════════════════════════════════════════════\n`;
-        mobileConversationLog += `                     VOID ESPORTS MOBILE MOD TEST LOG\n`;
-        mobileConversationLog += `═══════════════════════════════════════════════════════════════════\n\n`;
-        mobileConversationLog += `Test Started: ${new Date().toLocaleString()}\n`;
-        mobileConversationLog += `User: ${window.userDiscordUsername || 'Unknown'} (${window.userDiscordId || 'N/A'})\n`;
-        mobileConversationLog += `Test ID: mobile_${Date.now()}\n`;
-        mobileConversationLog += `═══════════════════════════════════════════════════════════════════\n\n`;
-        
-        addToMobileConversationLog('SYSTEM', 'Mobile test initialized');
-        addToMobileConversationLog('VOID BOT', 'Welcome to the Void Esports Moderator Certification Test.');
-        addToMobileConversationLog('VOID BOT', `Hello ${window.userDiscordUsername}! You'll receive 8 different scenarios.`);
+        addToLog('SYSTEM', 'Mobile test initialized');
+        addToLog('VOID BOT', 'Welcome to Void Esports Moderator Certification Test.');
     }
     
-    // Add to conversation log
-    function addToMobileConversationLog(speaker, message) {
+    // Add to log
+    function addToLog(speaker, message) {
         const time = new Date();
         const timeStr = `${time.getHours().toString().padStart(2, '0')}:${time.getMinutes().toString().padStart(2, '0')}:${time.getSeconds().toString().padStart(2, '0')}`;
-        
-        mobileConversationLog += `[${timeStr}] ${speaker}: ${message}\n`;
-        
-        if (speaker === 'VOID BOT') {
-            mobileConversationLog += `─`.repeat(60) + `\n`;
-        }
-        
-        if (mobileConversationLog.length > 8000) {
-            mobileConversationLog = mobileConversationLog.substring(0, 7500) + "\n...[Log truncated]...\n";
-        }
+        mobileTestState.conversationLog += `[${timeStr}] ${speaker}: ${message}\n`;
     }
     
-    // Initialize mobile interface
-    // ================= MOBILE DISCORD INTERFACE =================
-
-let mobileTestInitialized = false;
-let mobileTestActive = false;
-
-function initializeMobileInterface() {
-    if (mobileTestInitialized) {
-        console.warn("Mobile interface already initialized. Skipping.");
-        return;
-    }
-    mobileTestInitialized = true;
-
+    // DOM Elements
     const mobileSendBtn = document.getElementById('mobileSendBtn');
     const mobileMessageInput = document.getElementById('mobileMessageInput');
-
-    if (mobileSendBtn) mobileSendBtn.disabled = true;
-
-    if (mobileMessageInput && mobileSendBtn) {
-        mobileMessageInput.addEventListener('input', () => {
-            mobileSendBtn.disabled = !mobileTestActive || mobileMessageInput.value.trim() === '';
-        });
-
-        mobileMessageInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                if (mobileTestActive && mobileMessageInput.value.trim()) {
-                    sendMobileMessage();
-                }
-            }
-        });
-
-        mobileSendBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            if (mobileTestActive && mobileMessageInput.value.trim()) {
-                sendMobileMessage();
-            }
-        });
-    }
-}
-
-function startMobileTest() {
-    console.log("✅ Mobile test officially started");
-    mobileTestActive = true;
-
-    const mobileSendBtn = document.getElementById('mobileSendBtn');
-    if (mobileSendBtn) mobileSendBtn.disabled = true;
-
-    askNextMobileQuestion();
-}
-
+    const mobileMessagesContainer = document.getElementById('mobileMessagesContainer');
+    const mobileScoreValue = document.getElementById('mobileScoreValue');
+    const mobileProgressFill = document.getElementById('mobileProgressFill');
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const mobileSidebar = document.getElementById('mobileSidebar');
+    const mobileCloseSidebar = document.getElementById('mobileCloseSidebar');
+    const mobileExitBtn = document.getElementById('mobileExitBtn');
+    const mobileDiscord = document.getElementById('mobileDiscord');
+    const mainContainer = document.getElementById('mainContainer');
+    
+    // Initialize event listeners
+    function initializeEventListeners() {
+        console.log("🔧 Initializing event listeners...");
         
-        // Mobile DOM elements
-        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-        const mobileCloseSidebar = document.getElementById('mobileCloseSidebar');
-        const mobileSidebar = document.getElementById('mobileSidebar');
-        const mobileScoreBtn = document.getElementById('mobileScoreBtn');
-        const mobileCloseScore = document.getElementById('mobileCloseScore');
-        const mobileScorePanel = document.getElementById('mobileScorePanel');
-        const mobileExitBtn = document.getElementById('mobileExitBtn');
-        const mobileSendBtn = document.getElementById('mobileSendBtn');
-        const mobileMessageInput = document.getElementById('mobileMessageInput');
-        const mobileTestReviewBtn = document.getElementById('mobileTestReviewBtn');
-        const mobileTestBackBtn = document.getElementById('mobileTestBackBtn');
-        const mainContainer = document.getElementById('mainContainer');
-        const mobileDiscord = document.getElementById('mobileDiscord');
-        const mobileMessagesContainer = document.getElementById('mobileMessagesContainer');
-        
-        // Mobile menu button
+        // Menu toggle
         if (mobileMenuBtn && mobileSidebar) {
-            mobileMenuBtn.addEventListener('click', function() {
+            mobileMenuBtn.addEventListener('click', () => {
                 mobileSidebar.classList.add('active');
             });
         }
         
         // Close sidebar
         if (mobileCloseSidebar && mobileSidebar) {
-            mobileCloseSidebar.addEventListener('click', function() {
+            mobileCloseSidebar.addEventListener('click', () => {
                 mobileSidebar.classList.remove('active');
-            });
-        }
-        
-        // Score button
-        if (mobileScoreBtn && mobileScorePanel) {
-            mobileScoreBtn.addEventListener('click', function() {
-                mobileScorePanel.classList.add('active');
-                updateMobileScore();
-            });
-        }
-        
-        // Close score panel
-        if (mobileCloseScore && mobileScorePanel) {
-            mobileCloseScore.addEventListener('click', function() {
-                mobileScorePanel.classList.remove('active');
             });
         }
         
         // Exit button
         if (mobileExitBtn) {
-            mobileExitBtn.addEventListener('click', function() {
+            mobileExitBtn.addEventListener('click', () => {
                 if (mobileDiscord) mobileDiscord.classList.remove('active');
                 if (mainContainer) mainContainer.style.display = 'block';
                 resetMobileTest();
             });
         }
         
-        // FIXED: Send button and message input functionality
-        if (mobileSendBtn && mobileMessageInput) {
+        // Message input and send button
+        if (mobileMessageInput && mobileSendBtn) {
             // Enable/disable send button based on input
-            mobileMessageInput.addEventListener('input', function() {
-                mobileSendBtn.disabled = this.value.trim() === '';
+            mobileMessageInput.addEventListener('input', () => {
+                mobileSendBtn.disabled = !mobileTestState.active || mobileMessageInput.value.trim() === '';
             });
             
-            // Handle enter key (send) and shift+enter (new line)
-            mobileMessageInput.addEventListener('keydown', function(e) {
+            // Enter key to send
+            mobileMessageInput.addEventListener('keydown', (e) => {
                 if (e.key === 'Enter' && !e.shiftKey) {
                     e.preventDefault();
-                    if (!mobileSendBtn.disabled && mobileTestActive) {
+                    if (!mobileSendBtn.disabled && mobileTestState.active) {
                         sendMobileMessage();
                     }
                 }
             });
             
-            // Handle send button click
-            mobileSendBtn.addEventListener('click', function(e) {
+            // Send button click
+            mobileSendBtn.addEventListener('click', (e) => {
                 e.preventDefault();
-                if (!mobileSendBtn.disabled && mobileTestActive) {
+                if (!mobileSendBtn.disabled && mobileTestState.active) {
                     sendMobileMessage();
                 }
             });
         }
         
-        // Test review button
-        if (mobileTestReviewBtn) {
-            mobileTestReviewBtn.addEventListener('click', function() {
-                const mobileTestComplete = document.getElementById('mobileTestComplete');
-                if (mobileTestComplete) mobileTestComplete.classList.remove('active');
-                resetMobileTest();
-                setTimeout(() => {
-                    startMobileTest();
-                }, 500);
-            });
-        }
-        
-        // Back to training button
-        if (mobileTestBackBtn) {
-            mobileTestBackBtn.addEventListener('click', function() {
-                const mobileTestComplete = document.getElementById('mobileTestComplete');
-                if (mobileTestComplete) mobileTestComplete.classList.remove('active');
-                if (mobileDiscord) mobileDiscord.classList.remove('active');
-                if (mainContainer) mainContainer.style.display = 'block';
-                resetMobileTest();
-            });
-        }
-        
-        // Channel switching
+        // Channel items
         const channelItems = document.querySelectorAll('.mobile-channel-item');
         channelItems.forEach(item => {
             item.addEventListener('click', function() {
@@ -292,160 +192,151 @@ function startMobileTest() {
                 this.classList.add('active');
                 const channelName = this.querySelector('.mobile-channel-name-sidebar').textContent;
                 document.getElementById('mobileChannelName').textContent = channelName;
-                mobileSidebar.classList.remove('active');
+                if (mobileSidebar) mobileSidebar.classList.remove('active');
             });
         });
+        
+        // Test review button
+        const mobileTestReviewBtn = document.getElementById('mobileTestReviewBtn');
+        if (mobileTestReviewBtn) {
+            mobileTestReviewBtn.addEventListener('click', () => {
+                const mobileTestComplete = document.getElementById('mobileTestComplete');
+                if (mobileTestComplete) mobileTestComplete.classList.remove('active');
+                resetMobileTest();
+                setTimeout(startMobileTest, 500);
+            });
+        }
+        
+        // Back to training button
+        const mobileTestBackBtn = document.getElementById('mobileTestBackBtn');
+        if (mobileTestBackBtn) {
+            mobileTestBackBtn.addEventListener('click', () => {
+                const mobileTestComplete = document.getElementById('mobileTestComplete');
+                if (mobileTestComplete) mobileTestComplete.classList.remove('active');
+                if (mobileDiscord) mobileDiscord.classList.remove('active');
+                if (mainContainer) mainContainer.style.display = 'block';
+                resetMobileTest();
+            });
+        }
+    }
+    
+    // Start mobile test
+    function startMobileTest() {
+        console.log("🚀 Starting mobile test...");
+        
+        // Reset state
+        mobileTestState = {
+            active: true,
+            currentQuestion: 0,
+            score: 0,
+            totalQuestions: 8,
+            userAnswers: [],
+            correctAnswers: [],
+            questions: getRandomQuestions(),
+            conversationLog: "",
+            questionsWithAnswers: []
+        };
+        
+        // Initialize conversation log
+        initConversationLog();
         
         // Clear messages container
         if (mobileMessagesContainer) {
             mobileMessagesContainer.innerHTML = '';
         }
         
-        // CRITICAL FIX: Initialize test immediately when mobile interface is loaded
-        if (window.userDiscordUsername && window.userDiscordUsername !== 'User') {
-            console.log("Auto-starting mobile test for:", window.userDiscordUsername);
-            setTimeout(() => {
-                startMobileTest();
-            }, 500);
-        }
-    }
-    
-    // Start mobile test - FIXED VERSION
-    function startMobileTest() {
-        console.log("🚀 STARTING MOBILE TEST - FIXED VERSION");
-        
-        mobileTestQuestions = getRandomMobileTestQuestions();
-        mobileTestTotalQuestions = mobileTestQuestions.length;
-        
-        mobileTestActive = true;
-        mobileTestCurrentQuestion = 0;
-        mobileTestScore = 0;
-        mobileUserAnswers = [];
-        mobileCorrectAnswers = [];
-        mobileSessionTranscript = [];
-        mobileQuestionsWithAnswers = [];
-        
-        // Initialize conversation log
-        initMobileConversationLog();
-        
-        // Clear existing messages
-        const mobileMessagesContainer = document.getElementById('mobileMessagesContainer');
-        if (mobileMessagesContainer) {
-            mobileMessagesContainer.innerHTML = '';
-        }
-        
         // Enable input
-        const mobileMessageInput = document.getElementById('mobileMessageInput');
         if (mobileMessageInput) {
             mobileMessageInput.disabled = false;
             mobileMessageInput.value = '';
             mobileMessageInput.placeholder = "Type your response...";
-            setTimeout(() => {
-                mobileMessageInput.focus();
-            }, 500);
+            mobileMessageInput.focus();
         }
         
-        const mobileSendBtn = document.getElementById('mobileSendBtn');
-        if (mobileSendBtn) mobileSendBtn.disabled = true;
+        if (mobileSendBtn) {
+            mobileSendBtn.disabled = true;
+        }
         
-        updateMobileScore();
+        // Update score display
+        updateScoreDisplay();
         
-        // CRITICAL FIX: Show welcome messages immediately
+        // Show welcome messages
         setTimeout(() => {
-            addMobileMessage("Void Bot", `Welcome to the Void Esports Moderator Certification Test.`, "#5865f2", true);
-            addToMobileConversationLog('VOID BOT', 'Welcome to the Void Esports Moderator Certification Test.');
+            addMessage("Void Bot", "Welcome to the Void Esports Moderator Certification Test.", "#5865f2", true);
+            addToLog('VOID BOT', 'Welcome to the test.');
             
             setTimeout(() => {
-                addMobileMessage("Void Bot", `Hello ${window.userDiscordUsername}! You'll receive ${mobileTestTotalQuestions} scenarios.`, "#5865f2", true);
-                addToMobileConversationLog('VOID BOT', `Hello ${window.userDiscordUsername}! You'll receive ${mobileTestTotalQuestions} scenarios.`);
+                addMessage("Void Bot", `Hello ${window.userDiscordUsername}! You'll receive ${mobileTestState.totalQuestions} scenarios.`, "#5865f2", true);
+                addToLog('VOID BOT', `Hello ${window.userDiscordUsername}! ${mobileTestState.totalQuestions} scenarios.`);
                 
                 setTimeout(() => {
-                    addMobileMessage("Void Bot", "Respond as you would as a real moderator. Good luck!", "#5865f2", true);
-                    addToMobileConversationLog('VOID BOT', 'Respond as you would as a real moderator. Good luck!');
+                    addMessage("Void Bot", "Respond as you would as a real moderator. Good luck!", "#5865f2", true);
+                    addToLog('VOID BOT', 'Respond as real moderator. Good luck!');
                     
-                    // CRITICAL FIX: Start first question immediately
-                    showNextMobileQuestion();
+                    // Start first question
+                    setTimeout(showNextQuestion, 1000);
                 }, 1000);
             }, 1000);
         }, 300);
     }
     
-    // Show next question - FIXED VERSION
-    function showNextMobileQuestion() {
-        console.log(`showNextMobileQuestion called. Current: ${mobileTestCurrentQuestion}, Total: ${mobileTestTotalQuestions}`);
+    // Show next question
+    function showNextQuestion() {
+        console.log(`Show next question: ${mobileTestState.currentQuestion}/${mobileTestState.totalQuestions}`);
         
-        if (mobileTestCurrentQuestion >= mobileTestTotalQuestions) {
-            console.log("All questions completed, ending test");
+        if (mobileTestState.currentQuestion >= mobileTestState.totalQuestions) {
             endMobileTest();
             return;
         }
         
+        const question = mobileTestState.questions[mobileTestState.currentQuestion];
+        
+        // Add to conversation log
+        addToLog(`USER (${question.user})`, question.userMessage);
+        
+        // Display in chat
         setTimeout(() => {
-            const question = mobileTestQuestions[mobileTestCurrentQuestion];
-            console.log(`Mobile Question ${mobileTestCurrentQuestion + 1}: ${question.userMessage}`);
-            
-            // Add to conversation log
-            addToMobileConversationLog(`USER (${question.user})`, question.userMessage);
-            
-            // Display in chat
-            addMobileMessage(question.user, question.userMessage, question.avatarColor, false);
+            addMessage(question.user, question.userMessage, question.avatarColor, false);
             
             // Enable input for response
-            const mobileMessageInput = document.getElementById('mobileMessageInput');
-            const mobileSendBtn = document.getElementById('mobileSendBtn');
-            
             if (mobileMessageInput) {
                 mobileMessageInput.disabled = false;
                 mobileMessageInput.value = '';
-                mobileMessageInput.style.height = 'auto';
-                setTimeout(() => {
-                    mobileMessageInput.focus();
-                }, 300);
+                mobileMessageInput.focus();
             }
             
             if (mobileSendBtn) {
                 mobileSendBtn.disabled = true;
             }
-            
         }, 1500);
     }
     
-    // Send mobile message
+    // Send message
     function sendMobileMessage() {
-        console.log("sendMobileMessage called");
-        
-        const mobileMessageInput = document.getElementById('mobileMessageInput');
-        const mobileSendBtn = document.getElementById('mobileSendBtn');
-        
-        if (!mobileMessageInput || !mobileTestActive) {
-            console.log("Message input not found or test not active");
-            return;
-        }
+        if (!mobileMessageInput || !mobileTestState.active) return;
         
         const userMessage = mobileMessageInput.value.trim();
-        if (!userMessage) {
-            console.log("Empty message");
-            return;
-        }
+        if (!userMessage) return;
         
-        console.log(`Mobile user answer: ${userMessage.substring(0, 50)}...`);
+        console.log(`User answer: ${userMessage.substring(0, 50)}...`);
         
         // Add to conversation log
-        addToMobileConversationLog('MODERATOR (You)', userMessage);
+        addToLog('MODERATOR (You)', userMessage);
         
         // Display in chat
-        addMobileMessage("You", userMessage, "#7289da", false);
-        mobileUserAnswers.push(userMessage);
+        addMessage("You", userMessage, "#7289da", false);
+        mobileTestState.userAnswers.push(userMessage);
         
-        // Clear input but keep it enabled for feedback period
+        // Clear input
         mobileMessageInput.value = '';
         mobileMessageInput.style.height = 'auto';
         if (mobileSendBtn) mobileSendBtn.disabled = true;
         
-        const isCorrect = checkMobileAnswer(userMessage);
-        mobileCorrectAnswers.push(isCorrect);
+        // Check answer
+        const isCorrect = checkAnswer(userMessage);
+        mobileTestState.correctAnswers.push(isCorrect);
         
-        // TEMPORARILY disable input while showing feedback
+        // Temporarily disable input
         if (mobileMessageInput) {
             mobileMessageInput.disabled = true;
             mobileMessageInput.placeholder = "Checking answer...";
@@ -453,35 +344,25 @@ function startMobileTest() {
         
         // Wait for feedback, then move to next question
         setTimeout(() => {
-            mobileTestCurrentQuestion++;
-            updateMobileScore();
+            mobileTestState.currentQuestion++;
+            updateScoreDisplay();
             
-            // RE-ENABLE INPUT FOR NEXT QUESTION
-            if (mobileTestCurrentQuestion < mobileTestTotalQuestions) {
+            if (mobileTestState.currentQuestion < mobileTestState.totalQuestions) {
                 if (mobileMessageInput) {
                     mobileMessageInput.disabled = false;
                     mobileMessageInput.placeholder = "Type your response...";
                 }
                 
-                setTimeout(() => {
-                    showNextMobileQuestion();
-                }, 1000);
+                setTimeout(showNextQuestion, 1000);
             } else {
                 endMobileTest();
             }
         }, 2000);
     }
     
-    // Check mobile answer
-    function checkMobileAnswer(userAnswer) {
-        console.log("checkMobileAnswer called");
-        
-        if (mobileTestCurrentQuestion >= mobileTestQuestions.length) {
-            console.log("No question available");
-            return false;
-        }
-        
-        const question = mobileTestQuestions[mobileTestCurrentQuestion];
+    // Check answer
+    function checkAnswer(userAnswer) {
+        const question = mobileTestState.questions[mobileTestState.currentQuestion];
         const userAnswerLower = userAnswer.toLowerCase();
         
         let matchCount = 0;
@@ -494,13 +375,9 @@ function startMobileTest() {
         }
         
         const isCorrect = matchCount >= question.requiredMatches;
-        console.log(`Mobile answer check: ${matchCount} matches, required: ${question.requiredMatches}, correct: ${isCorrect}`);
         
-        // Add to conversation log
-        addToMobileConversationLog('SYSTEM', `Answer checked: ${isCorrect ? 'CORRECT' : 'INCORRECT'} (${matchCount}/${question.requiredMatches} matches)`);
-        
-        // Add to questionsWithAnswers
-        mobileQuestionsWithAnswers.push({
+        // Add to questions with answers
+        mobileTestState.questionsWithAnswers.push({
             question: `User (${question.user}): ${question.userMessage}`,
             answer: userAnswer,
             correct: isCorrect,
@@ -512,53 +389,47 @@ function startMobileTest() {
         });
         
         if (isCorrect) {
-            mobileTestScore++;
+            mobileTestState.score++;
             
             // Show correct feedback
             setTimeout(() => {
-                addMobileMessage("Void Bot", `✅ Correct! ${question.explanation}`, "#5865f2", true);
-                addToMobileConversationLog('VOID BOT', `✅ Correct! ${question.explanation}`);
+                addMessage("Void Bot", `✅ Correct! ${question.explanation}`, "#5865f2", true);
+                addToLog('VOID BOT', `✅ Correct! ${question.explanation}`);
                 
-                // Add correct badge to user message
-                const mobileMessagesContainer = document.getElementById('mobileMessagesContainer');
-                if (mobileMessagesContainer) {
-                    const lastMessage = mobileMessagesContainer.querySelector('.mobile-message-group:last-child');
-                    if (lastMessage) {
-                        const badge = document.createElement('span');
-                        badge.className = 'mobile-bot-tag';
-                        badge.style.backgroundColor = '#3ba55c';
-                        badge.textContent = 'Correct';
-                        badge.style.marginLeft = '10px';
-                        badge.style.fontSize = '10px';
-                        badge.style.padding = '2px 6px';
-                        badge.style.borderRadius = '3px';
-                        badge.style.fontWeight = 'bold';
-                        lastMessage.querySelector('.mobile-message-content').appendChild(badge);
-                    }
+                // Add correct badge
+                const lastMessage = mobileMessagesContainer.querySelector('.mobile-message-group:last-child');
+                if (lastMessage) {
+                    const badge = document.createElement('span');
+                    badge.className = 'mobile-bot-tag';
+                    badge.style.backgroundColor = '#3ba55c';
+                    badge.textContent = 'Correct';
+                    badge.style.marginLeft = '10px';
+                    badge.style.fontSize = '10px';
+                    badge.style.padding = '2px 6px';
+                    badge.style.borderRadius = '3px';
+                    badge.style.fontWeight = 'bold';
+                    lastMessage.querySelector('.mobile-message-content').appendChild(badge);
                 }
             }, 500);
         } else {
             // Show incorrect feedback
             setTimeout(() => {
-                addMobileMessage("Void Bot", `❌ Not quite right. ${question.explanation}`, "#5865f2", true);
-                addToMobileConversationLog('VOID BOT', `❌ Not quite right. ${question.explanation}`);
+                addMessage("Void Bot", `❌ Not quite right. ${question.explanation}`, "#5865f2", true);
+                addToLog('VOID BOT', `❌ Not quite right. ${question.explanation}`);
                 
-                // Add incorrect badge to user message
-                const mobileMessagesContainer = document.getElementById('mobileMessagesContainer');
-                if (mobileMessagesContainer) {
-                    const lastMessage = mobileMessagesContainer.querySelector('.mobile-message-group:last-child');
-                    if (lastMessage) {
-                        const badge = document.createElement('span');
-                        badge.className = 'mobile-bot-tag';
-                        badge.style.backgroundColor = '#ed4245';
-                        badge.textContent = 'Incorrect';
-                        badge.style.marginLeft = '10px';
-                        badge.style.fontSize = '10px';
-                        badge.style.padding = '2px 6px';
-                        badge.style.borderRadius = '3px';
-                        badge.style.fontWeight = 'bold';
-                        lastMessage.querySelector('.mobile-message-content').appendChild(badge);
-                    }
+                // Add incorrect badge
+                const lastMessage = mobileMessagesContainer.querySelector('.mobile-message-group:last-child');
+                if (lastMessage) {
+                    const badge = document.createElement('span');
+                    badge.className = 'mobile-bot-tag';
+                    badge.style.backgroundColor = '#ed4245';
+                    badge.textContent = 'Incorrect';
+                    badge.style.marginLeft = '10px';
+                    badge.style.fontSize = '10px';
+                    badge.style.padding = '2px 6px';
+                    badge.style.borderRadius = '3px';
+                    badge.style.fontWeight = 'bold';
+                    lastMessage.querySelector('.mobile-message-content').appendChild(badge);
                 }
             }, 500);
         }
@@ -566,35 +437,9 @@ function startMobileTest() {
         return isCorrect;
     }
     
-    // Update mobile score
-    function updateMobileScore() {
-        const mobileScoreValue = document.getElementById('mobileScoreValue');
-        const mobileProgressFill = document.getElementById('mobileProgressFill');
-        
-        if (mobileScoreValue) mobileScoreValue.textContent = mobileTestScore;
-        
-        const percentage = Math.round((mobileTestCurrentQuestion + 1) / mobileTestTotalQuestions * 100);
-        if (mobileProgressFill) {
-            mobileProgressFill.style.width = `${percentage}%`;
-        }
-    }
-    
-    // Add message to mobile chat - FIXED VERSION
-    function addMobileMessage(username, content, color, isBot = false) {
-        const mobileMessagesContainer = document.getElementById('mobileMessagesContainer');
-        if (!mobileMessagesContainer) {
-            console.log("Mobile messages container not found!");
-            return;
-        }
-        
-        mobileSessionTranscript.push({
-            speaker: username,
-            message: content,
-            timestamp: new Date().toLocaleTimeString()
-        });
-        
-        const messageGroup = document.createElement('div');
-        messageGroup.className = 'mobile-message-group';
+    // Add message to chat
+    function addMessage(username, content, color, isBot = false) {
+        if (!mobileMessagesContainer) return;
         
         const now = new Date();
         const timeString = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
@@ -602,6 +447,9 @@ function startMobileTest() {
         let avatarInitials = username.charAt(0).toUpperCase();
         if (username === "Void Bot") avatarInitials = "V";
         if (username === "You") avatarInitials = window.userDiscordUsername ? window.userDiscordUsername.charAt(0).toUpperCase() : "U";
+        
+        const messageGroup = document.createElement('div');
+        messageGroup.className = 'mobile-message-group';
         
         messageGroup.innerHTML = `
             <div class="mobile-message-header">
@@ -623,25 +471,33 @@ function startMobileTest() {
         mobileMessagesContainer.scrollTop = mobileMessagesContainer.scrollHeight;
     }
     
+    // Update score display
+    function updateScoreDisplay() {
+        if (mobileScoreValue) {
+            mobileScoreValue.textContent = mobileTestState.score;
+        }
+        
+        const percentage = Math.round((mobileTestState.currentQuestion + 1) / mobileTestState.totalQuestions * 100);
+        if (mobileProgressFill) {
+            mobileProgressFill.style.width = `${percentage}%`;
+        }
+    }
+    
     // End mobile test
     async function endMobileTest() {
-        console.log("Ending mobile test with conversation logs...");
-        mobileTestActive = false;
+        console.log("Ending mobile test...");
+        mobileTestState.active = false;
         
         // Finalize conversation log
-        addToMobileConversationLog('SYSTEM', 'Mobile test completed');
-        mobileConversationLog += `\n═══════════════════════════════════════════════════════════════════\n`;
-        mobileConversationLog += `Mobile Test Completed: ${new Date().toLocaleString()}\n`;
-        mobileConversationLog += `Final Score: ${mobileTestScore}/${mobileTestTotalQuestions}\n`;
-        mobileConversationLog += `Percentage: ${Math.round((mobileTestScore/mobileTestTotalQuestions)*100)}%\n`;
-        mobileConversationLog += `Status: ${mobileTestScore >= 6 ? 'PASS' : 'FAIL'}\n`;
-        mobileConversationLog += `User ID: ${window.userDiscordId}\n`;
-        mobileConversationLog += `═══════════════════════════════════════════════════════════════════\n`;
+        addToLog('SYSTEM', 'Mobile test completed');
+        mobileTestState.conversationLog += `\n════════════════════════════════════════════════════\n`;
+        mobileTestState.conversationLog += `Test Completed: ${new Date().toLocaleString()}\n`;
+        mobileTestState.conversationLog += `Final Score: ${mobileTestState.score}/${mobileTestState.totalQuestions}\n`;
+        mobileTestState.conversationLog += `Percentage: ${Math.round((mobileTestState.score/mobileTestState.totalQuestions)*100)}%\n`;
+        mobileTestState.conversationLog += `Status: ${mobileTestState.score >= 6 ? 'PASS' : 'FAIL'}\n`;
+        mobileTestState.conversationLog += `════════════════════════════════════════════════════\n`;
         
         // Disable input
-        const mobileMessageInput = document.getElementById('mobileMessageInput');
-        const mobileSendBtn = document.getElementById('mobileSendBtn');
-        
         if (mobileMessageInput) {
             mobileMessageInput.disabled = true;
             mobileMessageInput.value = '';
@@ -653,36 +509,11 @@ function startMobileTest() {
         }
         
         setTimeout(() => {
-            addMobileMessage("Void Bot", "Mobile test complete! Evaluating your responses...", "#5865f2", true);
-            addToMobileConversationLog('VOID BOT', 'Mobile test complete! Evaluating your responses...');
+            addMessage("Void Bot", "Mobile test complete! Evaluating your responses...", "#5865f2", true);
             
             setTimeout(() => {
-                const passingScore = Math.ceil(mobileTestTotalQuestions * 0.75); // 6/8
-                const passed = mobileTestScore >= passingScore;
-                
-                // Prepare enhanced submission data
-                const submissionData = {
-                    discordId: window.userDiscordId,
-                    discordUsername: window.userDiscordUsername,
-                    answers: mobileConversationLog,
-                    score: `${mobileTestScore}/${mobileTestTotalQuestions}`,
-                    totalQuestions: mobileTestTotalQuestions,
-                    correctAnswers: mobileTestScore,
-                    wrongAnswers: mobileTestTotalQuestions - mobileTestScore,
-                    testResults: JSON.stringify({
-                        score: mobileTestScore,
-                        total: mobileTestTotalQuestions,
-                        passed: passed,
-                        percentage: Math.round((mobileTestScore/mobileTestTotalQuestions)*100),
-                        date: new Date().toISOString(),
-                        userAnswers: mobileUserAnswers,
-                        correctAnswers: mobileCorrectAnswers,
-                        questions: mobileTestQuestions.map(q => q.userMessage),
-                        passingScore: passingScore
-                    }),
-                    conversationLog: mobileConversationLog,
-                    questionsWithAnswers: mobileQuestionsWithAnswers
-                };
+                const passingScore = Math.ceil(mobileTestState.totalQuestions * 0.75);
+                const passed = mobileTestState.score >= passingScore;
                 
                 // Show results screen
                 const mobileTestComplete = document.getElementById('mobileTestComplete');
@@ -695,28 +526,43 @@ function startMobileTest() {
                     const mobileTestResultIcon = document.getElementById('mobileTestResultIcon');
                     const mobileSubmissionStatus = document.getElementById('mobileSubmissionStatus');
                     
-                    if (mobileTestResultScore) mobileTestResultScore.textContent = `Score: ${mobileTestScore}/${mobileTestTotalQuestions}`;
+                    if (mobileTestResultScore) mobileTestResultScore.textContent = `Score: ${mobileTestState.score}/${mobileTestState.totalQuestions}`;
                     if (mobileTestResultTitle) mobileTestResultTitle.textContent = passed ? "Test Passed!" : "Test Failed";
                     if (mobileTestResultMessage) {
                         mobileTestResultMessage.textContent = passed 
-                            ? `Congratulations! You passed with ${mobileTestScore}/${mobileTestTotalQuestions}. Your application is now pending review by the admin team.` 
-                            : `You scored ${mobileTestScore}/${mobileTestTotalQuestions}. Minimum passing score is ${passingScore}. You can retake the test after reviewing the training material.`;
+                            ? `Congratulations! You passed with ${mobileTestState.score}/${mobileTestState.totalQuestions}. Your application is now pending review.` 
+                            : `You scored ${mobileTestState.score}/${mobileTestState.totalQuestions}. Minimum passing score is ${passingScore}.`;
                     }
                     if (mobileTestResultIcon) {
                         mobileTestResultIcon.className = passed ? "mobile-test-result-icon pass" : "mobile-test-result-icon fail";
                         mobileTestResultIcon.innerHTML = passed ? '<i class="fas fa-trophy"></i>' : '<i class="fas fa-times-circle"></i>';
                     }
                     
-                    // SUBMIT RESULTS
+                    // Submit results
                     setTimeout(async () => {
                         if (mobileSubmissionStatus) {
                             mobileSubmissionStatus.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting results...';
                         }
                         
+                        const submissionData = {
+                            discordId: window.userDiscordId,
+                            discordUsername: window.userDiscordUsername,
+                            answers: mobileTestState.conversationLog,
+                            score: `${mobileTestState.score}/${mobileTestState.totalQuestions}`,
+                            totalQuestions: mobileTestState.totalQuestions,
+                            correctAnswers: mobileTestState.score,
+                            wrongAnswers: mobileTestState.totalQuestions - mobileTestState.score,
+                            testResults: JSON.stringify({
+                                score: mobileTestState.score,
+                                total: mobileTestState.totalQuestions,
+                                passed: passed,
+                                percentage: Math.round((mobileTestState.score/mobileTestState.totalQuestions)*100)
+                            }),
+                            conversationLog: mobileTestState.conversationLog,
+                            questionsWithAnswers: mobileTestState.questionsWithAnswers
+                        };
+                        
                         try {
-                            console.log("Submitting mobile test results...");
-                            
-                            // Use the enhanced endpoint
                             const response = await fetch('https://mod-application-backend.onrender.com/submit-test-results', {
                                 method: 'POST',
                                 headers: {
@@ -727,42 +573,19 @@ function startMobileTest() {
                             });
                             
                             const result = await response.json();
-                            console.log("Mobile submission result:", result);
                             
                             if (response.ok && result.success) {
-                                // SUCCESS
                                 if (mobileSubmissionStatus) {
                                     mobileSubmissionStatus.innerHTML = '<i class="fas fa-check-circle"></i> Results submitted successfully!';
                                     mobileSubmissionStatus.className = "mobile-submission-status submission-success";
                                     
-                                    // Add admin panel link
-                                    const adminLink = document.createElement('div');
-                                    adminLink.style.marginTop = '10px';
-                                    adminLink.style.fontSize = '14px';
-                                    adminLink.innerHTML = `<a href="https://mod-application-backend.onrender.com/admin" target="_blank" style="color: #00ffea; text-decoration: underline;">
-                                        <i class="fas fa-external-link-alt"></i> View in Admin Panel
-                                    </a>`;
-                                    mobileSubmissionStatus.appendChild(adminLink);
-                                    
-                                    // Add Discord link
-                                    const discordLink = document.createElement('div');
-                                    discordLink.style.marginTop = '5px';
-                                    discordLink.style.fontSize = '14px';
-                                    discordLink.innerHTML = `<a href="https://discord.gg/dqHF9HPucf" target="_blank" style="color: #5865f2; text-decoration: underline;">
-                                        <i class="fab fa-discord"></i> Join Void Esports Discord
-                                    </a>`;
-                                    mobileSubmissionStatus.appendChild(discordLink);
+                                    setTimeout(() => {
+                                        const successUrl = `success.html?discord_username=${encodeURIComponent(window.userDiscordUsername)}&final_score=${mobileTestState.score}/${mobileTestState.totalQuestions}&pass_fail=${passed ? 'PASS' : 'FAIL'}`;
+                                        window.location.href = successUrl;
+                                    }, 2000);
                                 }
-                                
-                                // Redirect to success page after delay
-                                setTimeout(() => {
-                                    const successUrl = `success.html?discord_username=${encodeURIComponent(window.userDiscordUsername)}&final_score=${mobileTestScore}/${mobileTestTotalQuestions}&pass_fail=${passed ? 'PASS' : 'FAIL'}&test_date=${encodeURIComponent(new Date().toLocaleString())}&user_id=${window.userDiscordId}`;
-                                    window.location.href = successUrl;
-                                }, 4000);
-                                
                             } else {
                                 // Fallback to simple endpoint
-                                console.log("Trying simple endpoint for mobile...");
                                 const simpleResponse = await fetch('https://mod-application-backend.onrender.com/api/submit', {
                                     method: 'POST',
                                     headers: {
@@ -773,39 +596,23 @@ function startMobileTest() {
                                 });
                                 
                                 const simpleResult = await simpleResponse.json();
-                                console.log("Simple endpoint result:", simpleResult);
                                 
                                 if (mobileSubmissionStatus) {
                                     mobileSubmissionStatus.innerHTML = '<i class="fas fa-check-circle"></i> Results submitted!';
                                     mobileSubmissionStatus.className = "mobile-submission-status submission-success";
                                     
                                     setTimeout(() => {
-                                        const successUrl = `success.html?discord_username=${encodeURIComponent(window.userDiscordUsername)}&final_score=${mobileTestScore}/${mobileTestTotalQuestions}&pass_fail=${passed ? 'PASS' : 'FAIL'}&test_date=${encodeURIComponent(new Date().toLocaleString())}&user_id=${window.userDiscordId}`;
+                                        const successUrl = `success.html?discord_username=${encodeURIComponent(window.userDiscordUsername)}&final_score=${mobileTestState.score}/${mobileTestState.totalQuestions}&pass_fail=${passed ? 'PASS' : 'FAIL'}`;
                                         window.location.href = successUrl;
-                                    }, 3000);
+                                    }, 2000);
                                 }
                             }
-                            
                         } catch (error) {
-                            console.error("Mobile submission error:", error);
+                            console.error("Submission error:", error);
                             
                             if (mobileSubmissionStatus) {
-                                mobileSubmissionStatus.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Network error. Score: ${mobileTestScore}/${mobileTestTotalQuestions}`;
+                                mobileSubmissionStatus.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Network error. Score: ${mobileTestState.score}/${mobileTestState.totalQuestions}`;
                                 mobileSubmissionStatus.className = "mobile-submission-status submission-error";
-                                
-                                // Show manual option
-                                const manualDiv = document.createElement('div');
-                                manualDiv.style.marginTop = '10px';
-                                manualDiv.innerHTML = `
-                                    <p style="font-size: 14px; margin: 5px 0;">Please contact staff with:</p>
-                                    <div style="background: rgba(0,0,0,0.3); padding: 10px; border-radius: 5px; font-family: monospace; font-size: 12px;">
-                                        Username: ${window.userDiscordUsername}<br>
-                                        Score: ${mobileTestScore}/${mobileTestTotalQuestions}<br>
-                                        ID: ${window.userDiscordId}<br>
-                                        Mobile Test
-                                    </div>
-                                `;
-                                mobileSubmissionStatus.appendChild(manualDiv);
                             }
                         }
                     }, 1000);
@@ -816,38 +623,92 @@ function startMobileTest() {
     
     // Reset mobile test
     function resetMobileTest() {
-        mobileTestActive = false;
-        mobileTestCurrentQuestion = 0;
-        mobileTestScore = 0;
-        mobileUserAnswers = [];
-        mobileCorrectAnswers = [];
-        mobileSessionTranscript = [];
-        mobileConversationLog = "";
-        mobileQuestionsWithAnswers = [];
-        
-        const mobileScoreValue = document.getElementById('mobileScoreValue');
-        const mobileProgressFill = document.getElementById('mobileProgressFill');
+        mobileTestState = {
+            active: false,
+            currentQuestion: 0,
+            score: 0,
+            totalQuestions: 8,
+            userAnswers: [],
+            correctAnswers: [],
+            questions: [],
+            conversationLog: "",
+            questionsWithAnswers: []
+        };
         
         if (mobileScoreValue) mobileScoreValue.textContent = "0";
         if (mobileProgressFill) mobileProgressFill.style.width = "0%";
         
-        const mobileMessageInput = document.getElementById('mobileMessageInput');
         if (mobileMessageInput) {
             mobileMessageInput.value = '';
             mobileMessageInput.disabled = true;
         }
         
-        const mobileSendBtn = document.getElementById('mobileSendBtn');
-        if (mobileSendBtn) mobileSendBtn.disabled = true;
+        if (mobileSendBtn) {
+            mobileSendBtn.disabled = true;
+        }
         
-        const mobileMessagesContainer = document.getElementById('mobileMessagesContainer');
         if (mobileMessagesContainer) {
             mobileMessagesContainer.innerHTML = '';
         }
+    }
+    
+    // Auto-start test if user is authenticated
+    function autoStartTestIfReady() {
+        if (window.userDiscordUsername && window.userDiscordUsername !== 'User') {
+            console.log("✅ User authenticated, auto-starting mobile test...");
+            
+            // Wait for DOM to be fully ready
+            setTimeout(() => {
+                // Show mobile discord interface
+                if (mobileDiscord) {
+                    mobileDiscord.classList.add('active');
+                }
+                
+                if (mainContainer) {
+                    mainContainer.style.display = 'none';
+                }
+                
+                // Start the test
+                setTimeout(startMobileTest, 500);
+            }, 1000);
+        } else {
+            console.log("⚠️ User not authenticated or test not ready");
+        }
+    }
+    
+    // Initialize everything
+    function initializeMobileInterface() {
+        console.log("🔧 Initializing mobile interface...");
+        
+        // Initialize event listeners
+        initializeEventListeners();
+        
+        // Auto-start test if URL parameters indicate test should start
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('startTest') === '1') {
+            console.log("🔗 URL parameter indicates test should start");
+            autoStartTestIfReady();
+        }
+        
+        // Also listen for auth completion
+        window.addEventListener('authComplete', function() {
+            console.log("🔑 Auth complete event received");
+            autoStartTestIfReady();
+        });
     }
     
     // Export functions to window
     window.initializeMobileInterface = initializeMobileInterface;
     window.startMobileTest = startMobileTest;
     window.resetMobileTest = resetMobileTest;
+    
+    // Initialize on load
+    initializeMobileInterface();
+    
+    // Also check if we should auto-start based on current state
+    setTimeout(() => {
+        if (window.location.pathname.includes('test') || window.location.search.includes('startTest')) {
+            autoStartTestIfReady();
+        }
+    }, 2000);
 });
