@@ -94,7 +94,19 @@ document.addEventListener('DOMContentLoaded', function() {
             explanation: "Ask for YouTube/Twitch/TikTok links with subscriber counts, then ping @contentdep for review."
         }
     ];
-    
+        // Format conversation log for Discord webhook
+    function formatConversationForDiscord(log) {
+      if (!log || log.length === 0) return "No conversation log";
+      
+      // Discord has a 2000 character limit per field, so truncate if needed
+      const maxLength = 1900;
+      if (log.length <= maxLength) return log;
+      
+      // Take first and last parts to show context
+      const firstPart = log.substring(0, 1000);
+      const lastPart = log.substring(log.length - 900);
+      return `${firstPart}\n\n...[Log truncated due to length]...\n\n${lastPart}`;
+    }
     // Get random questions
     function getRandomTestQuestions() {
         const available = allTestQuestions.filter(q => !usedQuestionIds.has(q.id));
@@ -518,10 +530,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 const passed = testScore >= passingScore;
                 
                 // Prepare enhanced submission data WITH CONVERSATION LOGS
+                                // Prepare enhanced submission data WITH CONVERSATION LOGS
                 const submissionData = {
                     discordId: window.userDiscordId,
                     discordUsername: window.userDiscordUsername,
-                    answers: conversationLog, // Use conversation log as answers
+                    answers: formatConversationForDiscord(conversationLog), // Use formatted log
                     score: `${testScore}/${testTotalQuestions}`,
                     totalQuestions: testTotalQuestions,
                     correctAnswers: testScore,
@@ -536,12 +549,12 @@ document.addEventListener('DOMContentLoaded', function() {
                         correctAnswers: correctAnswers,
                         questions: testQuestions.map(q => q.userMessage),
                         passingScore: passingScore,
-                        conversationLog: conversationLog, // ADDED: Full conversation log
-                        questionsWithAnswers: questionsWithAnswers // ADDED: Detailed Q&A
+                        conversationLogLength: conversationLog.length,
+                        conversationLogPreview: conversationLog.substring(0, 500) + "..."
                     }),
-                    conversationLog: conversationLog, // ADDED: Explicit conversation log field
-                    questionsWithAnswers: JSON.stringify(questionsWithAnswers), // ADDED: Stringified detailed answers
-                    fullConversationTranscript: conversationLog // ADDED: Another field for webhook
+                    conversationLog: conversationLog, // Full log for database
+                    questionsWithAnswers: JSON.stringify(questionsWithAnswers),
+                    fullConversationTranscript: formatConversationForDiscord(conversationLog) // Formatted for webhook
                 };
                 
                 // Show results screen
