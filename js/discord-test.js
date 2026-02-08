@@ -1,4 +1,3 @@
-
 // Discord Test Interface Logic - ENHANCED WITH CONVERSATION LOGGING
 document.addEventListener('DOMContentLoaded', function() {
     console.log("🎮 Discord test.js loaded - Enhanced with conversation logs");
