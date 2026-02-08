@@ -1,6 +1,7 @@
-
-// Mobile Discord Interface Logic - FIXED VERSION
+// Mobile Discord Interface Logic - FIXED VERSION WITH PROPER INITIALIZATION
 document.addEventListener('DOMContentLoaded', function() {
+    console.log("📱 Mobile discord.js loaded - Enhanced");
+    
     // Mobile test state variables
     let mobileTestCurrentQuestion = 0;
     let mobileTestScore = 0;
@@ -97,6 +98,8 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Initialize conversation log
     function initMobileConversationLog() {
+        console.log("📝 Initializing mobile conversation log");
+        
         mobileConversationLog = `═══════════════════════════════════════════════════════════════════\n`;
         mobileConversationLog += `                     VOID ESPORTS MOBILE MOD TEST LOG\n`;
         mobileConversationLog += `═══════════════════════════════════════════════════════════════════\n\n`;
@@ -250,18 +253,18 @@ document.addEventListener('DOMContentLoaded', function() {
             mobileMessagesContainer.innerHTML = '';
         }
         
-        // Start mobile test automatically
+        // CRITICAL FIX: Initialize test immediately when mobile interface is loaded
         if (window.userDiscordUsername && window.userDiscordUsername !== 'User') {
             console.log("Auto-starting mobile test for:", window.userDiscordUsername);
             setTimeout(() => {
                 startMobileTest();
-            }, 1000);
+            }, 500);
         }
     }
     
-    // Start mobile test
+    // Start mobile test - FIXED VERSION
     function startMobileTest() {
-        console.log("🚀 STARTING MOBILE TEST");
+        console.log("🚀 STARTING MOBILE TEST - FIXED VERSION");
         
         mobileTestQuestions = getRandomMobileTestQuestions();
         mobileTestTotalQuestions = mobileTestQuestions.length;
@@ -299,7 +302,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         updateMobileScore();
         
-        // Show welcome message
+        // CRITICAL FIX: Show welcome messages immediately
         setTimeout(() => {
             addMobileMessage("Void Bot", `Welcome to the Void Esports Moderator Certification Test.`, "#5865f2", true);
             addToMobileConversationLog('VOID BOT', 'Welcome to the Void Esports Moderator Certification Test.');
@@ -312,16 +315,14 @@ document.addEventListener('DOMContentLoaded', function() {
                     addMobileMessage("Void Bot", "Respond as you would as a real moderator. Good luck!", "#5865f2", true);
                     addToMobileConversationLog('VOID BOT', 'Respond as you would as a real moderator. Good luck!');
                     
-                    // Start first question
-                    setTimeout(() => {
-                        showNextMobileQuestion();
-                    }, 1000);
-                }, 1500);
-            }, 1500);
-        }, 500);
+                    // CRITICAL FIX: Start first question immediately
+                    showNextMobileQuestion();
+                }, 1000);
+            }, 1000);
+        }, 300);
     }
     
-    // Show next question
+    // Show next question - FIXED VERSION
     function showNextMobileQuestion() {
         console.log(`showNextMobileQuestion called. Current: ${mobileTestCurrentQuestion}, Total: ${mobileTestTotalQuestions}`);
         
@@ -530,7 +531,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Add message to mobile chat
+    // Add message to mobile chat - FIXED VERSION
     function addMobileMessage(username, content, color, isBot = false) {
         const mobileMessagesContainer = document.getElementById('mobileMessagesContainer');
         if (!mobileMessagesContainer) {
@@ -802,4 +803,3 @@ document.addEventListener('DOMContentLoaded', function() {
     window.startMobileTest = startMobileTest;
     window.resetMobileTest = resetMobileTest;
 });
-[file content end]
