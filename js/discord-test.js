@@ -59,12 +59,12 @@ document.addEventListener('DOMContentLoaded', function() {
         },
         {
             id: 5,
-            userMessage: "im 14 is that old enough?",
+            userMessage: "im 11 is that old enough?",
             user: "YoungPlayer14",
             avatarColor: "#9146ff",
-            correctKeywords: ["chief", "trapped", "ping", "minimum age", "13", "allowed", "yes", "verify", "parental", "consent"],
-            requiredMatches: 2,
-            explanation: "14 is acceptable. Ask for parental consent if available, then proceed with normal application process."
+            correctKeywords: ["no", "nah", "ping", "minimum age", "13", "allowed", "yes", "verify", "sorry", "consent"],
+            requiredMatches: 1,
+            explanation: "Immediately blacklist the user for underage, ping a senior mod if you have doubt."
         },
         {
             id: 6,
@@ -80,9 +80,9 @@ document.addEventListener('DOMContentLoaded', function() {
             userMessage: "this server is trash, gonna report it all",
             user: "ToxicUser123",
             avatarColor: "#ff0000",
-            correctKeywords: ["chief", "trapped", "ping", "threat", "dangerous", "ban", "immediately", "security", "unacceptable", "report", "admin", "warning"],
-            requiredMatches: 2,
-            explanation: "This is a threat. Immediately ping @cheif, warn the user, and document for potential ban."
+            correctKeywords: ["alright", "sure", "ping", "okay", "ok", "ban", "immediately", "security", "unacceptable", "report", "admin", "warning"],
+            requiredMatches: 1,
+            explanation: "Its a threat but not that important, ask them to leave the server if they dont like it."
         },
         {
             id: 8,
@@ -92,7 +92,61 @@ document.addEventListener('DOMContentLoaded', function() {
             correctKeywords: ["social", "social media", "links", "send", "contentdep", "ping", "wait", "followers", "content", "review", "youtube", "subscribers"],
             requiredMatches: 2,
             explanation: "Ask for YouTube/Twitch/TikTok links with subscriber counts, then ping @contentdep for review."
-        }
+        },
+        {
+            id: 9,
+            userMessage: "a guy from your server is scamming me",
+            user: "Franks Kid",
+            avatarColor: "#ff0000",
+            correctKeywords: ["chief", "please", "ping", "threat", "proof", "ban", "immediately", "send", "will", "report", "warn", "warning"],
+            requiredMatches: 1,
+            explanation: "Ask them to send proof immediately, and ping a higher up."
+        },
+        {
+            id: 10,
+            userMessage: "i lost access to my discord account, how do i rejoin?",
+            user: "HackedUser",
+            avatarColor: "#f59e0b",
+            correctKeywords: ["lost", "access", "discord", "account", "hacked", "rejoin", "new account", "reapply", "proof", "identity", "chief", "help"],
+            requiredMatches: 2,
+            explanation: "Advise them to create a new account. Ping an admin to verify their identity and provide a new invite."
+        },
+        {
+            id: 11,
+            userMessage: "do you have a mentoring program?",
+            user: "NewPlayer",
+            avatarColor: "#3ba55c",
+            correctKeywords: ["mentor", "program", "coaching", "guide", "help", "learn", "improve", "experienced", "coach", "yes", "mentoring"],
+            requiredMatches: 1,
+            explanation: "Explain the mentoring program if available, or suggest they join Academy for guided improvement, let them know we provide free coaches."
+        },
+        {
+            id: 12,
+            userMessage: "whats the difference between void and other orgs?",
+            user: "ComparisonShopper",
+            avatarColor: "#3ba55c",
+            correctKeywords: ["difference", "unique", "other orgs", "compare", "better", "why join", "benefits", "void vs", "community", "offers", "special"],
+            requiredMatches: 1,
+            explanation: "Highlight Void's unique selling points: coaching quality, community vibe, and opportunities for growth."
+        },
+        {
+            id: 13,
+            userMessage: "i have a 2k pr, is that enough for anything?",
+            user: "LowPRPlayer",
+            avatarColor: "#f59e0b",
+            correctKeywords: ["pr", "low", "requirements", "academy", "grinder", "path", "improve", "coaching", "development", "start", "2k", "enough"],
+            requiredMatches: 1,
+            explanation: "Suggest the Grinder role or Academy pathway to improve. Mention coaching availability to help them grow."
+        },
+        {
+            id: 14,
+            userMessage: "i have a team, can we merge with void?",
+            user: "TeamLeader",
+            avatarColor: "#1da1f2",
+            correctKeywords: ["team", "merge", "partnership", "clan", "join", "together", "please", "org", "void", "proposal", "management", "chief"],
+            requiredMatches: 1,
+            explanation: "This is a management proposal. Ping @chief and ask for details about the team (size, PR, etc.)."
+        },
     ];
     
     // Format conversation log for Discord webhook
