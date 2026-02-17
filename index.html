@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VOID | Mod Training Suite v3.1</title>
+    <title>VOID | Mod Training Suite v3.0</title>
     
     <!-- Premium Fonts -->
     <link href="https://api.fontshare.com/v2/css?f[]=satoshi@900,700,500,300,400&display=swap" rel="stylesheet">
@@ -33,6 +33,9 @@
             --success: #10b981;
             --warning: #f59e0b;
             --danger: #ed4245;
+            --void-blood: #ff0033;
+            --void-neon: #00ffea;
+            --void-purple: #8b5cf6;
         }
 
         body {
@@ -46,7 +49,6 @@
         ::-webkit-scrollbar { width: 8px; height: 8px; }
         ::-webkit-scrollbar-track { background: var(--bg-secondary); }
         ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
 
         .container { max-width: 1400px; margin: 0 auto; padding: 0 32px; }
 
@@ -66,14 +68,12 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            backdrop-filter: blur(10px);
             cursor: pointer;
             transition: all 0.2s ease;
         }
         #adminLoginBtn:hover {
             border-color: var(--accent);
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(107, 107, 243, 0.2);
         }
 
         /* Navigation Sidebar */
@@ -87,7 +87,6 @@
             flex-direction: column;
             gap: 12px;
             background: var(--bg-secondary);
-            backdrop-filter: blur(10px);
             padding: 16px 8px;
             border-radius: 20px;
             border: 1px solid var(--border);
@@ -114,6 +113,7 @@
         .header {
             padding: 120px 0 80px;
             text-align: center;
+            position: relative;
         }
         .header h1 {
             font-family: 'Space Grotesk', sans-serif;
@@ -124,7 +124,6 @@
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            letter-spacing: -0.02em;
         }
         .header p {
             font-size: 1.25rem;
@@ -188,8 +187,17 @@
             left: 0;
             height: 100%;
             width: 0%;
-            background: linear-gradient(90deg, var(--accent), #8b5cf6);
+            background: linear-gradient(90deg, var(--accent), var(--void-purple));
             transition: width 0.5s ease;
+        }
+
+        .made-by {
+            position: absolute;
+            bottom: 32px;
+            right: 32px;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            font-family: monospace;
         }
 
         /* Content Sections */
@@ -216,7 +224,7 @@
             color: var(--accent);
         }
 
-        /* Ticket Cards */
+        /* Ticket Types */
         .intro-text {
             font-size: 1.125rem;
             color: var(--text-muted);
@@ -242,10 +250,23 @@
         .ticket-card:hover {
             transform: translateY(-4px);
             border-color: var(--accent);
-            box-shadow: 0 10px 30px rgba(107, 107, 243, 0.1);
+        }
+        .ticket-card h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.375rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .ticket-card p {
+            color: var(--text-muted);
+            line-height: 1.7;
         }
 
-        /* Roster Cards */
+        /* Roster Categories */
         .roster-categories {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -260,7 +281,117 @@
             transition: all 0.3s ease;
         }
         .roster-card:hover {
-            border-color: #8b5cf6;
+            border-color: var(--void-purple);
+        }
+        .roster-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+        }
+        .roster-icon {
+            font-size: 1.5rem;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(139, 92, 246, 0.1);
+            border-radius: 12px;
+            color: var(--void-purple);
+        }
+        .roster-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        .roster-requirements {
+            list-style: none;
+        }
+        .roster-requirements li {
+            color: var(--text-muted);
+            margin-bottom: 12px;
+            padding-left: 20px;
+            position: relative;
+        }
+        .roster-requirements li:before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--void-purple);
+        }
+
+        /* Mod Requirements */
+        .mod-requirements {
+            margin-top: 48px;
+        }
+        .requirement-section {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 24px;
+        }
+        .requirement-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .requirement-content {
+            color: var(--text-muted);
+        }
+        .requirement-list {
+            list-style: none;
+            margin: 20px 0;
+        }
+        .requirement-list li {
+            margin-bottom: 10px;
+            padding-left: 24px;
+            position: relative;
+        }
+        .requirement-list li:before {
+            content: '▸';
+            position: absolute;
+            left: 8px;
+            color: var(--accent);
+        }
+        .weekly-requirements {
+            margin-top: 20px;
+            padding: 16px;
+            background: rgba(107, 107, 243, 0.1);
+            border-radius: 12px;
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        /* Quiz Instructions */
+        .quiz-instructions {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 40px 0;
+            text-align: center;
+        }
+        .quiz-instructions h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--text-primary);
+        }
+        .quiz-instructions p {
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto 30px;
         }
 
         /* Buttons */
@@ -284,7 +415,6 @@
         .btn-primary:hover {
             background: var(--accent-hover);
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(107, 107, 243, 0.3);
         }
         .btn-secondary {
             background: var(--bg-tertiary);
@@ -304,7 +434,7 @@
             transform: translateY(-2px);
         }
 
-        /* Question Cards */
+        /* Training Quiz */
         .training-quiz {
             margin: 48px 0;
         }
@@ -319,6 +449,35 @@
         .question-card.active {
             display: block;
         }
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+        .question-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        .question-number {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            padding: 6px 12px;
+            background: var(--bg-secondary);
+            border-radius: 20px;
+        }
+        .question-description {
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 30px;
+            color: var(--text-muted);
+            border-left: 4px solid var(--accent);
+        }
         .answer-box {
             width: 100%;
             min-height: 150px;
@@ -327,7 +486,9 @@
             border: 1px solid var(--border);
             border-radius: 16px;
             color: var(--text-primary);
-            margin: 20px 0;
+            font-family: inherit;
+            font-size: 1rem;
+            margin-bottom: 30px;
         }
         .quiz-buttons {
             display: flex;
@@ -346,6 +507,13 @@
         }
         .answer-feedback.show {
             display: block;
+        }
+        .feedback-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--accent);
         }
 
         /* Skip All */
@@ -367,6 +535,23 @@
         .completion-screen.active {
             display: block;
         }
+        .completion-icon {
+            font-size: 80px;
+            color: var(--success);
+            margin-bottom: 30px;
+        }
+        .completion-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            color: var(--text-primary);
+        }
+        .completion-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
 
         /* Footer */
         .footer {
@@ -377,14 +562,314 @@
             color: var(--text-muted);
         }
 
-        /* Made By */
-        .made-by {
-            position: absolute;
-            bottom: 32px;
-            right: 32px;
-            font-size: 0.875rem;
+        /* Discord Test Interface */
+        .test-page {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-primary);
+            z-index: 10000;
+            overflow: hidden;
+        }
+        .test-page.active {
+            display: block;
+        }
+
+        .dashboard-header {
+            height: 64px;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 32px;
+        }
+        .dashboard-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .back-to-training {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .test-container {
+            display: flex;
+            height: calc(100vh - 64px);
+        }
+
+        .server-list {
+            width: 72px;
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border);
+            padding: 16px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+        .server-item {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--bg-tertiary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
             color: var(--text-muted);
-            font-family: monospace;
+            cursor: pointer;
+        }
+        .server-item.active {
+            background: var(--accent);
+            color: white;
+            border-radius: 16px;
+        }
+
+        .discord-sidebar {
+            width: 240px;
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .server-header {
+            height: 48px;
+            padding: 0 16px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            font-weight: 600;
+        }
+
+        .scrollable-channels {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+        }
+
+        .channel-category {
+            margin-bottom: 16px;
+        }
+        .category-header {
+            padding: 8px 0;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+        .channel-item {
+            padding: 8px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-muted);
+            cursor: pointer;
+        }
+        .channel-item.active {
+            background: var(--bg-tertiary);
+            color: white;
+        }
+
+        .user-panel {
+            height: 64px;
+            background: var(--bg-tertiary);
+            border-top: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            gap: 12px;
+        }
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: white;
+        }
+
+        .discord-chat-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: var(--bg-primary);
+        }
+
+        .chat-header {
+            height: 48px;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            padding: 0 24px;
+        }
+
+        .messages-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px;
+        }
+
+        .message-group {
+            margin-bottom: 24px;
+        }
+        .message-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 4px;
+        }
+        .message-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: white;
+        }
+        .message-author {
+            font-weight: 700;
+            color: white;
+        }
+        .bot-tag {
+            background: var(--accent);
+            color: white;
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-left: 8px;
+        }
+        .message-timestamp {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            margin-left: 8px;
+        }
+        .message-content {
+            margin-left: 52px;
+            color: var(--text-secondary);
+        }
+
+        .message-input-area {
+            padding: 24px;
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border);
+        }
+        .message-input-container {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .message-input {
+            flex: 1;
+            padding: 12px 16px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: white;
+            resize: none;
+            min-height: 48px;
+        }
+        .message-input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+        .message-input-send {
+            padding: 12px 24px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .message-input-send:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .test-info-panel {
+            width: 280px;
+            background: var(--bg-secondary);
+            border-left: 1px solid var(--border);
+            padding: 32px;
+        }
+        .score-display {
+            text-align: center;
+        }
+        .score-value {
+            font-size: 64px;
+            font-weight: 800;
+            color: var(--accent);
+            margin: 16px 0;
+        }
+        .progress-bar-container {
+            height: 6px;
+            background: var(--bg-tertiary);
+            border-radius: 3px;
+            margin: 16px 0;
+            overflow: hidden;
+        }
+        .progress-fill-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), var(--void-purple));
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .test-complete-screen {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 10001;
+            align-items: center;
+            justify-content: center;
+        }
+        .test-complete-screen.active {
+            display: flex;
+        }
+        .test-result-container {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 48px;
+            max-width: 500px;
+            text-align: center;
+        }
+
+        .mobile-discord {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-primary);
+            z-index: 10000;
+        }
+        .mobile-discord.active {
+            display: block;
         }
 
         @media (max-width: 1024px) {
@@ -398,6 +883,113 @@
     <a href="#" id="adminLoginBtn">
         <i class="fab fa-discord"></i> Admin Login
     </a>
+
+    <!-- Discord Test Interface -->
+    <div id="testPage" class="test-page">
+        <div class="dashboard-header">
+            <div class="dashboard-title">
+                <i class="fab fa-discord"></i> VOID MOD CERTIFICATION
+            </div>
+            <button class="back-to-training" onclick="exitTest()">
+                <i class="fas fa-arrow-left"></i> Back to Training
+            </button>
+        </div>
+        
+        <div class="test-container">
+            <div class="server-list">
+                <div class="server-item active"><i class="fab fa-discord"></i></div>
+                <div class="separator"></div>
+                <div class="server-item"><span>V</span></div>
+            </div>
+            
+            <div class="discord-sidebar">
+                <div class="server-header">
+                    <i class="fas fa-chevron-down"></i> Void Esports
+                </div>
+                <div class="scrollable-channels">
+                    <div class="channel-category">
+                        <div class="category-header">TICKET SYSTEM</div>
+                        <div class="channel-item active">
+                            <i class="fas fa-hashtag"></i>
+                            <span>🎫・mod-tickets</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="user-panel">
+                    <div class="user-avatar" id="userAvatarInitial">U</div>
+                    <div class="user-info">
+                        <div class="username" id="discordUsernameDisplay">User</div>
+                        <div class="discriminator" id="discordUserTag">#0000</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="discord-chat-area">
+                <div class="chat-header">
+                    <div class="channel-header">
+                        <i class="fas fa-hashtag"></i>
+                        <div class="channel-title">🎫・mod-tickets</div>
+                    </div>
+                </div>
+                
+                <div class="messages-container" id="messagesContainer"></div>
+                
+                <div class="message-input-area">
+                    <div class="message-input-container">
+                        <textarea class="message-input" id="messageInput" placeholder="Message #mod-tickets" rows="1"></textarea>
+                        <button class="message-input-send" id="sendButton" disabled>
+                            <i class="fas fa-paper-plane"></i> Send
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="test-info-panel">
+                <div class="score-display">
+                    <div class="score-label">TEST SCORE</div>
+                    <div class="score-value" id="discordScoreValue">0</div>
+                    <div class="score-total">/ 8</div>
+                    <div class="progress-bar-container">
+                        <div class="progress-fill-bar" id="discordProgressFill"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="test-complete-screen" id="testCompleteScreen">
+            <div class="test-result-container">
+                <div class="test-result-icon" id="testResultIcon">
+                    <i class="fas fa-trophy"></i>
+                </div>
+                <h2 class="test-result-title" id="testResultTitle">Test Complete!</h2>
+                <div class="test-result-score" id="testResultScore">Score: 0/8</div>
+                <div class="submission-status" id="submissionStatus">
+                    <i class="fas fa-spinner fa-spin"></i> Submitting...
+                </div>
+                <div class="test-result-buttons">
+                    <button class="test-result-btn primary" id="testReviewBtn">Review</button>
+                    <button class="test-result-btn secondary" id="testBackBtn">Back to Training</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Discord Interface -->
+    <div id="mobileDiscord" class="mobile-discord">
+        <div class="mobile-header">
+            <div class="mobile-menu-btn"><i class="fas fa-bars"></i></div>
+            <div class="mobile-server-icon">V</div>
+            <div class="mobile-channel-name">🎫・mod-tickets</div>
+            <div class="mobile-header-actions">
+                <div class="mobile-header-btn" onclick="exitTest()"><i class="fas fa-sign-out-alt"></i></div>
+            </div>
+        </div>
+        <div class="mobile-messages-container" id="mobileMessagesContainer"></div>
+        <div class="mobile-input-area">
+            <textarea class="mobile-message-input" id="mobileMessageInput" placeholder="Message"></textarea>
+            <button class="mobile-send-btn" id="mobileSendBtn"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
 
     <!-- Main Training Page -->
     <div class="container" id="mainContainer">
@@ -423,59 +1015,232 @@
         <!-- Header -->
         <div class="header" id="header">
             <h1>Void Mod Training</h1>
-            <p>Comprehensive certification program for new Void Esports moderators.</p>
+            <p>Comprehensive certification program for new Void Esports moderators. Master ticket handling, roster management, and community moderation through interactive scenarios and real-time testing.</p>
+            
             <div class="progress-container">
-                <div class="progress-step active"><div class="step-icon active"><i class="fas fa-book"></i></div><span>Learn</span></div>
-                <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-                <div class="progress-step"><div class="step-icon"><i class="fas fa-question-circle"></i></div><span>Practice</span></div>
-                <div class="progress-bar"><div class="progress-fill"></div></div>
-                <div class="progress-step"><div class="step-icon"><i class="fas fa-flag-checkered"></i></div><span>Complete</span></div>
+                <div class="progress-step active">
+                    <div class="step-icon active"><i class="fas fa-book"></i></div>
+                    <span>Learn</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="progress-step">
+                    <div class="step-icon"><i class="fas fa-question-circle"></i></div>
+                    <span>Practice</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill"></div>
+                </div>
+                <div class="progress-step">
+                    <div class="step-icon"><i class="fas fa-flag-checkered"></i></div>
+                    <span>Complete</span>
+                </div>
             </div>
-            <div class="made-by">Made by Nicks Cold</div>
+            
+            <div class="made-by">
+                Made by Nicks Cold
+            </div>
         </div>
         
         <!-- Ticket Types Section -->
         <div class="content-section" id="ticket-types">
             <h2 class="section-title"><i class="fas fa-ticket-alt"></i> Ticket Types</h2>
-            <div class="intro-text">Your primary responsibility is managing the ticket system.</div>
+            
+            <div class="intro-text">
+                Your first and foremost responsibility as a mod is to efficiently manage the ticket system in Void Esports. We operate with two primary ticket categories, each requiring specific handling protocols.
+            </div>
+            
             <div class="ticket-types">
-                <div class="ticket-card"><h3><i class="fas fa-users"></i> General Ticket</h3><p>Support inquiries, moderator assistance, reporting issues.</p></div>
-                <div class="ticket-card"><h3><i class="fas fa-user-plus"></i> Roster Ticket</h3><p>Application channel for users seeking to join Void Esports.</p></div>
+                <div class="ticket-card">
+                    <h3><i class="fas fa-users"></i> General Ticket</h3>
+                    <p>These are created by community members for support inquiries, moderator assistance, or reporting issues. Handle with professionalism and follow escalation procedures for complex matters.</p>
+                </div>
+                <div class="ticket-card">
+                    <h3><i class="fas fa-user-plus"></i> Roster Ticket</h3>
+                    <p>Application channel for users seeking to join Void Esports. Initial response must include age verification and direction to appropriate resources. Follow structured onboarding workflow.</p>
+                </div>
+            </div>
+            
+            <div class="intro-text">
+                <strong>Protocol:</strong> All ticket responses should begin with professional greeting and age inquiry. Direct new applicants to the appropriate channels and maintain detailed records of all interactions.
             </div>
         </div>
         
         <!-- Roster Categories Section -->
         <div class="content-section" id="roster-categories">
-            <h2 class="section-title"><i class="fas fa-layer-group"></i> Roster Categories</h2>
+            <h2 class="section-title"><i class="fas fa-layer-group"></i> Roster Categories & Requirements</h2>
+            
             <div class="roster-categories">
-                <div class="roster-card"><div class="roster-header"><div class="roster-icon">🏆</div><div class="roster-title">Pro Roster</div></div><ul><li>25,000+ PR</li><li>$1,000+ Earnings</li></ul></div>
-                <div class="roster-card"><div class="roster-header"><div class="roster-icon">🎮</div><div class="roster-title">Semi-Pro</div></div><ul><li>10,000-25,000 PR</li><li>Must have earnings</li></ul></div>
-                <div class="roster-card"><div class="roster-header"><div class="roster-icon">🎓</div><div class="roster-title">Academy</div></div><ul><li>500-10,000 PR</li><li>Place consistently</li></ul></div>
+                <!-- Pro Roster -->
+                <div class="roster-card">
+                    <div class="roster-header">
+                        <div class="roster-icon">🏆</div>
+                        <div class="roster-title">Pro Roster</div>
+                    </div>
+                    <ul class="roster-requirements">
+                        <li>25,000+ Power Ranking</li>
+                        <li>$1,000+ in Official Fortnite Earnings</li>
+                        <li>Place and earn consistently</li>
+                        <li>Represent Us In Game and On Your Socials</li>
+                    </ul>
+                </div>
+                
+                <!-- Semi-Pro -->
+                <div class="roster-card">
+                    <div class="roster-header">
+                        <div class="roster-icon">🎮</div>
+                        <div class="roster-title">Semi-Pro</div>
+                    </div>
+                    <ul class="roster-requirements">
+                        <li>10,000-25,000 PR</li>
+                        <li>Place Consistently</li>
+                        <li>Represent us in Game</li>
+                        <li>Use our Fortnite Code</li>
+                        <li>Must have earnings</li>
+                    </ul>
+                </div>
+                
+                <!-- Academy Roster -->
+                <div class="roster-card">
+                    <div class="roster-header">
+                        <div class="roster-icon">🎓</div>
+                        <div class="roster-title">Academy Roster</div>
+                    </div>
+                    <ul class="roster-requirements">
+                        <li>500-10,000 PR</li>
+                        <li>Place Consistently</li>
+                        <li>Represent us in Game</li>
+                        <li>Use our Fortnite Code</li>
+                    </ul>
+                </div>
+                
+                <!-- Creative Roster -->
+                <div class="roster-card">
+                    <div class="roster-header">
+                        <div class="roster-icon">🎨</div>
+                        <div class="roster-title">Creative Roster</div>
+                    </div>
+                    <ul class="roster-requirements">
+                        <li>Smooth/Fast Mechanics</li>
+                        <li>Must Be Unique</li>
+                        <li>Must Be Able To Provide Clips When Asked</li>
+                        <li>Represent Us In Game and On Your Socials</li>
+                    </ul>
+                </div>
+                
+                <!-- Streamer -->
+                <div class="roster-card">
+                    <div class="roster-header">
+                        <div class="roster-icon">🎙️</div>
+                        <div class="roster-title">Streamer</div>
+                    </div>
+                    <ul class="roster-requirements">
+                        <li>1k+ Followers/Subscribers</li>
+                        <li>Average 25+ Viewers Per Stream</li>
+                        <li>Stream At Least 4x Per Week</li>
+                        <li>Use Our Hashtags in Bio/Descriptions</li>
+                        <li>Represent Us In Game and On Your Socials</li>
+                    </ul>
+                </div>
+                
+                <!-- Content Creator -->
+                <div class="roster-card">
+                    <div class="roster-header">
+                        <div class="roster-icon">🎥</div>
+                        <div class="roster-title">Content Creator</div>
+                    </div>
+                    <ul class="roster-requirements">
+                        <li>>1k Followers on Twitch/YouTube</li>
+                        <li>>10k Followers on TikTok</li>
+                        <li>Original/High Quality Posts</li>
+                        <li>Willing to Help Out With Void Content</li>
+                        <li>Must Post Actively</li>
+                        <li>Represent Us In Game and On Your Socials</li>
+                    </ul>
+                </div>
+                
+                <!-- Junior Content Creator -->
+                <div class="roster-card">
+                    <div class="roster-header">
+                        <div class="roster-icon">🎬</div>
+                        <div class="roster-title">Junior Content Creator</div>
+                    </div>
+                    <ul class="roster-requirements">
+                        <li>>500 Followers On Twitch/YouTube</li>
+                        <li>>3k Followers On TikTok</li>
+                        <li>Posts Are Original and High Quality</li>
+                        <li>Willing To Grind to Become a Main Roster Content Creator</li>
+                        <li>Represent Us In Game and On Your Socials</li>
+                    </ul>
+                </div>
+                
+                <!-- GFX/VFX -->
+                <div class="roster-card">
+                    <div class="roster-header">
+                        <div class="roster-icon">🖌️</div>
+                        <div class="roster-title">GFX/VFX</div>
+                    </div>
+                    <ul class="roster-requirements">
+                        <li>Experience With Editing</li>
+                        <li>Portfolio Required</li>
+                        <li>High-Quality Work (1440p or Higher)</li>
+                        <li>Willing To Do Free Work For Staff/Roster</li>
+                        <li>Deliver When Asked</li>
+                    </ul>
+                </div>
             </div>
             
-            <!-- Mod Requirements -->
+            <!-- Mod Requirements Section -->
             <div class="mod-requirements" id="mod-requirements">
-                <h2 class="section-title"><i class="fas fa-tasks"></i> Mod Responsibilities</h2>
+                <h2 class="section-title"><i class="fas fa-tasks"></i> Mod Responsibilities & Commands</h2>
+                
                 <div class="requirement-section">
-                    <h3><i class="fas fa-exclamation-triangle"></i> Weekly Metrics</h3>
-                    <ul class="requirement-list">
-                        <li><strong>10 Tickets</strong> - Process support tickets</li>
-                        <li><strong>400 Messages</strong> - Community engagement</li>
-                        <li><strong>5 Modlogs</strong> - Documented actions</li>
-                        <li><strong>8 Hours</strong> - Minimum activity</li>
-                    </ul>
+                    <h3 class="requirement-title"><i class="fas fa-exclamation-triangle"></i> Warn / Report Command</h3>
+                    <div class="requirement-content">
+                        <p>Use <code class="inline-code">*warn user-id reason</code> command exclusively in the <strong>#staff-commands</strong> channel for minor rule violations. For major or repeated infractions, utilize the <code class="inline-code">/report</code> command with detailed documentation.</p>
+                    </div>
+                </div>
+                
+                <div class="requirement-section">
+                    <h3 class="requirement-title"><i class="fas fa-bed"></i> LOA (Leave On Application)</h3>
+                    <div class="requirement-content">
+                        <p>When unavailable due to illness or personal circumstances, use the <code class="inline-code">/loa command</code> with clear duration and reason. Prior notification to senior staff is mandatory for extended absences.</p>
+                    </div>
+                </div>
+                
+                <div class="requirement-section">
+                    <h3 class="requirement-title"><i class="fas fa-sign-in-alt"></i> Shift Management</h3>
+                    <div class="requirement-content">
+                        <p>Begin each moderation session with <code class="inline-code">/login command</code> and conclude with <code class="inline-code">/logout command</code>. Failure to log hours will result in activity discrepancies and potential disciplinary action.</p>
+                    </div>
+                </div>
+                
+                <div class="requirement-section">
+                    <h3 class="requirement-title"><i class="fas fa-chart-line"></i> Weekly Performance Metrics</h3>
+                    <div class="requirement-content">
+                        <p>Maintain minimum weekly thresholds to retain moderator status:</p>
+                        <ul class="requirement-list">
+                            <li><strong>10 Tickets</strong> - Process support tickets</li>
+                            <li><strong>400 Messages</strong> - Active community engagement</li>
+                            <li><strong>5 Dyno Modlogs</strong> - Documented moderator actions</li>
+                            <li><strong>8 Hour Shift</strong> - Minimum weekly activity</li>
+                            <li><strong>2 Hours VC Time</strong> - Voice channel participation</li>
+                        </ul>
+                        <div class="weekly-requirements">Performance below these standards triggers review and possible demotion.</div>
+                    </div>
                 </div>
             </div>
             
             <!-- Quiz Instructions -->
             <div class="quiz-instructions" id="quiz">
-                <h3><i class="fas fa-info-circle"></i> Interactive Training</h3>
-                <p>Proceed to the practical assessment module.</p>
+                <h3><i class="fas fa-info-circle"></i> Interactive Training Phase</h3>
+                <p>Proceed to the practical assessment module. You'll encounter simulated scenarios requiring appropriate moderator responses. Each question evaluates application of the protocols detailed above.</p>
                 <button class="btn btn-primary" id="startQuizBtn">
-                    <i class="fas fa-play-circle"></i> Begin Assessment
+                    <i class="fas fa-play-circle"></i> Begin Practical Assessment
                 </button>
                 <button class="btn btn-secondary" id="skipAllQuizBtn" style="margin-left: 15px;">
-                    <i class="fas fa-forward"></i> Skip to Test
+                    <i class="fas fa-forward"></i> Skip All Questions
                 </button>
             </div>
         </div>
@@ -484,10 +1249,11 @@
         <div class="training-quiz" id="quizSection" style="display: none;">
             <h2 class="section-title"><i class="fas fa-graduation-cap"></i> Practical Assessment</h2>
             
+            <!-- Skip All Container -->
             <div class="skip-all-container">
-                <p>Skip directly to the certification test.</p>
-                <button class="skip-all-btn" id="skipAllQuestionsBtn" style="background:transparent; border:2px solid var(--warning); color:var(--warning); padding:14px 32px; border-radius:12px; cursor:pointer;">
-                    <i class="fas fa-forward"></i> Skip to Test
+                <p>Don't want to answer all questions? You can skip directly to the test.</p>
+                <button class="skip-all-btn" id="skipAllQuestionsBtn">
+                    <i class="fas fa-forward"></i> Skip All Questions & Go to Test
                 </button>
             </div>
             
@@ -495,195 +1261,309 @@
             <div class="question-card active" id="question1">
                 <div class="question-header">
                     <div class="question-title">Scenario 1: General Roster Inquiry</div>
-                    <div class="question-number">1 of 7</div>
+                    <div class="question-number">Question 1 of 7</div>
                 </div>
+                
                 <div class="question-description">
-                    <p>A user creates a roster ticket: <em>"I want to join the team, what should I do?"</em></p>
+                    <p>A user creates a roster ticket with the message: <em>"I want to join the team, what should I do?"</em></p>
+                    <p><strong>Task:</strong> Compose your initial response as the handling moderator.</p>
                 </div>
-                <textarea class="answer-box" placeholder="Write your response..." id="answer1"></textarea>
+                
+                <textarea class="answer-box" id="answer1" placeholder="Write your professional moderator response here..."></textarea>
+                
                 <div class="quiz-buttons">
-                    <button class="btn btn-secondary" id="skipBtn1">Skip</button>
-                    <button class="btn btn-primary check-answer-btn" data-question="1">Evaluate</button>
+                    <button class="btn btn-secondary" id="skipBtn1">
+                        <i class="fas fa-forward"></i> Skip Question
+                    </button>
+                    <button class="btn btn-primary check-answer-btn" data-question="1">
+                        <i class="fas fa-check-circle"></i> Evaluate Response
+                    </button>
                 </div>
+                
                 <div class="answer-feedback" id="feedback1">
-                    <div class="feedback-title"><i class="fas fa-lightbulb"></i> Protocol</div>
-                    <div class="correct-answer">"Hello! What's your age? Please review requirements in #how-to-join-roster."</div>
-                    <div class="correction-note">Key: Age inquiry, professional greeting, direction to channel.</div>
-                    <button class="btn btn-success next-question-btn" data-next="2" style="margin-top:20px; padding:10px 20px; background:var(--success); color:white; border:none; border-radius:8px; cursor:pointer;">Next</button>
+                    <div class="feedback-title"><i class="fas fa-lightbulb"></i> Protocol Compliance</div>
+                    <div class="correct-answer">
+                        <p><strong>Optimal Response:</strong> "Hello! What's your age and how may I assist you today? Please review the requirements in 🎯┃how-to-join-roster and identify which category best fits your qualifications."</p>
+                    </div>
+                    <div class="correction-note">
+                        <p><strong>Key Elements:</strong> Age inquiry (mandatory), professional greeting, direction to appropriate resource channel, invitation for self-assessment.</p>
+                        <p><strong>Avoid:</strong> Immediate approval, vague directions, omitting age verification.</p>
+                    </div>
+                    <div class="quiz-buttons" style="margin-top: 20px;">
+                        <button class="btn btn-success next-question-btn" data-next="2">
+                            <i class="fas fa-arrow-right"></i> Next Scenario
+                        </button>
+                    </div>
                 </div>
             </div>
             
             <!-- Question 2 -->
             <div class="question-card" id="question2">
                 <div class="question-header">
-                    <div class="question-title">Scenario 2: Pro Application</div>
-                    <div class="question-number">2 of 7</div>
+                    <div class="question-title">Scenario 2: Pro/Semi-Pro Application</div>
+                    <div class="question-number">Question 2 of 7</div>
                 </div>
+                
                 <div class="question-description">
-                    <p>A user says: <em>"i want to join as a pro player, i have earnings"</em></p>
+                    <p>A user submits an application for Pro or Semi-Pro roster position.</p>
+                    <p><strong>Task:</strong> Outline your verification and escalation procedure.</p>
                 </div>
-                <textarea class="answer-box" placeholder="Write your response..." id="answer2"></textarea>
+                
+                <textarea class="answer-box" id="answer2" placeholder="Detail your step-by-step handling process..."></textarea>
+                
                 <div class="quiz-buttons">
                     <button class="btn btn-secondary" id="skipBtn2">Skip</button>
                     <button class="btn btn-primary check-answer-btn" data-question="2">Evaluate</button>
                 </div>
+                
                 <div class="answer-feedback" id="feedback2">
                     <div class="feedback-title"><i class="fas fa-lightbulb"></i> Protocol</div>
-                    <div class="correct-answer">"Please send your Fortnite tracker link and earnings proof. I'll ping @trapped for review."</div>
-                    <button class="btn btn-success next-question-btn" data-next="3" style="margin-top:20px; padding:10px 20px; background:var(--success); color:white; border:none; border-radius:8px; cursor:pointer;">Next</button>
+                    <div class="correct-answer">
+                        <p><strong>Procedure:</strong> Request Fortnite tracker and earnings verification. Validate authenticity. Ping @trapped or relevant senior staff for review.</p>
+                    </div>
+                    <button class="btn btn-success next-question-btn" data-next="3">Next</button>
                 </div>
             </div>
             
             <!-- Question 3 -->
             <div class="question-card" id="question3">
                 <div class="question-header">
-                    <div class="question-title">Scenario 3: Creative Roster</div>
-                    <div class="question-number">3 of 7</div>
+                    <div class="question-title">Scenario 3: Academy Player Verification</div>
+                    <div class="question-number">Question 3 of 7</div>
                 </div>
+                
                 <div class="question-description">
-                    <p>A user says: <em>"looking to join creative roster, i have clips"</em></p>
+                    <p>An Academy roster applicant meets PR requirements.</p>
+                    <p><strong>Task:</strong> Describe the onboarding workflow including representation requirements.</p>
                 </div>
-                <textarea class="answer-box" placeholder="Write your response..." id="answer3"></textarea>
+                
+                <textarea class="answer-box" id="answer3" placeholder="Document the verification and onboarding steps..."></textarea>
+                
                 <div class="quiz-buttons">
                     <button class="btn btn-secondary" id="skipBtn3">Skip</button>
                     <button class="btn btn-primary check-answer-btn" data-question="3">Evaluate</button>
                 </div>
+                
                 <div class="answer-feedback" id="feedback3">
                     <div class="feedback-title"><i class="fas fa-lightbulb"></i> Protocol</div>
-                    <div class="correct-answer">"Please send at least 2 freebuilding clips. I'll ping @creativedepartment for review."</div>
-                    <button class="btn btn-success next-question-btn" data-next="4" style="margin-top:20px; padding:10px 20px; background:var(--success); color:white; border:none; border-radius:8px; cursor:pointer;">Next</button>
+                    <div class="correct-answer">
+                        <p><strong>Workflow:</strong> 1) Verify Fortnite tracker. 2) Request username change to include "Void". 3) Require "team.void" proof. 4) Welcome and role assignment.</p>
+                    </div>
+                    <button class="btn btn-success next-question-btn" data-next="4">Next</button>
                 </div>
             </div>
             
             <!-- Question 4 -->
             <div class="question-card" id="question4">
                 <div class="question-header">
-                    <div class="question-title">Scenario 4: Academy Application</div>
-                    <div class="question-number">4 of 7</div>
+                    <div class="question-title">Scenario 4: Content Creator Application</div>
+                    <div class="question-number">Question 4 of 7</div>
                 </div>
+                
                 <div class="question-description">
-                    <p>A user says: <em>"can i join academy? i have 5k PR"</em></p>
+                    <p>A user applies for Streamer or Content Creator position.</p>
+                    <p><strong>Task:</strong> Formulate your review and escalation process.</p>
                 </div>
-                <textarea class="answer-box" placeholder="Write your response..." id="answer4"></textarea>
+                
+                <textarea class="answer-box" id="answer4" placeholder="Write your handling protocol..."></textarea>
+                
                 <div class="quiz-buttons">
                     <button class="btn btn-secondary" id="skipBtn4">Skip</button>
                     <button class="btn btn-primary check-answer-btn" data-question="4">Evaluate</button>
                 </div>
+                
                 <div class="answer-feedback" id="feedback4">
                     <div class="feedback-title"><i class="fas fa-lightbulb"></i> Protocol</div>
-                    <div class="correct-answer">"Please send your Fortnite tracker for verification. Also ensure your username includes 'Void' and provide team.void proof."</div>
-                    <button class="btn btn-success next-question-btn" data-next="5" style="margin-top:20px; padding:10px 20px; background:var(--success); color:white; border:none; border-radius:8px; cursor:pointer;">Next</button>
+                    <div class="correct-answer">
+                        <p><strong>Process:</strong> Confirm follower/viewer requirements. Request social media links. Ping @content department for evaluation.</p>
+                    </div>
+                    <button class="btn btn-success next-question-btn" data-next="5">Next</button>
                 </div>
             </div>
             
             <!-- Question 5 -->
             <div class="question-card" id="question5">
                 <div class="question-header">
-                    <div class="question-title">Scenario 5: Age Verification</div>
-                    <div class="question-number">5 of 7</div>
+                    <div class="question-title">Scenario 5: GFX/VFX Portfolio Review</div>
+                    <div class="question-number">Question 5 of 7</div>
                 </div>
+                
                 <div class="question-description">
-                    <p>A user says: <em>"im 14 is that old enough?"</em></p>
+                    <p>A GFX/VFX applicant submits their portfolio.</p>
+                    <p><strong>Task:</strong> Detail the verification and escalation steps.</p>
                 </div>
-                <textarea class="answer-box" placeholder="Write your response..." id="answer5"></textarea>
+                
+                <textarea class="answer-box" id="answer5" placeholder="Outline your evaluation procedure..."></textarea>
+                
                 <div class="quiz-buttons">
                     <button class="btn btn-secondary" id="skipBtn5">Skip</button>
                     <button class="btn btn-primary check-answer-btn" data-question="5">Evaluate</button>
                 </div>
+                
                 <div class="answer-feedback" id="feedback5">
                     <div class="feedback-title"><i class="fas fa-lightbulb"></i> Protocol</div>
-                    <div class="correct-answer">"14 is acceptable. Please provide parental consent and I'll ping @trapped for verification."</div>
-                    <button class="btn btn-success next-question-btn" data-next="6" style="margin-top:20px; padding:10px 20px; background:var(--success); color:white; border:none; border-radius:8px; cursor:pointer;">Next</button>
+                    <div class="correct-answer">
+                        <p><strong>Procedure:</strong> Request portfolio and proof of work. Assess quality. Ping @gfx-vfx lead for technical evaluation.</p>
+                    </div>
+                    <button class="btn btn-success next-question-btn" data-next="6">Next</button>
                 </div>
             </div>
             
             <!-- Question 6 -->
             <div class="question-card" id="question6">
                 <div class="question-header">
-                    <div class="question-title">Scenario 6: Grinder Application</div>
-                    <div class="question-number">6 of 7</div>
+                    <div class="question-title">Scenario 6: Creative Roster Submission</div>
+                    <div class="question-number">Question 6 of 7</div>
                 </div>
+                
                 <div class="question-description">
-                    <p>A user says: <em>"i wanna be a void grinder, what's required?"</em></p>
+                    <p>A Creative roster applicant provides freebuilding clips.</p>
+                    <p><strong>Task:</strong> Specify the review requirements and escalation.</p>
                 </div>
-                <textarea class="answer-box" placeholder="Write your response..." id="answer6"></textarea>
+                
+                <textarea class="answer-box" id="answer6" placeholder="Describe your clip verification process..."></textarea>
+                
                 <div class="quiz-buttons">
                     <button class="btn btn-secondary" id="skipBtn6">Skip</button>
                     <button class="btn btn-primary check-answer-btn" data-question="6">Evaluate</button>
                 </div>
+                
                 <div class="answer-feedback" id="feedback6">
                     <div class="feedback-title"><i class="fas fa-lightbulb"></i> Protocol</div>
-                    <div class="correct-answer">"Please change your Discord and Fortnite usernames to include 'Void' and provide team.void proof."</div>
-                    <button class="btn btn-success next-question-btn" data-next="7" style="margin-top:20px; padding:10px 20px; background:var(--success); color:white; border:none; border-radius:8px; cursor:pointer;">Next</button>
+                    <div class="correct-answer">
+                        <p><strong>Requirements:</strong> Minimum two freebuilding clips. Ping @creativedepartment for skill assessment.</p>
+                    </div>
+                    <button class="btn btn-success next-question-btn" data-next="7">Next</button>
                 </div>
             </div>
             
             <!-- Question 7 -->
             <div class="question-card" id="question7">
                 <div class="question-header">
-                    <div class="question-title">Scenario 7: Content Creator</div>
-                    <div class="question-number">7 of 7</div>
+                    <div class="question-title">Scenario 7: Grinder Application Processing</div>
+                    <div class="question-number">Question 7 of 7</div>
                 </div>
+                
                 <div class="question-description">
-                    <p>A user says: <em>"i make youtube videos, can i join content team?"</em></p>
+                    <p>A Grinder applicant seeks representation.</p>
+                    <p><strong>Task:</strong> Outline the username and verification requirements.</p>
                 </div>
-                <textarea class="answer-box" placeholder="Write your response..." id="answer7"></textarea>
+                
+                <textarea class="answer-box" id="answer7" placeholder="Specify representation requirements..."></textarea>
+                
                 <div class="quiz-buttons">
                     <button class="btn btn-secondary" id="skipBtn7">Skip</button>
                     <button class="btn btn-primary check-answer-btn" data-question="7">Evaluate</button>
                 </div>
+                
                 <div class="answer-feedback" id="feedback7">
                     <div class="feedback-title"><i class="fas fa-lightbulb"></i> Protocol</div>
-                    <div class="correct-answer">"Please send your YouTube/Twitch links with subscriber counts. I'll ping @contentdep for review."</div>
-                    <button class="btn btn-success" id="completeQuizBtn" style="margin-top:20px; padding:10px 20px; background:var(--success); color:white; border:none; border-radius:8px; cursor:pointer;">Complete Assessment</button>
+                    <div class="correct-answer">
+                        <p><strong>Requirements:</strong> Discord and Fortnite username must include "Void". Proof of "team.void" item shop usage required.</p>
+                    </div>
+                    <button class="btn btn-success" id="completeQuizBtn">
+                        <i class="fas fa-flag-checkered"></i> Complete Assessment
+                    </button>
                 </div>
             </div>
         </div>
         
         <!-- Completion Screen -->
         <div class="completion-screen" id="completionScreen">
-            <div class="completion-icon"><i class="fas fa-trophy"></i></div>
+            <div class="completion-icon">
+                <i class="fas fa-trophy"></i>
+            </div>
             <h2 class="completion-title">Assessment Complete</h2>
-            <div class="completion-message"><p>You've completed the theoretical training. Proceed to the certification test.</p></div>
+            <div class="completion-message">
+                <p>You have successfully completed the theoretical training module. Your responses have been logged for evaluation against protocol standards.</p>
+                <p>Proceed to the certification test for practical simulation. This final phase replicates real ticket handling with scoring based on protocol adherence, professionalism, and escalation accuracy.</p>
+            </div>
             <div class="completion-buttons">
-                <button class="btn btn-secondary" id="restartQuizBtn">Review Training</button>
-                <button class="btn btn-test" id="takeTestBtn">Begin Test</button>
+                <button class="btn btn-secondary" id="restartQuizBtn">
+                    <i class="fas fa-redo"></i> Review Training
+                </button>
+                <button class="btn btn-test" id="takeTestBtn">
+                    <i class="fas fa-vial"></i> Begin Certification Test
+                </button>
             </div>
         </div>
         
         <!-- Footer -->
         <div class="footer">
-            <p>Void Esports Mod Certification • Made by Nicks Cold</p>
-            <p>© 2026 Void Esports • Discord: <a href="https://discord.gg/dqHF9HPucf" style="color:var(--accent);">discord.gg/dqHF9HPucf</a></p>
+            <p>Void Esports Mod Certification System • Made by Nicks Cold</p>
+            <p>© 2026 Void Esports. All rights reserved.</p>
+            <p>Founded by Frank • Ranked 25th in NAC • 13k+ Discord Members</p>
+            <p>Community: <a href="https://discord.gg/dqHF9HPucf">discord.gg/dqHF9HPucf</a></p>
+            <div class="footer-credit">System Architecture: Enhanced Audit Layer Active</div>
         </div>
     </div>
 
     <script>
-        // Auth Manager
+        // Auth Manager - EXACT COPY FROM ORIGINAL WORKING CODE
         class AuthManager {
             constructor() {
                 this.baseUrl = "https://mod-application-backend.onrender.com";
+                this.user = null;
+                this.isAdmin = false;
             }
+
             async startTest() {
-                const btn = document.getElementById('takeTestBtn');
-                if (btn) { btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Starting...'; btn.disabled = true; }
                 try {
-                    await fetch(`${this.baseUrl}/set-test-intent`, { method: 'GET', credentials: 'include' });
-                    window.location.href = `${this.baseUrl}/auth/discord`;
-                } catch (e) {
-                    alert('Error starting test. Please try again.');
-                    if (btn) { btn.innerHTML = 'Begin Test'; btn.disabled = false; }
+                    console.log("Starting test flow...");
+                    
+                    // Show loading
+                    const takeTestBtn = document.getElementById('takeTestBtn');
+                    if (takeTestBtn) {
+                        takeTestBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Starting test...';
+                        takeTestBtn.disabled = true;
+                    }
+                    
+                    // Set test intent
+                    console.log("Setting test intent...");
+                    const response = await fetch(`${this.baseUrl}/set-test-intent`, {
+                        method: 'GET',
+                        credentials: 'include'
+                    });
+                    
+                    console.log("Test intent response:", response);
+                    
+                    if (response.ok) {
+                        console.log("Test intent set, redirecting to Discord OAuth...");
+                        // Redirect to Discord OAuth
+                        window.location.href = `${this.baseUrl}/auth/discord`;
+                    } else {
+                        throw new Error("Failed to set test intent");
+                    }
+                } catch (error) {
+                    console.error("Start test error:", error);
+                    alert("Failed to start test. Please try again.");
+                    
+                    // Reset button
+                    const takeTestBtn = document.getElementById('takeTestBtn');
+                    if (takeTestBtn) {
+                        takeTestBtn.innerHTML = '<i class="fas fa-vial"></i> Begin Certification Test';
+                        takeTestBtn.disabled = false;
+                    }
                 }
             }
+            
             async startAdminLogin() {
-                window.location.href = `${this.baseUrl}/auth/discord/admin`;
+                try {
+                    console.log("Starting admin login flow...");
+                    window.location.href = `${this.baseUrl}/auth/discord/admin`;
+                } catch (error) {
+                    console.error("Admin login error:", error);
+                    alert("Failed to start admin login. Please try again.");
+                }
             }
         }
+
+        // Initialize auth manager
         window.authManager = new AuthManager();
 
         // DOM Ready
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('DOM loaded - initializing all buttons');
+            console.log("DOM loaded");
             
             // ===== DYNAMIC NAVIGATION HIGHLIGHT =====
             const navItems = document.querySelectorAll('.nav-item');
@@ -702,14 +1582,14 @@
                     const section = sections[i];
                     if (section && scrollPosition >= section.offsetTop) {
                         navItems.forEach(item => item.classList.remove('active'));
-                        navItems[i]?.classList.add('active');
+                        if (navItems[i]) navItems[i].classList.add('active');
                         break;
                     }
                 }
                 
                 if (window.scrollY < 100) {
                     navItems.forEach(item => item.classList.remove('active'));
-                    navItems[0]?.classList.add('active');
+                    if (navItems[0]) navItems[0].classList.add('active');
                 }
             }
             
@@ -719,9 +1599,11 @@
             // Navigation click
             navItems.forEach((item, index) => {
                 item.addEventListener('click', function() {
-                    sections[index]?.scrollIntoView({ behavior: 'smooth' });
-                    navItems.forEach(n => n.classList.remove('active'));
-                    this.classList.add('active');
+                    if (sections[index]) {
+                        sections[index].scrollIntoView({ behavior: 'smooth' });
+                        navItems.forEach(n => n.classList.remove('active'));
+                        this.classList.add('active');
+                    }
                 });
             });
 
@@ -729,7 +1611,7 @@
             
             // Start Quiz
             document.getElementById('startQuizBtn')?.addEventListener('click', function() {
-                console.log('Start quiz clicked');
+                console.log("Start quiz clicked");
                 document.getElementById('quizSection').style.display = 'block';
                 this.style.display = 'none';
                 document.querySelectorAll('.question-card').forEach(q => q.classList.remove('active'));
@@ -737,10 +1619,10 @@
                 document.getElementById('quizSection').scrollIntoView({ behavior: 'smooth' });
             });
 
-            // Skip All buttons (both)
+            // Skip All buttons
             document.querySelectorAll('#skipAllQuizBtn, #skipAllQuestionsBtn').forEach(btn => {
                 btn.addEventListener('click', function() {
-                    console.log('Skip all clicked');
+                    console.log("Skip all clicked");
                     document.getElementById('quizSection').style.display = 'none';
                     document.getElementById('completionScreen').classList.add('active');
                     document.getElementById('completionScreen').scrollIntoView({ behavior: 'smooth' });
@@ -751,8 +1633,7 @@
             document.querySelectorAll('.check-answer-btn').forEach(btn => {
                 btn.addEventListener('click', function() {
                     const num = this.getAttribute('data-question');
-                    console.log('Check answer', num);
-                    document.getElementById(`feedback${num}`).classList.add('show');
+                    document.getElementById(`feedback${num}`)?.classList.add('show');
                 });
             });
 
@@ -760,40 +1641,33 @@
             document.querySelectorAll('.next-question-btn').forEach(btn => {
                 btn.addEventListener('click', function() {
                     const next = this.getAttribute('data-next');
-                    console.log('Next to', next);
                     document.querySelectorAll('.question-card').forEach(q => q.classList.remove('active'));
-                    document.getElementById(`question${next}`).classList.add('active');
-                    document.getElementById(`question${next}`).scrollIntoView({ behavior: 'smooth' });
+                    document.getElementById(`question${next}`)?.classList.add('active');
                 });
             });
 
-            // Skip buttons (individual)
+            // Skip buttons
             for (let i = 1; i <= 7; i++) {
                 document.getElementById(`skipBtn${i}`)?.addEventListener('click', function() {
-                    console.log('Skip question', i);
                     let next = i < 7 ? i + 1 : 1;
                     document.querySelectorAll('.question-card').forEach(q => q.classList.remove('active'));
-                    document.getElementById(`question${next}`).classList.add('active');
+                    document.getElementById(`question${next}`)?.classList.add('active');
                 });
             }
 
             // Complete Quiz button
             document.getElementById('completeQuizBtn')?.addEventListener('click', function() {
-                console.log('Complete quiz clicked');
                 document.getElementById('quizSection').style.display = 'none';
                 document.getElementById('completionScreen').classList.add('active');
-                document.getElementById('completionScreen').scrollIntoView({ behavior: 'smooth' });
             });
 
             // Restart Quiz button
             document.getElementById('restartQuizBtn')?.addEventListener('click', function() {
-                console.log('Restart quiz clicked');
                 document.getElementById('completionScreen').classList.remove('active');
                 document.getElementById('quizSection').style.display = 'block';
                 document.querySelectorAll('.question-card').forEach(q => q.classList.remove('active'));
                 document.getElementById('question1').classList.add('active');
                 document.getElementById('startQuizBtn').style.display = 'inline-flex';
-                document.getElementById('quizSection').scrollIntoView({ behavior: 'smooth' });
                 
                 // Clear answers
                 for (let i = 1; i <= 7; i++) {
@@ -802,31 +1676,174 @@
                 }
             });
 
-            // Take Test button
+            // Take Test button - USING ORIGINAL WORKING LOGIC
             document.getElementById('takeTestBtn')?.addEventListener('click', function(e) {
                 e.preventDefault();
+                console.log("Take test button clicked");
                 window.authManager.startTest();
             });
 
             // Admin Login button
             document.getElementById('adminLoginBtn')?.addEventListener('click', function(e) {
                 e.preventDefault();
+                console.log("Admin login button clicked");
                 window.authManager.startAdminLogin();
             });
 
-            // URL Params for test start
-            const params = new URLSearchParams(window.location.search);
-            if (params.get('startTest') === '1') {
-                window.userDiscordUsername = params.get('discord_username') || 'User';
-                window.userDiscordId = params.get('discord_id') || '0000';
-                document.getElementById('mainContainer').style.display = 'none';
+            // ===== URL PARAMS FOR TEST START (FROM ORIGINAL) =====
+            const urlParams = new URLSearchParams(window.location.search);
+            const startTest = urlParams.get('startTest');
+            const discordUsername = urlParams.get('discord_username');
+            const discordId = urlParams.get('discord_id');
+            
+            console.log("URL Parameters:", { startTest, discordUsername, discordId });
+            
+            if (startTest === '1' && discordUsername && discordId) {
+                console.log("Starting test for user:", discordUsername);
                 
-                // Show test interface (simplified for demo)
-                alert(`Test starting for ${window.userDiscordUsername}`);
+                // Store user info globally
+                window.userDiscordUsername = discordUsername;
+                window.userDiscordId = discordId;
                 
-                window.history.replaceState({}, '', window.location.pathname);
+                // Hide main content and show test interface
+                const mainContainer = document.getElementById('mainContainer');
+                const testPage = document.getElementById('testPage');
+                const mobileDiscord = document.getElementById('mobileDiscord');
+                
+                if (mainContainer) {
+                    mainContainer.style.display = 'none';
+                }
+                
+                // Determine if mobile or desktop
+                if (window.innerWidth <= 768) {
+                    // Mobile test
+                    console.log("Loading mobile interface");
+                    if (mobileDiscord) {
+                        mobileDiscord.classList.add('active');
+                        
+                        setTimeout(() => {
+                            if (typeof startMobileTest === 'function') {
+                                startMobileTest();
+                            }
+                        }, 1000);
+                    }
+                } else {
+                    // Desktop test
+                    console.log("Loading desktop interface");
+                    if (testPage) {
+                        testPage.style.display = 'block';
+                        
+                        // Update UI with Discord username
+                        const discordUsernameDisplay = document.getElementById('discordUsernameDisplay');
+                        const discordUserTag = document.getElementById('discordUserTag');
+                        const userAvatarInitial = document.getElementById('userAvatarInitial');
+                        
+                        if (discordUsernameDisplay) {
+                            discordUsernameDisplay.textContent = discordUsername;
+                        }
+                        if (discordUserTag) {
+                            discordUserTag.textContent = "#" + (discordId.slice(-4) || "0000");
+                        }
+                        if (userAvatarInitial) {
+                            userAvatarInitial.textContent = discordUsername.charAt(0).toUpperCase();
+                        }
+                        
+                        // Initialize and start test
+                        setTimeout(() => {
+                            if (typeof initializeDiscordInterface === 'function') {
+                                initializeDiscordInterface();
+                                setTimeout(() => {
+                                    if (typeof startDiscordTest === 'function') {
+                                        startDiscordTest();
+                                    }
+                                }, 1500);
+                            }
+                        }, 500);
+                    }
+                }
+                
+                // Clear URL parameters
+                window.history.replaceState({}, document.title, window.location.pathname);
             }
         });
+
+        // Test interface functions
+        function exitTest() {
+            document.getElementById('testPage').style.display = 'none';
+            document.getElementById('mobileDiscord').classList.remove('active');
+            document.getElementById('mainContainer').style.display = 'block';
+            if (typeof resetTest === 'function') resetTest();
+        }
+
+        // Discord test functions
+        window.initializeDiscordInterface = function() {
+            console.log("Discord interface initialized");
+            const messageInput = document.getElementById('messageInput');
+            const sendButton = document.getElementById('sendButton');
+            
+            if (messageInput) {
+                messageInput.addEventListener('input', function() {
+                    this.style.height = 'auto';
+                    this.style.height = Math.min(this.scrollHeight, 200) + 'px';
+                    if (sendButton) sendButton.disabled = this.value.trim() === '';
+                });
+            }
+        };
+
+        window.startDiscordTest = function() {
+            console.log("Starting Discord test");
+            const messagesContainer = document.getElementById('messagesContainer');
+            if (messagesContainer) {
+                messagesContainer.innerHTML = '';
+                
+                setTimeout(() => {
+                    addMessage("Void Bot", "Welcome to the Void Esports Moderator Certification Test.", "#5865f2", true);
+                    setTimeout(() => {
+                        addMessage("Void Bot", `Hello ${window.userDiscordUsername}! You'll receive 8 scenarios.`, "#5865f2", true);
+                        setTimeout(() => {
+                            addMessage("Void Bot", "Respond as you would as a real moderator. Good luck!", "#5865f2", true);
+                        }, 1500);
+                    }, 1500);
+                }, 500);
+            }
+        };
+
+        function addMessage(username, content, color, isBot) {
+            const container = document.getElementById('messagesContainer');
+            if (!container) return;
+            
+            const msgDiv = document.createElement('div');
+            msgDiv.className = 'message-group';
+            
+            const now = new Date();
+            const timeStr = `${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}`;
+            
+            msgDiv.innerHTML = `
+                <div class="message-header">
+                    <div class="message-avatar" style="background:${color}">${username.charAt(0)}</div>
+                    <div>
+                        <span class="message-author">${username}</span>
+                        ${isBot ? '<span class="bot-tag">BOT</span>' : ''}
+                        <span class="message-timestamp">${timeStr}</span>
+                    </div>
+                </div>
+                <div class="message-content">${content}</div>
+            `;
+            
+            container.appendChild(msgDiv);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        window.resetTest = function() {
+            document.getElementById('discordScoreValue').textContent = '0';
+            document.getElementById('discordProgressFill').style.width = '0%';
+            document.getElementById('messagesContainer').innerHTML = '';
+        };
     </script>
+    
+    <!-- Load external scripts -->
+    <script src="js/auth.js"></script>
+    <script src="js/discord-test.js"></script>
+    <script src="js/mobile-discord.js"></script>
 </body>
 </html>
