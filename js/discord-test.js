@@ -1,4 +1,4 @@
-// Discord Test Interface Logic - COMPLETE WITH MULTI-MESSAGE SUPPORT
+// Discord Test Interface Logic - COMPLETE WITH DUPLICATION FIX
 document.addEventListener('DOMContentLoaded', function() {
     console.log("🎮 Discord test.js loaded");
     
@@ -13,6 +13,10 @@ document.addEventListener('DOMContentLoaded', function() {
     let conversationLog = "";
     let questionsWithAnswers = [];
     let usedQuestionIds = new Set();
+    
+    // FIX: Add flags to prevent duplicate initialization
+    let testInitialized = false;
+    let testStarted = false;
     
     window.userDiscordUsername = window.userDiscordUsername || 'User';
     window.userDiscordId = window.userDiscordId || '0000';
@@ -246,7 +250,15 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Initialize interface
     async function initializeDiscordInterface() {
+        // FIX: Prevent multiple initializations
+        if (testInitialized) {
+            console.log("Discord interface already initialized, skipping");
+            return;
+        }
+        
         console.log("Initializing Discord interface...");
+        testInitialized = true;
+        
         await loadTestQuestions();
         
         const messageInput = document.querySelector('.message-input');
@@ -275,22 +287,30 @@ document.addEventListener('DOMContentLoaded', function() {
         
         const discordUsernameDisplay = document.getElementById('discordUsernameDisplay');
         const discordUserTag = document.getElementById('discordUserTag');
-        const userAvatarInitialText = document.getElementById('userAvatarInitialText');
+        const userAvatarInitial = document.getElementById('userAvatarInitial');
         
         if (discordUsernameDisplay) discordUsernameDisplay.textContent = window.userDiscordUsername;
         if (discordUserTag) discordUserTag.textContent = "#" + (window.userDiscordId.slice(-4) || "0000");
-        if (userAvatarInitialText) userAvatarInitialText.textContent = window.userDiscordUsername.charAt(0).toUpperCase();
+        if (userAvatarInitial) userAvatarInitial.textContent = window.userDiscordUsername.charAt(0).toUpperCase();
         
-        if (window.userDiscordUsername && window.userDiscordUsername !== 'User') {
+        // FIX: Only auto-start if flag not set
+        if (window.userDiscordUsername && window.userDiscordUsername !== 'User' && !testStarted) {
             setTimeout(() => {
                 startDiscordTest();
             }, 1500);
         }
     }
     
-    // Start test
+    // Start test - FIXED with duplicate prevention
     function startDiscordTest() {
+        // FIX: Prevent multiple starts
+        if (testStarted) {
+            console.log("Test already started, ignoring duplicate call");
+            return;
+        }
+        
         console.log("🚀 STARTING DISCORD TEST");
+        testStarted = true;
         
         usedQuestionIds.clear();
         testQuestions = [...defaultTestQuestions].sort(() => 0.5 - Math.random()).slice(0, 8);
@@ -322,6 +342,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (messagesContainer) {
             messagesContainer.innerHTML = '';
             
+            // Add welcome messages only once
             setTimeout(() => {
                 addMessage("Void Bot", "Welcome to the Void Esports Moderator Certification Test.", "#5865f2", true);
                 
@@ -654,8 +675,10 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 1000);
     }
     
-    // Reset test
+    // Reset test - FIXED to reset flags
     function resetTest() {
+        testInitialized = false;
+        testStarted = false;
         testActive = false;
         testCurrentQuestion = 0;
         testScore = 0;
