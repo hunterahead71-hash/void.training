@@ -109,7 +109,7 @@ document.addEventListener('DOMContentLoaded', function() {
 // Auth manager class
 class AuthManager {
     constructor() {
-        this.baseUrl = "https://mod-application-backend.onrender.com";
+        this.baseUrl = "mod-application-backend-production.up.railway.app";
         this.user = null;
         this.isAdmin = false;
     }
