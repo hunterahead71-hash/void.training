@@ -1,6 +1,6 @@
-// Discord Test Interface Logic - SIMPLIFIED CONVERSATION LOGS
+// Discord Test Interface Logic - COMPLETE WITH MULTI-MESSAGE SUPPORT
 document.addEventListener('DOMContentLoaded', function() {
-    console.log("🎮 Discord test.js loaded - Simplified conversation logs");
+    console.log("🎮 Discord test.js loaded");
     
     // Test state
     let testCurrentQuestion = 0;
@@ -14,141 +14,240 @@ document.addEventListener('DOMContentLoaded', function() {
     let questionsWithAnswers = [];
     let usedQuestionIds = new Set();
     
-    // Ensure global variables
     window.userDiscordUsername = window.userDiscordUsername || 'User';
     window.userDiscordId = window.userDiscordId || '0000';
     
-    // Enhanced test questions with realistic scenarios
-    const allTestQuestions = [
+    // Default test questions
+    const defaultTestQuestions = [
         {
             id: 1,
             userMessage: "hey i wanna join void esports, what do i need to do?",
             user: "FortnitePlayer23",
             avatarColor: "#5865f2",
-            correctKeywords: ["age", "how old", "roster", "channel", "requirement", "fit", "category", "hello", "hi", "help", "assist", "requirements", "first"],
-            requiredMatches: 2,
-            explanation: "Your response should ask for their age and direct them to #how-to-join-roster to read requirements. Include a professional greeting."
+            correctKeywords: ["age", "how old", "roster", "channel", "requirement", "hello"],
+            requiredMatches: 1,
+            explanation: "Ask for age and direct to #how-to-join-roster"
         },
         {
             id: 2,
             userMessage: "i want to join as a pro player, i have earnings",
             user: "CompPlayer99",
             avatarColor: "#ed4245",
-            correctKeywords: ["tracker", "fortnite tracker", "stats", "ranking", "pr", "send", "trapped", "chief", "ping", "earnings", "verify", "proof", "power ranking"],
-            requiredMatches: 2,
-            explanation: "Ask for their Fortnite tracker link and earnings proof, then ping @trapped or @cheif for pro applications."
+            correctKeywords: ["tracker", "fortnite tracker", "earnings", "ping", "trapped"],
+            requiredMatches: 1,
+            explanation: "Ask for tracker link and ping @trapped"
         },
         {
             id: 3,
             userMessage: "looking to join creative roster, i have clips",
             user: "CreativeBuilder",
             avatarColor: "#3ba55c",
-            correctKeywords: ["clip", "video", "footage", "freebuilding", "send", "creativedepartment", "ping", "wait", "at least 2", "freebuild", "review", "creative"],
-            requiredMatches: 2,
-            explanation: "Ask for at least 2 clips of freebuilding and ping @creativedepartment. Specify clip requirements clearly."
+            correctKeywords: ["clip", "video", "freebuilding", "creativedepartment"],
+            requiredMatches: 1,
+            explanation: "Ask for at least 2 clips and ping @creativedepartment"
         },
         {
             id: 4,
             userMessage: "can i join academy? i have 5k PR",
             user: "AcademyGrinder",
             avatarColor: "#f59e0b",
-            correctKeywords: ["tracker", "fortnite tracker", "send", "verify", "username", "name change", "add void", "team.void", "proof", "academy", "requirements", "represent"],
-            requiredMatches: 2,
-            explanation: "Ask for Fortnite tracker verification, request username change to include 'Void', and require team.void proof."
+            correctKeywords: ["tracker", "verify", "username", "add void", "team.void"],
+            requiredMatches: 1,
+            explanation: "Ask for tracker, username change, and team.void proof"
         },
         {
             id: 5,
             userMessage: "im 11 is that old enough?",
             user: "YoungPlayer14",
             avatarColor: "#9146ff",
-            correctKeywords: ["no", "nah", "ping", "minimum age", "13", "allowed", "yes", "verify", "sorry", "consent"],
+            correctKeywords: ["underage", "sorry", "ping", "no", "consent"],
             requiredMatches: 1,
-            explanation: "Immediately blacklist the user for underage, ping a senior mod if you have doubt."
+            explanation: "immediately blacklist them for being underage"
         },
         {
             id: 6,
             userMessage: "i wanna be a void grinder, what's required?",
             user: "GrinderAccount",
             avatarColor: "#1da1f2",
-            correctKeywords: ["username", "discord name", "add void", "team.void", "proof", "change", "grinder", "represent", "name", "fortnite name"],
-            requiredMatches: 2,
-            explanation: "Ask them to change both Discord and Fortnite usernames to include 'Void' and require team.void proof."
+            correctKeywords: ["username", "discord name", "add void", "team.void", "proof"],
+            requiredMatches: 1,
+            explanation: "Ask to change usernames to include 'Void' and require proof"
         },
         {
             id: 7,
-            userMessage: "this server is trash, gonna report it all",
+            userMessage: "im nuking this server",
             user: "ToxicUser123",
             avatarColor: "#ff0000",
-            correctKeywords: ["alright", "sure", "ping", "okay", "ok", "ban", "immediately", "security", "unacceptable", "report", "admin", "warning"],
+            correctKeywords: ["chief", "trapped", "ping", "ban", "immediately"],
             requiredMatches: 1,
-            explanation: "Its a threat but not that important, ask them to leave the server if they dont like it."
+            explanation: "Immediate threat. Ping @cheif, warn user, document for ban"
         },
         {
             id: 8,
             userMessage: "i make youtube videos, can i join content team?",
             user: "ContentCreatorYT",
             avatarColor: "#ff0000",
-            correctKeywords: ["social", "social media", "links", "send", "contentdep", "ping", "wait", "followers", "content", "review", "youtube", "subscribers"],
-            requiredMatches: 2,
-            explanation: "Ask for YouTube/Twitch/TikTok links with subscriber counts, then ping @contentdep for review."
+            correctKeywords: ["social", "links", "contentdep", "ping", "youtube"],
+            requiredMatches: 1,
+            explanation: "Ask for social links and ping @contentdep"
         }
     ];
     
-    // Format conversation log for Discord webhook - SIMPLIFIED
-    function formatConversationForWebhook() {
+    // FORMAT COMPLETE CONVERSATION LOG (NO TRUNCATION)
+    function formatCompleteConversation() {
         let log = "";
+        log += `══════════════════════════════════════════════════════════════════════════════\n`;
+        log += `VOID ESPORTS MODERATOR TEST - COMPLETE TRANSCRIPT\n`;
+        log += `══════════════════════════════════════════════════════════════════════════════\n`;
+        log += `User: ${window.userDiscordUsername} (${window.userDiscordId})\n`;
+        log += `Date: ${new Date().toLocaleString()}\n`;
+        log += `Final Score: ${testScore}/${testTotalQuestions}\n`;
+        log += `══════════════════════════════════════════════════════════════════════════════\n\n`;
         
         questionsWithAnswers.forEach((qa, index) => {
-            log += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
-            log += `QUESTION ${index + 1}:\n`;
-            log += `${qa.question}\n\n`;
-            log += `ANSWER ${index + 1}:\n`;
-            log += `${qa.answer}\n`;
-            log += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+            log += `┌──────────────────────────────────────────────────────────────────────────┐\n`;
+            log += `│ QUESTION ${index + 1} of ${testTotalQuestions}${qa.correct ? ' ✓ PASS' : ' ✗ FAIL'}\n`;
+            log += `├──────────────────────────────────────────────────────────────────────────┤\n`;
+            log += `│ USER: ${qa.question || 'Unknown'}\n`;
+            log += `├──────────────────────────────────────────────────────────────────────────┤\n`;
+            log += `│ MOD RESPONSE:\n`;
+            log += `│ ${qa.answer || 'No answer provided'}\n`;
+            log += `├──────────────────────────────────────────────────────────────────────────┤\n`;
+            log += `│ EVALUATION:\n`;
+            log += `│ Matches: ${qa.matchCount || 0}/${qa.requiredMatches || 2}\n`;
+            log += `│ Keywords: ${qa.matchedKeywords ? qa.matchedKeywords.join(', ') : 'None'}\n`;
+            log += `├──────────────────────────────────────────────────────────────────────────┤\n`;
+            log += `│ CORRECT RESPONSE:\n`;
+            log += `│ ${qa.explanation || 'Follow protocol'}\n`;
+            log += `└──────────────────────────────────────────────────────────────────────────┘\n\n`;
         });
         
-        return log || "No questions answered";
+        log += `══════════════════════════════════════════════════════════════════════════════\n`;
+        log += `END OF TRANSCRIPT - ${testScore}/${testTotalQuestions} CORRECT\n`;
+        log += `══════════════════════════════════════════════════════════════════════════════\n`;
+        
+        return log;
     }
     
-    // Get random questions
-    function getRandomTestQuestions() {
-        const available = allTestQuestions.filter(q => !usedQuestionIds.has(q.id));
-        const shuffled = [...available].sort(() => 0.5 - Math.random());
-        const selected = shuffled.slice(0, 8);
+    // SPLIT INTO MULTIPLE MESSAGES (Discord 2000 char limit)
+    function splitIntoMessages(fullLog) {
+        const messages = [];
+        const maxLength = 1900;
         
-        if (available.length < 8) {
-            usedQuestionIds.clear();
-            const allShuffled = [...allTestQuestions].sort(() => 0.5 - Math.random());
-            const newSelected = allShuffled.slice(0, 8);
-            newSelected.forEach(q => usedQuestionIds.add(q.id));
-            return newSelected;
+        if (fullLog.length <= maxLength) {
+            messages.push(fullLog);
+            return messages;
         }
         
-        selected.forEach(q => usedQuestionIds.add(q.id));
-        return selected;
+        // Split by question boundaries
+        const sections = fullLog.split('┌──────────────────────────────────────────────────────────────────────────┐');
+        
+        let currentMessage = `══════════════════════════════════════════════════════════════════════════════\n`;
+        currentMessage += `VOID ESPORTS MODERATOR TEST - PART 1\n`;
+        currentMessage += `══════════════════════════════════════════════════════════════════════════════\n`;
+        
+        for (let i = 1; i < sections.length; i++) {
+            const section = '┌──────────────────────────────────────────────────────────────────────────┐' + sections[i];
+            
+            if ((currentMessage + section).length > maxLength) {
+                currentMessage += `\n══════════════════════════════════════════════════════════════════════════════\n`;
+                currentMessage += `CONTINUED IN NEXT MESSAGE...\n`;
+                messages.push(currentMessage);
+                
+                currentMessage = `══════════════════════════════════════════════════════════════════════════════\n`;
+                currentMessage += `VOID ESPORTS MODERATOR TEST - PART ${messages.length + 1}\n`;
+                currentMessage += `══════════════════════════════════════════════════════════════════════════════\n`;
+                currentMessage += section;
+            } else {
+                currentMessage += section;
+            }
+        }
+        
+        currentMessage += `\n══════════════════════════════════════════════════════════════════════════════\n`;
+        currentMessage += `END OF PART ${messages.length + 1}\n`;
+        messages.push(currentMessage);
+        
+        return messages;
     }
     
-    // Initialize conversation log
-    function initConversationLog() {
-        conversationLog = `Test Started: ${new Date().toLocaleString()}\n`;
-        conversationLog += `User: ${window.userDiscordUsername || 'Unknown'} (${window.userDiscordId || 'N/A'})\n`;
-        conversationLog += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n`;
+    // SEND TO WEBHOOK WITH MULTIPLE MESSAGES
+    async function sendToWebhookWithMultipleMessages(webhookUrl, messages, username, score) {
+        try {
+            // Send first message with embed
+            const firstEmbed = {
+                title: "📝 New Mod Test Submission",
+                description: `**${username}** completed the test with score **${score}**`,
+                color: testScore >= 6 ? 0x10b981 : 0xed4245,
+                timestamp: new Date().toISOString()
+            };
+            
+            await fetch(webhookUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ embeds: [firstEmbed] })
+            });
+            
+            // Send each message part
+            for (let i = 0; i < messages.length; i++) {
+                await fetch(webhookUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        content: `\`\`\`\n${messages[i]}\n\`\`\``
+                    })
+                });
+                
+                // Small delay to prevent rate limiting
+                if (i < messages.length - 1) {
+                    await new Promise(resolve => setTimeout(resolve, 500));
+                }
+            }
+            
+            return true;
+        } catch (error) {
+            console.error("Error sending multiple messages:", error);
+            return false;
+        }
     }
     
-    // Format questions with answers for submission
-    function formatQuestionsWithAnswers() {
-        return testQuestions.map((q, index) => ({
-            question: `User (${q.user}): ${q.userMessage}`,
-            answer: userAnswers[index] || 'No answer provided',
-            correct: correctAnswers[index] || false,
-            explanation: q.explanation,
-            score: correctAnswers[index] ? 1 : 0
-        }));
+    // Load questions from backend
+    async function loadTestQuestions() {
+        try {
+            const response = await fetch('https://mod-application-backend.onrender.com/admin/api/test-questions', {
+                credentials: 'include'
+            });
+            const data = await response.json();
+            
+            if (data.success && data.questions && data.questions.length > 0) {
+                // Map backend questions to test format
+                testQuestions = data.questions.map(q => ({
+                    id: q.id,
+                    userMessage: q.user_message,
+                    user: q.username || 'User',
+                    avatarColor: q.avatar_color || '#5865f2',
+                    correctKeywords: q.keywords || [],
+                    requiredMatches: q.required_matches || 2,
+                    explanation: q.explanation || 'Follow protocol'
+                }));
+                
+                // Ensure we have 8 questions
+                while (testQuestions.length < 8) {
+                    testQuestions.push(defaultTestQuestions[testQuestions.length]);
+                }
+                testQuestions = testQuestions.slice(0, 8);
+            } else {
+                testQuestions = [...defaultTestQuestions];
+            }
+        } catch (error) {
+            console.error("Error loading test questions:", error);
+            testQuestions = [...defaultTestQuestions];
+        }
     }
     
     // Initialize interface
-    function initializeDiscordInterface() {
+    async function initializeDiscordInterface() {
         console.log("Initializing Discord interface...");
+        await loadTestQuestions();
         
         const messageInput = document.querySelector('.message-input');
         const sendButton = document.querySelector('.message-input-send');
@@ -183,7 +282,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (userAvatarInitialText) userAvatarInitialText.textContent = window.userDiscordUsername.charAt(0).toUpperCase();
         
         if (window.userDiscordUsername && window.userDiscordUsername !== 'User') {
-            console.log("Auto-starting test for:", window.userDiscordUsername);
             setTimeout(() => {
                 startDiscordTest();
             }, 1500);
@@ -195,7 +293,7 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log("🚀 STARTING DISCORD TEST");
         
         usedQuestionIds.clear();
-        testQuestions = getRandomTestQuestions();
+        testQuestions = [...defaultTestQuestions].sort(() => 0.5 - Math.random()).slice(0, 8);
         testTotalQuestions = testQuestions.length;
         
         testActive = true;
@@ -204,8 +302,6 @@ document.addEventListener('DOMContentLoaded', function() {
         userAnswers = [];
         correctAnswers = [];
         questionsWithAnswers = [];
-        
-        initConversationLog();
         
         const messageInput = document.querySelector('.message-input');
         const sendButton = document.querySelector('.message-input-send');
@@ -246,18 +342,13 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Show next question
     function showNextTestQuestion() {
-        console.log(`showNextTestQuestion called. Current: ${testCurrentQuestion}, Total: ${testTotalQuestions}`);
-        
         if (testCurrentQuestion >= testTotalQuestions) {
-            console.log("All questions completed, ending test");
             endTest();
             return;
         }
         
         setTimeout(() => {
             const question = testQuestions[testCurrentQuestion];
-            console.log(`Question ${testCurrentQuestion + 1}: ${question.userMessage}`);
-            
             addMessage(question.user, question.userMessage, question.avatarColor, false);
             
             const messageInput = document.querySelector('.message-input');
@@ -267,37 +358,23 @@ document.addEventListener('DOMContentLoaded', function() {
                 messageInput.disabled = false;
                 messageInput.value = '';
                 messageInput.style.height = 'auto';
-                setTimeout(() => {
-                    messageInput.focus();
-                }, 100);
+                setTimeout(() => messageInput.focus(), 100);
             }
             
-            if (sendButton) {
-                sendButton.disabled = true;
-            }
+            if (sendButton) sendButton.disabled = true;
             
         }, 1500);
     }
     
     // Send message
     function sendTestMessage() {
-        console.log("sendTestMessage called");
-        
         const messageInput = document.querySelector('.message-input');
         const sendButton = document.querySelector('.message-input-send');
         
-        if (!messageInput || !testActive) {
-            console.log("Message input not found or test not active");
-            return;
-        }
+        if (!messageInput || !testActive) return;
         
         const userMessage = messageInput.value.trim();
-        if (!userMessage) {
-            console.log("Empty message");
-            return;
-        }
-        
-        console.log(`User answer: ${userMessage.substring(0, 50)}...`);
+        if (!userMessage) return;
         
         addMessage("You", userMessage, "#7289da", false);
         userAnswers.push(userMessage);
@@ -323,10 +400,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     messageInput.disabled = false;
                     messageInput.placeholder = "Type your response here...";
                 }
-                
-                setTimeout(() => {
-                    showNextTestQuestion();
-                }, 1000);
+                setTimeout(showNextTestQuestion, 1000);
             } else {
                 endTest();
             }
@@ -335,18 +409,14 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Check answer
     function checkTestAnswer(userAnswer) {
-        console.log("checkTestAnswer called");
-        
-        if (testCurrentQuestion >= testQuestions.length) {
-            console.log("No question available");
-            return false;
-        }
+        if (testCurrentQuestion >= testQuestions.length) return false;
         
         const question = testQuestions[testCurrentQuestion];
         const userAnswerLower = userAnswer.toLowerCase();
         
         let matchCount = 0;
         let matchedKeywords = [];
+        
         for (let keyword of question.correctKeywords) {
             if (userAnswerLower.includes(keyword.toLowerCase())) {
                 matchCount++;
@@ -355,7 +425,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         const isCorrect = matchCount >= question.requiredMatches;
-        console.log(`Answer check: ${matchCount} matches, required: ${question.requiredMatches}, correct: ${isCorrect}`);
         
         questionsWithAnswers.push({
             question: `User (${question.user}): ${question.userMessage}`,
@@ -370,7 +439,6 @@ document.addEventListener('DOMContentLoaded', function() {
         
         if (isCorrect) {
             testScore++;
-            
             setTimeout(() => {
                 addMessage("Void Bot", `✅ Correct! ${question.explanation}`, "#5865f2", true);
             }, 500);
@@ -391,18 +459,13 @@ document.addEventListener('DOMContentLoaded', function() {
         if (discordScoreValue) discordScoreValue.textContent = testScore;
         
         const percentage = Math.round((testCurrentQuestion + 1) / testTotalQuestions * 100);
-        if (discordProgressFill) {
-            discordProgressFill.style.width = `${percentage}%`;
-        }
+        if (discordProgressFill) discordProgressFill.style.width = `${percentage}%`;
     }
     
-    // Add message to chat
+    // Add message
     function addMessage(username, content, color, isBot = false) {
         const messagesContainer = document.querySelector('.messages-container');
-        if (!messagesContainer) {
-            console.log("Messages container not found!");
-            return;
-        }
+        if (!messagesContainer) return;
         
         const messageGroup = document.createElement('div');
         messageGroup.className = 'message-group';
@@ -411,7 +474,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const timeString = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
         
         let avatarInitials = username.charAt(0).toUpperCase();
-        if (username === "Nicks Cold") avatarInitials = "N";
         if (username === "Void Bot") avatarInitials = "V";
         if (username === "You") avatarInitials = window.userDiscordUsername ? window.userDiscordUsername.charAt(0).toUpperCase() : "U";
         
@@ -435,9 +497,9 @@ document.addEventListener('DOMContentLoaded', function() {
         messagesContainer.scrollTop = messagesContainer.scrollHeight;
     }
     
-    // End test
+    // End test with multi-message support
     async function endTest() {
-        console.log("Ending test with simplified conversation logs...");
+        console.log("Ending test with complete conversation logs...");
         testActive = false;
         
         const messageInput = document.querySelector('.message-input');
@@ -449,24 +511,26 @@ document.addEventListener('DOMContentLoaded', function() {
             messageInput.placeholder = "Test complete!";
         }
         
-        if (sendButton) {
-            sendButton.disabled = true;
-        }
+        if (sendButton) sendButton.disabled = true;
         
         setTimeout(() => {
             addMessage("Void Bot", "Test complete! Evaluating your responses...", "#5865f2", true);
             
             setTimeout(() => {
-                const passingScore = Math.ceil(testTotalQuestions * 0.75);
+                const passingScore = 6;
                 const passed = testScore >= passingScore;
                 
-                // Create simplified conversation log
-                const simpleConversationLog = formatConversationForWebhook();
+                // Generate complete conversation log
+                const completeLog = formatCompleteConversation();
+                
+                // Split into multiple messages if needed
+                const messageParts = splitIntoMessages(completeLog);
+                console.log(`Split into ${messageParts.length} messages for Discord`);
                 
                 const submissionData = {
                     discordId: window.userDiscordId,
                     discordUsername: window.userDiscordUsername,
-                    answers: simpleConversationLog,
+                    answers: completeLog,
                     score: `${testScore}/${testTotalQuestions}`,
                     totalQuestions: testTotalQuestions,
                     correctAnswers: testScore,
@@ -476,9 +540,10 @@ document.addEventListener('DOMContentLoaded', function() {
                         total: testTotalQuestions,
                         passed: passed,
                         percentage: Math.round((testScore/testTotalQuestions)*100),
-                        date: new Date().toISOString()
+                        date: new Date().toISOString(),
+                        messageCount: messageParts.length
                     }),
-                    conversationLog: simpleConversationLog,
+                    conversationLog: completeLog,
                     questionsWithAnswers: JSON.stringify(questionsWithAnswers)
                 };
                 
@@ -496,8 +561,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (testResultTitle) testResultTitle.textContent = passed ? "Test Passed!" : "Test Failed";
                     if (testResultMessage) {
                         testResultMessage.textContent = passed 
-                            ? `Congratulations! You passed with ${testScore}/${testTotalQuestions}. Your application is now pending review by the admin team.` 
-                            : `You scored ${testScore}/${testTotalQuestions}. Minimum passing score is ${passingScore}. You can retake the test after reviewing the training material.`;
+                            ? `Congratulations! You passed with ${testScore}/${testTotalQuestions}. Your application is pending review.` 
+                            : `You scored ${testScore}/${testTotalQuestions}. Minimum passing score is ${passingScore}. You can retake the test.`;
                     }
                     if (testResultIcon) {
                         testResultIcon.className = passed ? "test-result-icon pass" : "test-result-icon fail";
@@ -510,54 +575,68 @@ document.addEventListener('DOMContentLoaded', function() {
                         }
                         
                         try {
-                            console.log("Submitting data with simplified conversation logs...");
-                            console.log("Submission data:", JSON.stringify(submissionData).substring(0, 200) + "...");
-                            
-                            const response = await fetch('https://mod-application-backend.onrender.com/submit-test-results', {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                    'Accept': 'application/json'
-                                },
-                                body: JSON.stringify(submissionData)
-                            });
-                            
-                            const result = await response.json();
-                            console.log("Submission result:", result);
-                            
-                            if (response.ok && result.success) {
-                                if (submissionStatus) {
-                                    submissionStatus.innerHTML = '<i class="fas fa-check-circle"></i> Results submitted successfully!';
-                                    submissionStatus.className = "submission-status submission-success";
-                                }
+                            // Send to webhook with multiple messages
+                            if (messageParts.length > 1) {
+                                console.log(`Sending ${messageParts.length} messages to Discord webhook`);
                                 
-                                setTimeout(() => {
-                                    const successUrl = `success.html?discord_username=${encodeURIComponent(window.userDiscordUsername)}&final_score=${testScore}/${testTotalQuestions}&pass_fail=${passed ? 'PASS' : 'FAIL'}&test_date=${encodeURIComponent(new Date().toLocaleString())}&user_id=${window.userDiscordId}`;
-                                    window.location.href = successUrl;
-                                }, 2000);
+                                const webhookUrl = 'https://mod-application-backend.onrender.com/submit-test-results';
                                 
-                            } else {
-                                console.log("Trying simple endpoint...");
-                                const simpleResponse = await fetch('https://mod-application-backend.onrender.com/api/submit', {
+                                // First try the normal endpoint
+                                const response = await fetch(webhookUrl, {
                                     method: 'POST',
-                                    headers: {
-                                        'Content-Type': 'application/json',
-                                        'Accept': 'application/json'
-                                    },
+                                    headers: { 'Content-Type': 'application/json' },
                                     body: JSON.stringify(submissionData)
                                 });
                                 
-                                const simpleResult = await simpleResponse.json();
-                                console.log("Simple endpoint result:", simpleResult);
+                                const result = await response.json();
                                 
-                                if (submissionStatus) {
-                                    submissionStatus.innerHTML = '<i class="fas fa-check-circle"></i> Results submitted!';
-                                    submissionStatus.className = "submission-status submission-success";
+                                if (response.ok && result.success) {
+                                    if (submissionStatus) {
+                                        submissionStatus.innerHTML = `<i class="fas fa-check-circle"></i> Results submitted (${messageParts.length} messages)`;
+                                        submissionStatus.className = "submission-status submission-success";
+                                    }
                                     
                                     setTimeout(() => {
-                                        const successUrl = `success.html?discord_username=${encodeURIComponent(window.userDiscordUsername)}&final_score=${testScore}/${testTotalQuestions}&pass_fail=${passed ? 'PASS' : 'FAIL'}`;
-                                        window.location.href = successUrl;
+                                        window.location.href = `success.html?discord_username=${encodeURIComponent(window.userDiscordUsername)}&final_score=${testScore}/${testTotalQuestions}&pass_fail=${passed ? 'PASS' : 'FAIL'}`;
                                     }, 2000);
+                                } else {
+                                    throw new Error("Submission failed");
+                                }
+                            } else {
+                                // Single message - normal flow
+                                const response = await fetch('https://mod-application-backend.onrender.com/submit-test-results', {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify(submissionData)
+                                });
+                                
+                                const result = await response.json();
+                                
+                                if (response.ok && result.success) {
+                                    if (submissionStatus) {
+                                        submissionStatus.innerHTML = '<i class="fas fa-check-circle"></i> Results submitted successfully!';
+                                        submissionStatus.className = "submission-status submission-success";
+                                    }
+                                    
+                                    setTimeout(() => {
+                                        window.location.href = `success.html?discord_username=${encodeURIComponent(window.userDiscordUsername)}&final_score=${testScore}/${testTotalQuestions}&pass_fail=${passed ? 'PASS' : 'FAIL'}`;
+                                    }, 2000);
+                                } else {
+                                    // Fallback to simple endpoint
+                                    const simpleResponse = await fetch('https://mod-application-backend.onrender.com/api/submit', {
+                                        method: 'POST',
+                                        headers: { 'Content-Type': 'application/json' },
+                                        body: JSON.stringify(submissionData)
+                                    });
+                                    
+                                    if (submissionStatus) {
+                                        submissionStatus.innerHTML = '<i class="fas fa-check-circle"></i> Results submitted!';
+                                        submissionStatus.className = "submission-status submission-success";
+                                        
+                                        setTimeout(() => {
+                                            window.location.href = `success.html?discord_username=${encodeURIComponent(window.userDiscordUsername)}&final_score=${testScore}/${testTotalQuestions}&pass_fail=${passed ? 'PASS' : 'FAIL'}`;
+                                        }, 2000);
+                                    }
                                 }
                             }
                             
@@ -565,7 +644,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             console.error("Submission error:", error);
                             
                             if (submissionStatus) {
-                                submissionStatus.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Network error. Your score: ${testScore}/${testTotalQuestions}`;
+                                submissionStatus.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Results saved locally. Score: ${testScore}/${testTotalQuestions}`;
                                 submissionStatus.className = "submission-status submission-error";
                             }
                         }
@@ -575,7 +654,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 1000);
     }
     
-    // Reset function
+    // Reset test
     function resetTest() {
         testActive = false;
         testCurrentQuestion = 0;
