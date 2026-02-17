@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* ===== ORIGINAL HOMEPAGE STYLES (PRESERVED) ===== */
+        /* ===== ORIGINAL HOMEPAGE STYLES ===== */
         * {
             margin: 0;
             padding: 0;
@@ -563,7 +563,7 @@
             color: var(--text-muted);
         }
 
-        /* ===== DISCORD REPLICA TEST INTERFACE (ONLY SHOWS WHEN TEST STARTS) ===== */
+        /* ===== DISCORD REPLICA TEST INTERFACE ===== */
         .test-page {
             display: none;
             position: fixed;
@@ -1003,6 +1003,7 @@
 
         .discord-typing-dot:nth-child(1) { animation-delay: -0.32s; }
         .discord-typing-dot:nth-child(2) { animation-delay: -0.16s; }
+        .discord-typing-dot:nth-child(3) { animation-delay: 0; }
 
         @keyframes discordTyping {
             0%, 60%, 100% { transform: translateY(0); }
@@ -1286,7 +1287,7 @@
             color: var(--discord-text-normal);
         }
 
-        /* Mobile Responsive for Discord */
+        /* Mobile Responsive */
         @media (max-width: 768px) {
             .discord-members {
                 display: none;
@@ -1310,23 +1311,6 @@
                 display: none;
             }
         }
-
-        @media (max-width: 480px) {
-            .discord-channels {
-                position: absolute;
-                left: -200px;
-                transition: left 0.3s ease;
-                z-index: 10002;
-            }
-
-            .discord-channels.active {
-                left: 0;
-            }
-
-            .discord-server-icon.active::before {
-                display: none;
-            }
-        }
     </style>
 </head>
 <body>
@@ -1335,7 +1319,7 @@
         <i class="fab fa-discord"></i> Admin Login
     </a>
 
-    <!-- DISCORD REPLICA TEST INTERFACE (Hidden until test starts) -->
+    <!-- DISCORD REPLICA TEST INTERFACE -->
     <div id="testPage" class="test-page">
         <div class="discord-app">
             <!-- Server Bar -->
@@ -1497,7 +1481,7 @@
         </div>
     </div>
 
-    <!-- ORIGINAL HOMEPAGE CONTENT (COMPLETELY PRESERVED) -->
+    <!-- ORIGINAL HOMEPAGE CONTENT -->
     <div class="container" id="mainContainer">
         <!-- Navigation Sidebar -->
         <div class="nav-sidebar">
@@ -2005,10 +1989,6 @@
     </div>
 
     <script>
-        // =========================================================================
-        // DISCORD REPLICA TEST IMPLEMENTATION
-        // =========================================================================
-
         (function() {
             'use strict';
 
@@ -2019,90 +1999,96 @@
                 PASSING_SCORE: 6
             };
 
-            // Test Questions (exactly matching Discord replica)
+            // Test Questions with proper conversation logging
             const TEST_QUESTIONS = [
                 {
                     id: 1,
                     username: "FortnitePlayer23",
                     avatarColor: "#5865f2",
                     message: "hey i wanna join void esports, what do i need to do?",
-                    keywords: ["age", "how old", "roster", "channel", "requirement"],
+                    keywords: ["age", "how old", "roster", "channel", "requirement", "hello", "welcome"],
                     required: 2,
-                    feedback: "Ask for their age and direct them to #how-to-join-roster"
+                    feedback: "Ask for their age and direct them to #how-to-join-roster. Always start with a professional greeting."
                 },
                 {
                     id: 2,
                     username: "CompPlayer99",
                     avatarColor: "#ed4245",
                     message: "i want to join as a pro player, i have earnings from fncs",
-                    keywords: ["tracker", "earnings", "proof", "trapped", "ping"],
+                    keywords: ["tracker", "earnings", "proof", "trapped", "ping", "senior"],
                     required: 2,
-                    feedback: "Request their Fortnite Tracker link and ping @trapped for review"
+                    feedback: "Request their Fortnite Tracker link to verify earnings, then ping @trapped for pro team review."
                 },
                 {
                     id: 3,
                     username: "CreativeBuilder",
                     avatarColor: "#3ba55c",
                     message: "looking to join creative roster, i have some clips",
-                    keywords: ["clip", "video", "footage", "creativedepartment", "send"],
+                    keywords: ["clip", "video", "footage", "creativedepartment", "send", "review"],
                     required: 2,
-                    feedback: "Ask for at least 2 clips and ping @creativedepartment for review"
+                    feedback: "Ask for at least 2 clips of their freebuilding and ping @creativedepartment for review."
                 },
                 {
                     id: 4,
                     username: "AcademyGrinder",
                     avatarColor: "#f59e0b",
                     message: "can i join academy? i have 5k PR and i'm 15",
-                    keywords: ["tracker", "verify", "username", "add void", "team.void"],
+                    keywords: ["tracker", "verify", "username", "add void", "team.void", "change"],
                     required: 2,
-                    feedback: "Verify their PR, ask for username change to include 'Void'"
+                    feedback: "Verify their PR via Fortnite Tracker, ask them to add 'Void' to their username and provide proof of using team.void."
                 },
                 {
                     id: 5,
                     username: "YoungPlayer14",
                     avatarColor: "#9146ff",
                     message: "im 12 but i really want to join",
-                    keywords: ["sorry", "minimum age", "13", "requirement", "cannot"],
+                    keywords: ["sorry", "minimum age", "13", "requirement", "cannot", "policy"],
                     required: 2,
-                    feedback: "Politely inform them the minimum age is 13 - no exceptions"
+                    feedback: "Politely inform them the minimum age requirement is 13 - no exceptions. Thank them for their interest."
                 },
                 {
                     id: 6,
                     username: "GrinderAccount",
                     avatarColor: "#1da1f2",
                     message: "i wanna be a void grinder, what's required?",
-                    keywords: ["username", "add void", "team.void", "proof", "change"],
+                    keywords: ["username", "add void", "team.void", "proof", "change", "represent"],
                     required: 2,
-                    feedback: "Explain they need 'Void' in their username and proof of using team.void"
+                    feedback: "Explain they need to add 'Void' to their Discord and Fortnite usernames, plus provide proof of using team.void."
                 },
                 {
                     id: 7,
                     username: "ToxicUser123",
                     avatarColor: "#ff0000",
                     message: "this server is trash im gonna raid it",
-                    keywords: ["chief", "trapped", "ping", "threat", "ban", "security"],
+                    keywords: ["chief", "trapped", "ping", "threat", "security", "alert", "emergency"],
                     required: 2,
-                    feedback: "IMMEDIATE THREAT - Ping @chief and @trapped immediately, do NOT engage"
+                    feedback: "IMMEDIATE THREAT - Ping @chief and @trapped immediately, screenshot the message, do NOT engage with the user."
                 },
                 {
                     id: 8,
                     username: "ContentCreatorYT",
                     avatarColor: "#ff0000",
                     message: "i make fortnite videos, can i join content team?",
-                    keywords: ["social", "links", "contentdep", "ping", "youtube", "channel"],
+                    keywords: ["social", "links", "contentdep", "ping", "youtube", "channel", "review"],
                     required: 2,
-                    feedback: "Ask for social media links and ping @contentdep for review"
+                    feedback: "Ask for their social media links (YouTube/TikTok/Twitch) and ping @contentdep for review."
                 }
             ];
 
-            // Test State
+            // Test State with comprehensive conversation logging
             const testState = {
                 active: false,
                 currentQuestion: 0,
                 score: 0,
                 userAnswers: [],
+                conversationLog: [], // Array to store full conversation
                 questionsWithAnswers: [],
-                startTime: null
+                startTime: null,
+                endTime: null,
+                userInfo: {
+                    username: 'User',
+                    userId: '0000'
+                }
             };
 
             // DOM Elements
@@ -2112,7 +2098,6 @@
             function initDiscordTest() {
                 console.log('🎮 Initializing Discord test interface...');
                 
-                // Cache DOM elements
                 elements = {
                     testPage: document.getElementById('testPage'),
                     mainContainer: document.getElementById('mainContainer'),
@@ -2131,13 +2116,21 @@
                     modalMessage: document.getElementById('discordModalMessage'),
                     modalStatus: document.getElementById('discordModalStatus'),
                     reviewBtn: document.getElementById('discordReviewBtn'),
-                    backBtn: document.getElementById('discordBackBtn')
+                    backBtn: document.getElementById('discordBackBtn'),
+                    userName: document.getElementById('discordUserName'),
+                    userTag: document.getElementById('discordUserTag'),
+                    userAvatar: document.getElementById('discordUserAvatar'),
+                    memberAvatar: document.getElementById('discordMemberAvatar'),
+                    memberName: document.getElementById('discordMemberName')
                 };
 
-                // Setup event listeners
                 setupDiscordEvents();
                 
-                // Update user display
+                // Get user info from URL
+                const params = new URLSearchParams(window.location.search);
+                testState.userInfo.username = params.get('discord_username') || 'User';
+                testState.userInfo.userId = params.get('discord_id') || '0000';
+                
                 updateDiscordUserDisplay();
             }
 
@@ -2184,21 +2177,11 @@
 
             // Update Discord user display
             function updateDiscordUserDisplay() {
-                const params = new URLSearchParams(window.location.search);
-                const username = params.get('discord_username') || 'User';
-                const userId = params.get('discord_id') || '0000';
-
-                const userNameEl = document.getElementById('discordUserName');
-                const userTagEl = document.getElementById('discordUserTag');
-                const userAvatarEl = document.getElementById('discordUserAvatar');
-                const memberAvatarEl = document.getElementById('discordMemberAvatar');
-                const memberNameEl = document.getElementById('discordMemberName');
-
-                if (userNameEl) userNameEl.textContent = username;
-                if (userTagEl) userTagEl.textContent = '#' + userId.slice(-4);
-                if (userAvatarEl) userAvatarEl.textContent = username.charAt(0).toUpperCase();
-                if (memberAvatarEl) memberAvatarEl.textContent = username.charAt(0).toUpperCase();
-                if (memberNameEl) memberNameEl.textContent = username;
+                if (elements.userName) elements.userName.textContent = testState.userInfo.username;
+                if (elements.userTag) elements.userTag.textContent = '#' + testState.userInfo.userId.slice(-4);
+                if (elements.userAvatar) elements.userAvatar.textContent = testState.userInfo.username.charAt(0).toUpperCase();
+                if (elements.memberAvatar) elements.memberAvatar.textContent = testState.userInfo.username.charAt(0).toUpperCase();
+                if (elements.memberName) elements.memberName.textContent = testState.userInfo.username;
             }
 
             // Show Discord test interface
@@ -2221,6 +2204,46 @@
                 }
             }
 
+            // Add message to conversation log
+            function addToConversationLog(username, message, isBot = false, isUser = false) {
+                const timestamp = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+                testState.conversationLog.push({
+                    timestamp: timestamp,
+                    username: username,
+                    message: message,
+                    isBot: isBot,
+                    isUser: isUser
+                });
+            }
+
+            // Format complete conversation log for submission
+            function formatConversationLog() {
+                let log = '';
+                const separator = '══════════════════════════════════════════════════════════════════════════════';
+                
+                log += separator + '\n';
+                log += 'VOID ESPORTS MODERATOR CERTIFICATION TEST - COMPLETE TRANSCRIPT\n';
+                log += separator + '\n';
+                log += `User: ${testState.userInfo.username} (${testState.userInfo.userId})\n`;
+                log += `Date: ${new Date().toLocaleString()}\n`;
+                log += `Final Score: ${testState.score}/${CONFIG.TOTAL_QUESTIONS}\n`;
+                log += `Result: ${testState.score >= CONFIG.PASSING_SCORE ? 'PASSED ✓' : 'FAILED ✗'}\n`;
+                log += separator + '\n\n';
+
+                // Add each message from conversation
+                testState.conversationLog.forEach(entry => {
+                    const prefix = entry.isBot ? '[BOT]' : (entry.isUser ? '[YOU]' : '[USER]');
+                    log += `${prefix} ${entry.username} at ${entry.timestamp}:\n`;
+                    log += `${entry.message}\n\n`;
+                });
+
+                log += separator + '\n';
+                log += `END OF TRANSCRIPT - ${testState.score}/${CONFIG.TOTAL_QUESTIONS} CORRECT\n`;
+                log += separator + '\n';
+
+                return log;
+            }
+
             // Start the test
             async function startDiscordTest() {
                 console.log('🚀 Starting Discord test...');
@@ -2229,33 +2252,37 @@
                 testState.currentQuestion = 0;
                 testState.score = 0;
                 testState.userAnswers = [];
+                testState.conversationLog = [];
                 testState.questionsWithAnswers = [];
                 testState.startTime = new Date().toISOString();
 
-                // Clear messages
                 if (elements.messages) {
                     elements.messages.innerHTML = '';
                 }
 
-                // Update UI
                 updateDiscordScore();
                 disableDiscordInput(true);
                 
-                // Welcome sequence
+                // Welcome sequence with conversation logging
                 await showTyping('Void Bot', 1000);
-                addDiscordMessage('Void Bot', 'Welcome to the **Void Esports Moderator Certification Test**.', '#5865f2', true);
+                const welcomeMsg = 'Welcome to the **Void Esports Moderator Certification Test**.';
+                addDiscordMessage('Void Bot', welcomeMsg, '#5865f2', true);
+                addToConversationLog('Void Bot', welcomeMsg, true);
                 
                 await delay(800);
                 await showTyping('Void Bot', 1200);
-                addDiscordMessage('Void Bot', `You'll be presented with **${CONFIG.TOTAL_QUESTIONS}** scenarios.`, '#5865f2', true);
+                const infoMsg = `You'll be presented with **${CONFIG.TOTAL_QUESTIONS}** scenarios.`;
+                addDiscordMessage('Void Bot', infoMsg, '#5865f2', true);
+                addToConversationLog('Void Bot', infoMsg, true);
                 
                 await delay(800);
                 await showTyping('Void Bot', 800);
-                addDiscordMessage('Void Bot', 'Respond as you would as a real moderator. Good luck!', '#5865f2', true);
+                const finalMsg = 'Respond as you would as a real moderator. Good luck!';
+                addDiscordMessage('Void Bot', finalMsg, '#5865f2', true);
+                addToConversationLog('Void Bot', finalMsg, true);
                 
                 await delay(1500);
                 
-                // Start first question
                 showNextQuestion();
             }
 
@@ -2270,6 +2297,7 @@
                 
                 await showTyping(question.username, 1200);
                 addDiscordMessage(question.username, question.message, question.avatarColor, false);
+                addToConversationLog(question.username, question.message, false);
                 
                 disableDiscordInput(false);
                 if (elements.ticketCounter) {
@@ -2284,46 +2312,47 @@
                 const userMessage = elements.input.value.trim();
                 if (!userMessage) return;
 
-                // Disable input
                 disableDiscordInput(true);
                 
-                // Add user message
+                // Add user message to UI and log
                 addDiscordMessage('You', userMessage, '#7289da', false);
+                addToConversationLog(testState.userInfo.username, userMessage, false, true);
                 
-                // Store answer
                 testState.userAnswers.push(userMessage);
                 
-                // Clear input
                 elements.input.value = '';
                 elements.input.style.height = 'auto';
                 
-                // Show typing for evaluation
                 await showTyping('Void Bot', 1000);
                 
-                // Evaluate answer
-                const result = evaluateAnswer(userMessage, TEST_QUESTIONS[testState.currentQuestion]);
+                const question = TEST_QUESTIONS[testState.currentQuestion];
+                const result = evaluateAnswer(userMessage, question);
                 
-                // Add feedback
-                if (result.correct) {
-                    testState.score++;
-                    addDiscordMessage('Void Bot', `✅ **Correct!** ${result.feedback}`, '#5865f2', true);
-                } else {
-                    addDiscordMessage('Void Bot', `❌ **Not quite right.** ${result.feedback}`, '#5865f2', true);
-                }
-                
-                // Store result
+                // Store question with answer for logging
                 testState.questionsWithAnswers.push({
-                    question: TEST_QUESTIONS[testState.currentQuestion],
-                    answer: userMessage,
+                    question: question.message,
+                    userMessage: userMessage,
                     correct: result.correct,
-                    matches: result.matches
+                    matches: result.matches,
+                    required: question.required,
+                    feedback: question.feedback
                 });
                 
-                // Update score
+                // Add feedback message
+                let feedbackMsg = result.correct 
+                    ? `✅ **Correct!** ${question.feedback}`
+                    : `❌ **Not quite right.** ${question.feedback}`;
+                
+                addDiscordMessage('Void Bot', feedbackMsg, '#5865f2', true);
+                addToConversationLog('Void Bot', feedbackMsg, true);
+                
+                if (result.correct) {
+                    testState.score++;
+                }
+                
                 testState.currentQuestion++;
                 updateDiscordScore();
                 
-                // Next question or end
                 if (testState.currentQuestion < CONFIG.TOTAL_QUESTIONS) {
                     await delay(1500);
                     showNextQuestion();
@@ -2337,20 +2366,16 @@
             function evaluateAnswer(answer, question) {
                 const answerLower = answer.toLowerCase();
                 let matches = 0;
-                let matchedKeywords = [];
 
                 for (const keyword of question.keywords) {
                     if (answerLower.includes(keyword.toLowerCase())) {
                         matches++;
-                        matchedKeywords.push(keyword);
                     }
                 }
 
                 return {
                     correct: matches >= question.required,
-                    matches: matches,
-                    matchedKeywords: matchedKeywords,
-                    feedback: question.feedback
+                    matches: matches
                 };
             }
 
@@ -2366,10 +2391,7 @@
                 
                 let avatarInitial = username.charAt(0).toUpperCase();
                 if (username === 'Void Bot') avatarInitial = 'V';
-                if (username === 'You') {
-                    const params = new URLSearchParams(window.location.search);
-                    avatarInitial = (params.get('discord_username') || 'U').charAt(0).toUpperCase();
-                }
+                if (username === 'You') avatarInitial = testState.userInfo.username.charAt(0).toUpperCase();
 
                 messageGroup.innerHTML = `
                     <div class="discord-message-avatar" style="background-color: ${color}">
@@ -2423,27 +2445,32 @@
                 }
             }
 
-            // End test and show modal
+            // End test and submit results
             async function endDiscordTest() {
                 console.log('📝 Test complete!');
                 
                 testState.active = false;
+                testState.endTime = new Date().toISOString();
                 disableDiscordInput(true);
                 
-                // Show completion message
                 await showTyping('Void Bot', 1000);
                 
                 const passed = testState.score >= CONFIG.PASSING_SCORE;
-                addDiscordMessage('Void Bot', 
-                    `**Test Complete!**\nFinal Score: **${testState.score}/${CONFIG.TOTAL_QUESTIONS}**\nResult: **${passed ? 'PASSED ✅' : 'FAILED ❌'}**`,
-                    '#5865f2', true
-                );
+                const finalMsg = `**Test Complete!**\nFinal Score: **${testState.score}/${CONFIG.TOTAL_QUESTIONS}**\nResult: **${passed ? 'PASSED ✅' : 'FAILED ❌'}**`;
                 
-                // Prepare submission data
+                addDiscordMessage('Void Bot', finalMsg, '#5865f2', true);
+                addToConversationLog('Void Bot', finalMsg, true);
+                
+                // Format complete conversation log
+                const conversationLog = formatConversationLog();
+                console.log('Conversation Log:', conversationLog); // Debug log
+                
+                // Prepare submission data with FULL conversation log
                 const submissionData = {
-                    discordId: new URLSearchParams(window.location.search).get('discord_id') || '0000',
-                    discordUsername: new URLSearchParams(window.location.search).get('discord_username') || 'User',
-                    answers: JSON.stringify(testState.questionsWithAnswers),
+                    discordId: testState.userInfo.userId,
+                    discordUsername: testState.userInfo.username,
+                    answers: conversationLog, // Send the full formatted log
+                    conversationLog: conversationLog, // Also send as conversationLog field
                     score: `${testState.score}/${CONFIG.TOTAL_QUESTIONS}`,
                     totalQuestions: CONFIG.TOTAL_QUESTIONS,
                     correctAnswers: testState.score,
@@ -2452,19 +2479,17 @@
                         passed: passed,
                         percentage: Math.round((testState.score / CONFIG.TOTAL_QUESTIONS) * 100),
                         startTime: testState.startTime,
-                        endTime: new Date().toISOString()
+                        endTime: testState.endTime,
+                        questions: testState.questionsWithAnswers
                     })
                 };
 
-                // Show modal
-                showDiscordModal(passed, submissionData);
-                
-                // Submit results
+                showDiscordModal(passed);
                 await submitTestResults(submissionData);
             }
 
             // Show Discord modal
-            function showDiscordModal(passed, submissionData) {
+            function showDiscordModal(passed) {
                 if (!elements.modal) return;
 
                 if (elements.modalIcon) {
@@ -2503,13 +2528,19 @@
                 }
 
                 try {
+                    console.log('Submitting test results...', data);
+                    
                     const response = await fetch(`${CONFIG.API_BASE_URL}/submit-test-results`, {
                         method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
+                        headers: { 
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
                         body: JSON.stringify(data)
                     });
 
                     const result = await response.json();
+                    console.log('Submission response:', result);
 
                     if (response.ok && result.success) {
                         if (elements.modalStatus) {
@@ -2521,6 +2552,25 @@
 
                 } catch (error) {
                     console.error('Submission error:', error);
+                    
+                    // Try fallback endpoint
+                    try {
+                        const fallbackResponse = await fetch(`${CONFIG.API_BASE_URL}/api/submit`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(data)
+                        });
+                        
+                        if (fallbackResponse.ok) {
+                            if (elements.modalStatus) {
+                                elements.modalStatus.innerHTML = '<i class="fas fa-check-circle"></i> Results submitted!';
+                            }
+                            return;
+                        }
+                    } catch (fallbackError) {
+                        console.error('Fallback also failed:', fallbackError);
+                    }
+                    
                     if (elements.modalStatus) {
                         elements.modalStatus.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Results saved locally';
                     }
@@ -2533,6 +2583,7 @@
                 testState.currentQuestion = 0;
                 testState.score = 0;
                 testState.userAnswers = [];
+                testState.conversationLog = [];
                 testState.questionsWithAnswers = [];
                 
                 if (elements.messages) {
@@ -2543,12 +2594,10 @@
                 disableDiscordInput(true);
             }
 
-            // Exit test and return to homepage
+            // Exit test
             function exitDiscordTest() {
                 resetDiscordTest();
                 hideDiscordTest();
-                
-                // Clear URL parameters
                 window.history.replaceState({}, document.title, window.location.pathname);
             }
 
@@ -2558,10 +2607,9 @@
             }
 
             // =========================================================================
-            // ORIGINAL HOMEPAGE FUNCTIONALITY (PRESERVED)
+            // HOMEPAGE FUNCTIONALITY
             // =========================================================================
 
-            // Auth Manager
             class AuthManager {
                 constructor() {
                     this.baseUrl = CONFIG.API_BASE_URL;
@@ -2604,14 +2652,13 @@
                 }
             }
 
-            // Initialize auth manager
             window.authManager = new AuthManager();
 
             // DOM Ready
             document.addEventListener('DOMContentLoaded', function() {
                 console.log("DOM loaded");
                 
-                // ===== HOMEPAGE NAVIGATION =====
+                // Homepage Navigation
                 const navItems = document.querySelectorAll('.nav-item');
                 const sections = [
                     document.getElementById('header'),
@@ -2652,7 +2699,7 @@
                     });
                 });
 
-                // ===== HOMEPAGE QUIZ BUTTONS =====
+                // Quiz buttons
                 document.getElementById('startQuizBtn')?.addEventListener('click', function() {
                     document.getElementById('quizSection').style.display = 'block';
                     this.style.display = 'none';
@@ -2710,7 +2757,7 @@
                     }
                 });
 
-                // ===== TAKE TEST BUTTON (LAUNCHES DISCORD REPLICA) =====
+                // Take Test button
                 document.getElementById('takeTestBtn')?.addEventListener('click', function(e) {
                     e.preventDefault();
                     window.authManager.startTest();
@@ -2721,7 +2768,7 @@
                     window.authManager.startAdminLogin();
                 });
 
-                // ===== CHECK URL PARAMETERS FOR OAUTH RETURN =====
+                // Check URL parameters for OAuth return
                 const urlParams = new URLSearchParams(window.location.search);
                 const startTest = urlParams.get('startTest');
                 const discordUsername = urlParams.get('discord_username');
@@ -2730,13 +2777,9 @@
                 if (startTest === '1' && discordUsername && discordId) {
                     console.log("Returning from OAuth, starting Discord test for:", discordUsername);
                     
-                    // Initialize Discord test interface
                     initDiscordTest();
-                    
-                    // Show Discord test
                     showDiscordTest();
                     
-                    // Start the test after a brief delay
                     setTimeout(() => {
                         startDiscordTest();
                     }, 1000);
