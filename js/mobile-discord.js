@@ -1,6 +1,6 @@
-// Mobile Discord Interface - COMPLETELY REWRITTEN WITH 100% FIXED FUNCTIONALITY
+// Mobile Discord Interface - SIMPLIFIED CONVERSATION LOGS
 document.addEventListener('DOMContentLoaded', function() {
-    console.log("📱 Mobile Discord Interface Loaded - Enhanced Version");
+    console.log("📱 Mobile Discord Interface Loaded - Simplified Version");
     
     // State management
     let mobileTestState = {
@@ -91,6 +91,22 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     ];
     
+    // Format conversation log for Discord webhook - SIMPLIFIED
+    function formatConversationForWebhook() {
+        let log = "";
+        
+        mobileTestState.questionsWithAnswers.forEach((qa, index) => {
+            log += `\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+            log += `QUESTION ${index + 1}:\n`;
+            log += `${qa.question}\n\n`;
+            log += `ANSWER ${index + 1}:\n`;
+            log += `${qa.answer}\n`;
+            log += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+        });
+        
+        return log || "No questions answered";
+    }
+    
     // Get random questions
     function getRandomQuestions() {
         const shuffled = [...ALL_MOBILE_QUESTIONS].sort(() => 0.5 - Math.random());
@@ -99,23 +115,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Initialize conversation log
     function initConversationLog() {
-        mobileTestState.conversationLog = `════════════════════════════════════════════════════\n`;
-        mobileTestState.conversationLog += `          VOID ESPORTS MOBILE MOD TEST LOG\n`;
-        mobileTestState.conversationLog += `════════════════════════════════════════════════════\n\n`;
-        mobileTestState.conversationLog += `Test Started: ${new Date().toLocaleString()}\n`;
-        mobileTestState.conversationLog += `User: ${window.userDiscordUsername || 'Unknown'}\n`;
-        mobileTestState.conversationLog += `ID: ${window.userDiscordId || 'N/A'}\n`;
-        mobileTestState.conversationLog += `════════════════════════════════════════════════════\n\n`;
-        
-        addToLog('SYSTEM', 'Mobile test initialized');
-        addToLog('VOID BOT', 'Welcome to Void Esports Moderator Certification Test.');
-    }
-    
-    // Add to log
-    function addToLog(speaker, message) {
-        const time = new Date();
-        const timeStr = `${time.getHours().toString().padStart(2, '0')}:${time.getMinutes().toString().padStart(2, '0')}:${time.getSeconds().toString().padStart(2, '0')}`;
-        mobileTestState.conversationLog += `[${timeStr}] ${speaker}: ${message}\n`;
+        mobileTestState.conversationLog = `Test Started: ${new Date().toLocaleString()}\n`;
+        mobileTestState.conversationLog += `User: ${window.userDiscordUsername || 'Unknown'} (${window.userDiscordId || 'N/A'})\n`;
+        mobileTestState.conversationLog += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n`;
     }
     
     // DOM Elements
@@ -263,15 +265,12 @@ document.addEventListener('DOMContentLoaded', function() {
         // Show welcome messages
         setTimeout(() => {
             addMessage("Void Bot", "Welcome to the Void Esports Moderator Certification Test.", "#5865f2", true);
-            addToLog('VOID BOT', 'Welcome to the test.');
             
             setTimeout(() => {
                 addMessage("Void Bot", `Hello ${window.userDiscordUsername}! You'll receive ${mobileTestState.totalQuestions} scenarios.`, "#5865f2", true);
-                addToLog('VOID BOT', `Hello ${window.userDiscordUsername}! ${mobileTestState.totalQuestions} scenarios.`);
                 
                 setTimeout(() => {
                     addMessage("Void Bot", "Respond as you would as a real moderator. Good luck!", "#5865f2", true);
-                    addToLog('VOID BOT', 'Respond as real moderator. Good luck!');
                     
                     // Start first question
                     setTimeout(showNextQuestion, 1000);
@@ -290,9 +289,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         const question = mobileTestState.questions[mobileTestState.currentQuestion];
-        
-        // Add to conversation log
-        addToLog(`USER (${question.user})`, question.userMessage);
         
         // Display in chat
         setTimeout(() => {
@@ -319,9 +315,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!userMessage) return;
         
         console.log(`User answer: ${userMessage.substring(0, 50)}...`);
-        
-        // Add to conversation log
-        addToLog('MODERATOR (You)', userMessage);
         
         // Display in chat
         addMessage("You", userMessage, "#7289da", false);
@@ -394,43 +387,11 @@ document.addEventListener('DOMContentLoaded', function() {
             // Show correct feedback
             setTimeout(() => {
                 addMessage("Void Bot", `✅ Correct! ${question.explanation}`, "#5865f2", true);
-                addToLog('VOID BOT', `✅ Correct! ${question.explanation}`);
-                
-                // Add correct badge
-                const lastMessage = mobileMessagesContainer.querySelector('.mobile-message-group:last-child');
-                if (lastMessage) {
-                    const badge = document.createElement('span');
-                    badge.className = 'mobile-bot-tag';
-                    badge.style.backgroundColor = '#3ba55c';
-                    badge.textContent = 'Correct';
-                    badge.style.marginLeft = '10px';
-                    badge.style.fontSize = '10px';
-                    badge.style.padding = '2px 6px';
-                    badge.style.borderRadius = '3px';
-                    badge.style.fontWeight = 'bold';
-                    lastMessage.querySelector('.mobile-message-content').appendChild(badge);
-                }
             }, 500);
         } else {
             // Show incorrect feedback
             setTimeout(() => {
                 addMessage("Void Bot", `❌ Not quite right. ${question.explanation}`, "#5865f2", true);
-                addToLog('VOID BOT', `❌ Not quite right. ${question.explanation}`);
-                
-                // Add incorrect badge
-                const lastMessage = mobileMessagesContainer.querySelector('.mobile-message-group:last-child');
-                if (lastMessage) {
-                    const badge = document.createElement('span');
-                    badge.className = 'mobile-bot-tag';
-                    badge.style.backgroundColor = '#ed4245';
-                    badge.textContent = 'Incorrect';
-                    badge.style.marginLeft = '10px';
-                    badge.style.fontSize = '10px';
-                    badge.style.padding = '2px 6px';
-                    badge.style.borderRadius = '3px';
-                    badge.style.fontWeight = 'bold';
-                    lastMessage.querySelector('.mobile-message-content').appendChild(badge);
-                }
             }, 500);
         }
         
@@ -488,15 +449,6 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log("Ending mobile test...");
         mobileTestState.active = false;
         
-        // Finalize conversation log
-        addToLog('SYSTEM', 'Mobile test completed');
-        mobileTestState.conversationLog += `\n════════════════════════════════════════════════════\n`;
-        mobileTestState.conversationLog += `Test Completed: ${new Date().toLocaleString()}\n`;
-        mobileTestState.conversationLog += `Final Score: ${mobileTestState.score}/${mobileTestState.totalQuestions}\n`;
-        mobileTestState.conversationLog += `Percentage: ${Math.round((mobileTestState.score/mobileTestState.totalQuestions)*100)}%\n`;
-        mobileTestState.conversationLog += `Status: ${mobileTestState.score >= 6 ? 'PASS' : 'FAIL'}\n`;
-        mobileTestState.conversationLog += `════════════════════════════════════════════════════\n`;
-        
         // Disable input
         if (mobileMessageInput) {
             mobileMessageInput.disabled = true;
@@ -514,6 +466,9 @@ document.addEventListener('DOMContentLoaded', function() {
             setTimeout(() => {
                 const passingScore = Math.ceil(mobileTestState.totalQuestions * 0.75);
                 const passed = mobileTestState.score >= passingScore;
+                
+                // Create simplified conversation log
+                const simpleConversationLog = formatConversationForWebhook();
                 
                 // Show results screen
                 const mobileTestComplete = document.getElementById('mobileTestComplete');
@@ -547,7 +502,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         const submissionData = {
                             discordId: window.userDiscordId,
                             discordUsername: window.userDiscordUsername,
-                            answers: mobileTestState.conversationLog,
+                            answers: simpleConversationLog,
                             score: `${mobileTestState.score}/${mobileTestState.totalQuestions}`,
                             totalQuestions: mobileTestState.totalQuestions,
                             correctAnswers: mobileTestState.score,
@@ -558,7 +513,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 passed: passed,
                                 percentage: Math.round((mobileTestState.score/mobileTestState.totalQuestions)*100)
                             }),
-                            conversationLog: mobileTestState.conversationLog,
+                            conversationLog: simpleConversationLog,
                             questionsWithAnswers: mobileTestState.questionsWithAnswers
                         };
                         
