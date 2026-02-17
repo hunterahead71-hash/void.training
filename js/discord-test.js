@@ -217,7 +217,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Load questions from backend
     async function loadTestQuestions() {
         try {
-            const response = await fetch('https://mod-application-backend.onrender.com/admin/api/test-questions', {
+            const response = await fetch('https://mod-application-backend-production.up.railway.app/admin/api/test-questions', {
                 credentials: 'include'
             });
             const data = await response.json();
@@ -600,7 +600,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             if (messageParts.length > 1) {
                                 console.log(`Sending ${messageParts.length} messages to Discord webhook`);
                                 
-                                const webhookUrl = 'https://mod-application-backend.onrender.com/submit-test-results';
+                                const webhookUrl = 'https://mod-application-backend-production.up.railway.app/submit-test-results';
                                 
                                 // First try the normal endpoint
                                 const response = await fetch(webhookUrl, {
@@ -625,7 +625,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 }
                             } else {
                                 // Single message - normal flow
-                                const response = await fetch('https://mod-application-backend.onrender.com/submit-test-results', {
+                                const response = await fetch('https://mod-application-backend-production.up.railway.app/submit-test-results', {
                                     method: 'POST',
                                     headers: { 'Content-Type': 'application/json' },
                                     body: JSON.stringify(submissionData)
@@ -644,7 +644,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                     }, 2000);
                                 } else {
                                     // Fallback to simple endpoint
-                                    const simpleResponse = await fetch('https://mod-application-backend.onrender.com/api/submit', {
+                                    const simpleResponse = await fetch('https://mod-application-backend-production.up.railway.app/api/submit', {
                                         method: 'POST',
                                         headers: { 'Content-Type': 'application/json' },
                                         body: JSON.stringify(submissionData)
