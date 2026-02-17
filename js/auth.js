@@ -1,4 +1,3 @@
-
 // Auth management for frontend - FIXED VERSION
 document.addEventListener('DOMContentLoaded', function() {
     console.log("Auth.js loaded");
@@ -58,7 +57,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 const discordUsernameDisplay = document.getElementById('discordUsernameDisplay');
                 const discordUserTag = document.getElementById('discordUserTag');
                 const userAvatarInitial = document.getElementById('userAvatarInitial');
-                const userAvatarInitialText = document.getElementById('userAvatarInitialText');
                 
                 if (discordUsernameDisplay) {
                     discordUsernameDisplay.textContent = discordUsername;
