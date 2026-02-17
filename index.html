@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
+        /* ===== ORIGINAL HOMEPAGE STYLES (PRESERVED) ===== */
         * {
             margin: 0;
             padding: 0;
@@ -562,7 +563,7 @@
             color: var(--text-muted);
         }
 
-        /* ===== UNIFIED DISCORD TEST INTERFACE (Works on all devices) ===== */
+        /* ===== DISCORD REPLICA TEST INTERFACE (ONLY SHOWS WHEN TEST STARTS) ===== */
         .test-page {
             display: none;
             position: fixed;
@@ -570,552 +571,760 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: var(--bg-primary);
+            background: #313338;
             z-index: 10000;
             overflow: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         }
+
         .test-page.active {
             display: block;
         }
 
-        .dashboard-header {
-            height: 64px;
-            background: var(--bg-secondary);
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 24px;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 10001;
-        }
-        .dashboard-title {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: white;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .dashboard-title i {
-            color: var(--accent);
-        }
-        .back-to-training {
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border);
-            color: var(--text-primary);
-            padding: 8px 16px;
-            border-radius: 8px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+        /* Discord Color Variables */
+        .test-page {
+            --discord-bg-primary: #313338;
+            --discord-bg-secondary: #2b2d31;
+            --discord-bg-tertiary: #1e1f22;
+            --discord-text-normal: #dbdee1;
+            --discord-text-muted: #949ba4;
+            --discord-text-link: #00a8fc;
+            --discord-divider: #3c3f45;
+            --discord-channel-hover: #3c3f45;
+            --discord-channel-selected: #404249;
+            --discord-blurple: #5865f2;
+            --discord-green: #23a55a;
+            --discord-red: #f23f42;
+            --discord-online: #23a55a;
         }
 
-        .test-container {
+        /* Discord Layout */
+        .discord-app {
             display: flex;
             height: 100%;
-            padding-top: 64px;
+            width: 100%;
+            overflow: hidden;
         }
 
-        /* Server list */
-        .server-list {
+        /* Server Bar */
+        .discord-servers {
             width: 72px;
-            background: var(--bg-secondary);
-            border-right: 1px solid var(--border);
-            padding: 16px 0;
+            background: var(--discord-bg-tertiary);
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 12px;
+            padding: 12px 0;
+            gap: 8px;
             overflow-y: auto;
+            flex-shrink: 0;
+            height: 100%;
         }
-        .server-item {
+
+        .discord-server-icon {
             width: 48px;
             height: 48px;
             border-radius: 50%;
-            background: var(--bg-tertiary);
+            background: var(--discord-bg-secondary);
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--text-muted);
+            color: var(--discord-text-muted);
+            font-size: 1.25rem;
+            font-weight: 600;
             cursor: pointer;
+            transition: border-radius 0.2s ease;
+            position: relative;
             flex-shrink: 0;
         }
-        .server-item.active {
-            background: var(--accent);
-            color: white;
+
+        .discord-server-icon:hover {
             border-radius: 16px;
+            background: var(--discord-channel-hover);
+            color: var(--discord-text-normal);
         }
 
-        /* Discord sidebar */
-        .discord-sidebar {
+        .discord-server-icon.active {
+            border-radius: 16px;
+            background: var(--discord-blurple);
+            color: white;
+        }
+
+        .discord-server-icon.active::before {
+            content: '';
+            position: absolute;
+            left: -12px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 20px;
+            background: white;
+            border-radius: 0 4px 4px 0;
+        }
+
+        .discord-server-divider {
+            width: 32px;
+            height: 2px;
+            background: var(--discord-divider);
+            margin: 4px 0;
+        }
+
+        /* Channels Sidebar */
+        .discord-channels {
             width: 240px;
-            background: var(--bg-secondary);
-            border-right: 1px solid var(--border);
+            background: var(--discord-bg-secondary);
             display: flex;
             flex-direction: column;
-            overflow-y: auto;
+            flex-shrink: 0;
+            height: 100%;
+            border-right: 1px solid var(--discord-divider);
         }
 
-        .server-header {
+        .discord-guild-header {
             height: 48px;
             padding: 0 16px;
             display: flex;
             align-items: center;
-            border-bottom: 1px solid var(--border);
+            background: var(--discord-bg-secondary);
+            border-bottom: 1px solid var(--discord-divider);
+            cursor: pointer;
             font-weight: 600;
-            color: white;
-            background: var(--bg-secondary);
-            position: sticky;
-            top: 0;
+            color: var(--discord-text-normal);
         }
 
-        .scrollable-channels {
+        .discord-guild-header i {
+            margin-left: auto;
+            color: var(--discord-text-muted);
+            font-size: 0.875rem;
+        }
+
+        .discord-channels-scroll {
             flex: 1;
             overflow-y: auto;
-            padding: 16px;
+            padding: 16px 8px;
         }
 
-        .channel-category {
+        .discord-category {
             margin-bottom: 16px;
         }
-        .category-header {
-            padding: 8px 0;
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            color: var(--text-muted);
-        }
-        .channel-item {
-            padding: 8px;
-            border-radius: 8px;
+
+        .discord-category-header {
+            padding: 8px 8px;
             display: flex;
             align-items: center;
-            gap: 8px;
-            color: var(--text-muted);
-            cursor: pointer;
-        }
-        .channel-item.active {
-            background: var(--bg-tertiary);
-            color: white;
+            justify-content: space-between;
+            color: var(--discord-text-muted);
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
         }
 
-        .user-panel {
-            height: 64px;
-            background: var(--bg-tertiary);
-            border-top: 1px solid var(--border);
+        .discord-channel {
+            padding: 6px 8px;
+            margin: 1px 0;
+            border-radius: 4px;
             display: flex;
             align-items: center;
-            padding: 0 16px;
-            gap: 12px;
-            margin-top: auto;
+            gap: 6px;
+            color: var(--discord-text-muted);
+            cursor: pointer;
+            font-size: 0.9375rem;
         }
-        .user-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: var(--accent);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            color: white;
-            flex-shrink: 0;
+
+        .discord-channel:hover {
+            background: var(--discord-channel-hover);
+            color: var(--discord-text-normal);
         }
-        .user-info {
-            min-width: 0;
+
+        .discord-channel.active {
+            background: var(--discord-channel-selected);
+            color: var(--discord-text-normal);
+        }
+
+        .discord-channel i {
+            width: 20px;
+            text-align: center;
+            font-size: 1rem;
+        }
+
+        .discord-channel-name {
             flex: 1;
-        }
-        .username {
-            font-weight: 700;
-            color: white;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
-        .discriminator {
-            color: var(--text-muted);
-            font-size: 0.875rem;
-        }
 
-        /* Chat area */
-        .discord-chat-area {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            background: var(--bg-primary);
-            min-width: 0; /* Important for flexbox */
-        }
-
-        .chat-header {
-            height: 48px;
-            background: var(--bg-secondary);
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            padding: 0 24px;
-        }
-        .channel-header {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .channel-header i {
-            color: var(--text-muted);
-        }
-        .channel-title {
-            font-weight: 600;
-            color: white;
-        }
-
-        .messages-container {
-            flex: 1;
-            overflow-y: auto;
-            padding: 24px;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .message-group {
-            margin-bottom: 8px;
-        }
-        .message-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 4px;
-        }
-        .message-avatar {
-            width: 40px;
-            height: 40px;
+        .discord-channel-unread {
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
-            background: var(--accent);
+            background: var(--discord-text-normal);
+        }
+
+        /* User Panel */
+        .discord-user-panel {
+            height: 52px;
+            background: var(--discord-bg-tertiary);
+            display: flex;
+            align-items: center;
+            padding: 0 8px;
+            gap: 8px;
+            margin-top: auto;
+            border-top: 1px solid var(--discord-divider);
+        }
+
+        .discord-avatar-wrapper {
+            position: relative;
+        }
+
+        .discord-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--discord-blurple);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: 700;
+            font-weight: 600;
             color: white;
-            flex-shrink: 0;
-        }
-        .message-author {
-            font-weight: 700;
-            color: white;
-        }
-        .bot-tag {
-            background: var(--accent);
-            color: white;
-            font-size: 10px;
-            padding: 2px 6px;
-            border-radius: 4px;
-            margin-left: 8px;
-        }
-        .message-timestamp {
-            color: var(--text-muted);
-            font-size: 0.75rem;
-            margin-left: 8px;
-        }
-        .message-content {
-            margin-left: 52px;
-            color: var(--text-secondary);
-            word-wrap: break-word;
+            font-size: 0.875rem;
         }
 
-        .message-input-area {
-            padding: 16px 24px;
-            background: var(--bg-secondary);
-            border-top: 1px solid var(--border);
+        .discord-status {
+            position: absolute;
+            bottom: -2px;
+            right: -2px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: 2px solid var(--discord-bg-tertiary);
+            background: var(--discord-online);
         }
-        .message-input-container {
-            display: flex;
-            align-items: flex-end;
-            gap: 12px;
-        }
-        .message-input {
+
+        .discord-user-info {
             flex: 1;
-            padding: 12px 16px;
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            color: white;
-            resize: none;
-            min-height: 48px;
-            max-height: 200px;
-            font-family: inherit;
-            font-size: 1rem;
+            min-width: 0;
         }
-        .message-input:focus {
-            outline: none;
-            border-color: var(--accent);
-        }
-        .message-input-send {
-            padding: 12px 24px;
-            background: var(--accent);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
+
+        .discord-user-name {
             font-weight: 600;
+            font-size: 0.875rem;
+            color: var(--discord-text-normal);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .discord-user-tag {
+            font-size: 0.6875rem;
+            color: var(--discord-text-muted);
+        }
+
+        .discord-user-controls {
+            display: flex;
+            gap: 2px;
+        }
+
+        .discord-control-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--discord-text-muted);
+            cursor: pointer;
+        }
+
+        .discord-control-btn:hover {
+            background: var(--discord-channel-hover);
+            color: var(--discord-text-normal);
+        }
+
+        /* Main Chat Area */
+        .discord-chat {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: var(--discord-bg-primary);
+            min-width: 0;
+            height: 100%;
+        }
+
+        .discord-chat-header {
             height: 48px;
+            background: var(--discord-bg-primary);
+            border-bottom: 1px solid var(--discord-divider);
+            padding: 0 16px;
             display: flex;
             align-items: center;
             gap: 8px;
-            white-space: nowrap;
+            flex-shrink: 0;
         }
-        .message-input-send:disabled {
+
+        .discord-chat-header i {
+            color: var(--discord-text-muted);
+            font-size: 1.25rem;
+        }
+
+        .discord-chat-title {
+            font-weight: 600;
+            color: var(--discord-text-normal);
+            font-size: 0.9375rem;
+        }
+
+        .discord-chat-topic {
+            color: var(--discord-text-muted);
+            font-size: 0.875rem;
+            margin-left: 8px;
+            padding-left: 8px;
+            border-left: 1px solid var(--discord-divider);
+        }
+
+        .discord-chat-header-actions {
+            margin-left: auto;
+            display: flex;
+            gap: 4px;
+        }
+
+        .discord-header-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--discord-text-muted);
+            cursor: pointer;
+        }
+
+        .discord-header-btn:hover {
+            background: var(--discord-channel-hover);
+            color: var(--discord-text-normal);
+        }
+
+        /* Messages Container */
+        .discord-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .discord-message-group {
+            display: flex;
+            gap: 16px;
+            padding: 2px 0;
+            position: relative;
+        }
+
+        .discord-message-group:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .discord-message-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .discord-message-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .discord-message-header {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+            margin-bottom: 4px;
+            flex-wrap: wrap;
+        }
+
+        .discord-message-author {
+            font-weight: 600;
+            color: var(--discord-text-normal);
+            font-size: 0.9375rem;
+        }
+
+        .discord-message-badge {
+            background: var(--discord-blurple);
+            color: white;
+            font-size: 0.625rem;
+            font-weight: 600;
+            padding: 2px 6px;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+
+        .discord-message-timestamp {
+            color: var(--discord-text-muted);
+            font-size: 0.6875rem;
+        }
+
+        .discord-message-text {
+            color: var(--discord-text-normal);
+            font-size: 0.9375rem;
+            line-height: 1.4;
+            word-wrap: break-word;
+            white-space: pre-wrap;
+        }
+
+        /* Typing Indicator */
+        .discord-typing {
+            padding: 8px 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--discord-text-muted);
+            font-size: 0.8125rem;
+        }
+
+        .discord-typing-dots {
+            display: flex;
+            gap: 4px;
+        }
+
+        .discord-typing-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--discord-text-muted);
+            animation: discordTyping 1.4s infinite ease-in-out;
+        }
+
+        .discord-typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .discord-typing-dot:nth-child(2) { animation-delay: -0.16s; }
+
+        @keyframes discordTyping {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-4px); }
+        }
+
+        /* Message Input */
+        .discord-input-area {
+            padding: 0 16px 16px 16px;
+            background: var(--discord-bg-primary);
+            border-top: 1px solid var(--discord-divider);
+        }
+
+        .discord-input-container {
+            background: var(--discord-bg-tertiary);
+            border-radius: 8px;
+            display: flex;
+            align-items: flex-end;
+            padding: 0 8px;
+        }
+
+        .discord-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: var(--discord-text-normal);
+            font-family: inherit;
+            font-size: 0.9375rem;
+            padding: 10px 0;
+            resize: none;
+            min-height: 44px;
+            max-height: 144px;
+        }
+
+        .discord-input:focus {
+            outline: none;
+        }
+
+        .discord-input::placeholder {
+            color: var(--discord-text-muted);
+        }
+
+        .discord-send-btn {
+            padding: 10px 16px;
+            background: transparent;
+            border: none;
+            color: var(--discord-text-muted);
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .discord-send-btn:not(:disabled) {
+            color: var(--discord-text-link);
+        }
+
+        .discord-send-btn:not(:disabled):hover {
+            color: var(--discord-blurple);
+        }
+
+        .discord-send-btn:disabled {
             opacity: 0.5;
             cursor: not-allowed;
         }
 
-        /* Score panel */
-        .test-info-panel {
-            width: 280px;
-            background: var(--bg-secondary);
-            border-left: 1px solid var(--border);
-            padding: 32px;
-            overflow-y: auto;
+        /* Members Sidebar */
+        .discord-members {
+            width: 240px;
+            background: var(--discord-bg-secondary);
+            border-left: 1px solid var(--discord-divider);
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+            height: 100%;
         }
-        .score-display {
+
+        .discord-members-header {
+            height: 48px;
+            padding: 0 16px;
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+            color: var(--discord-text-muted);
+            border-bottom: 1px solid var(--discord-divider);
+        }
+
+        .discord-members-scroll {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px 8px;
+        }
+
+        .discord-member-group {
+            margin-bottom: 16px;
+        }
+
+        .discord-member-group-title {
+            padding: 8px 8px;
+            color: var(--discord-text-muted);
+            font-size: 0.6875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .discord-member {
+            padding: 4px 8px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .discord-member:hover {
+            background: var(--discord-channel-hover);
+        }
+
+        .discord-member-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--discord-blurple);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: white;
+            font-size: 0.875rem;
+            position: relative;
+        }
+
+        .discord-member-status {
+            position: absolute;
+            bottom: -2px;
+            right: -2px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            border: 2px solid var(--discord-bg-secondary);
+            background: var(--discord-online);
+        }
+
+        .discord-member-name {
+            font-weight: 500;
+            font-size: 0.875rem;
+            color: var(--discord-text-muted);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Score Display */
+        .discord-score {
+            background: var(--discord-bg-tertiary);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 16px;
             text-align: center;
         }
-        .score-label {
-            color: var(--text-muted);
-            font-size: 0.875rem;
+
+        .discord-score-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--discord-blurple);
+        }
+
+        .discord-score-label {
+            font-size: 0.75rem;
+            color: var(--discord-text-muted);
             text-transform: uppercase;
-            letter-spacing: 1px;
         }
-        .score-value {
-            font-size: 64px;
-            font-weight: 800;
-            color: var(--accent);
-            margin: 8px 0;
-        }
-        .score-total {
-            color: var(--text-muted);
-            font-size: 1.25rem;
-        }
-        .progress-bar-container {
-            height: 6px;
-            background: var(--bg-tertiary);
-            border-radius: 3px;
-            margin: 16px 0;
+
+        .discord-progress {
+            height: 4px;
+            background: var(--discord-bg-primary);
+            border-radius: 2px;
+            margin-top: 8px;
             overflow: hidden;
         }
-        .progress-fill-bar {
+
+        .discord-progress-fill {
             height: 100%;
-            background: linear-gradient(90deg, var(--accent), var(--void-purple));
+            background: linear-gradient(90deg, var(--discord-blurple), #eb459e);
             width: 0%;
             transition: width 0.3s ease;
         }
 
-        /* Test Complete Screen */
-        .test-complete-screen {
-            display: none;
+        /* Test Complete Modal */
+        .discord-modal {
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.9);
-            z-index: 10001;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            display: none;
             align-items: center;
             justify-content: center;
+            z-index: 10001;
             padding: 20px;
         }
-        .test-complete-screen.active {
+
+        .discord-modal.active {
             display: flex;
         }
-        .test-result-container {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: 24px;
-            padding: 48px;
+
+        .discord-modal-content {
+            background: var(--discord-bg-secondary);
+            border-radius: 12px;
+            padding: 32px;
             max-width: 500px;
             width: 100%;
+            border: 1px solid var(--discord-divider);
+        }
+
+        .discord-modal-icon {
+            font-size: 4rem;
             text-align: center;
-        }
-        .test-result-icon {
-            font-size: 64px;
-            margin-bottom: 24px;
-        }
-        .test-result-icon.pass { color: var(--success); }
-        .test-result-icon.fail { color: var(--danger); }
-        .test-result-title {
-            font-size: 2rem;
-            font-weight: 800;
             margin-bottom: 16px;
-            color: white;
         }
-        .test-result-score {
-            font-size: 1.5rem;
-            color: var(--text-muted);
+
+        .discord-modal-icon.pass { color: var(--discord-green); }
+        .discord-modal-icon.fail { color: var(--discord-red); }
+
+        .discord-modal-title {
+            font-size: 2rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 8px;
+            color: var(--discord-text-normal);
+        }
+
+        .discord-modal-score {
+            font-size: 2.5rem;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 16px;
+            color: var(--discord-blurple);
+        }
+
+        .discord-modal-message {
+            text-align: center;
+            color: var(--discord-text-muted);
             margin-bottom: 24px;
         }
-        .submission-status {
-            background: var(--bg-tertiary);
+
+        .discord-modal-status {
+            background: var(--discord-bg-tertiary);
             border-radius: 8px;
-            padding: 16px;
-            margin: 24px 0;
+            padding: 12px;
+            margin-bottom: 24px;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
         }
-        .submission-success { background: rgba(16, 185, 129, 0.2); color: var(--success); }
-        .submission-error { background: rgba(237, 66, 69, 0.2); color: var(--danger); }
-        .test-result-buttons {
+
+        .discord-modal-buttons {
             display: flex;
-            gap: 16px;
+            gap: 12px;
             justify-content: center;
         }
-        .test-result-btn {
+
+        .discord-modal-btn {
             padding: 12px 24px;
-            border-radius: 8px;
+            border-radius: 4px;
             font-weight: 600;
             cursor: pointer;
             border: none;
         }
-        .test-result-btn.primary {
-            background: var(--accent);
-            color: white;
-        }
-        .test-result-btn.secondary {
-            background: var(--bg-tertiary);
+
+        .discord-modal-btn.primary {
+            background: var(--discord-blurple);
             color: white;
         }
 
-        /* ===== MOBILE RESPONSIVE STYLES ===== */
-        @media (max-width: 1024px) {
-            .nav-sidebar { display: none; }
-            .header h1 { font-size: 3rem; }
-            
-            .test-container {
-                flex-direction: column;
-            }
-            
-            .server-list {
-                width: 100%;
-                height: 72px;
-                flex-direction: row;
-                padding: 12px;
-                justify-content: center;
-                border-right: none;
-                border-bottom: 1px solid var(--border);
-            }
-            
-            .discord-sidebar {
-                width: 100%;
-                height: auto;
-                max-height: 35vh;
-            }
-            
-            .test-info-panel {
-                width: 100%;
-                height: auto;
-                border-left: none;
-                border-top: 1px solid var(--border);
-                padding: 20px;
-            }
-            
-            .score-display {
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                gap: 20px;
-            }
-            
-            .score-value {
-                font-size: 48px;
-            }
-            
-            .progress-bar-container {
-                flex: 1;
-                margin: 0;
-            }
+        .discord-modal-btn.secondary {
+            background: var(--discord-bg-tertiary);
+            color: var(--discord-text-normal);
         }
 
+        /* Mobile Responsive for Discord */
         @media (max-width: 768px) {
-            .dashboard-title span { display: none; }
-            
-            .message-input-send span { display: none; }
-            .message-input-send i { margin: 0; }
-            
-            .test-result-buttons {
-                flex-direction: column;
+            .discord-members {
+                display: none;
             }
-            
-            .test-result-container {
-                padding: 32px 24px;
+
+            .discord-servers {
+                width: 60px;
             }
-            
-            .discord-sidebar {
-                max-height: 30vh;
+
+            .discord-server-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
             }
-            
-            .score-display {
-                flex-wrap: wrap;
+
+            .discord-channels {
+                width: 200px;
             }
-            
-            .score-value {
-                font-size: 40px;
+
+            .discord-send-btn span {
+                display: none;
             }
         }
 
         @media (max-width: 480px) {
-            .dashboard-title {
-                font-size: 1rem;
+            .discord-channels {
+                position: absolute;
+                left: -200px;
+                transition: left 0.3s ease;
+                z-index: 10002;
             }
-            
-            .server-list {
-                gap: 8px;
+
+            .discord-channels.active {
+                left: 0;
             }
-            
-            .server-item {
-                width: 40px;
-                height: 40px;
-            }
-            
-            .user-panel {
-                padding: 0 12px;
-            }
-            
-            .user-avatar {
-                width: 36px;
-                height: 36px;
-            }
-            
-            .username {
-                font-size: 0.875rem;
-            }
-            
-            .discriminator {
-                font-size: 0.75rem;
-            }
-            
-            .message-header {
-                flex-wrap: wrap;
-            }
-            
-            .message-avatar {
-                width: 32px;
-                height: 32px;
-                font-size: 0.875rem;
-            }
-            
-            .message-content {
-                margin-left: 44px;
-                font-size: 0.9375rem;
-            }
-            
-            .message-input-area {
-                padding: 12px;
-            }
-            
-            .message-input {
-                font-size: 0.9375rem;
+
+            .discord-server-icon.active::before {
+                display: none;
             }
         }
     </style>
@@ -1126,106 +1335,169 @@
         <i class="fab fa-discord"></i> Admin Login
     </a>
 
-    <!-- UNIFIED DISCORD TEST INTERFACE (Works on all devices) -->
+    <!-- DISCORD REPLICA TEST INTERFACE (Hidden until test starts) -->
     <div id="testPage" class="test-page">
-        <div class="dashboard-header">
-            <div class="dashboard-title">
-                <i class="fab fa-discord"></i>
-                <span>VOID MOD CERTIFICATION</span>
-            </div>
-            <button class="back-to-training" onclick="exitTest()">
-                <i class="fas fa-arrow-left"></i>
-                <span>Back</span>
-            </button>
-        </div>
-        
-        <div class="test-container">
-            <!-- Server List -->
-            <div class="server-list">
-                <div class="server-item active"><i class="fab fa-discord"></i></div>
-                <div class="server-item"><span>V</span></div>
-            </div>
-            
-            <!-- Discord Sidebar -->
-            <div class="discord-sidebar">
-                <div class="server-header">
-                    <i class="fas fa-chevron-down"></i> Void Esports
+        <div class="discord-app">
+            <!-- Server Bar -->
+            <div class="discord-servers">
+                <div class="discord-server-icon active">
+                    <i class="fab fa-discord"></i>
                 </div>
-                <div class="scrollable-channels">
-                    <div class="channel-category">
-                        <div class="category-header">TICKET SYSTEM</div>
-                        <div class="channel-item active">
+                <div class="discord-server-divider"></div>
+                <div class="discord-server-icon">
+                    <span>V</span>
+                </div>
+            </div>
+
+            <!-- Channels Sidebar -->
+            <div class="discord-channels">
+                <div class="discord-guild-header">
+                    <span>Void Esports</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+
+                <div class="discord-channels-scroll">
+                    <div class="discord-category">
+                        <div class="discord-category-header">
+                            <span>INFORMATION</span>
+                        </div>
+                        <div class="discord-channel">
+                            <i class="fas fa-bullhorn"></i>
+                            <span class="discord-channel-name">announcements</span>
+                        </div>
+                        <div class="discord-channel">
+                            <i class="fas fa-book"></i>
+                            <span class="discord-channel-name">rules</span>
+                        </div>
+                    </div>
+
+                    <div class="discord-category">
+                        <div class="discord-category-header">
+                            <span>TICKET SYSTEM</span>
+                        </div>
+                        <div class="discord-channel active">
                             <i class="fas fa-hashtag"></i>
-                            <span>🎫・mod-tickets</span>
+                            <span class="discord-channel-name">🎫・mod-tickets</span>
+                            <div class="discord-channel-unread"></div>
                         </div>
                     </div>
                 </div>
-                <div class="user-panel">
-                    <div class="user-avatar" id="userAvatarInitial">U</div>
-                    <div class="user-info">
-                        <div class="username" id="discordUsernameDisplay">User</div>
-                        <div class="discriminator" id="discordUserTag">#0000</div>
+
+                <!-- User Panel -->
+                <div class="discord-user-panel">
+                    <div class="discord-avatar-wrapper">
+                        <div class="discord-avatar" id="discordUserAvatar">U</div>
+                        <div class="discord-status"></div>
+                    </div>
+                    <div class="discord-user-info">
+                        <div class="discord-user-name" id="discordUserName">Loading...</div>
+                        <div class="discord-user-tag" id="discordUserTag">#0000</div>
+                    </div>
+                    <div class="discord-user-controls">
+                        <div class="discord-control-btn"><i class="fas fa-microphone"></i></div>
+                        <div class="discord-control-btn"><i class="fas fa-headphones"></i></div>
+                        <div class="discord-control-btn"><i class="fas fa-cog"></i></div>
                     </div>
                 </div>
             </div>
-            
-            <!-- Chat Area -->
-            <div class="discord-chat-area">
-                <div class="chat-header">
-                    <div class="channel-header">
-                        <i class="fas fa-hashtag"></i>
-                        <div class="channel-title">🎫・mod-tickets</div>
+
+            <!-- Main Chat Area -->
+            <div class="discord-chat">
+                <div class="discord-chat-header">
+                    <i class="fas fa-hashtag"></i>
+                    <span class="discord-chat-title">🎫・mod-tickets</span>
+                    <span class="discord-chat-topic" id="discordTicketCounter">Ticket #1 of 8</span>
+                    <div class="discord-chat-header-actions">
+                        <div class="discord-header-btn"><i class="fas fa-phone"></i></div>
+                        <div class="discord-header-btn"><i class="fas fa-video"></i></div>
+                        <div class="discord-header-btn"><i class="fas fa-user-plus"></i></div>
                     </div>
                 </div>
-                
-                <div class="messages-container" id="messagesContainer"></div>
-                
-                <div class="message-input-area">
-                    <div class="message-input-container">
-                        <textarea class="message-input" id="messageInput" placeholder="Message #mod-tickets" rows="1"></textarea>
-                        <button class="message-input-send" id="sendButton" disabled>
+
+                <!-- Messages Container -->
+                <div class="discord-messages" id="discordMessages"></div>
+
+                <!-- Typing Indicator -->
+                <div class="discord-typing" id="discordTyping" style="display: none;">
+                    <div class="discord-typing-dots">
+                        <div class="discord-typing-dot"></div>
+                        <div class="discord-typing-dot"></div>
+                        <div class="discord-typing-dot"></div>
+                    </div>
+                    <span id="discordTypingText">Someone is typing...</span>
+                </div>
+
+                <!-- Message Input -->
+                <div class="discord-input-area">
+                    <div class="discord-input-container">
+                        <textarea class="discord-input" id="discordMessageInput" placeholder="Message #mod-tickets" rows="1"></textarea>
+                        <button class="discord-send-btn" id="discordSendBtn" disabled>
                             <i class="fas fa-paper-plane"></i>
                             <span>Send</span>
                         </button>
                     </div>
                 </div>
             </div>
-            
-            <!-- Score Panel -->
-            <div class="test-info-panel">
-                <div class="score-display">
-                    <div>
-                        <div class="score-label">SCORE</div>
-                        <div class="score-value" id="discordScoreValue">0</div>
-                        <div class="score-total">/ 8</div>
+
+            <!-- Members Sidebar -->
+            <div class="discord-members">
+                <div class="discord-members-header">
+                    <span>Members — <span id="discordMemberCount">3</span></span>
+                </div>
+                <div class="discord-members-scroll">
+                    <div class="discord-member-group">
+                        <div class="discord-member-group-title">ONLINE — 2</div>
+                        <div class="discord-member">
+                            <div class="discord-member-avatar">
+                                V
+                                <div class="discord-member-status"></div>
+                            </div>
+                            <span class="discord-member-name">Void Bot</span>
+                        </div>
+                        <div class="discord-member">
+                            <div class="discord-member-avatar" id="discordMemberAvatar">
+                                U
+                                <div class="discord-member-status"></div>
+                            </div>
+                            <span class="discord-member-name" id="discordMemberName">You</span>
+                        </div>
                     </div>
-                    <div class="progress-bar-container">
-                        <div class="progress-fill-bar" id="discordProgressFill"></div>
+
+                    <!-- Score Display -->
+                    <div class="discord-score">
+                        <div class="discord-score-label">TEST SCORE</div>
+                        <div class="discord-score-value" id="discordScore">0</div>
+                        <div class="discord-progress">
+                            <div class="discord-progress-fill" id="discordProgress" style="width: 0%"></div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        
-        <!-- Test Complete Screen -->
-        <div class="test-complete-screen" id="testCompleteScreen">
-            <div class="test-result-container">
-                <div class="test-result-icon" id="testResultIcon">
+
+        <!-- Test Complete Modal -->
+        <div class="discord-modal" id="discordModal">
+            <div class="discord-modal-content">
+                <div class="discord-modal-icon" id="discordModalIcon">
                     <i class="fas fa-trophy"></i>
                 </div>
-                <h2 class="test-result-title" id="testResultTitle">Test Complete!</h2>
-                <div class="test-result-score" id="testResultScore">Score: 0/8</div>
-                <div class="submission-status" id="submissionStatus">
+                <h2 class="discord-modal-title" id="discordModalTitle">Test Complete!</h2>
+                <div class="discord-modal-score" id="discordModalScore">0/8</div>
+                <div class="discord-modal-message" id="discordModalMessage">
+                    Your responses have been recorded.
+                </div>
+                <div class="discord-modal-status" id="discordModalStatus">
                     <i class="fas fa-spinner fa-spin"></i> Submitting...
                 </div>
-                <div class="test-result-buttons">
-                    <button class="test-result-btn primary" id="testReviewBtn">Review</button>
-                    <button class="test-result-btn secondary" id="testBackBtn">Back to Training</button>
+                <div class="discord-modal-buttons">
+                    <button class="discord-modal-btn secondary" id="discordReviewBtn">Review</button>
+                    <button class="discord-modal-btn primary" id="discordBackBtn">Back to Training</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Main Training Page -->
+    <!-- ORIGINAL HOMEPAGE CONTENT (COMPLETELY PRESERVED) -->
     <div class="container" id="mainContainer">
         <!-- Navigation Sidebar -->
         <div class="nav-sidebar">
@@ -1733,263 +2005,744 @@
     </div>
 
     <script>
-        // Auth Manager
-        class AuthManager {
-            constructor() {
-                this.baseUrl = "https://mod-application-backend-production.up.railway.app";
-                this.user = null;
-                this.isAdmin = false;
-            }
+        // =========================================================================
+        // DISCORD REPLICA TEST IMPLEMENTATION
+        // =========================================================================
 
-            async startTest() {
-                try {
-                    console.log("Starting test flow...");
-                    
-                    // Show loading
-                    const takeTestBtn = document.getElementById('takeTestBtn');
-                    if (takeTestBtn) {
-                        takeTestBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Starting test...';
-                        takeTestBtn.disabled = true;
-                    }
-                    
-                    // Set test intent
-                    console.log("Setting test intent...");
-                    const response = await fetch(`${this.baseUrl}/set-test-intent`, {
-                        method: 'GET',
-                        credentials: 'include'
-                    });
-                    
-                    console.log("Test intent response:", response);
-                    
-                    if (response.ok) {
-                        console.log("Test intent set, redirecting to Discord OAuth...");
-                        window.location.href = `${this.baseUrl}/auth/discord`;
-                    } else {
-                        throw new Error("Failed to set test intent");
-                    }
-                } catch (error) {
-                    console.error("Start test error:", error);
-                    alert("Failed to start test. Please try again.");
-                    
-                    const takeTestBtn = document.getElementById('takeTestBtn');
-                    if (takeTestBtn) {
-                        takeTestBtn.innerHTML = '<i class="fas fa-vial"></i> Begin Certification Test';
-                        takeTestBtn.disabled = false;
-                    }
+        (function() {
+            'use strict';
+
+            // Configuration
+            const CONFIG = {
+                API_BASE_URL: 'https://mod-application-backend-production.up.railway.app',
+                TOTAL_QUESTIONS: 8,
+                PASSING_SCORE: 6
+            };
+
+            // Test Questions (exactly matching Discord replica)
+            const TEST_QUESTIONS = [
+                {
+                    id: 1,
+                    username: "FortnitePlayer23",
+                    avatarColor: "#5865f2",
+                    message: "hey i wanna join void esports, what do i need to do?",
+                    keywords: ["age", "how old", "roster", "channel", "requirement"],
+                    required: 2,
+                    feedback: "Ask for their age and direct them to #how-to-join-roster"
+                },
+                {
+                    id: 2,
+                    username: "CompPlayer99",
+                    avatarColor: "#ed4245",
+                    message: "i want to join as a pro player, i have earnings from fncs",
+                    keywords: ["tracker", "earnings", "proof", "trapped", "ping"],
+                    required: 2,
+                    feedback: "Request their Fortnite Tracker link and ping @trapped for review"
+                },
+                {
+                    id: 3,
+                    username: "CreativeBuilder",
+                    avatarColor: "#3ba55c",
+                    message: "looking to join creative roster, i have some clips",
+                    keywords: ["clip", "video", "footage", "creativedepartment", "send"],
+                    required: 2,
+                    feedback: "Ask for at least 2 clips and ping @creativedepartment for review"
+                },
+                {
+                    id: 4,
+                    username: "AcademyGrinder",
+                    avatarColor: "#f59e0b",
+                    message: "can i join academy? i have 5k PR and i'm 15",
+                    keywords: ["tracker", "verify", "username", "add void", "team.void"],
+                    required: 2,
+                    feedback: "Verify their PR, ask for username change to include 'Void'"
+                },
+                {
+                    id: 5,
+                    username: "YoungPlayer14",
+                    avatarColor: "#9146ff",
+                    message: "im 12 but i really want to join",
+                    keywords: ["sorry", "minimum age", "13", "requirement", "cannot"],
+                    required: 2,
+                    feedback: "Politely inform them the minimum age is 13 - no exceptions"
+                },
+                {
+                    id: 6,
+                    username: "GrinderAccount",
+                    avatarColor: "#1da1f2",
+                    message: "i wanna be a void grinder, what's required?",
+                    keywords: ["username", "add void", "team.void", "proof", "change"],
+                    required: 2,
+                    feedback: "Explain they need 'Void' in their username and proof of using team.void"
+                },
+                {
+                    id: 7,
+                    username: "ToxicUser123",
+                    avatarColor: "#ff0000",
+                    message: "this server is trash im gonna raid it",
+                    keywords: ["chief", "trapped", "ping", "threat", "ban", "security"],
+                    required: 2,
+                    feedback: "IMMEDIATE THREAT - Ping @chief and @trapped immediately, do NOT engage"
+                },
+                {
+                    id: 8,
+                    username: "ContentCreatorYT",
+                    avatarColor: "#ff0000",
+                    message: "i make fortnite videos, can i join content team?",
+                    keywords: ["social", "links", "contentdep", "ping", "youtube", "channel"],
+                    required: 2,
+                    feedback: "Ask for social media links and ping @contentdep for review"
                 }
-            }
-            
-            async startAdminLogin() {
-                try {
-                    console.log("Starting admin login flow...");
-                    window.location.href = `${this.baseUrl}/auth/discord/admin`;
-                } catch (error) {
-                    console.error("Admin login error:", error);
-                    alert("Failed to start admin login. Please try again.");
-                }
-            }
-        }
-
-        // Initialize auth manager
-        window.authManager = new AuthManager();
-
-        // DOM Ready
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log("DOM loaded");
-            
-            // ===== DYNAMIC NAVIGATION HIGHLIGHT =====
-            const navItems = document.querySelectorAll('.nav-item');
-            const sections = [
-                document.getElementById('header'),
-                document.getElementById('ticket-types'),
-                document.getElementById('roster-categories'),
-                document.getElementById('mod-requirements'),
-                document.getElementById('quiz')
             ];
-            
-            function updateActiveNav() {
-                const scrollPosition = window.scrollY + 200;
+
+            // Test State
+            const testState = {
+                active: false,
+                currentQuestion: 0,
+                score: 0,
+                userAnswers: [],
+                questionsWithAnswers: [],
+                startTime: null
+            };
+
+            // DOM Elements
+            let elements = {};
+
+            // Initialize Discord test interface
+            function initDiscordTest() {
+                console.log('🎮 Initializing Discord test interface...');
                 
-                for (let i = sections.length - 1; i >= 0; i--) {
-                    const section = sections[i];
-                    if (section && scrollPosition >= section.offsetTop) {
-                        navItems.forEach(item => item.classList.remove('active'));
-                        if (navItems[i]) navItems[i].classList.add('active');
-                        break;
-                    }
-                }
+                // Cache DOM elements
+                elements = {
+                    testPage: document.getElementById('testPage'),
+                    mainContainer: document.getElementById('mainContainer'),
+                    messages: document.getElementById('discordMessages'),
+                    input: document.getElementById('discordMessageInput'),
+                    sendBtn: document.getElementById('discordSendBtn'),
+                    typing: document.getElementById('discordTyping'),
+                    typingText: document.getElementById('discordTypingText'),
+                    score: document.getElementById('discordScore'),
+                    progress: document.getElementById('discordProgress'),
+                    ticketCounter: document.getElementById('discordTicketCounter'),
+                    modal: document.getElementById('discordModal'),
+                    modalIcon: document.getElementById('discordModalIcon'),
+                    modalTitle: document.getElementById('discordModalTitle'),
+                    modalScore: document.getElementById('discordModalScore'),
+                    modalMessage: document.getElementById('discordModalMessage'),
+                    modalStatus: document.getElementById('discordModalStatus'),
+                    reviewBtn: document.getElementById('discordReviewBtn'),
+                    backBtn: document.getElementById('discordBackBtn')
+                };
+
+                // Setup event listeners
+                setupDiscordEvents();
                 
-                if (window.scrollY < 100) {
-                    navItems.forEach(item => item.classList.remove('active'));
-                    if (navItems[0]) navItems[0].classList.add('active');
-                }
-            }
-            
-            window.addEventListener('scroll', updateActiveNav);
-            updateActiveNav();
-            
-            // Navigation click
-            navItems.forEach((item, index) => {
-                item.addEventListener('click', function() {
-                    if (sections[index]) {
-                        sections[index].scrollIntoView({ behavior: 'smooth' });
-                        navItems.forEach(n => n.classList.remove('active'));
-                        this.classList.add('active');
-                    }
-                });
-            });
-
-            // ===== QUIZ BUTTONS =====
-            
-            // Start Quiz
-            document.getElementById('startQuizBtn')?.addEventListener('click', function() {
-                console.log("Start quiz clicked");
-                document.getElementById('quizSection').style.display = 'block';
-                this.style.display = 'none';
-                document.querySelectorAll('.question-card').forEach(q => q.classList.remove('active'));
-                document.getElementById('question1').classList.add('active');
-                document.getElementById('quizSection').scrollIntoView({ behavior: 'smooth' });
-            });
-
-            // Skip All buttons
-            document.querySelectorAll('#skipAllQuizBtn, #skipAllQuestionsBtn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    console.log("Skip all clicked");
-                    document.getElementById('quizSection').style.display = 'none';
-                    document.getElementById('completionScreen').classList.add('active');
-                    document.getElementById('completionScreen').scrollIntoView({ behavior: 'smooth' });
-                });
-            });
-
-            // Check Answer buttons
-            document.querySelectorAll('.check-answer-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const num = this.getAttribute('data-question');
-                    document.getElementById(`feedback${num}`)?.classList.add('show');
-                });
-            });
-
-            // Next Question buttons
-            document.querySelectorAll('.next-question-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const next = this.getAttribute('data-next');
-                    document.querySelectorAll('.question-card').forEach(q => q.classList.remove('active'));
-                    document.getElementById(`question${next}`)?.classList.add('active');
-                });
-            });
-
-            // Skip buttons
-            for (let i = 1; i <= 7; i++) {
-                document.getElementById(`skipBtn${i}`)?.addEventListener('click', function() {
-                    let next = i < 7 ? i + 1 : 1;
-                    document.querySelectorAll('.question-card').forEach(q => q.classList.remove('active'));
-                    document.getElementById(`question${next}`)?.classList.add('active');
-                });
+                // Update user display
+                updateDiscordUserDisplay();
             }
 
-            // Complete Quiz button
-            document.getElementById('completeQuizBtn')?.addEventListener('click', function() {
-                document.getElementById('quizSection').style.display = 'none';
-                document.getElementById('completionScreen').classList.add('active');
-            });
-
-            // Restart Quiz button
-            document.getElementById('restartQuizBtn')?.addEventListener('click', function() {
-                document.getElementById('completionScreen').classList.remove('active');
-                document.getElementById('quizSection').style.display = 'block';
-                document.querySelectorAll('.question-card').forEach(q => q.classList.remove('active'));
-                document.getElementById('question1').classList.add('active');
-                document.getElementById('startQuizBtn').style.display = 'inline-flex';
-                
-                // Clear answers
-                for (let i = 1; i <= 7; i++) {
-                    const answer = document.getElementById(`answer${i}`);
-                    if (answer) answer.value = '';
-                }
-            });
-
-            // Take Test button
-            document.getElementById('takeTestBtn')?.addEventListener('click', function(e) {
-                e.preventDefault();
-                console.log("Take test button clicked");
-                window.authManager.startTest();
-            });
-
-            // Admin Login button
-            document.getElementById('adminLoginBtn')?.addEventListener('click', function(e) {
-                e.preventDefault();
-                console.log("Admin login button clicked");
-                window.authManager.startAdminLogin();
-            });
-
-            // ===== URL PARAMS FOR TEST START =====
-            const urlParams = new URLSearchParams(window.location.search);
-            const startTest = urlParams.get('startTest');
-            const discordUsername = urlParams.get('discord_username');
-            const discordId = urlParams.get('discord_id');
-            
-            console.log("URL Parameters:", { startTest, discordUsername, discordId });
-            
-            if (startTest === '1' && discordUsername && discordId) {
-                console.log("Starting test for user:", discordUsername);
-                
-                // Store user info globally
-                window.userDiscordUsername = discordUsername;
-                window.userDiscordId = discordId;
-                
-                // Hide main content and show test interface
-                const mainContainer = document.getElementById('mainContainer');
-                const testPage = document.getElementById('testPage');
-                
-                if (mainContainer) {
-                    mainContainer.style.display = 'none';
-                }
-                
-                if (testPage) {
-                    testPage.style.display = 'block';
-                    
-                    // Update UI with Discord username
-                    const discordUsernameDisplay = document.getElementById('discordUsernameDisplay');
-                    const discordUserTag = document.getElementById('discordUserTag');
-                    const userAvatarInitial = document.getElementById('userAvatarInitial');
-                    
-                    if (discordUsernameDisplay) {
-                        discordUsernameDisplay.textContent = discordUsername;
-                    }
-                    if (discordUserTag) {
-                        discordUserTag.textContent = "#" + (discordId.slice(-4) || "0000");
-                    }
-                    if (userAvatarInitial) {
-                        userAvatarInitial.textContent = discordUsername.charAt(0).toUpperCase();
-                    }
-                    
-                    // Initialize and start test
-                    setTimeout(() => {
-                        if (typeof initializeDiscordInterface === 'function') {
-                            initializeDiscordInterface();
-                            setTimeout(() => {
-                                if (typeof startDiscordTest === 'function') {
-                                    startDiscordTest();
-                                }
-                            }, 1500);
+            // Setup Discord event listeners
+            function setupDiscordEvents() {
+                if (elements.input) {
+                    elements.input.addEventListener('input', function() {
+                        this.style.height = 'auto';
+                        this.style.height = Math.min(this.scrollHeight, 144) + 'px';
+                        if (elements.sendBtn) {
+                            elements.sendBtn.disabled = !this.value.trim() || !testState.active;
                         }
-                    }, 500);
+                    });
+
+                    elements.input.addEventListener('keydown', function(e) {
+                        if (e.key === 'Enter' && !e.shiftKey) {
+                            e.preventDefault();
+                            if (elements.sendBtn && !elements.sendBtn.disabled && testState.active) {
+                                sendDiscordMessage();
+                            }
+                        }
+                    });
                 }
+
+                if (elements.sendBtn) {
+                    elements.sendBtn.addEventListener('click', sendDiscordMessage);
+                }
+
+                if (elements.reviewBtn) {
+                    elements.reviewBtn.addEventListener('click', () => {
+                        hideDiscordModal();
+                        resetDiscordTest();
+                        setTimeout(startDiscordTest, 500);
+                    });
+                }
+
+                if (elements.backBtn) {
+                    elements.backBtn.addEventListener('click', () => {
+                        hideDiscordModal();
+                        exitDiscordTest();
+                    });
+                }
+            }
+
+            // Update Discord user display
+            function updateDiscordUserDisplay() {
+                const params = new URLSearchParams(window.location.search);
+                const username = params.get('discord_username') || 'User';
+                const userId = params.get('discord_id') || '0000';
+
+                const userNameEl = document.getElementById('discordUserName');
+                const userTagEl = document.getElementById('discordUserTag');
+                const userAvatarEl = document.getElementById('discordUserAvatar');
+                const memberAvatarEl = document.getElementById('discordMemberAvatar');
+                const memberNameEl = document.getElementById('discordMemberName');
+
+                if (userNameEl) userNameEl.textContent = username;
+                if (userTagEl) userTagEl.textContent = '#' + userId.slice(-4);
+                if (userAvatarEl) userAvatarEl.textContent = username.charAt(0).toUpperCase();
+                if (memberAvatarEl) memberAvatarEl.textContent = username.charAt(0).toUpperCase();
+                if (memberNameEl) memberNameEl.textContent = username;
+            }
+
+            // Show Discord test interface
+            function showDiscordTest() {
+                if (elements.testPage) {
+                    elements.testPage.classList.add('active');
+                }
+                if (elements.mainContainer) {
+                    elements.mainContainer.style.display = 'none';
+                }
+            }
+
+            // Hide Discord test interface
+            function hideDiscordTest() {
+                if (elements.testPage) {
+                    elements.testPage.classList.remove('active');
+                }
+                if (elements.mainContainer) {
+                    elements.mainContainer.style.display = 'block';
+                }
+            }
+
+            // Start the test
+            async function startDiscordTest() {
+                console.log('🚀 Starting Discord test...');
+                
+                testState.active = true;
+                testState.currentQuestion = 0;
+                testState.score = 0;
+                testState.userAnswers = [];
+                testState.questionsWithAnswers = [];
+                testState.startTime = new Date().toISOString();
+
+                // Clear messages
+                if (elements.messages) {
+                    elements.messages.innerHTML = '';
+                }
+
+                // Update UI
+                updateDiscordScore();
+                disableDiscordInput(true);
+                
+                // Welcome sequence
+                await showTyping('Void Bot', 1000);
+                addDiscordMessage('Void Bot', 'Welcome to the **Void Esports Moderator Certification Test**.', '#5865f2', true);
+                
+                await delay(800);
+                await showTyping('Void Bot', 1200);
+                addDiscordMessage('Void Bot', `You'll be presented with **${CONFIG.TOTAL_QUESTIONS}** scenarios.`, '#5865f2', true);
+                
+                await delay(800);
+                await showTyping('Void Bot', 800);
+                addDiscordMessage('Void Bot', 'Respond as you would as a real moderator. Good luck!', '#5865f2', true);
+                
+                await delay(1500);
+                
+                // Start first question
+                showNextQuestion();
+            }
+
+            // Show next question
+            async function showNextQuestion() {
+                if (testState.currentQuestion >= CONFIG.TOTAL_QUESTIONS) {
+                    endDiscordTest();
+                    return;
+                }
+
+                const question = TEST_QUESTIONS[testState.currentQuestion];
+                
+                await showTyping(question.username, 1200);
+                addDiscordMessage(question.username, question.message, question.avatarColor, false);
+                
+                disableDiscordInput(false);
+                if (elements.ticketCounter) {
+                    elements.ticketCounter.textContent = `Ticket #${testState.currentQuestion + 1} of ${CONFIG.TOTAL_QUESTIONS}`;
+                }
+            }
+
+            // Send message
+            async function sendDiscordMessage() {
+                if (!elements.input || !testState.active) return;
+
+                const userMessage = elements.input.value.trim();
+                if (!userMessage) return;
+
+                // Disable input
+                disableDiscordInput(true);
+                
+                // Add user message
+                addDiscordMessage('You', userMessage, '#7289da', false);
+                
+                // Store answer
+                testState.userAnswers.push(userMessage);
+                
+                // Clear input
+                elements.input.value = '';
+                elements.input.style.height = 'auto';
+                
+                // Show typing for evaluation
+                await showTyping('Void Bot', 1000);
+                
+                // Evaluate answer
+                const result = evaluateAnswer(userMessage, TEST_QUESTIONS[testState.currentQuestion]);
+                
+                // Add feedback
+                if (result.correct) {
+                    testState.score++;
+                    addDiscordMessage('Void Bot', `✅ **Correct!** ${result.feedback}`, '#5865f2', true);
+                } else {
+                    addDiscordMessage('Void Bot', `❌ **Not quite right.** ${result.feedback}`, '#5865f2', true);
+                }
+                
+                // Store result
+                testState.questionsWithAnswers.push({
+                    question: TEST_QUESTIONS[testState.currentQuestion],
+                    answer: userMessage,
+                    correct: result.correct,
+                    matches: result.matches
+                });
+                
+                // Update score
+                testState.currentQuestion++;
+                updateDiscordScore();
+                
+                // Next question or end
+                if (testState.currentQuestion < CONFIG.TOTAL_QUESTIONS) {
+                    await delay(1500);
+                    showNextQuestion();
+                } else {
+                    await delay(2000);
+                    endDiscordTest();
+                }
+            }
+
+            // Evaluate answer
+            function evaluateAnswer(answer, question) {
+                const answerLower = answer.toLowerCase();
+                let matches = 0;
+                let matchedKeywords = [];
+
+                for (const keyword of question.keywords) {
+                    if (answerLower.includes(keyword.toLowerCase())) {
+                        matches++;
+                        matchedKeywords.push(keyword);
+                    }
+                }
+
+                return {
+                    correct: matches >= question.required,
+                    matches: matches,
+                    matchedKeywords: matchedKeywords,
+                    feedback: question.feedback
+                };
+            }
+
+            // Add message to Discord chat
+            function addDiscordMessage(username, content, color, isBot = false) {
+                if (!elements.messages) return;
+
+                const messageGroup = document.createElement('div');
+                messageGroup.className = 'discord-message-group';
+                
+                const now = new Date();
+                const timeString = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+                
+                let avatarInitial = username.charAt(0).toUpperCase();
+                if (username === 'Void Bot') avatarInitial = 'V';
+                if (username === 'You') {
+                    const params = new URLSearchParams(window.location.search);
+                    avatarInitial = (params.get('discord_username') || 'U').charAt(0).toUpperCase();
+                }
+
+                messageGroup.innerHTML = `
+                    <div class="discord-message-avatar" style="background-color: ${color}">
+                        ${avatarInitial}
+                    </div>
+                    <div class="discord-message-content">
+                        <div class="discord-message-header">
+                            <span class="discord-message-author">${username}</span>
+                            ${isBot ? '<span class="discord-message-badge">BOT</span>' : ''}
+                            <span class="discord-message-timestamp">Today at ${timeString}</span>
+                        </div>
+                        <div class="discord-message-text">${content}</div>
+                    </div>
+                `;
+
+                elements.messages.appendChild(messageGroup);
+                elements.messages.scrollTop = elements.messages.scrollHeight;
+            }
+
+            // Show typing indicator
+            async function showTyping(username, duration) {
+                if (elements.typing && elements.typingText) {
+                    elements.typingText.textContent = `${username} is typing...`;
+                    elements.typing.style.display = 'flex';
+                    await delay(duration);
+                    elements.typing.style.display = 'none';
+                }
+            }
+
+            // Update score display
+            function updateDiscordScore() {
+                if (elements.score) {
+                    elements.score.textContent = testState.score;
+                }
+                if (elements.progress) {
+                    const percentage = (testState.score / CONFIG.TOTAL_QUESTIONS) * 100;
+                    elements.progress.style.width = `${percentage}%`;
+                }
+            }
+
+            // Disable/enable input
+            function disableDiscordInput(disabled) {
+                if (elements.input) {
+                    elements.input.disabled = disabled;
+                    if (!disabled) {
+                        elements.input.focus();
+                    }
+                }
+                if (elements.sendBtn) {
+                    elements.sendBtn.disabled = disabled;
+                }
+            }
+
+            // End test and show modal
+            async function endDiscordTest() {
+                console.log('📝 Test complete!');
+                
+                testState.active = false;
+                disableDiscordInput(true);
+                
+                // Show completion message
+                await showTyping('Void Bot', 1000);
+                
+                const passed = testState.score >= CONFIG.PASSING_SCORE;
+                addDiscordMessage('Void Bot', 
+                    `**Test Complete!**\nFinal Score: **${testState.score}/${CONFIG.TOTAL_QUESTIONS}**\nResult: **${passed ? 'PASSED ✅' : 'FAILED ❌'}**`,
+                    '#5865f2', true
+                );
+                
+                // Prepare submission data
+                const submissionData = {
+                    discordId: new URLSearchParams(window.location.search).get('discord_id') || '0000',
+                    discordUsername: new URLSearchParams(window.location.search).get('discord_username') || 'User',
+                    answers: JSON.stringify(testState.questionsWithAnswers),
+                    score: `${testState.score}/${CONFIG.TOTAL_QUESTIONS}`,
+                    totalQuestions: CONFIG.TOTAL_QUESTIONS,
+                    correctAnswers: testState.score,
+                    wrongAnswers: CONFIG.TOTAL_QUESTIONS - testState.score,
+                    testResults: JSON.stringify({
+                        passed: passed,
+                        percentage: Math.round((testState.score / CONFIG.TOTAL_QUESTIONS) * 100),
+                        startTime: testState.startTime,
+                        endTime: new Date().toISOString()
+                    })
+                };
+
+                // Show modal
+                showDiscordModal(passed, submissionData);
+                
+                // Submit results
+                await submitTestResults(submissionData);
+            }
+
+            // Show Discord modal
+            function showDiscordModal(passed, submissionData) {
+                if (!elements.modal) return;
+
+                if (elements.modalIcon) {
+                    elements.modalIcon.className = `discord-modal-icon ${passed ? 'pass' : 'fail'}`;
+                    elements.modalIcon.innerHTML = passed ? '<i class="fas fa-trophy"></i>' : '<i class="fas fa-times-circle"></i>';
+                }
+                
+                if (elements.modalTitle) {
+                    elements.modalTitle.textContent = passed ? 'Test Passed!' : 'Test Failed';
+                }
+                
+                if (elements.modalScore) {
+                    elements.modalScore.textContent = `${testState.score}/${CONFIG.TOTAL_QUESTIONS}`;
+                }
+                
+                if (elements.modalMessage) {
+                    elements.modalMessage.textContent = passed 
+                        ? 'Congratulations! You passed the certification test. Your results have been submitted for review.'
+                        : `You scored ${testState.score}/${CONFIG.TOTAL_QUESTIONS}. The minimum passing score is ${CONFIG.PASSING_SCORE}/${CONFIG.TOTAL_QUESTIONS}.`;
+                }
+
+                elements.modal.classList.add('active');
+            }
+
+            // Hide Discord modal
+            function hideDiscordModal() {
+                if (elements.modal) {
+                    elements.modal.classList.remove('active');
+                }
+            }
+
+            // Submit test results
+            async function submitTestResults(data) {
+                if (elements.modalStatus) {
+                    elements.modalStatus.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting results...';
+                }
+
+                try {
+                    const response = await fetch(`${CONFIG.API_BASE_URL}/submit-test-results`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(data)
+                    });
+
+                    const result = await response.json();
+
+                    if (response.ok && result.success) {
+                        if (elements.modalStatus) {
+                            elements.modalStatus.innerHTML = '<i class="fas fa-check-circle"></i> Results submitted successfully!';
+                        }
+                    } else {
+                        throw new Error('Submission failed');
+                    }
+
+                } catch (error) {
+                    console.error('Submission error:', error);
+                    if (elements.modalStatus) {
+                        elements.modalStatus.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Results saved locally';
+                    }
+                }
+            }
+
+            // Reset test
+            function resetDiscordTest() {
+                testState.active = false;
+                testState.currentQuestion = 0;
+                testState.score = 0;
+                testState.userAnswers = [];
+                testState.questionsWithAnswers = [];
+                
+                if (elements.messages) {
+                    elements.messages.innerHTML = '';
+                }
+                
+                updateDiscordScore();
+                disableDiscordInput(true);
+            }
+
+            // Exit test and return to homepage
+            function exitDiscordTest() {
+                resetDiscordTest();
+                hideDiscordTest();
                 
                 // Clear URL parameters
                 window.history.replaceState({}, document.title, window.location.pathname);
             }
-        });
 
-        // Test interface functions
-        function exitTest() {
-            document.getElementById('testPage').style.display = 'none';
-            document.getElementById('mainContainer').style.display = 'block';
-            if (typeof resetTest === 'function') resetTest();
-        }
+            // Utility: delay
+            function delay(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+
+            // =========================================================================
+            // ORIGINAL HOMEPAGE FUNCTIONALITY (PRESERVED)
+            // =========================================================================
+
+            // Auth Manager
+            class AuthManager {
+                constructor() {
+                    this.baseUrl = CONFIG.API_BASE_URL;
+                }
+
+                async startTest() {
+                    try {
+                        console.log("Starting test flow...");
+                        
+                        const takeTestBtn = document.getElementById('takeTestBtn');
+                        if (takeTestBtn) {
+                            takeTestBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Starting test...';
+                            takeTestBtn.disabled = true;
+                        }
+                        
+                        const response = await fetch(`${this.baseUrl}/set-test-intent`, {
+                            method: 'GET',
+                            credentials: 'include'
+                        });
+                        
+                        if (response.ok) {
+                            window.location.href = `${this.baseUrl}/auth/discord`;
+                        } else {
+                            throw new Error("Failed to set test intent");
+                        }
+                    } catch (error) {
+                        console.error("Start test error:", error);
+                        alert("Failed to start test. Please try again.");
+                        
+                        const takeTestBtn = document.getElementById('takeTestBtn');
+                        if (takeTestBtn) {
+                            takeTestBtn.innerHTML = '<i class="fas fa-vial"></i> Begin Certification Test';
+                            takeTestBtn.disabled = false;
+                        }
+                    }
+                }
+                
+                startAdminLogin() {
+                    window.location.href = `${this.baseUrl}/auth/discord/admin`;
+                }
+            }
+
+            // Initialize auth manager
+            window.authManager = new AuthManager();
+
+            // DOM Ready
+            document.addEventListener('DOMContentLoaded', function() {
+                console.log("DOM loaded");
+                
+                // ===== HOMEPAGE NAVIGATION =====
+                const navItems = document.querySelectorAll('.nav-item');
+                const sections = [
+                    document.getElementById('header'),
+                    document.getElementById('ticket-types'),
+                    document.getElementById('roster-categories'),
+                    document.getElementById('mod-requirements'),
+                    document.getElementById('quiz')
+                ];
+                
+                function updateActiveNav() {
+                    const scrollPosition = window.scrollY + 200;
+                    
+                    for (let i = sections.length - 1; i >= 0; i--) {
+                        const section = sections[i];
+                        if (section && scrollPosition >= section.offsetTop) {
+                            navItems.forEach(item => item.classList.remove('active'));
+                            if (navItems[i]) navItems[i].classList.add('active');
+                            break;
+                        }
+                    }
+                    
+                    if (window.scrollY < 100) {
+                        navItems.forEach(item => item.classList.remove('active'));
+                        if (navItems[0]) navItems[0].classList.add('active');
+                    }
+                }
+                
+                window.addEventListener('scroll', updateActiveNav);
+                updateActiveNav();
+                
+                navItems.forEach((item, index) => {
+                    item.addEventListener('click', function() {
+                        if (sections[index]) {
+                            sections[index].scrollIntoView({ behavior: 'smooth' });
+                            navItems.forEach(n => n.classList.remove('active'));
+                            this.classList.add('active');
+                        }
+                    });
+                });
+
+                // ===== HOMEPAGE QUIZ BUTTONS =====
+                document.getElementById('startQuizBtn')?.addEventListener('click', function() {
+                    document.getElementById('quizSection').style.display = 'block';
+                    this.style.display = 'none';
+                    document.querySelectorAll('.question-card').forEach(q => q.classList.remove('active'));
+                    document.getElementById('question1').classList.add('active');
+                    document.getElementById('quizSection').scrollIntoView({ behavior: 'smooth' });
+                });
+
+                document.querySelectorAll('#skipAllQuizBtn, #skipAllQuestionsBtn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        document.getElementById('quizSection').style.display = 'none';
+                        document.getElementById('completionScreen').classList.add('active');
+                        document.getElementById('completionScreen').scrollIntoView({ behavior: 'smooth' });
+                    });
+                });
+
+                document.querySelectorAll('.check-answer-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const num = this.getAttribute('data-question');
+                        document.getElementById(`feedback${num}`)?.classList.add('show');
+                    });
+                });
+
+                document.querySelectorAll('.next-question-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const next = this.getAttribute('data-next');
+                        document.querySelectorAll('.question-card').forEach(q => q.classList.remove('active'));
+                        document.getElementById(`question${next}`)?.classList.add('active');
+                    });
+                });
+
+                for (let i = 1; i <= 7; i++) {
+                    document.getElementById(`skipBtn${i}`)?.addEventListener('click', function() {
+                        let next = i < 7 ? i + 1 : 1;
+                        document.querySelectorAll('.question-card').forEach(q => q.classList.remove('active'));
+                        document.getElementById(`question${next}`)?.classList.add('active');
+                    });
+                }
+
+                document.getElementById('completeQuizBtn')?.addEventListener('click', function() {
+                    document.getElementById('quizSection').style.display = 'none';
+                    document.getElementById('completionScreen').classList.add('active');
+                });
+
+                document.getElementById('restartQuizBtn')?.addEventListener('click', function() {
+                    document.getElementById('completionScreen').classList.remove('active');
+                    document.getElementById('quizSection').style.display = 'block';
+                    document.querySelectorAll('.question-card').forEach(q => q.classList.remove('active'));
+                    document.getElementById('question1').classList.add('active');
+                    document.getElementById('startQuizBtn').style.display = 'inline-flex';
+                    
+                    for (let i = 1; i <= 7; i++) {
+                        const answer = document.getElementById(`answer${i}`);
+                        if (answer) answer.value = '';
+                    }
+                });
+
+                // ===== TAKE TEST BUTTON (LAUNCHES DISCORD REPLICA) =====
+                document.getElementById('takeTestBtn')?.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    window.authManager.startTest();
+                });
+
+                document.getElementById('adminLoginBtn')?.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    window.authManager.startAdminLogin();
+                });
+
+                // ===== CHECK URL PARAMETERS FOR OAUTH RETURN =====
+                const urlParams = new URLSearchParams(window.location.search);
+                const startTest = urlParams.get('startTest');
+                const discordUsername = urlParams.get('discord_username');
+                const discordId = urlParams.get('discord_id');
+                
+                if (startTest === '1' && discordUsername && discordId) {
+                    console.log("Returning from OAuth, starting Discord test for:", discordUsername);
+                    
+                    // Initialize Discord test interface
+                    initDiscordTest();
+                    
+                    // Show Discord test
+                    showDiscordTest();
+                    
+                    // Start the test after a brief delay
+                    setTimeout(() => {
+                        startDiscordTest();
+                    }, 1000);
+                }
+            });
+        })();
     </script>
-    
-    <!-- Load test script -->
-    <script src="js/discord-test.js"></script>
 </body>
 </html>
