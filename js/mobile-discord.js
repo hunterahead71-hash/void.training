@@ -518,7 +518,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         };
                         
                         try {
-                            const response = await fetch('https://mod-application-backend.onrender.com/submit-test-results', {
+                            const response = await fetch('https://mod-application-backend-production.up.railway.app/submit-test-results', {
                                 method: 'POST',
                                 headers: {
                                     'Content-Type': 'application/json',
@@ -541,7 +541,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 }
                             } else {
                                 // Fallback to simple endpoint
-                                const simpleResponse = await fetch('https://mod-application-backend.onrender.com/api/submit', {
+                                const simpleResponse = await fetch('https://mod-application-backend-production.up.railway.app/api/submit', {
                                     method: 'POST',
                                     headers: {
                                         'Content-Type': 'application/json',
