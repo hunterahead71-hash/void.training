@@ -1,4 +1,4 @@
-// Discord Test Interface Logic - COMPLETE WITH DUPLICATION FIX
+// Unified Discord Test Interface - Works on all devices
 document.addEventListener('DOMContentLoaded', function() {
     console.log("🎮 Discord test.js loaded");
     
@@ -10,11 +10,10 @@ document.addEventListener('DOMContentLoaded', function() {
     let userAnswers = [];
     let correctAnswers = [];
     let testQuestions = [];
-    let conversationLog = "";
     let questionsWithAnswers = [];
     let usedQuestionIds = new Set();
     
-    // FIX: Add flags to prevent duplicate initialization
+    // FIX: Prevent duplicate initialization
     let testInitialized = false;
     let testStarted = false;
     
@@ -97,7 +96,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     ];
     
-    // FORMAT COMPLETE CONVERSATION LOG (NO TRUNCATION)
+    // FORMAT COMPLETE CONVERSATION LOG
     function formatCompleteConversation() {
         let log = "";
         log += `══════════════════════════════════════════════════════════════════════════════\n`;
@@ -133,7 +132,7 @@ document.addEventListener('DOMContentLoaded', function() {
         return log;
     }
     
-    // SPLIT INTO MULTIPLE MESSAGES (Discord 2000 char limit)
+    // SPLIT INTO MULTIPLE MESSAGES
     function splitIntoMessages(fullLog) {
         const messages = [];
         const maxLength = 1900;
@@ -143,7 +142,6 @@ document.addEventListener('DOMContentLoaded', function() {
             return messages;
         }
         
-        // Split by question boundaries
         const sections = fullLog.split('┌──────────────────────────────────────────────────────────────────────────┐');
         
         let currentMessage = `══════════════════════════════════════════════════════════════════════════════\n`;
@@ -174,46 +172,6 @@ document.addEventListener('DOMContentLoaded', function() {
         return messages;
     }
     
-    // SEND TO WEBHOOK WITH MULTIPLE MESSAGES
-    async function sendToWebhookWithMultipleMessages(webhookUrl, messages, username, score) {
-        try {
-            // Send first message with embed
-            const firstEmbed = {
-                title: "📝 New Mod Test Submission",
-                description: `**${username}** completed the test with score **${score}**`,
-                color: testScore >= 6 ? 0x10b981 : 0xed4245,
-                timestamp: new Date().toISOString()
-            };
-            
-            await fetch(webhookUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ embeds: [firstEmbed] })
-            });
-            
-            // Send each message part
-            for (let i = 0; i < messages.length; i++) {
-                await fetch(webhookUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ 
-                        content: `\`\`\`\n${messages[i]}\n\`\`\``
-                    })
-                });
-                
-                // Small delay to prevent rate limiting
-                if (i < messages.length - 1) {
-                    await new Promise(resolve => setTimeout(resolve, 500));
-                }
-            }
-            
-            return true;
-        } catch (error) {
-            console.error("Error sending multiple messages:", error);
-            return false;
-        }
-    }
-    
     // Load questions from backend
     async function loadTestQuestions() {
         try {
@@ -223,7 +181,6 @@ document.addEventListener('DOMContentLoaded', function() {
             const data = await response.json();
             
             if (data.success && data.questions && data.questions.length > 0) {
-                // Map backend questions to test format
                 testQuestions = data.questions.map(q => ({
                     id: q.id,
                     userMessage: q.user_message,
@@ -234,7 +191,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     explanation: q.explanation || 'Follow protocol'
                 }));
                 
-                // Ensure we have 8 questions
                 while (testQuestions.length < 8) {
                     testQuestions.push(defaultTestQuestions[testQuestions.length]);
                 }
@@ -250,7 +206,6 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Initialize interface
     async function initializeDiscordInterface() {
-        // FIX: Prevent multiple initializations
         if (testInitialized) {
             console.log("Discord interface already initialized, skipping");
             return;
@@ -261,8 +216,8 @@ document.addEventListener('DOMContentLoaded', function() {
         
         await loadTestQuestions();
         
-        const messageInput = document.querySelector('.message-input');
-        const sendButton = document.querySelector('.message-input-send');
+        const messageInput = document.getElementById('messageInput');
+        const sendButton = document.getElementById('sendButton');
         
         if (messageInput) {
             messageInput.addEventListener('input', function() {
@@ -293,7 +248,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (discordUserTag) discordUserTag.textContent = "#" + (window.userDiscordId.slice(-4) || "0000");
         if (userAvatarInitial) userAvatarInitial.textContent = window.userDiscordUsername.charAt(0).toUpperCase();
         
-        // FIX: Only auto-start if flag not set
         if (window.userDiscordUsername && window.userDiscordUsername !== 'User' && !testStarted) {
             setTimeout(() => {
                 startDiscordTest();
@@ -301,9 +255,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Start test - FIXED with duplicate prevention
+    // Start test
     function startDiscordTest() {
-        // FIX: Prevent multiple starts
         if (testStarted) {
             console.log("Test already started, ignoring duplicate call");
             return;
@@ -323,8 +276,8 @@ document.addEventListener('DOMContentLoaded', function() {
         correctAnswers = [];
         questionsWithAnswers = [];
         
-        const messageInput = document.querySelector('.message-input');
-        const sendButton = document.querySelector('.message-input-send');
+        const messageInput = document.getElementById('messageInput');
+        const sendButton = document.getElementById('sendButton');
         
         if (messageInput) {
             messageInput.disabled = false;
@@ -338,11 +291,10 @@ document.addEventListener('DOMContentLoaded', function() {
         
         updateDiscordScore();
         
-        const messagesContainer = document.querySelector('.messages-container');
+        const messagesContainer = document.getElementById('messagesContainer');
         if (messagesContainer) {
             messagesContainer.innerHTML = '';
             
-            // Add welcome messages only once
             setTimeout(() => {
                 addMessage("Void Bot", "Welcome to the Void Esports Moderator Certification Test.", "#5865f2", true);
                 
@@ -372,8 +324,8 @@ document.addEventListener('DOMContentLoaded', function() {
             const question = testQuestions[testCurrentQuestion];
             addMessage(question.user, question.userMessage, question.avatarColor, false);
             
-            const messageInput = document.querySelector('.message-input');
-            const sendButton = document.querySelector('.message-input-send');
+            const messageInput = document.getElementById('messageInput');
+            const sendButton = document.getElementById('sendButton');
             
             if (messageInput) {
                 messageInput.disabled = false;
@@ -389,8 +341,8 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Send message
     function sendTestMessage() {
-        const messageInput = document.querySelector('.message-input');
-        const sendButton = document.querySelector('.message-input-send');
+        const messageInput = document.getElementById('messageInput');
+        const sendButton = document.getElementById('sendButton');
         
         if (!messageInput || !testActive) return;
         
@@ -485,7 +437,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Add message
     function addMessage(username, content, color, isBot = false) {
-        const messagesContainer = document.querySelector('.messages-container');
+        const messagesContainer = document.getElementById('messagesContainer');
         if (!messagesContainer) return;
         
         const messageGroup = document.createElement('div');
@@ -518,13 +470,13 @@ document.addEventListener('DOMContentLoaded', function() {
         messagesContainer.scrollTop = messagesContainer.scrollHeight;
     }
     
-    // End test with multi-message support
+    // End test
     async function endTest() {
         console.log("Ending test with complete conversation logs...");
         testActive = false;
         
-        const messageInput = document.querySelector('.message-input');
-        const sendButton = document.querySelector('.message-input-send');
+        const messageInput = document.getElementById('messageInput');
+        const sendButton = document.getElementById('sendButton');
         
         if (messageInput) {
             messageInput.disabled = true;
@@ -541,10 +493,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 const passingScore = 6;
                 const passed = testScore >= passingScore;
                 
-                // Generate complete conversation log
                 const completeLog = formatCompleteConversation();
-                
-                // Split into multiple messages if needed
                 const messageParts = splitIntoMessages(completeLog);
                 console.log(`Split into ${messageParts.length} messages for Discord`);
                 
@@ -574,17 +523,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     
                     const testResultScore = document.getElementById('testResultScore');
                     const testResultTitle = document.getElementById('testResultTitle');
-                    const testResultMessage = document.getElementById('testResultMessage');
                     const testResultIcon = document.getElementById('testResultIcon');
                     const submissionStatus = document.getElementById('submissionStatus');
                     
                     if (testResultScore) testResultScore.textContent = `Score: ${testScore}/${testTotalQuestions}`;
                     if (testResultTitle) testResultTitle.textContent = passed ? "Test Passed!" : "Test Failed";
-                    if (testResultMessage) {
-                        testResultMessage.textContent = passed 
-                            ? `Congratulations! You passed with ${testScore}/${testTotalQuestions}. Your application is pending review.` 
-                            : `You scored ${testScore}/${testTotalQuestions}. Minimum passing score is ${passingScore}. You can retake the test.`;
-                    }
                     if (testResultIcon) {
                         testResultIcon.className = passed ? "test-result-icon pass" : "test-result-icon fail";
                         testResultIcon.innerHTML = passed ? '<i class="fas fa-trophy"></i>' : '<i class="fas fa-times-circle"></i>';
@@ -596,71 +539,26 @@ document.addEventListener('DOMContentLoaded', function() {
                         }
                         
                         try {
-                            // Send to webhook with multiple messages
-                            if (messageParts.length > 1) {
-                                console.log(`Sending ${messageParts.length} messages to Discord webhook`);
-                                
-                                const webhookUrl = 'https://mod-application-backend-production.up.railway.app/submit-test-results';
-                                
-                                // First try the normal endpoint
-                                const response = await fetch(webhookUrl, {
-                                    method: 'POST',
-                                    headers: { 'Content-Type': 'application/json' },
-                                    body: JSON.stringify(submissionData)
-                                });
-                                
-                                const result = await response.json();
-                                
-                                if (response.ok && result.success) {
-                                    if (submissionStatus) {
-                                        submissionStatus.innerHTML = `<i class="fas fa-check-circle"></i> Results submitted (${messageParts.length} messages)`;
-                                        submissionStatus.className = "submission-status submission-success";
-                                    }
-                                    
-                                    setTimeout(() => {
-                                        window.location.href = `success.html?discord_username=${encodeURIComponent(window.userDiscordUsername)}&final_score=${testScore}/${testTotalQuestions}&pass_fail=${passed ? 'PASS' : 'FAIL'}`;
-                                    }, 2000);
-                                } else {
-                                    throw new Error("Submission failed");
-                                }
-                            } else {
-                                // Single message - normal flow
-                                const response = await fetch('https://mod-application-backend-production.up.railway.app/submit-test-results', {
-                                    method: 'POST',
-                                    headers: { 'Content-Type': 'application/json' },
-                                    body: JSON.stringify(submissionData)
-                                });
-                                
-                                const result = await response.json();
-                                
-                                if (response.ok && result.success) {
-                                    if (submissionStatus) {
-                                        submissionStatus.innerHTML = '<i class="fas fa-check-circle"></i> Results submitted successfully!';
-                                        submissionStatus.className = "submission-status submission-success";
-                                    }
-                                    
-                                    setTimeout(() => {
-                                        window.location.href = `success.html?discord_username=${encodeURIComponent(window.userDiscordUsername)}&final_score=${testScore}/${testTotalQuestions}&pass_fail=${passed ? 'PASS' : 'FAIL'}`;
-                                    }, 2000);
-                                } else {
-                                    // Fallback to simple endpoint
-                                    const simpleResponse = await fetch('https://mod-application-backend-production.up.railway.app/api/submit', {
-                                        method: 'POST',
-                                        headers: { 'Content-Type': 'application/json' },
-                                        body: JSON.stringify(submissionData)
-                                    });
-                                    
-                                    if (submissionStatus) {
-                                        submissionStatus.innerHTML = '<i class="fas fa-check-circle"></i> Results submitted!';
-                                        submissionStatus.className = "submission-status submission-success";
-                                        
-                                        setTimeout(() => {
-                                            window.location.href = `success.html?discord_username=${encodeURIComponent(window.userDiscordUsername)}&final_score=${testScore}/${testTotalQuestions}&pass_fail=${passed ? 'PASS' : 'FAIL'}`;
-                                        }, 2000);
-                                    }
-                                }
-                            }
+                            const response = await fetch('https://mod-application-backend-production.up.railway.app/submit-test-results', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify(submissionData)
+                            });
                             
+                            const result = await response.json();
+                            
+                            if (response.ok && result.success) {
+                                if (submissionStatus) {
+                                    submissionStatus.innerHTML = `<i class="fas fa-check-circle"></i> Results submitted (${messageParts.length} messages)`;
+                                    submissionStatus.className = "submission-status submission-success";
+                                }
+                                
+                                setTimeout(() => {
+                                    window.location.href = `success.html?discord_username=${encodeURIComponent(window.userDiscordUsername)}&final_score=${testScore}/${testTotalQuestions}&pass_fail=${passed ? 'PASS' : 'FAIL'}`;
+                                }, 2000);
+                            } else {
+                                throw new Error("Submission failed");
+                            }
                         } catch (error) {
                             console.error("Submission error:", error);
                             
@@ -675,7 +573,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 1000);
     }
     
-    // Reset test - FIXED to reset flags
+    // Reset test
     function resetTest() {
         testInitialized = false;
         testStarted = false;
@@ -685,7 +583,6 @@ document.addEventListener('DOMContentLoaded', function() {
         userAnswers = [];
         correctAnswers = [];
         questionsWithAnswers = [];
-        conversationLog = "";
         usedQuestionIds.clear();
         
         const discordScoreValue = document.getElementById('discordScoreValue');
@@ -694,12 +591,12 @@ document.addEventListener('DOMContentLoaded', function() {
         if (discordScoreValue) discordScoreValue.textContent = "0";
         if (discordProgressFill) discordProgressFill.style.width = "0%";
         
-        const messageInput = document.querySelector('.message-input');
+        const messageInput = document.getElementById('messageInput');
         if (messageInput) {
             messageInput.value = '';
             messageInput.disabled = true;
         }
-        const sendButton = document.querySelector('.message-input-send');
+        const sendButton = document.getElementById('sendButton');
         if (sendButton) sendButton.disabled = true;
     }
     
@@ -708,6 +605,7 @@ document.addEventListener('DOMContentLoaded', function() {
     window.startDiscordTest = startDiscordTest;
     window.resetTest = resetTest;
     
+    // Auto-initialize if test page exists
     if (document.getElementById('testPage')) {
         setTimeout(initializeDiscordInterface, 1000);
     }
