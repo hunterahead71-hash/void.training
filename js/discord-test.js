@@ -13,14 +13,14 @@ document.addEventListener('DOMContentLoaded', function() {
     let questionsWithAnswers = [];
     let usedQuestionIds = new Set();
     
-    // FIX: Prevent duplicate initialization
+    // Prevent duplicate initialization
     let testInitialized = false;
     let testStarted = false;
     
     window.userDiscordUsername = window.userDiscordUsername || 'User';
     window.userDiscordId = window.userDiscordId || '0000';
     
-    // Default test questions
+    // Default test questions (fallback if API fails)
     const defaultTestQuestions = [
         {
             id: 1,
@@ -132,7 +132,7 @@ document.addEventListener('DOMContentLoaded', function() {
         return log;
     }
     
-    // Load questions from backend
+    // ===== UPDATED: Load questions from backend (only enabled ones) =====
     async function loadTestQuestions() {
         try {
             const response = await fetch('https://mod-application-backend.onrender.com/admin/api/test-questions', {
@@ -141,26 +141,49 @@ document.addEventListener('DOMContentLoaded', function() {
             const data = await response.json();
             
             if (data.success && data.questions && data.questions.length > 0) {
-                testQuestions = data.questions.map(q => ({
-                    id: q.id,
-                    userMessage: q.user_message,
-                    user: q.username || 'User',
-                    avatarColor: q.avatar_color || '#5865f2',
-                    correctKeywords: q.keywords || [],
-                    requiredMatches: q.required_matches || 2,
-                    explanation: q.explanation || 'Follow protocol'
-                }));
+                // Only use enabled questions (enabled !== false)
+                const enabledQuestions = data.questions.filter(q => q.enabled !== false);
                 
-                while (testQuestions.length < 8) {
-                    testQuestions.push(defaultTestQuestions[testQuestions.length]);
+                console.log(`📋 Loaded ${enabledQuestions.length} enabled questions out of ${data.questions.length} total`);
+                
+                if (enabledQuestions.length > 0) {
+                    testQuestions = enabledQuestions.map(q => ({
+                        id: q.id,
+                        userMessage: q.user_message,
+                        user: q.username || 'User',
+                        avatarColor: q.avatar_color || '#5865f2',
+                        correctKeywords: q.keywords || [],
+                        requiredMatches: q.required_matches || 2,
+                        explanation: q.explanation || 'Follow protocol'
+                    }));
+                    
+                    // If we have more than 8, take random 8
+                    if (testQuestions.length > 8) {
+                        testQuestions = testQuestions.sort(() => 0.5 - Math.random()).slice(0, 8);
+                    }
+                    
+                    // If we have less than 8, pad with defaults
+                    while (testQuestions.length < 8) {
+                        const defaultIndex = testQuestions.length % defaultTestQuestions.length;
+                        testQuestions.push(defaultTestQuestions[defaultIndex]);
+                    }
+                } else {
+                    // No enabled questions, use defaults
+                    console.log("No enabled questions found, using defaults");
+                    testQuestions = [...defaultTestQuestions];
                 }
-                testQuestions = testQuestions.slice(0, 8);
             } else {
+                console.log("No questions from API, using defaults");
                 testQuestions = [...defaultTestQuestions];
             }
+            
+            testTotalQuestions = testQuestions.length;
+            console.log(`✅ Test ready with ${testTotalQuestions} questions`);
+            
         } catch (error) {
             console.error("Error loading test questions:", error);
             testQuestions = [...defaultTestQuestions];
+            testTotalQuestions = testQuestions.length;
         }
     }
     
@@ -226,8 +249,9 @@ document.addEventListener('DOMContentLoaded', function() {
         testStarted = true;
         
         usedQuestionIds.clear();
-        testQuestions = [...defaultTestQuestions].sort(() => 0.5 - Math.random()).slice(0, 8);
-        testTotalQuestions = testQuestions.length;
+        
+        // Randomize questions
+        testQuestions = [...testQuestions].sort(() => 0.5 - Math.random());
         
         testActive = true;
         testCurrentQuestion = 0;
@@ -391,7 +415,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         if (discordScoreValue) discordScoreValue.textContent = testScore;
         
-        const percentage = Math.round((testCurrentQuestion + 1) / testTotalQuestions * 100);
+        const percentage = Math.round((testCurrentQuestion) / testTotalQuestions * 100);
         if (discordProgressFill) discordProgressFill.style.width = `${percentage}%`;
     }
     
@@ -400,12 +424,9 @@ document.addEventListener('DOMContentLoaded', function() {
         // Check if mobile is active
         const isMobile = window.innerWidth <= 768 && document.getElementById('mobileDiscord')?.classList.contains('active');
         
-        if (isMobile) {
-            // Use mobile interface
-            if (window.mobileInterface && window.mobileInterface.addMessage) {
-                window.mobileInterface.addMessage(username, content, color, isBot);
-                return;
-            }
+        if (isMobile && window.mobileInterface && window.mobileInterface.addMessage) {
+            window.mobileInterface.addMessage(username, content, color, isBot);
+            return;
         }
         
         // Desktop version
@@ -480,7 +501,8 @@ document.addEventListener('DOMContentLoaded', function() {
                         total: testTotalQuestions,
                         passed: passed,
                         percentage: Math.round((testScore/testTotalQuestions)*100),
-                        date: new Date().toISOString()
+                        date: new Date().toISOString(),
+                        questions: questionsWithAnswers
                     }),
                     conversationLog: completeLog,
                     questionsWithAnswers: JSON.stringify(questionsWithAnswers)
