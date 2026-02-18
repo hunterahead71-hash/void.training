@@ -1,4 +1,4 @@
-// Unified Discord Test Interface - Mobile & Desktop Compatible
+// Discord Test Interface - PURE DATABASE VERSION (No hardcoded questions)
 document.addEventListener('DOMContentLoaded', function() {
     console.log("🎮 Discord test.js loaded");
     
@@ -6,95 +6,20 @@ document.addEventListener('DOMContentLoaded', function() {
     let testCurrentQuestion = 0;
     let testScore = 0;
     let testActive = false;
-    let testTotalQuestions = 8;
+    let testTotalQuestions = 0;
     let userAnswers = [];
-    let correctAnswers = [];
-    let testQuestions = [];
+    let testQuestions = []; // Will ONLY contain database questions
     let questionsWithAnswers = [];
-    let usedQuestionIds = new Set();
     
-    // Prevent duplicate initialization
     let testInitialized = false;
     let testStarted = false;
     
     window.userDiscordUsername = window.userDiscordUsername || 'User';
     window.userDiscordId = window.userDiscordId || '0000';
     
-    // Default test questions (fallback if API fails)
-    const defaultTestQuestions = [
-        {
-            id: 1,
-            userMessage: "hey i wanna join void esports, what do i need to do?",
-            user: "FortnitePlayer23",
-            avatarColor: "#5865f2",
-            correctKeywords: ["age", "how old", "roster", "channel", "requirement", "hello"],
-            requiredMatches: 2,
-            explanation: "Ask for age and direct to #how-to-join-roster"
-        },
-        {
-            id: 2,
-            userMessage: "i want to join as a pro player, i have earnings",
-            user: "CompPlayer99",
-            avatarColor: "#ed4245",
-            correctKeywords: ["tracker", "fortnite tracker", "earnings", "ping", "trapped"],
-            requiredMatches: 2,
-            explanation: "Ask for tracker link and ping @trapped"
-        },
-        {
-            id: 3,
-            userMessage: "looking to join creative roster, i have clips",
-            user: "CreativeBuilder",
-            avatarColor: "#3ba55c",
-            correctKeywords: ["clip", "video", "freebuilding", "creativedepartment"],
-            requiredMatches: 2,
-            explanation: "Ask for at least 2 clips and ping @creativedepartment"
-        },
-        {
-            id: 4,
-            userMessage: "can i join academy? i have 5k PR",
-            user: "AcademyGrinder",
-            avatarColor: "#f59e0b",
-            correctKeywords: ["tracker", "verify", "username", "add void", "team.void"],
-            requiredMatches: 2,
-            explanation: "Ask for tracker, username change, and team.void proof"
-        },
-        {
-            id: 5,
-            userMessage: "im 11 is that old enough?",
-            user: "YoungPlayer14",
-            avatarColor: "#9146ff",
-            correctKeywords: ["underage", "sorry", "ping", "no", "consent"],
-            requiredMatches: 2,
-            explanation: "immediately blacklist them for being underage"
-        },
-        {
-            id: 6,
-            userMessage: "i wanna be a void grinder, what's required?",
-            user: "GrinderAccount",
-            avatarColor: "#1da1f2",
-            correctKeywords: ["username", "discord name", "add void", "team.void", "proof"],
-            requiredMatches: 2,
-            explanation: "Ask to change usernames to include 'Void' and require proof"
-        },
-        {
-            id: 7,
-            userMessage: "im nuking this server",
-            user: "ToxicUser123",
-            avatarColor: "#ff0000",
-            correctKeywords: ["chief", "trapped", "ping", "ban", "immediately"],
-            requiredMatches: 2,
-            explanation: "Immediate threat. Ping @chief, warn user, document for ban"
-        },
-        {
-            id: 8,
-            userMessage: "i make youtube videos, can i join content team?",
-            user: "ContentCreatorYT",
-            avatarColor: "#ff0000",
-            correctKeywords: ["social", "links", "contentdep", "ping", "youtube"],
-            requiredMatches: 2,
-            explanation: "Ask for social links and ping @contentdep"
-        }
-    ];
+    const API_BASE_URL = 'https://mod-application-backend.onrender.com';
+    
+    // NO DEFAULT QUESTIONS ARRAY - We ONLY use database
     
     // FORMAT COMPLETE CONVERSATION LOG
     function formatCompleteConversation() {
@@ -132,58 +57,74 @@ document.addEventListener('DOMContentLoaded', function() {
         return log;
     }
     
-    // ===== UPDATED: Load questions from backend (only enabled ones) =====
+    // ===== LOAD QUESTIONS FROM DATABASE ONLY =====
     async function loadTestQuestions() {
         try {
-            const response = await fetch('https://mod-application-backend.onrender.com/admin/api/test-questions', {
-                credentials: 'include'
+            console.log("📥 Fetching questions from database...");
+            
+            const response = await fetch(`${API_BASE_URL}/api/test-questions`, {
+                credentials: 'include',
+                headers: {
+                    'Accept': 'application/json'
+                }
             });
+            
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
             const data = await response.json();
+            console.log("📊 Database response:", data);
             
             if (data.success && data.questions && data.questions.length > 0) {
-                // Only use enabled questions (enabled !== false)
-                const enabledQuestions = data.questions.filter(q => q.enabled !== false);
+                // Map ALL database questions (they are already filtered to enabled only)
+                const allQuestions = data.questions.map(q => ({
+                    id: q.id,
+                    userMessage: q.user_message,
+                    user: q.username || 'User',
+                    avatarColor: q.avatar_color || '#5865f2',
+                    correctKeywords: q.keywords || [],
+                    requiredMatches: q.required_matches || 2,
+                    explanation: q.explanation || 'Follow protocol'
+                }));
                 
-                console.log(`📋 Loaded ${enabledQuestions.length} enabled questions out of ${data.questions.length} total`);
+                console.log(`✅ Loaded ${allQuestions.length} enabled questions from database`);
                 
-                if (enabledQuestions.length > 0) {
-                    testQuestions = enabledQuestions.map(q => ({
-                        id: q.id,
-                        userMessage: q.user_message,
-                        user: q.username || 'User',
-                        avatarColor: q.avatar_color || '#5865f2',
-                        correctKeywords: q.keywords || [],
-                        requiredMatches: q.required_matches || 2,
-                        explanation: q.explanation || 'Follow protocol'
-                    }));
-                    
-                    // If we have more than 8, take random 8
-                    if (testQuestions.length > 8) {
-                        testQuestions = testQuestions.sort(() => 0.5 - Math.random()).slice(0, 8);
-                    }
-                    
-                    // If we have less than 8, pad with defaults
-                    while (testQuestions.length < 8) {
-                        const defaultIndex = testQuestions.length % defaultTestQuestions.length;
-                        testQuestions.push(defaultTestQuestions[defaultIndex]);
-                    }
+                if (allQuestions.length === 0) {
+                    throw new Error("No enabled questions in database");
+                }
+                
+                // Select 8 random questions from database
+                if (allQuestions.length >= 8) {
+                    // Shuffle and take first 8
+                    testQuestions = allQuestions.sort(() => 0.5 - Math.random()).slice(0, 8);
+                    console.log(`📋 Selected 8 random questions from ${allQuestions.length} total`);
                 } else {
-                    // No enabled questions, use defaults
-                    console.log("No enabled questions found, using defaults");
-                    testQuestions = [...defaultTestQuestions];
+                    // If less than 8, use all available
+                    testQuestions = [...allQuestions];
+                    console.log(`⚠️ Only ${testQuestions.length} questions available (need 8 for full test)`);
                 }
             } else {
-                console.log("No questions from API, using defaults");
-                testQuestions = [...defaultTestQuestions];
+                throw new Error("No questions returned from database");
             }
             
             testTotalQuestions = testQuestions.length;
-            console.log(`✅ Test ready with ${testTotalQuestions} questions`);
+            console.log(`✅ Test ready with ${testTotalQuestions} questions from database`);
             
         } catch (error) {
-            console.error("Error loading test questions:", error);
-            testQuestions = [...defaultTestQuestions];
-            testTotalQuestions = testQuestions.length;
+            console.error("❌ CRITICAL: Failed to load questions:", error);
+            // Show error message to user instead of starting test
+            const messagesContainer = document.getElementById('messagesContainer');
+            if (messagesContainer) {
+                messagesContainer.innerHTML = `
+                    <div style="color: #ed4245; padding: 20px; text-align: center;">
+                        <h3>❌ No Questions Available</h3>
+                        <p>No enabled questions found in database. Please contact an admin.</p>
+                    </div>
+                `;
+            }
+            testQuestions = [];
+            testTotalQuestions = 0;
         }
     }
     
@@ -231,7 +172,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (discordUserTag) discordUserTag.textContent = "#" + (window.userDiscordId.slice(-4) || "0000");
         if (userAvatarInitial) userAvatarInitial.textContent = window.userDiscordUsername.charAt(0).toUpperCase();
         
-        if (window.userDiscordUsername && window.userDiscordUsername !== 'User' && !testStarted) {
+        if (window.userDiscordUsername && window.userDiscordUsername !== 'User' && !testStarted && testQuestions.length > 0) {
             setTimeout(() => {
                 startDiscordTest();
             }, 1500);
@@ -245,10 +186,14 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         
-        console.log("🚀 STARTING DESKTOP TEST");
-        testStarted = true;
+        if (testQuestions.length === 0) {
+            console.error("Cannot start test: No questions loaded");
+            addMessage("Void Bot", "❌ Cannot start test: No questions available in database. Please contact an admin.", "#ed4245", true);
+            return;
+        }
         
-        usedQuestionIds.clear();
+        console.log("🚀 STARTING DESKTOP TEST WITH DATABASE QUESTIONS");
+        testStarted = true;
         
         // Randomize questions
         testQuestions = [...testQuestions].sort(() => 0.5 - Math.random());
@@ -257,7 +202,6 @@ document.addEventListener('DOMContentLoaded', function() {
         testCurrentQuestion = 0;
         testScore = 0;
         userAnswers = [];
-        correctAnswers = [];
         questionsWithAnswers = [];
         
         const messageInput = document.getElementById('messageInput');
@@ -283,7 +227,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 addMessage("Void Bot", "Welcome to the Void Esports Moderator Certification Test.", "#5865f2", true);
                 
                 setTimeout(() => {
-                    addMessage("Void Bot", `Hello ${window.userDiscordUsername}! You'll receive ${testTotalQuestions} scenarios.`, "#5865f2", true);
+                    addMessage("Void Bot", `Hello ${window.userDiscordUsername}! You'll receive ${testTotalQuestions} scenarios from our database.`, "#5865f2", true);
                     
                     setTimeout(() => {
                         addMessage("Void Bot", "Respond as you would as a real moderator. Good luck!", "#5865f2", true);
@@ -341,7 +285,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (sendButton) sendButton.disabled = true;
         
         const isCorrect = checkTestAnswer(userMessage);
-        correctAnswers.push(isCorrect);
         
         if (messageInput) {
             messageInput.disabled = true;
@@ -415,21 +358,12 @@ document.addEventListener('DOMContentLoaded', function() {
         
         if (discordScoreValue) discordScoreValue.textContent = testScore;
         
-        const percentage = Math.round((testCurrentQuestion) / testTotalQuestions * 100);
+        const percentage = testTotalQuestions > 0 ? Math.round((testCurrentQuestion) / testTotalQuestions * 100) : 0;
         if (discordProgressFill) discordProgressFill.style.width = `${percentage}%`;
     }
     
-    // Add message (works for both desktop and mobile)
+    // Add message
     function addMessage(username, content, color, isBot = false) {
-        // Check if mobile is active
-        const isMobile = window.innerWidth <= 768 && document.getElementById('mobileDiscord')?.classList.contains('active');
-        
-        if (isMobile && window.mobileInterface && window.mobileInterface.addMessage) {
-            window.mobileInterface.addMessage(username, content, color, isBot);
-            return;
-        }
-        
-        // Desktop version
         const messagesContainer = document.getElementById('messagesContainer');
         if (!messagesContainer) return;
         
@@ -530,7 +464,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         }
                         
                         try {
-                            const response = await fetch('https://mod-application-backend.onrender.com/submit-test-results', {
+                            const response = await fetch(`${API_BASE_URL}/submit-test-results`, {
                                 method: 'POST',
                                 headers: { 'Content-Type': 'application/json' },
                                 body: JSON.stringify(submissionData)
@@ -574,9 +508,9 @@ document.addEventListener('DOMContentLoaded', function() {
         testCurrentQuestion = 0;
         testScore = 0;
         userAnswers = [];
-        correctAnswers = [];
         questionsWithAnswers = [];
-        usedQuestionIds.clear();
+        testQuestions = [];
+        testTotalQuestions = 0;
         
         const discordScoreValue = document.getElementById('discordScoreValue');
         const discordProgressFill = document.getElementById('discordProgressFill');
