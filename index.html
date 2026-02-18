@@ -1202,7 +1202,7 @@
             background: var(--bg-tertiary);
         }
 
-        /* ===== MOBILE DISCORD TEST INTERFACE ===== */
+        /* ===== MOBILE DISCORD TEST INTERFACE - FIXED ===== */
         .mobile-discord {
             display: none;
             position: fixed;
@@ -1213,6 +1213,7 @@
             background: var(--discord-bg);
             z-index: 10000;
             overflow: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         }
         .mobile-discord.active {
             display: block;
@@ -1345,6 +1346,7 @@
             font-size: 0.9375rem;
             line-height: 1.5;
             word-wrap: break-word;
+            white-space: pre-wrap;
             margin-bottom: 4px;
         }
 
@@ -1676,7 +1678,7 @@
             30% { transform: translateY(-4px); }
         }
 
-        /* Message spacing - fix for messages combining */
+        /* Message spacing */
         .discord-message-group + .discord-message-group {
             margin-top: 8px;
         }
@@ -1898,7 +1900,7 @@
         </div>
     </div>
 
-    <!-- MOBILE DISCORD TEST INTERFACE -->
+    <!-- MOBILE DISCORD TEST INTERFACE - FIXED VERSION -->
     <div class="mobile-discord" id="mobileDiscord">
         <!-- Mobile Header -->
         <div class="mobile-header">
@@ -2266,7 +2268,7 @@
             <!-- Skip All Container -->
             <div class="skip-all-container">
                 <p>Don't want to answer all questions? You can skip directly to the test.</p>
-                <button class="skip-all-btn" id="skipAllQuestionsBtn">
+                <button class="btn btn-secondary" id="skipAllQuestionsBtn">
                     <i class="fas fa-forward"></i> Skip All Questions & Go to Test
                 </button>
             </div>
@@ -2898,7 +2900,7 @@
                 }
             };
 
-            // ==================== MOBILE INTERFACE ====================
+            // ==================== MOBILE INTERFACE - FIXED ====================
             const mobile = {
                 testPage: document.getElementById('mobileDiscord'),
                 mainContainer: document.getElementById('mainContainer'),
@@ -3138,27 +3140,25 @@
                     ui.updateScore();
                     ui.disableInput(true);
                     
-                    // Welcome sequence with proper delays between messages
+                    // Welcome sequence
                     await ui.showTyping('Void Bot', 1000);
                     const welcomeMsg = 'Welcome to the **Void Esports Moderator Certification Test**.';
                     ui.addMessage('Void Bot', welcomeMsg, '#5865f2', true);
                     testState.addToLog('Void Bot', welcomeMsg, true);
                     
-                    await delay(1800); // Increased delay between messages
-                    
+                    await delay(800);
                     await ui.showTyping('Void Bot', 1200);
                     const infoMsg = `You'll be presented with **${CONFIG.TOTAL_QUESTIONS}** scenarios.`;
                     ui.addMessage('Void Bot', infoMsg, '#5865f2', true);
                     testState.addToLog('Void Bot', infoMsg, true);
                     
-                    await delay(1800);
-                    
+                    await delay(800);
                     await ui.showTyping('Void Bot', 800);
                     const finalMsg = 'Respond as you would as a real moderator. Good luck!';
                     ui.addMessage('Void Bot', finalMsg, '#5865f2', true);
                     testState.addToLog('Void Bot', finalMsg, true);
                     
-                    await delay(2000);
+                    await delay(1500);
                     
                     this.showNextQuestion(isMobile);
                 },
@@ -3173,7 +3173,7 @@
 
                     const question = TEST_QUESTIONS[testState.currentQuestion];
                     
-                    await ui.showTyping(question.username, 1500);
+                    await ui.showTyping(question.username, 1200);
                     ui.addMessage(question.username, question.message, question.avatarColor, false);
                     testState.addToLog(question.username, question.message, false);
                     
@@ -3197,17 +3197,19 @@
                     
                     ui.disableInput(true);
                     
+                    // Add user message
                     ui.addMessage('You', userMessage, '#7289da', false);
                     testState.addToLog(testState.userInfo.username, userMessage, false, true);
                     
                     testState.userAnswers.push(userMessage);
                     ui.clearInput();
                     
-                    await ui.showTyping('Void Bot', 1500);
+                    await ui.showTyping('Void Bot', 1000);
                     
                     const question = TEST_QUESTIONS[testState.currentQuestion];
                     const result = this.evaluateAnswer(userMessage, question);
                     
+                    // Store for log
                     testState.questionsWithAnswers.push({
                         question: question.message,
                         answer: userMessage,
@@ -3218,6 +3220,7 @@
                         feedback: question.feedback
                     });
                     
+                    // Add feedback message
                     let feedbackMsg = result.correct 
                         ? `✅ **Correct!** ${question.feedback}`
                         : `❌ **Not quite right.** ${question.feedback}`;
@@ -3225,16 +3228,18 @@
                     ui.addMessage('Void Bot', feedbackMsg, '#5865f2', true);
                     testState.addToLog('Void Bot', feedbackMsg, true);
                     
-                    if (result.correct) testState.score++;
+                    if (result.correct) {
+                        testState.score++;
+                    }
                     
                     testState.currentQuestion++;
                     ui.updateScore();
                     
                     if (testState.currentQuestion < CONFIG.TOTAL_QUESTIONS) {
-                        await delay(2000);
+                        await delay(1500);
                         this.showNextQuestion(isMobile);
                     } else {
-                        await delay(2500);
+                        await delay(2000);
                         this.endTest(isMobile);
                     }
                 },
@@ -3267,7 +3272,7 @@
                     testState.endTime = new Date().toISOString();
                     ui.disableInput(true);
                     
-                    await ui.showTyping('Void Bot', 1500);
+                    await ui.showTyping('Void Bot', 1000);
                     
                     const passed = testState.score >= CONFIG.PASSING_SCORE;
                     const finalMsg = `**Test Complete!**\nFinal Score: **${testState.score}/${CONFIG.TOTAL_QUESTIONS}**\nResult: **${passed ? 'PASSED ✅' : 'FAILED ❌'}**`;
@@ -3310,6 +3315,7 @@
                     } catch (error) {
                         console.error('Submission error:', error);
                         
+                        // Try fallback endpoint
                         try {
                             const fallbackResponse = await fetch(`${CONFIG.API_BASE_URL}/api/submit`, {
                                 method: 'POST',
@@ -3415,9 +3421,10 @@
                             mobile.show();
                             mobile.updateUserDisplay();
                             
+                            // CRITICAL FIX: Ensure mobile test starts properly
                             setTimeout(() => {
                                 testLogic.start(true);
-                            }, 1000);
+                            }, 500);
                         } else {
                             desktop.setupEvents();
                             desktop.show();
@@ -3425,7 +3432,7 @@
                             
                             setTimeout(() => {
                                 testLogic.start(false);
-                            }, 1000);
+                            }, 500);
                         }
                     }
                 }
