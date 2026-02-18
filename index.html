@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>VOID | Mod Training Suite v3.0</title>
+    <title>VOID | Mod Training Suite v3.1</title>
     
     <!-- Premium Fonts -->
     <link href="https://api.fontshare.com/v2/css?f[]=satoshi@900,700,500,300,400&display=swap" rel="stylesheet">
@@ -563,7 +563,7 @@
             color: var(--text-muted);
         }
 
-        /* ===== DISCORD REPLICA TEST INTERFACE ===== */
+        /* ===== DESKTOP DISCORD REPLICA TEST INTERFACE ===== */
         .test-page {
             display: none;
             position: fixed;
@@ -1287,28 +1287,546 @@
             color: var(--discord-text-normal);
         }
 
-        /* Mobile Responsive */
+        /* ===== MOBILE DISCORD TEST INTERFACE ===== */
+        .mobile-discord {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #313338;
+            z-index: 10000;
+            overflow: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        .mobile-discord.active {
+            display: block;
+        }
+
+        /* Mobile Header */
+        .mobile-header {
+            height: 56px;
+            background: #1e1f22;
+            border-bottom: 1px solid #3c3f45;
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 10001;
+        }
+
+        .mobile-menu-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+            color: #949ba4;
+            margin-right: 12px;
+            cursor: pointer;
+        }
+
+        .mobile-server-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #5865f2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: white;
+            margin-right: 12px;
+        }
+
+        .mobile-channel-name {
+            font-weight: 600;
+            font-size: 17px;
+            color: #dbdee1;
+            flex: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .mobile-header-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .mobile-header-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+            color: #949ba4;
+            cursor: pointer;
+        }
+
+        /* Mobile Messages Container */
+        .mobile-messages-container {
+            position: absolute;
+            top: 56px;
+            left: 0;
+            right: 0;
+            bottom: 70px;
+            overflow-y: auto;
+            background: #313338;
+            padding: 16px;
+        }
+
+        /* Mobile Message Groups */
+        .mobile-message-group {
+            display: flex;
+            gap: 12px;
+            padding: 8px 0;
+            margin-bottom: 12px;
+        }
+
+        .mobile-message-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .mobile-message-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .mobile-message-header {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+            margin-bottom: 4px;
+            flex-wrap: wrap;
+        }
+
+        .mobile-message-author {
+            font-weight: 600;
+            color: #dbdee1;
+            font-size: 0.9375rem;
+        }
+
+        .mobile-bot-tag {
+            background: #5865f2;
+            color: white;
+            font-size: 0.625rem;
+            font-weight: 600;
+            padding: 2px 6px;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+
+        .mobile-message-timestamp {
+            color: #949ba4;
+            font-size: 0.6875rem;
+        }
+
+        .mobile-message-text {
+            color: #dbdee1;
+            font-size: 0.9375rem;
+            line-height: 1.4;
+            word-wrap: break-word;
+            white-space: pre-wrap;
+        }
+
+        /* Mobile Input Area */
+        .mobile-input-area {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 70px;
+            background: #313338;
+            border-top: 1px solid #3c3f45;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .mobile-message-input {
+            flex: 1;
+            background: #1e1f22;
+            border: 1px solid #3c3f45;
+            border-radius: 20px;
+            padding: 12px 16px;
+            color: #dbdee1;
+            font-size: 16px;
+            font-family: inherit;
+            resize: none;
+            min-height: 44px;
+            max-height: 120px;
+        }
+
+        .mobile-message-input:focus {
+            outline: none;
+            border-color: #00a8fc;
+        }
+
+        .mobile-send-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: #5865f2;
+            border: none;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .mobile-send-btn:disabled {
+            background: #949ba4;
+            cursor: not-allowed;
+        }
+
+        /* Mobile Sidebar Menu */
+        .mobile-sidebar {
+            position: fixed;
+            top: 0;
+            left: -280px;
+            width: 280px;
+            height: 100%;
+            background: #2b2d31;
+            z-index: 10002;
+            transition: left 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .mobile-sidebar.active {
+            left: 0;
+        }
+
+        .mobile-sidebar-header {
+            height: 56px;
+            background: #1e1f22;
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            border-bottom: 1px solid #3c3f45;
+        }
+
+        .mobile-sidebar-title {
+            font-weight: 700;
+            font-size: 18px;
+            color: #dbdee1;
+            flex: 1;
+        }
+
+        .mobile-close-sidebar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+            color: #949ba4;
+            cursor: pointer;
+        }
+
+        .mobile-scrollable-channels {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px 12px;
+        }
+
+        .mobile-category-header {
+            padding: 8px 8px;
+            color: #949ba4;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .mobile-channel-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            color: #949ba4;
+            transition: all .2s ease;
+        }
+
+        .mobile-channel-item.active {
+            background: #404249;
+            color: #dbdee1;
+        }
+
+        .mobile-channel-icon {
+            font-size: 16px;
+            width: 24px;
+            text-align: center;
+        }
+
+        .mobile-channel-name-sidebar {
+            flex: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Mobile Score Panel */
+        .mobile-score-panel {
+            position: fixed;
+            top: 56px;
+            right: -300px;
+            width: 280px;
+            height: calc(100% - 56px);
+            background: #2b2d31;
+            z-index: 10002;
+            transition: right 0.3s ease;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .mobile-score-panel.active {
+            right: 0;
+        }
+
+        .mobile-score-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #3c3f45;
+        }
+
+        .mobile-score-title {
+            font-weight: 700;
+            font-size: 18px;
+            color: #dbdee1;
+        }
+
+        .mobile-close-score {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+            color: #949ba4;
+            cursor: pointer;
+        }
+
+        .mobile-score-display {
+            background: #1e1f22;
+            border-radius: 16px;
+            padding: 30px 20px;
+            text-align: center;
+            border: 2px solid #5865f2;
+            margin-bottom: 24px;
+        }
+
+        .mobile-score-value {
+            font-size: 56px;
+            font-weight: 800;
+            color: #dbdee1;
+            line-height: 1;
+            margin-bottom: 8px;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .mobile-score-total {
+            color: #949ba4;
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .mobile-progress-bar-container {
+            height: 6px;
+            background: #1e1f22;
+            border-radius: 3px;
+            margin-top: 20px;
+            overflow: hidden;
+        }
+
+        .mobile-progress-fill-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #5865f2, #eb459e);
+            width: 0%;
+            transition: width 0.3s ease;
+            border-radius: 3px;
+        }
+
+        /* Mobile Test Complete Modal */
+        .mobile-test-complete {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 10003;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .mobile-test-complete.active {
+            display: flex;
+        }
+
+        .mobile-test-result-container {
+            background: #2b2d31;
+            border-radius: 16px;
+            padding: 32px 24px;
+            width: 100%;
+            max-width: 400px;
+            border: 1px solid #3c3f45;
+            text-align: center;
+        }
+
+        .mobile-test-result-icon {
+            font-size: 60px;
+            margin-bottom: 24px;
+        }
+
+        .mobile-test-result-icon.pass { color: #23a55a; }
+        .mobile-test-result-icon.fail { color: #f23f42; }
+
+        .mobile-test-result-title {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 16px;
+            color: #dbdee1;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .mobile-test-result-score {
+            font-size: 22px;
+            color: #949ba4;
+            margin-bottom: 24px;
+            font-weight: 600;
+        }
+
+        .mobile-test-result-message {
+            color: #dbdee1;
+            font-size: 16px;
+            line-height: 1.5;
+            margin-bottom: 32px;
+        }
+
+        .mobile-submission-status {
+            background: #1e1f22;
+            border-radius: 8px;
+            padding: 16px;
+            margin: 24px 0;
+            font-size: 14px;
+            color: #dbdee1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .mobile-test-result-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .mobile-test-result-btn {
+            padding: 14px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            transition: all .3s ease;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .mobile-test-result-btn.primary {
+            background: #5865f2;
+            color: white;
+        }
+
+        .mobile-test-result-btn.secondary {
+            background: #1e1f22;
+            color: #dbdee1;
+        }
+
+        /* Mobile Typing Indicator */
+        .mobile-typing {
+            padding: 8px 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #949ba4;
+            font-size: 0.8125rem;
+        }
+
+        .mobile-typing-dots {
+            display: flex;
+            gap: 4px;
+        }
+
+        .mobile-typing-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #949ba4;
+            animation: mobileTyping 1.4s infinite ease-in-out;
+        }
+
+        .mobile-typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .mobile-typing-dot:nth-child(2) { animation-delay: -0.16s; }
+        .mobile-typing-dot:nth-child(3) { animation-delay: 0; }
+
+        @keyframes mobileTyping {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-4px); }
+        }
+
+        /* Media Query for Mobile */
         @media (max-width: 768px) {
-            .discord-members {
+            .test-page {
+                display: none !important;
+            }
+            
+            .mobile-discord.active {
+                display: block;
+            }
+            
+            .nav-sidebar {
                 display: none;
             }
-
-            .discord-servers {
-                width: 60px;
+            
+            .header h1 {
+                font-size: 2.5rem;
             }
-
-            .discord-server-icon {
-                width: 40px;
-                height: 40px;
-                font-size: 1rem;
-            }
-
-            .discord-channels {
-                width: 200px;
-            }
-
-            .discord-send-btn span {
-                display: none;
+            
+            .content-section {
+                padding: 32px;
             }
         }
     </style>
@@ -1319,7 +1837,7 @@
         <i class="fab fa-discord"></i> Admin Login
     </a>
 
-    <!-- DISCORD REPLICA TEST INTERFACE -->
+    <!-- DESKTOP DISCORD TEST INTERFACE -->
     <div id="testPage" class="test-page">
         <div class="discord-app">
             <!-- Server Bar -->
@@ -1476,6 +1994,113 @@
                 <div class="discord-modal-buttons">
                     <button class="discord-modal-btn secondary" id="discordReviewBtn">Review</button>
                     <button class="discord-modal-btn primary" id="discordBackBtn">Back to Training</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MOBILE DISCORD TEST INTERFACE -->
+    <div class="mobile-discord" id="mobileDiscord">
+        <!-- Mobile Header -->
+        <div class="mobile-header">
+            <div class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </div>
+            <div class="mobile-server-icon">V</div>
+            <div class="mobile-channel-name" id="mobileTicketCounter">Ticket #1 of 8</div>
+            <div class="mobile-header-actions">
+                <div class="mobile-header-btn" id="mobileScoreBtn">
+                    <i class="fas fa-chart-simple"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Messages Container -->
+        <div class="mobile-messages-container" id="mobileMessages"></div>
+
+        <!-- Mobile Typing Indicator -->
+        <div class="mobile-typing" id="mobileTyping" style="display: none;">
+            <div class="mobile-typing-dots">
+                <div class="mobile-typing-dot"></div>
+                <div class="mobile-typing-dot"></div>
+                <div class="mobile-typing-dot"></div>
+            </div>
+            <span id="mobileTypingText">Someone is typing...</span>
+        </div>
+
+        <!-- Mobile Input Area -->
+        <div class="mobile-input-area">
+            <textarea class="mobile-message-input" id="mobileMessageInput" placeholder="Message #mod-tickets" rows="1"></textarea>
+            <button class="mobile-send-btn" id="mobileSendBtn" disabled>
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Sidebar -->
+        <div class="mobile-sidebar" id="mobileSidebar">
+            <div class="mobile-sidebar-header">
+                <span class="mobile-sidebar-title">Void Esports</span>
+                <div class="mobile-close-sidebar" id="mobileCloseSidebar">
+                    <i class="fas fa-times"></i>
+                </div>
+            </div>
+            <div class="mobile-scrollable-channels">
+                <div class="mobile-category-header">INFORMATION</div>
+                <div class="mobile-channel-item">
+                    <i class="fas fa-bullhorn mobile-channel-icon"></i>
+                    <span class="mobile-channel-name-sidebar">announcements</span>
+                </div>
+                <div class="mobile-channel-item">
+                    <i class="fas fa-book mobile-channel-icon"></i>
+                    <span class="mobile-channel-name-sidebar">rules</span>
+                </div>
+                <div class="mobile-category-header" style="margin-top: 16px;">TICKET SYSTEM</div>
+                <div class="mobile-channel-item active">
+                    <i class="fas fa-hashtag mobile-channel-icon"></i>
+                    <span class="mobile-channel-name-sidebar">🎫・mod-tickets</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Score Panel -->
+        <div class="mobile-score-panel" id="mobileScorePanel">
+            <div class="mobile-score-header">
+                <span class="mobile-score-title">Test Score</span>
+                <div class="mobile-close-score" id="mobileCloseScore">
+                    <i class="fas fa-times"></i>
+                </div>
+            </div>
+            <div class="mobile-score-display">
+                <div class="mobile-score-value" id="mobileScore">0</div>
+                <div class="mobile-score-total">/8</div>
+                <div class="mobile-progress-bar-container">
+                    <div class="mobile-progress-fill-bar" id="mobileProgress" style="width: 0%"></div>
+                </div>
+            </div>
+            <div class="mobile-score-info">
+                <p style="color: #949ba4; text-align: center; font-size: 14px;">
+                    Answer each ticket scenario correctly to earn points.
+                </p>
+            </div>
+        </div>
+
+        <!-- Mobile Test Complete Modal -->
+        <div class="mobile-test-complete" id="mobileTestComplete">
+            <div class="mobile-test-result-container">
+                <div class="mobile-test-result-icon" id="mobileResultIcon">
+                    <i class="fas fa-trophy"></i>
+                </div>
+                <h2 class="mobile-test-result-title" id="mobileResultTitle">Test Complete!</h2>
+                <div class="mobile-test-result-score" id="mobileResultScore">0/8</div>
+                <div class="mobile-test-result-message" id="mobileResultMessage">
+                    Your responses have been recorded.
+                </div>
+                <div class="mobile-submission-status" id="mobileSubmissionStatus">
+                    <i class="fas fa-spinner fa-spin"></i> Submitting...
+                </div>
+                <div class="mobile-test-result-buttons">
+                    <button class="mobile-test-result-btn secondary" id="mobileReviewBtn">Review</button>
+                    <button class="mobile-test-result-btn primary" id="mobileBackBtn">Back to Training</button>
                 </div>
             </div>
         </div>
@@ -1999,7 +2624,7 @@
                 PASSING_SCORE: 6
             };
 
-            // Test Questions with proper conversation logging
+            // Test Questions
             const TEST_QUESTIONS = [
                 {
                     id: 1,
@@ -2075,13 +2700,13 @@
                 }
             ];
 
-            // Test State with comprehensive conversation logging
+            // Test State
             const testState = {
                 active: false,
                 currentQuestion: 0,
                 score: 0,
                 userAnswers: [],
-                conversationLog: [], // Array to store full conversation
+                conversationLog: [],
                 questionsWithAnswers: [],
                 startTime: null,
                 endTime: null,
@@ -2091,14 +2716,38 @@
                 }
             };
 
-            // DOM Elements
-            let elements = {};
+            // DOM Elements - Desktop
+            let desktop = {};
+            
+            // DOM Elements - Mobile
+            let mobile = {};
 
-            // Initialize Discord test interface
-            function initDiscordTest() {
-                console.log('🎮 Initializing Discord test interface...');
+            // Initialize based on device
+            function initTestInterface() {
+                console.log('🎮 Initializing test interface...');
                 
-                elements = {
+                // Check if mobile
+                const isMobileDevice = window.innerWidth <= 768;
+                
+                if (isMobileDevice) {
+                    initMobileInterface();
+                } else {
+                    initDesktopInterface();
+                }
+                
+                // Get user info from URL
+                const params = new URLSearchParams(window.location.search);
+                testState.userInfo.username = params.get('discord_username') || 'User';
+                testState.userInfo.userId = params.get('discord_id') || '0000';
+                
+                updateUserDisplay(isMobileDevice);
+            }
+
+            // Initialize Desktop Interface
+            function initDesktopInterface() {
+                console.log('Initializing desktop interface...');
+                
+                desktop = {
                     testPage: document.getElementById('testPage'),
                     mainContainer: document.getElementById('mainContainer'),
                     messages: document.getElementById('discordMessages'),
@@ -2124,87 +2773,219 @@
                     memberName: document.getElementById('discordMemberName')
                 };
 
-                setupDiscordEvents();
-                
-                // Get user info from URL
-                const params = new URLSearchParams(window.location.search);
-                testState.userInfo.username = params.get('discord_username') || 'User';
-                testState.userInfo.userId = params.get('discord_id') || '0000';
-                
-                updateDiscordUserDisplay();
+                setupDesktopEvents();
             }
 
-            // Setup Discord event listeners
-            function setupDiscordEvents() {
-                if (elements.input) {
-                    elements.input.addEventListener('input', function() {
+            // Initialize Mobile Interface
+            function initMobileInterface() {
+                console.log('Initializing mobile interface...');
+                
+                mobile = {
+                    testPage: document.getElementById('mobileDiscord'),
+                    mainContainer: document.getElementById('mainContainer'),
+                    messages: document.getElementById('mobileMessages'),
+                    input: document.getElementById('mobileMessageInput'),
+                    sendBtn: document.getElementById('mobileSendBtn'),
+                    typing: document.getElementById('mobileTyping'),
+                    typingText: document.getElementById('mobileTypingText'),
+                    score: document.getElementById('mobileScore'),
+                    progress: document.getElementById('mobileProgress'),
+                    ticketCounter: document.getElementById('mobileTicketCounter'),
+                    modal: document.getElementById('mobileTestComplete'),
+                    modalIcon: document.getElementById('mobileResultIcon'),
+                    modalTitle: document.getElementById('mobileResultTitle'),
+                    modalScore: document.getElementById('mobileResultScore'),
+                    modalMessage: document.getElementById('mobileResultMessage'),
+                    modalStatus: document.getElementById('mobileSubmissionStatus'),
+                    reviewBtn: document.getElementById('mobileReviewBtn'),
+                    backBtn: document.getElementById('mobileBackBtn'),
+                    menuBtn: document.getElementById('mobileMenuBtn'),
+                    sidebar: document.getElementById('mobileSidebar'),
+                    closeSidebar: document.getElementById('mobileCloseSidebar'),
+                    scoreBtn: document.getElementById('mobileScoreBtn'),
+                    scorePanel: document.getElementById('mobileScorePanel'),
+                    closeScore: document.getElementById('mobileCloseScore')
+                };
+
+                setupMobileEvents();
+            }
+
+            // Setup Desktop Events
+            function setupDesktopEvents() {
+                if (desktop.input) {
+                    desktop.input.addEventListener('input', function() {
                         this.style.height = 'auto';
                         this.style.height = Math.min(this.scrollHeight, 144) + 'px';
-                        if (elements.sendBtn) {
-                            elements.sendBtn.disabled = !this.value.trim() || !testState.active;
+                        if (desktop.sendBtn) {
+                            desktop.sendBtn.disabled = !this.value.trim() || !testState.active;
                         }
                     });
 
-                    elements.input.addEventListener('keydown', function(e) {
+                    desktop.input.addEventListener('keydown', function(e) {
                         if (e.key === 'Enter' && !e.shiftKey) {
                             e.preventDefault();
-                            if (elements.sendBtn && !elements.sendBtn.disabled && testState.active) {
-                                sendDiscordMessage();
+                            if (desktop.sendBtn && !desktop.sendBtn.disabled && testState.active) {
+                                sendDesktopMessage();
                             }
                         }
                     });
                 }
 
-                if (elements.sendBtn) {
-                    elements.sendBtn.addEventListener('click', sendDiscordMessage);
+                if (desktop.sendBtn) {
+                    desktop.sendBtn.addEventListener('click', sendDesktopMessage);
                 }
 
-                if (elements.reviewBtn) {
-                    elements.reviewBtn.addEventListener('click', () => {
-                        hideDiscordModal();
-                        resetDiscordTest();
-                        setTimeout(startDiscordTest, 500);
+                if (desktop.reviewBtn) {
+                    desktop.reviewBtn.addEventListener('click', () => {
+                        hideDesktopModal();
+                        resetTest();
+                        setTimeout(startTest, 500);
                     });
                 }
 
-                if (elements.backBtn) {
-                    elements.backBtn.addEventListener('click', () => {
-                        hideDiscordModal();
-                        exitDiscordTest();
+                if (desktop.backBtn) {
+                    desktop.backBtn.addEventListener('click', () => {
+                        hideDesktopModal();
+                        exitTest();
                     });
                 }
             }
 
-            // Update Discord user display
-            function updateDiscordUserDisplay() {
-                if (elements.userName) elements.userName.textContent = testState.userInfo.username;
-                if (elements.userTag) elements.userTag.textContent = '#' + testState.userInfo.userId.slice(-4);
-                if (elements.userAvatar) elements.userAvatar.textContent = testState.userInfo.username.charAt(0).toUpperCase();
-                if (elements.memberAvatar) elements.memberAvatar.textContent = testState.userInfo.username.charAt(0).toUpperCase();
-                if (elements.memberName) elements.memberName.textContent = testState.userInfo.username;
+            // Setup Mobile Events
+            function setupMobileEvents() {
+                if (mobile.input) {
+                    mobile.input.addEventListener('input', function() {
+                        this.style.height = 'auto';
+                        this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+                        if (mobile.sendBtn) {
+                            mobile.sendBtn.disabled = !this.value.trim() || !testState.active;
+                        }
+                    });
+
+                    mobile.input.addEventListener('keydown', function(e) {
+                        if (e.key === 'Enter' && !e.shiftKey) {
+                            e.preventDefault();
+                            if (mobile.sendBtn && !mobile.sendBtn.disabled && testState.active) {
+                                sendMobileMessage();
+                            }
+                        }
+                    });
+                }
+
+                if (mobile.sendBtn) {
+                    mobile.sendBtn.addEventListener('click', sendMobileMessage);
+                }
+
+                if (mobile.reviewBtn) {
+                    mobile.reviewBtn.addEventListener('click', () => {
+                        hideMobileModal();
+                        resetTest();
+                        setTimeout(startTest, 500);
+                    });
+                }
+
+                if (mobile.backBtn) {
+                    mobile.backBtn.addEventListener('click', () => {
+                        hideMobileModal();
+                        exitTest();
+                    });
+                }
+
+                // Mobile sidebar
+                if (mobile.menuBtn) {
+                    mobile.menuBtn.addEventListener('click', () => {
+                        if (mobile.sidebar) mobile.sidebar.classList.add('active');
+                    });
+                }
+
+                if (mobile.closeSidebar) {
+                    mobile.closeSidebar.addEventListener('click', () => {
+                        if (mobile.sidebar) mobile.sidebar.classList.remove('active');
+                    });
+                }
+
+                // Mobile score panel
+                if (mobile.scoreBtn) {
+                    mobile.scoreBtn.addEventListener('click', () => {
+                        if (mobile.scorePanel) mobile.scorePanel.classList.add('active');
+                    });
+                }
+
+                if (mobile.closeScore) {
+                    mobile.closeScore.addEventListener('click', () => {
+                        if (mobile.scorePanel) mobile.scorePanel.classList.remove('active');
+                    });
+                }
+
+                // Close panels when clicking outside (simplified for mobile)
+                document.addEventListener('click', function(e) {
+                    if (mobile.sidebar && !mobile.sidebar.contains(e.target) && 
+                        !mobile.menuBtn?.contains(e.target) && 
+                        mobile.sidebar.classList.contains('active')) {
+                        mobile.sidebar.classList.remove('active');
+                    }
+                    
+                    if (mobile.scorePanel && !mobile.scorePanel.contains(e.target) && 
+                        !mobile.scoreBtn?.contains(e.target) && 
+                        mobile.scorePanel.classList.contains('active')) {
+                        mobile.scorePanel.classList.remove('active');
+                    }
+                });
             }
 
-            // Show Discord test interface
-            function showDiscordTest() {
-                if (elements.testPage) {
-                    elements.testPage.classList.add('active');
-                }
-                if (elements.mainContainer) {
-                    elements.mainContainer.style.display = 'none';
-                }
-            }
-
-            // Hide Discord test interface
-            function hideDiscordTest() {
-                if (elements.testPage) {
-                    elements.testPage.classList.remove('active');
-                }
-                if (elements.mainContainer) {
-                    elements.mainContainer.style.display = 'block';
+            // Update user display based on device
+            function updateUserDisplay(isMobile) {
+                if (isMobile) {
+                    // Mobile elements don't have user display, just use the test state
+                    console.log('Mobile user:', testState.userInfo.username);
+                } else {
+                    if (desktop.userName) desktop.userName.textContent = testState.userInfo.username;
+                    if (desktop.userTag) desktop.userTag.textContent = '#' + testState.userInfo.userId.slice(-4);
+                    if (desktop.userAvatar) desktop.userAvatar.textContent = testState.userInfo.username.charAt(0).toUpperCase();
+                    if (desktop.memberAvatar) desktop.memberAvatar.textContent = testState.userInfo.username.charAt(0).toUpperCase();
+                    if (desktop.memberName) desktop.memberName.textContent = testState.userInfo.username;
                 }
             }
 
-            // Add message to conversation log
+            // Show appropriate test interface
+            function showTestInterface() {
+                const isMobile = window.innerWidth <= 768;
+                
+                if (isMobile) {
+                    if (mobile.testPage) {
+                        mobile.testPage.classList.add('active');
+                    }
+                } else {
+                    if (desktop.testPage) {
+                        desktop.testPage.classList.add('active');
+                    }
+                }
+                
+                if (desktop.mainContainer) {
+                    desktop.mainContainer.style.display = 'none';
+                }
+            }
+
+            // Hide test interface
+            function hideTestInterface() {
+                const isMobile = window.innerWidth <= 768;
+                
+                if (isMobile) {
+                    if (mobile.testPage) {
+                        mobile.testPage.classList.remove('active');
+                    }
+                } else {
+                    if (desktop.testPage) {
+                        desktop.testPage.classList.remove('active');
+                    }
+                }
+                
+                if (desktop.mainContainer) {
+                    desktop.mainContainer.style.display = 'block';
+                }
+            }
+
+            // Add to conversation log
             function addToConversationLog(username, message, isBot = false, isUser = false) {
                 const timestamp = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
                 testState.conversationLog.push({
@@ -2216,7 +2997,7 @@
                 });
             }
 
-            // Format complete conversation log for submission
+            // Format complete conversation log
             function formatConversationLog() {
                 let log = '';
                 const separator = '══════════════════════════════════════════════════════════════════════════════';
@@ -2230,11 +3011,23 @@
                 log += `Result: ${testState.score >= CONFIG.PASSING_SCORE ? 'PASSED ✓' : 'FAILED ✗'}\n`;
                 log += separator + '\n\n';
 
-                // Add each message from conversation
-                testState.conversationLog.forEach(entry => {
-                    const prefix = entry.isBot ? '[BOT]' : (entry.isUser ? '[YOU]' : '[USER]');
-                    log += `${prefix} ${entry.username} at ${entry.timestamp}:\n`;
-                    log += `${entry.message}\n\n`;
+                // Add each Q&A from questionsWithAnswers
+                testState.questionsWithAnswers.forEach((qa, index) => {
+                    log += `┌──────────────────────────────────────────────────────────────────────────┐\n`;
+                    log += `│ QUESTION ${index + 1} of ${CONFIG.TOTAL_QUESTIONS}${qa.correct ? ' ✓ PASS' : ' ✗ FAIL'}\n`;
+                    log += `├──────────────────────────────────────────────────────────────────────────┤\n`;
+                    log += `│ USER: ${qa.question || 'Unknown'}\n`;
+                    log += `├──────────────────────────────────────────────────────────────────────────┤\n`;
+                    log += `│ MOD RESPONSE:\n`;
+                    log += `│ ${qa.answer || 'No answer provided'}\n`;
+                    log += `├──────────────────────────────────────────────────────────────────────────┤\n`;
+                    log += `│ EVALUATION:\n`;
+                    log += `│ Matches: ${qa.matchCount || 0}/${qa.requiredMatches || 2}\n`;
+                    log += `│ Keywords: ${qa.matchedKeywords ? qa.matchedKeywords.join(', ') : 'None'}\n`;
+                    log += `├──────────────────────────────────────────────────────────────────────────┤\n`;
+                    log += `│ CORRECT RESPONSE:\n`;
+                    log += `│ ${qa.feedback || 'Follow protocol'}\n`;
+                    log += `└──────────────────────────────────────────────────────────────────────────┘\n\n`;
                 });
 
                 log += separator + '\n';
@@ -2245,8 +3038,8 @@
             }
 
             // Start the test
-            async function startDiscordTest() {
-                console.log('🚀 Starting Discord test...');
+            async function startTest() {
+                console.log('🚀 Starting test...');
                 
                 testState.active = true;
                 testState.currentQuestion = 0;
@@ -2256,85 +3049,112 @@
                 testState.questionsWithAnswers = [];
                 testState.startTime = new Date().toISOString();
 
-                if (elements.messages) {
-                    elements.messages.innerHTML = '';
+                const isMobile = window.innerWidth <= 768;
+                
+                if (isMobile) {
+                    if (mobile.messages) mobile.messages.innerHTML = '';
+                } else {
+                    if (desktop.messages) desktop.messages.innerHTML = '';
                 }
 
-                updateDiscordScore();
-                disableDiscordInput(true);
+                updateScore(isMobile);
+                disableInput(true, isMobile);
                 
-                // Welcome sequence with conversation logging
-                await showTyping('Void Bot', 1000);
+                // Welcome sequence
+                await showTyping('Void Bot', 1000, isMobile);
                 const welcomeMsg = 'Welcome to the **Void Esports Moderator Certification Test**.';
-                addDiscordMessage('Void Bot', welcomeMsg, '#5865f2', true);
+                addMessage('Void Bot', welcomeMsg, '#5865f2', true, isMobile);
                 addToConversationLog('Void Bot', welcomeMsg, true);
                 
                 await delay(800);
-                await showTyping('Void Bot', 1200);
+                await showTyping('Void Bot', 1200, isMobile);
                 const infoMsg = `You'll be presented with **${CONFIG.TOTAL_QUESTIONS}** scenarios.`;
-                addDiscordMessage('Void Bot', infoMsg, '#5865f2', true);
+                addMessage('Void Bot', infoMsg, '#5865f2', true, isMobile);
                 addToConversationLog('Void Bot', infoMsg, true);
                 
                 await delay(800);
-                await showTyping('Void Bot', 800);
+                await showTyping('Void Bot', 800, isMobile);
                 const finalMsg = 'Respond as you would as a real moderator. Good luck!';
-                addDiscordMessage('Void Bot', finalMsg, '#5865f2', true);
+                addMessage('Void Bot', finalMsg, '#5865f2', true, isMobile);
                 addToConversationLog('Void Bot', finalMsg, true);
                 
                 await delay(1500);
                 
-                showNextQuestion();
+                showNextQuestion(isMobile);
             }
 
             // Show next question
-            async function showNextQuestion() {
+            async function showNextQuestion(isMobile) {
                 if (testState.currentQuestion >= CONFIG.TOTAL_QUESTIONS) {
-                    endDiscordTest();
+                    endTest(isMobile);
                     return;
                 }
 
                 const question = TEST_QUESTIONS[testState.currentQuestion];
                 
-                await showTyping(question.username, 1200);
-                addDiscordMessage(question.username, question.message, question.avatarColor, false);
+                await showTyping(question.username, 1200, isMobile);
+                addMessage(question.username, question.message, question.avatarColor, false, isMobile);
                 addToConversationLog(question.username, question.message, false);
                 
-                disableDiscordInput(false);
-                if (elements.ticketCounter) {
-                    elements.ticketCounter.textContent = `Ticket #${testState.currentQuestion + 1} of ${CONFIG.TOTAL_QUESTIONS}`;
+                disableInput(false, isMobile);
+                
+                const counter = isMobile ? mobile.ticketCounter : desktop.ticketCounter;
+                if (counter) {
+                    counter.textContent = `Ticket #${testState.currentQuestion + 1} of ${CONFIG.TOTAL_QUESTIONS}`;
                 }
             }
 
-            // Send message
-            async function sendDiscordMessage() {
-                if (!elements.input || !testState.active) return;
+            // Send message (desktop)
+            async function sendDesktopMessage() {
+                if (!desktop.input || !testState.active) return;
 
-                const userMessage = elements.input.value.trim();
+                const userMessage = desktop.input.value.trim();
                 if (!userMessage) return;
 
-                disableDiscordInput(true);
+                await processUserMessage(userMessage, false);
+            }
+
+            // Send message (mobile)
+            async function sendMobileMessage() {
+                if (!mobile.input || !testState.active) return;
+
+                const userMessage = mobile.input.value.trim();
+                if (!userMessage) return;
+
+                await processUserMessage(userMessage, true);
+            }
+
+            // Process user message (shared)
+            async function processUserMessage(userMessage, isMobile) {
+                disableInput(true, isMobile);
                 
-                // Add user message to UI and log
-                addDiscordMessage('You', userMessage, '#7289da', false);
+                // Add user message
+                addMessage('You', userMessage, '#7289da', false, isMobile);
                 addToConversationLog(testState.userInfo.username, userMessage, false, true);
                 
                 testState.userAnswers.push(userMessage);
                 
-                elements.input.value = '';
-                elements.input.style.height = 'auto';
+                if (isMobile) {
+                    mobile.input.value = '';
+                    mobile.input.style.height = 'auto';
+                } else {
+                    desktop.input.value = '';
+                    desktop.input.style.height = 'auto';
+                }
                 
-                await showTyping('Void Bot', 1000);
+                await showTyping('Void Bot', 1000, isMobile);
                 
                 const question = TEST_QUESTIONS[testState.currentQuestion];
                 const result = evaluateAnswer(userMessage, question);
                 
-                // Store question with answer for logging
+                // Store for log
                 testState.questionsWithAnswers.push({
                     question: question.message,
-                    userMessage: userMessage,
+                    answer: userMessage,
                     correct: result.correct,
-                    matches: result.matches,
-                    required: question.required,
+                    matchCount: result.matches,
+                    requiredMatches: question.required,
+                    matchedKeywords: result.matchedKeywords || [],
                     feedback: question.feedback
                 });
                 
@@ -2343,7 +3163,7 @@
                     ? `✅ **Correct!** ${question.feedback}`
                     : `❌ **Not quite right.** ${question.feedback}`;
                 
-                addDiscordMessage('Void Bot', feedbackMsg, '#5865f2', true);
+                addMessage('Void Bot', feedbackMsg, '#5865f2', true, isMobile);
                 addToConversationLog('Void Bot', feedbackMsg, true);
                 
                 if (result.correct) {
@@ -2351,14 +3171,14 @@
                 }
                 
                 testState.currentQuestion++;
-                updateDiscordScore();
+                updateScore(isMobile);
                 
                 if (testState.currentQuestion < CONFIG.TOTAL_QUESTIONS) {
                     await delay(1500);
-                    showNextQuestion();
+                    showNextQuestion(isMobile);
                 } else {
                     await delay(2000);
-                    endDiscordTest();
+                    endTest(isMobile);
                 }
             }
 
@@ -2366,25 +3186,29 @@
             function evaluateAnswer(answer, question) {
                 const answerLower = answer.toLowerCase();
                 let matches = 0;
+                let matchedKeywords = [];
 
                 for (const keyword of question.keywords) {
                     if (answerLower.includes(keyword.toLowerCase())) {
                         matches++;
+                        matchedKeywords.push(keyword);
                     }
                 }
 
                 return {
                     correct: matches >= question.required,
-                    matches: matches
+                    matches: matches,
+                    matchedKeywords: matchedKeywords
                 };
             }
 
-            // Add message to Discord chat
-            function addDiscordMessage(username, content, color, isBot = false) {
-                if (!elements.messages) return;
+            // Add message
+            function addMessage(username, content, color, isBot = false, isMobile = false) {
+                const container = isMobile ? mobile.messages : desktop.messages;
+                if (!container) return;
 
                 const messageGroup = document.createElement('div');
-                messageGroup.className = 'discord-message-group';
+                messageGroup.className = isMobile ? 'mobile-message-group' : 'discord-message-group';
                 
                 const now = new Date();
                 const timeString = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
@@ -2393,84 +3217,113 @@
                 if (username === 'Void Bot') avatarInitial = 'V';
                 if (username === 'You') avatarInitial = testState.userInfo.username.charAt(0).toUpperCase();
 
-                messageGroup.innerHTML = `
-                    <div class="discord-message-avatar" style="background-color: ${color}">
-                        ${avatarInitial}
-                    </div>
-                    <div class="discord-message-content">
-                        <div class="discord-message-header">
-                            <span class="discord-message-author">${username}</span>
-                            ${isBot ? '<span class="discord-message-badge">BOT</span>' : ''}
-                            <span class="discord-message-timestamp">Today at ${timeString}</span>
+                if (isMobile) {
+                    messageGroup.innerHTML = `
+                        <div class="mobile-message-avatar" style="background-color: ${color}">
+                            ${avatarInitial}
                         </div>
-                        <div class="discord-message-text">${content}</div>
-                    </div>
-                `;
+                        <div class="mobile-message-content">
+                            <div class="mobile-message-header">
+                                <span class="mobile-message-author">${username}</span>
+                                ${isBot ? '<span class="mobile-bot-tag">BOT</span>' : ''}
+                                <span class="mobile-message-timestamp">Today at ${timeString}</span>
+                            </div>
+                            <div class="mobile-message-text">${content}</div>
+                        </div>
+                    `;
+                } else {
+                    messageGroup.innerHTML = `
+                        <div class="discord-message-avatar" style="background-color: ${color}">
+                            ${avatarInitial}
+                        </div>
+                        <div class="discord-message-content">
+                            <div class="discord-message-header">
+                                <span class="discord-message-author">${username}</span>
+                                ${isBot ? '<span class="discord-message-badge">BOT</span>' : ''}
+                                <span class="discord-message-timestamp">Today at ${timeString}</span>
+                            </div>
+                            <div class="discord-message-text">${content}</div>
+                        </div>
+                    `;
+                }
 
-                elements.messages.appendChild(messageGroup);
-                elements.messages.scrollTop = elements.messages.scrollHeight;
+                container.appendChild(messageGroup);
+                container.scrollTop = container.scrollHeight;
             }
 
             // Show typing indicator
-            async function showTyping(username, duration) {
-                if (elements.typing && elements.typingText) {
-                    elements.typingText.textContent = `${username} is typing...`;
-                    elements.typing.style.display = 'flex';
+            async function showTyping(username, duration, isMobile) {
+                const typing = isMobile ? mobile.typing : desktop.typing;
+                const typingText = isMobile ? mobile.typingText : desktop.typingText;
+                
+                if (typing && typingText) {
+                    typingText.textContent = `${username} is typing...`;
+                    typing.style.display = 'flex';
                     await delay(duration);
-                    elements.typing.style.display = 'none';
+                    typing.style.display = 'none';
                 }
             }
 
-            // Update score display
-            function updateDiscordScore() {
-                if (elements.score) {
-                    elements.score.textContent = testState.score;
-                }
-                if (elements.progress) {
-                    const percentage = (testState.score / CONFIG.TOTAL_QUESTIONS) * 100;
-                    elements.progress.style.width = `${percentage}%`;
+            // Update score
+            function updateScore(isMobile) {
+                if (isMobile) {
+                    if (mobile.score) mobile.score.textContent = testState.score;
+                    if (mobile.progress) {
+                        const percentage = (testState.score / CONFIG.TOTAL_QUESTIONS) * 100;
+                        mobile.progress.style.width = `${percentage}%`;
+                    }
+                } else {
+                    if (desktop.score) desktop.score.textContent = testState.score;
+                    if (desktop.progress) {
+                        const percentage = (testState.score / CONFIG.TOTAL_QUESTIONS) * 100;
+                        desktop.progress.style.width = `${percentage}%`;
+                    }
                 }
             }
 
             // Disable/enable input
-            function disableDiscordInput(disabled) {
-                if (elements.input) {
-                    elements.input.disabled = disabled;
-                    if (!disabled) {
-                        elements.input.focus();
+            function disableInput(disabled, isMobile) {
+                if (isMobile) {
+                    if (mobile.input) {
+                        mobile.input.disabled = disabled;
+                        if (!disabled) mobile.input.focus();
                     }
-                }
-                if (elements.sendBtn) {
-                    elements.sendBtn.disabled = disabled;
+                    if (mobile.sendBtn) mobile.sendBtn.disabled = disabled;
+                } else {
+                    if (desktop.input) {
+                        desktop.input.disabled = disabled;
+                        if (!disabled) desktop.input.focus();
+                    }
+                    if (desktop.sendBtn) desktop.sendBtn.disabled = disabled;
                 }
             }
 
-            // End test and submit results
-            async function endDiscordTest() {
+            // End test
+            async function endTest(isMobile) {
                 console.log('📝 Test complete!');
                 
                 testState.active = false;
                 testState.endTime = new Date().toISOString();
-                disableDiscordInput(true);
+                disableInput(true, isMobile);
                 
-                await showTyping('Void Bot', 1000);
+                await showTyping('Void Bot', 1000, isMobile);
                 
                 const passed = testState.score >= CONFIG.PASSING_SCORE;
                 const finalMsg = `**Test Complete!**\nFinal Score: **${testState.score}/${CONFIG.TOTAL_QUESTIONS}**\nResult: **${passed ? 'PASSED ✅' : 'FAILED ❌'}**`;
                 
-                addDiscordMessage('Void Bot', finalMsg, '#5865f2', true);
+                addMessage('Void Bot', finalMsg, '#5865f2', true, isMobile);
                 addToConversationLog('Void Bot', finalMsg, true);
                 
                 // Format complete conversation log
                 const conversationLog = formatConversationLog();
-                console.log('Conversation Log:', conversationLog); // Debug log
+                console.log('Conversation Log:', conversationLog);
                 
-                // Prepare submission data with FULL conversation log
+                // Prepare submission data
                 const submissionData = {
                     discordId: testState.userInfo.userId,
                     discordUsername: testState.userInfo.username,
-                    answers: conversationLog, // Send the full formatted log
-                    conversationLog: conversationLog, // Also send as conversationLog field
+                    answers: conversationLog,
+                    conversationLog: conversationLog,
                     score: `${testState.score}/${CONFIG.TOTAL_QUESTIONS}`,
                     totalQuestions: CONFIG.TOTAL_QUESTIONS,
                     correctAnswers: testState.score,
@@ -2484,47 +3337,62 @@
                     })
                 };
 
-                showDiscordModal(passed);
-                await submitTestResults(submissionData);
+                showModal(passed, isMobile);
+                await submitTestResults(submissionData, isMobile);
             }
 
-            // Show Discord modal
-            function showDiscordModal(passed) {
-                if (!elements.modal) return;
+            // Show modal
+            function showModal(passed, isMobile) {
+                const modal = isMobile ? mobile.modal : desktop.modal;
+                const modalIcon = isMobile ? mobile.modalIcon : desktop.modalIcon;
+                const modalTitle = isMobile ? mobile.modalTitle : desktop.modalTitle;
+                const modalScore = isMobile ? mobile.modalScore : desktop.modalScore;
+                const modalMessage = isMobile ? mobile.modalMessage : desktop.modalMessage;
 
-                if (elements.modalIcon) {
-                    elements.modalIcon.className = `discord-modal-icon ${passed ? 'pass' : 'fail'}`;
-                    elements.modalIcon.innerHTML = passed ? '<i class="fas fa-trophy"></i>' : '<i class="fas fa-times-circle"></i>';
+                if (!modal) return;
+
+                if (modalIcon) {
+                    modalIcon.className = `discord-modal-icon ${passed ? 'pass' : 'fail'}`;
+                    modalIcon.innerHTML = passed ? '<i class="fas fa-trophy"></i>' : '<i class="fas fa-times-circle"></i>';
                 }
                 
-                if (elements.modalTitle) {
-                    elements.modalTitle.textContent = passed ? 'Test Passed!' : 'Test Failed';
+                if (modalTitle) {
+                    modalTitle.textContent = passed ? 'Test Passed!' : 'Test Failed';
                 }
                 
-                if (elements.modalScore) {
-                    elements.modalScore.textContent = `${testState.score}/${CONFIG.TOTAL_QUESTIONS}`;
+                if (modalScore) {
+                    modalScore.textContent = `${testState.score}/${CONFIG.TOTAL_QUESTIONS}`;
                 }
                 
-                if (elements.modalMessage) {
-                    elements.modalMessage.textContent = passed 
+                if (modalMessage) {
+                    modalMessage.textContent = passed 
                         ? 'Congratulations! You passed the certification test. Your results have been submitted for review.'
                         : `You scored ${testState.score}/${CONFIG.TOTAL_QUESTIONS}. The minimum passing score is ${CONFIG.PASSING_SCORE}/${CONFIG.TOTAL_QUESTIONS}.`;
                 }
 
-                elements.modal.classList.add('active');
+                modal.classList.add('active');
             }
 
-            // Hide Discord modal
-            function hideDiscordModal() {
-                if (elements.modal) {
-                    elements.modal.classList.remove('active');
+            // Hide desktop modal
+            function hideDesktopModal() {
+                if (desktop.modal) {
+                    desktop.modal.classList.remove('active');
+                }
+            }
+
+            // Hide mobile modal
+            function hideMobileModal() {
+                if (mobile.modal) {
+                    mobile.modal.classList.remove('active');
                 }
             }
 
             // Submit test results
-            async function submitTestResults(data) {
-                if (elements.modalStatus) {
-                    elements.modalStatus.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting results...';
+            async function submitTestResults(data, isMobile) {
+                const statusEl = isMobile ? mobile.modalStatus : desktop.modalStatus;
+                
+                if (statusEl) {
+                    statusEl.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting results...';
                 }
 
                 try {
@@ -2543,8 +3411,8 @@
                     console.log('Submission response:', result);
 
                     if (response.ok && result.success) {
-                        if (elements.modalStatus) {
-                            elements.modalStatus.innerHTML = '<i class="fas fa-check-circle"></i> Results submitted successfully!';
+                        if (statusEl) {
+                            statusEl.innerHTML = '<i class="fas fa-check-circle"></i> Results submitted successfully!';
                         }
                     } else {
                         throw new Error('Submission failed');
@@ -2562,8 +3430,8 @@
                         });
                         
                         if (fallbackResponse.ok) {
-                            if (elements.modalStatus) {
-                                elements.modalStatus.innerHTML = '<i class="fas fa-check-circle"></i> Results submitted!';
+                            if (statusEl) {
+                                statusEl.innerHTML = '<i class="fas fa-check-circle"></i> Results submitted!';
                             }
                             return;
                         }
@@ -2571,14 +3439,14 @@
                         console.error('Fallback also failed:', fallbackError);
                     }
                     
-                    if (elements.modalStatus) {
-                        elements.modalStatus.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Results saved locally';
+                    if (statusEl) {
+                        statusEl.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Results saved locally';
                     }
                 }
             }
 
             // Reset test
-            function resetDiscordTest() {
+            function resetTest() {
                 testState.active = false;
                 testState.currentQuestion = 0;
                 testState.score = 0;
@@ -2586,18 +3454,22 @@
                 testState.conversationLog = [];
                 testState.questionsWithAnswers = [];
                 
-                if (elements.messages) {
-                    elements.messages.innerHTML = '';
+                const isMobile = window.innerWidth <= 768;
+                
+                if (isMobile) {
+                    if (mobile.messages) mobile.messages.innerHTML = '';
+                } else {
+                    if (desktop.messages) desktop.messages.innerHTML = '';
                 }
                 
-                updateDiscordScore();
-                disableDiscordInput(true);
+                updateScore(isMobile);
+                disableInput(true, isMobile);
             }
 
             // Exit test
-            function exitDiscordTest() {
-                resetDiscordTest();
-                hideDiscordTest();
+            function exitTest() {
+                resetTest();
+                hideTestInterface();
                 window.history.replaceState({}, document.title, window.location.pathname);
             }
 
@@ -2775,14 +3647,34 @@
                 const discordId = urlParams.get('discord_id');
                 
                 if (startTest === '1' && discordUsername && discordId) {
-                    console.log("Returning from OAuth, starting Discord test for:", discordUsername);
+                    console.log("Returning from OAuth, starting test for:", discordUsername);
                     
-                    initDiscordTest();
-                    showDiscordTest();
+                    initTestInterface();
+                    showTestInterface();
                     
                     setTimeout(() => {
-                        startDiscordTest();
+                        startTest();
                     }, 1000);
+                }
+            });
+
+            // Handle window resize
+            window.addEventListener('resize', function() {
+                // If test is active and window crosses mobile threshold, reload the appropriate interface
+                if (testState.active) {
+                    const wasMobile = window.innerWidth <= 768;
+                    const currentlyMobile = window.innerWidth <= 768;
+                    
+                    if (wasMobile !== currentlyMobile) {
+                        // Reload the interface
+                        testState.active = false;
+                        hideTestInterface();
+                        initTestInterface();
+                        showTestInterface();
+                        setTimeout(() => {
+                            startTest();
+                        }, 1000);
+                    }
                 }
             });
         })();
