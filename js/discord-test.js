@@ -1,4 +1,4 @@
-// Unified Discord Test Interface - Works on all devices
+// Unified Discord Test Interface - Mobile & Desktop Compatible
 document.addEventListener('DOMContentLoaded', function() {
     console.log("🎮 Discord test.js loaded");
     
@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function() {
             user: "FortnitePlayer23",
             avatarColor: "#5865f2",
             correctKeywords: ["age", "how old", "roster", "channel", "requirement", "hello"],
-            requiredMatches: 1,
+            requiredMatches: 2,
             explanation: "Ask for age and direct to #how-to-join-roster"
         },
         {
@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function() {
             user: "CompPlayer99",
             avatarColor: "#ed4245",
             correctKeywords: ["tracker", "fortnite tracker", "earnings", "ping", "trapped"],
-            requiredMatches: 1,
+            requiredMatches: 2,
             explanation: "Ask for tracker link and ping @trapped"
         },
         {
@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', function() {
             user: "CreativeBuilder",
             avatarColor: "#3ba55c",
             correctKeywords: ["clip", "video", "freebuilding", "creativedepartment"],
-            requiredMatches: 1,
+            requiredMatches: 2,
             explanation: "Ask for at least 2 clips and ping @creativedepartment"
         },
         {
@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', function() {
             user: "AcademyGrinder",
             avatarColor: "#f59e0b",
             correctKeywords: ["tracker", "verify", "username", "add void", "team.void"],
-            requiredMatches: 1,
+            requiredMatches: 2,
             explanation: "Ask for tracker, username change, and team.void proof"
         },
         {
@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function() {
             user: "YoungPlayer14",
             avatarColor: "#9146ff",
             correctKeywords: ["underage", "sorry", "ping", "no", "consent"],
-            requiredMatches: 1,
+            requiredMatches: 2,
             explanation: "immediately blacklist them for being underage"
         },
         {
@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', function() {
             user: "GrinderAccount",
             avatarColor: "#1da1f2",
             correctKeywords: ["username", "discord name", "add void", "team.void", "proof"],
-            requiredMatches: 1,
+            requiredMatches: 2,
             explanation: "Ask to change usernames to include 'Void' and require proof"
         },
         {
@@ -82,8 +82,8 @@ document.addEventListener('DOMContentLoaded', function() {
             user: "ToxicUser123",
             avatarColor: "#ff0000",
             correctKeywords: ["chief", "trapped", "ping", "ban", "immediately"],
-            requiredMatches: 1,
-            explanation: "Immediate threat. Ping @cheif, warn user, document for ban"
+            requiredMatches: 2,
+            explanation: "Immediate threat. Ping @chief, warn user, document for ban"
         },
         {
             id: 8,
@@ -91,7 +91,7 @@ document.addEventListener('DOMContentLoaded', function() {
             user: "ContentCreatorYT",
             avatarColor: "#ff0000",
             correctKeywords: ["social", "links", "contentdep", "ping", "youtube"],
-            requiredMatches: 1,
+            requiredMatches: 2,
             explanation: "Ask for social links and ping @contentdep"
         }
     ];
@@ -132,46 +132,6 @@ document.addEventListener('DOMContentLoaded', function() {
         return log;
     }
     
-    // SPLIT INTO MULTIPLE MESSAGES
-    function splitIntoMessages(fullLog) {
-        const messages = [];
-        const maxLength = 1900;
-        
-        if (fullLog.length <= maxLength) {
-            messages.push(fullLog);
-            return messages;
-        }
-        
-        const sections = fullLog.split('┌──────────────────────────────────────────────────────────────────────────┐');
-        
-        let currentMessage = `══════════════════════════════════════════════════════════════════════════════\n`;
-        currentMessage += `VOID ESPORTS MODERATOR TEST - PART 1\n`;
-        currentMessage += `══════════════════════════════════════════════════════════════════════════════\n`;
-        
-        for (let i = 1; i < sections.length; i++) {
-            const section = '┌──────────────────────────────────────────────────────────────────────────┐' + sections[i];
-            
-            if ((currentMessage + section).length > maxLength) {
-                currentMessage += `\n══════════════════════════════════════════════════════════════════════════════\n`;
-                currentMessage += `CONTINUED IN NEXT MESSAGE...\n`;
-                messages.push(currentMessage);
-                
-                currentMessage = `══════════════════════════════════════════════════════════════════════════════\n`;
-                currentMessage += `VOID ESPORTS MODERATOR TEST - PART ${messages.length + 1}\n`;
-                currentMessage += `══════════════════════════════════════════════════════════════════════════════\n`;
-                currentMessage += section;
-            } else {
-                currentMessage += section;
-            }
-        }
-        
-        currentMessage += `\n══════════════════════════════════════════════════════════════════════════════\n`;
-        currentMessage += `END OF PART ${messages.length + 1}\n`;
-        messages.push(currentMessage);
-        
-        return messages;
-    }
-    
     // Load questions from backend
     async function loadTestQuestions() {
         try {
@@ -204,7 +164,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Initialize interface
+    // Initialize desktop interface
     async function initializeDiscordInterface() {
         if (testInitialized) {
             console.log("Discord interface already initialized, skipping");
@@ -255,14 +215,14 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Start test
+    // Start desktop test
     function startDiscordTest() {
         if (testStarted) {
             console.log("Test already started, ignoring duplicate call");
             return;
         }
         
-        console.log("🚀 STARTING DISCORD TEST");
+        console.log("🚀 STARTING DESKTOP TEST");
         testStarted = true;
         
         usedQuestionIds.clear();
@@ -313,7 +273,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Show next question
+    // Show next desktop question
     function showNextTestQuestion() {
         if (testCurrentQuestion >= testTotalQuestions) {
             endTest();
@@ -339,7 +299,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 1500);
     }
     
-    // Send message
+    // Send desktop message
     function sendTestMessage() {
         const messageInput = document.getElementById('messageInput');
         const sendButton = document.getElementById('sendButton');
@@ -424,7 +384,7 @@ document.addEventListener('DOMContentLoaded', function() {
         return isCorrect;
     }
     
-    // Update score display
+    // Update desktop score display
     function updateDiscordScore() {
         const discordScoreValue = document.getElementById('discordScoreValue');
         const discordProgressFill = document.getElementById('discordProgressFill');
@@ -435,8 +395,20 @@ document.addEventListener('DOMContentLoaded', function() {
         if (discordProgressFill) discordProgressFill.style.width = `${percentage}%`;
     }
     
-    // Add message
+    // Add message (works for both desktop and mobile)
     function addMessage(username, content, color, isBot = false) {
+        // Check if mobile is active
+        const isMobile = window.innerWidth <= 768 && document.getElementById('mobileDiscord')?.classList.contains('active');
+        
+        if (isMobile) {
+            // Use mobile interface
+            if (window.mobileInterface && window.mobileInterface.addMessage) {
+                window.mobileInterface.addMessage(username, content, color, isBot);
+                return;
+            }
+        }
+        
+        // Desktop version
         const messagesContainer = document.getElementById('messagesContainer');
         if (!messagesContainer) return;
         
@@ -494,8 +466,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 const passed = testScore >= passingScore;
                 
                 const completeLog = formatCompleteConversation();
-                const messageParts = splitIntoMessages(completeLog);
-                console.log(`Split into ${messageParts.length} messages for Discord`);
                 
                 const submissionData = {
                     discordId: window.userDiscordId,
@@ -510,8 +480,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         total: testTotalQuestions,
                         passed: passed,
                         percentage: Math.round((testScore/testTotalQuestions)*100),
-                        date: new Date().toISOString(),
-                        messageCount: messageParts.length
+                        date: new Date().toISOString()
                     }),
                     conversationLog: completeLog,
                     questionsWithAnswers: JSON.stringify(questionsWithAnswers)
@@ -549,8 +518,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             
                             if (response.ok && result.success) {
                                 if (submissionStatus) {
-                                    submissionStatus.innerHTML = `<i class="fas fa-check-circle"></i> Results submitted (${messageParts.length} messages)`;
-                                    submissionStatus.className = "submission-status submission-success";
+                                    submissionStatus.innerHTML = '<i class="fas fa-check-circle"></i> Results submitted successfully!';
                                 }
                                 
                                 setTimeout(() => {
@@ -563,9 +531,12 @@ document.addEventListener('DOMContentLoaded', function() {
                             console.error("Submission error:", error);
                             
                             if (submissionStatus) {
-                                submissionStatus.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Results saved locally. Score: ${testScore}/${testTotalQuestions}`;
-                                submissionStatus.className = "submission-status submission-error";
+                                submissionStatus.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Results saved locally';
                             }
+                            
+                            setTimeout(() => {
+                                window.location.href = `success.html?discord_username=${encodeURIComponent(window.userDiscordUsername)}&final_score=${testScore}/${testTotalQuestions}&pass_fail=${passed ? 'PASS' : 'FAIL'}`;
+                            }, 2000);
                         }
                     }, 1000);
                 }
@@ -604,6 +575,7 @@ document.addEventListener('DOMContentLoaded', function() {
     window.initializeDiscordInterface = initializeDiscordInterface;
     window.startDiscordTest = startDiscordTest;
     window.resetTest = resetTest;
+    window.addMessage = addMessage;
     
     // Auto-initialize if test page exists
     if (document.getElementById('testPage')) {
