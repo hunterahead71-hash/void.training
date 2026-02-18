@@ -2902,42 +2902,44 @@
 
             // ==================== MOBILE INTERFACE - FIXED ====================
             const mobile = {
-                testPage: document.getElementById('mobileDiscord'),
-                mainContainer: document.getElementById('mainContainer'),
-                messages: document.getElementById('mobileMessages'),
-                input: document.getElementById('mobileMessageInput'),
-                sendBtn: document.getElementById('mobileSendBtn'),
-                typing: document.getElementById('mobileTyping'),
-                typingText: document.getElementById('mobileTypingText'),
-                score: document.getElementById('mobileScore'),
-                progress: document.getElementById('mobileProgress'),
-                ticketCounter: document.getElementById('mobileTicketCounter'),
-                modal: document.getElementById('mobileTestComplete'),
-                modalIcon: document.getElementById('mobileResultIcon'),
-                modalTitle: document.getElementById('mobileResultTitle'),
-                modalScore: document.getElementById('mobileResultScore'),
-                modalMessage: document.getElementById('mobileResultMessage'),
-                modalStatus: document.getElementById('mobileSubmissionStatus'),
-                reviewBtn: document.getElementById('mobileReviewBtn'),
-                backBtn: document.getElementById('mobileBackBtn'),
-                menuBtn: document.getElementById('mobileMenuBtn'),
-                sidebar: document.getElementById('mobileSidebar'),
-                closeSidebar: document.getElementById('mobileCloseSidebar'),
-                scoreBtn: document.getElementById('mobileScoreBtn'),
-                scorePanel: document.getElementById('mobileScorePanel'),
-                closeScore: document.getElementById('mobileCloseScore'),
-                
+                // Getters that always fetch fresh elements
+                get testPage() { return document.getElementById('mobileDiscord'); },
+                get mainContainer() { return document.getElementById('mainContainer'); },
+                get messages() { return document.getElementById('mobileMessages'); },
+                get input() { return document.getElementById('mobileMessageInput'); },
+                get sendBtn() { return document.getElementById('mobileSendBtn'); },
+                get typing() { return document.getElementById('mobileTyping'); },
+                get typingText() { return document.getElementById('mobileTypingText'); },
+                get score() { return document.getElementById('mobileScore'); },
+                get progress() { return document.getElementById('mobileProgress'); },
+                get ticketCounter() { return document.getElementById('mobileTicketCounter'); },
+                get modal() { return document.getElementById('mobileTestComplete'); },
+                get modalIcon() { return document.getElementById('mobileResultIcon'); },
+                get modalTitle() { return document.getElementById('mobileResultTitle'); },
+                get modalScore() { return document.getElementById('mobileResultScore'); },
+                get modalMessage() { return document.getElementById('mobileResultMessage'); },
+                get modalStatus() { return document.getElementById('mobileSubmissionStatus'); },
+                get reviewBtn() { return document.getElementById('mobileReviewBtn'); },
+                get backBtn() { return document.getElementById('mobileBackBtn'); },
+                get menuBtn() { return document.getElementById('mobileMenuBtn'); },
+                get sidebar() { return document.getElementById('mobileSidebar'); },
+                get closeSidebar() { return document.getElementById('mobileCloseSidebar'); },
+                get scoreBtn() { return document.getElementById('mobileScoreBtn'); },
+                get scorePanel() { return document.getElementById('mobileScorePanel'); },
+                get closeScore() { return document.getElementById('mobileCloseScore'); },
+
                 setupEvents() {
-                    if (this.input) {
-                        this.input.addEventListener('input', () => {
-                            this.input.style.height = 'auto';
-                            this.input.style.height = Math.min(this.input.scrollHeight, 120) + 'px';
+                    const input = this.input;
+                    if (input) {
+                        input.addEventListener('input', () => {
+                            input.style.height = 'auto';
+                            input.style.height = Math.min(input.scrollHeight, 120) + 'px';
                             if (this.sendBtn) {
-                                this.sendBtn.disabled = !this.input.value.trim() || !testState.active;
+                                this.sendBtn.disabled = !input.value.trim() || !testState.active;
                             }
                         });
 
-                        this.input.addEventListener('keydown', (e) => {
+                        input.addEventListener('keydown', (e) => {
                             if (e.key === 'Enter' && !e.shiftKey) {
                                 e.preventDefault();
                                 if (this.sendBtn && !this.sendBtn.disabled && testState.active) {
@@ -3022,7 +3024,11 @@
                 },
                 
                 addMessage(username, content, color, isBot = false) {
-                    if (!this.messages) return;
+                    const msgContainer = this.messages;
+                    if (!msgContainer) {
+                        console.error('Mobile messages container not found!');
+                        return;
+                    }
 
                     const messageGroup = document.createElement('div');
                     messageGroup.className = 'mobile-message-group';
@@ -3048,8 +3054,8 @@
                         </div>
                     `;
 
-                    this.messages.appendChild(messageGroup);
-                    this.messages.scrollTop = this.messages.scrollHeight;
+                    msgContainer.appendChild(messageGroup);
+                    msgContainer.scrollTop = msgContainer.scrollHeight;
                 },
                 
                 async showTyping(username, duration) {
@@ -3091,7 +3097,7 @@
                     if (!this.modal) return;
 
                     if (this.modalIcon) {
-                        this.modalIcon.className = `${passed ? 'pass' : 'fail'}`;
+                        this.modalIcon.className = passed ? 'pass' : 'fail';
                         this.modalIcon.innerHTML = passed ? '<i class="fas fa-trophy"></i>' : '<i class="fas fa-times-circle"></i>';
                     }
                     
@@ -3417,14 +3423,15 @@
                         const isMobile = window.innerWidth <= 768;
                         
                         if (isMobile) {
+                            // CRITICAL FIX: Ensure mobile elements exist and test starts
                             mobile.setupEvents();
                             mobile.show();
                             mobile.updateUserDisplay();
                             
-                            // CRITICAL FIX: Ensure mobile test starts properly
+                            // Force test start after a short delay
                             setTimeout(() => {
                                 testLogic.start(true);
-                            }, 500);
+                            }, 300);
                         } else {
                             desktop.setupEvents();
                             desktop.show();
@@ -3432,8 +3439,11 @@
                             
                             setTimeout(() => {
                                 testLogic.start(false);
-                            }, 500);
+                            }, 300);
                         }
+                        
+                        // Clean URL
+                        window.history.replaceState({}, document.title, window.location.pathname);
                     }
                 }
             }
@@ -3588,6 +3598,11 @@
                 
                 window.addEventListener('resize', handleResize);
             });
+
+            // Also handle OAuth return immediately if DOM already loaded
+            if (document.readyState === 'complete' || document.readyState === 'interactive') {
+                setTimeout(() => authManager.handleOAuthReturn(), 100);
+            }
         })();
     </script>
 </body>
