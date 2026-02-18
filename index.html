@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>VOID | Mod Training Suite v3.1</title>
+    <title>VOID | Mod Training Suite v3.2</title>
     
     <!-- Premium Fonts -->
     <link href="https://api.fontshare.com/v2/css?f[]=satoshi@900,700,500,300,400&display=swap" rel="stylesheet">
@@ -867,12 +867,13 @@
             padding: 16px;
             display: flex;
             flex-direction: column;
-            gap: 2px;
+            gap: 8px;
         }
         .discord-message-group {
             display: flex;
             gap: 16px;
-            padding: 2px 0;
+            padding: 8px 0;
+            margin-bottom: 4px;
             position: relative;
         }
         .discord-message-group:hover {
@@ -897,7 +898,7 @@
             display: flex;
             align-items: baseline;
             gap: 8px;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
             flex-wrap: wrap;
         }
         .discord-message-author {
@@ -921,9 +922,10 @@
         .discord-message-text {
             color: var(--discord-text);
             font-size: 0.9375rem;
-            line-height: 1.4;
+            line-height: 1.5;
             word-wrap: break-word;
             white-space: pre-wrap;
+            margin-bottom: 4px;
         }
 
         /* Typing Indicator */
@@ -1317,7 +1319,7 @@
             display: flex;
             align-items: baseline;
             gap: 8px;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
             flex-wrap: wrap;
         }
         .mobile-message-author {
@@ -1341,8 +1343,9 @@
         .mobile-message-text {
             color: var(--discord-text);
             font-size: 0.9375rem;
-            line-height: 1.4;
+            line-height: 1.5;
             word-wrap: break-word;
+            margin-bottom: 4px;
         }
 
         /* Mobile Input Area */
@@ -1671,6 +1674,15 @@
         @keyframes typing {
             0%, 60%, 100% { transform: translateY(0); }
             30% { transform: translateY(-4px); }
+        }
+
+        /* Message spacing - fix for messages combining */
+        .discord-message-group + .discord-message-group {
+            margin-top: 8px;
+        }
+        
+        .mobile-message-group + .mobile-message-group {
+            margin-top: 12px;
         }
 
         /* Media Query for Mobile */
@@ -3126,24 +3138,27 @@
                     ui.updateScore();
                     ui.disableInput(true);
                     
+                    // Welcome sequence with proper delays between messages
                     await ui.showTyping('Void Bot', 1000);
                     const welcomeMsg = 'Welcome to the **Void Esports Moderator Certification Test**.';
                     ui.addMessage('Void Bot', welcomeMsg, '#5865f2', true);
                     testState.addToLog('Void Bot', welcomeMsg, true);
                     
-                    await delay(800);
+                    await delay(1800); // Increased delay between messages
+                    
                     await ui.showTyping('Void Bot', 1200);
                     const infoMsg = `You'll be presented with **${CONFIG.TOTAL_QUESTIONS}** scenarios.`;
                     ui.addMessage('Void Bot', infoMsg, '#5865f2', true);
                     testState.addToLog('Void Bot', infoMsg, true);
                     
-                    await delay(800);
+                    await delay(1800);
+                    
                     await ui.showTyping('Void Bot', 800);
                     const finalMsg = 'Respond as you would as a real moderator. Good luck!';
                     ui.addMessage('Void Bot', finalMsg, '#5865f2', true);
                     testState.addToLog('Void Bot', finalMsg, true);
                     
-                    await delay(1500);
+                    await delay(2000);
                     
                     this.showNextQuestion(isMobile);
                 },
@@ -3158,7 +3173,7 @@
 
                     const question = TEST_QUESTIONS[testState.currentQuestion];
                     
-                    await ui.showTyping(question.username, 1200);
+                    await ui.showTyping(question.username, 1500);
                     ui.addMessage(question.username, question.message, question.avatarColor, false);
                     testState.addToLog(question.username, question.message, false);
                     
@@ -3188,7 +3203,7 @@
                     testState.userAnswers.push(userMessage);
                     ui.clearInput();
                     
-                    await ui.showTyping('Void Bot', 1000);
+                    await ui.showTyping('Void Bot', 1500);
                     
                     const question = TEST_QUESTIONS[testState.currentQuestion];
                     const result = this.evaluateAnswer(userMessage, question);
@@ -3216,10 +3231,10 @@
                     ui.updateScore();
                     
                     if (testState.currentQuestion < CONFIG.TOTAL_QUESTIONS) {
-                        await delay(1500);
+                        await delay(2000);
                         this.showNextQuestion(isMobile);
                     } else {
-                        await delay(2000);
+                        await delay(2500);
                         this.endTest(isMobile);
                     }
                 },
@@ -3252,7 +3267,7 @@
                     testState.endTime = new Date().toISOString();
                     ui.disableInput(true);
                     
-                    await ui.showTyping('Void Bot', 1000);
+                    await ui.showTyping('Void Bot', 1500);
                     
                     const passed = testState.score >= CONFIG.PASSING_SCORE;
                     const finalMsg = `**Test Complete!**\nFinal Score: **${testState.score}/${CONFIG.TOTAL_QUESTIONS}**\nResult: **${passed ? 'PASSED ✅' : 'FAILED ❌'}**`;
@@ -3399,15 +3414,19 @@
                             mobile.setupEvents();
                             mobile.show();
                             mobile.updateUserDisplay();
+                            
+                            setTimeout(() => {
+                                testLogic.start(true);
+                            }, 1000);
                         } else {
                             desktop.setupEvents();
                             desktop.show();
                             desktop.updateUserDisplay();
+                            
+                            setTimeout(() => {
+                                testLogic.start(false);
+                            }, 1000);
                         }
-                        
-                        setTimeout(() => {
-                            testLogic.start(isMobile);
-                        }, 1000);
                     }
                 }
             }
