@@ -3127,17 +3127,19 @@
                 }
             };
 
-            // ==================== TEST LOGIC ====================
+            // ==================== TEST LOGIC - FIXED FOR MOBILE ====================
             const testLogic = {
-                _running: false, // FIX: Prevent double-start race condition on mobile
+                _running: false,
+                _mobileWelcomeShown: false,
 
                 async start(isMobile) {
-                    // FIX: Ignore duplicate calls (mobile OAuth redirect fires handleOAuthReturn twice)
                     if (this._running) {
                         console.warn('testLogic already running, ignoring duplicate start');
                         return;
                     }
                     this._running = true;
+                    this._mobileWelcomeShown = false;
+                    
                     console.log('🚀 Starting test... isMobile:', isMobile);
                     
                     testState.active = true;
@@ -3154,25 +3156,30 @@
                     ui.updateScore();
                     ui.disableInput(true);
                     
+                    // Extra delay for mobile
+                    if (isMobile) {
+                        await new Promise(resolve => setTimeout(resolve, 300));
+                    }
+                    
                     // Welcome sequence
                     await ui.showTyping('Void Bot', 1000);
                     const welcomeMsg = 'Welcome to the **Void Esports Moderator Certification Test**.';
                     ui.addMessage('Void Bot', welcomeMsg, '#5865f2', true);
                     testState.addToLog('Void Bot', welcomeMsg, true);
                     
-                    await delay(800);
+                    await new Promise(resolve => setTimeout(resolve, 800));
                     await ui.showTyping('Void Bot', 1200);
                     const infoMsg = `You'll be presented with **${CONFIG.TOTAL_QUESTIONS}** scenarios.`;
                     ui.addMessage('Void Bot', infoMsg, '#5865f2', true);
                     testState.addToLog('Void Bot', infoMsg, true);
                     
-                    await delay(800);
+                    await new Promise(resolve => setTimeout(resolve, 800));
                     await ui.showTyping('Void Bot', 800);
                     const finalMsg = 'Respond as you would as a real moderator. Good luck!';
                     ui.addMessage('Void Bot', finalMsg, '#5865f2', true);
                     testState.addToLog('Void Bot', finalMsg, true);
                     
-                    await delay(1500);
+                    await new Promise(resolve => setTimeout(resolve, 1500));
                     
                     this.showNextQuestion(isMobile);
                 },
@@ -3186,6 +3193,12 @@
                     }
 
                     const question = TEST_QUESTIONS[testState.currentQuestion];
+                    
+                    // Extra delay for mobile first question
+                    if (isMobile && !this._mobileWelcomeShown) {
+                        this._mobileWelcomeShown = true;
+                        await new Promise(resolve => setTimeout(resolve, 300));
+                    }
                     
                     await ui.showTyping(question.username, 1200);
                     ui.addMessage(question.username, question.message, question.avatarColor, false);
@@ -3223,7 +3236,6 @@
                     const question = TEST_QUESTIONS[testState.currentQuestion];
                     const result = this.evaluateAnswer(userMessage, question);
                     
-                    // Store for log
                     testState.questionsWithAnswers.push({
                         question: question.message,
                         answer: userMessage,
@@ -3234,7 +3246,6 @@
                         feedback: question.feedback
                     });
                     
-                    // Add feedback message
                     let feedbackMsg = result.correct 
                         ? `✅ **Correct!** ${question.feedback}`
                         : `❌ **Not quite right.** ${question.feedback}`;
@@ -3250,10 +3261,10 @@
                     ui.updateScore();
                     
                     if (testState.currentQuestion < CONFIG.TOTAL_QUESTIONS) {
-                        await delay(1500);
+                        await new Promise(resolve => setTimeout(resolve, 1500));
                         this.showNextQuestion(isMobile);
                     } else {
-                        await delay(2000);
+                        await new Promise(resolve => setTimeout(resolve, 2000));
                         this.endTest(isMobile);
                     }
                 },
@@ -3329,7 +3340,6 @@
                     } catch (error) {
                         console.error('Submission error:', error);
                         
-                        // Try fallback endpoint
                         try {
                             const fallbackResponse = await fetch(`${CONFIG.API_BASE_URL}/api/submit`, {
                                 method: 'POST',
@@ -3351,7 +3361,8 @@
                 
                 reset() {
                     testState.reset();
-                    this._running = false; // Allow re-start
+                    this._running = false;
+                    this._mobileWelcomeShown = false;
                     
                     const isMobile = window.innerWidth <= 768;
                     const ui = isMobile ? mobile : desktop;
@@ -3427,8 +3438,6 @@
                     if (startTest === '1' && discordUsername && discordId) {
                         console.log("Returning from OAuth, starting test for:", discordUsername);
                         
-                        // FIX: Clean URL FIRST so if this fires twice (DOMContentLoaded race),
-                        // the second call won't find the params and will skip
                         window.history.replaceState({}, document.title, window.location.pathname);
                         
                         testState.initUser(discordUsername, discordId);
@@ -3440,26 +3449,20 @@
                             mobile.show();
                             mobile.updateUserDisplay();
                             
-                            // FIX: Use requestAnimationFrame + longer delay on mobile to ensure
-                            // the DOM is fully painted before starting async test logic
-                            // (Mobile browsers are slower to paint after show())
-                            requestAnimationFrame(() => {
-                                setTimeout(() => {
-                                    console.log("Mobile: Calling testLogic.start(true)");
-                                    testLogic.start(true);
-                                }, 600);
-                            });
+                            // Longer delay for mobile
+                            setTimeout(() => {
+                                console.log("Mobile: Calling testLogic.start(true)");
+                                testLogic.start(true);
+                            }, 800);
                         } else {
                             desktop.setupEvents();
                             desktop.show();
                             desktop.updateUserDisplay();
                             
-                            requestAnimationFrame(() => {
-                                setTimeout(() => {
-                                    console.log("Desktop: Calling testLogic.start(false)");
-                                    testLogic.start(false);
-                                }, 300);
-                            });
+                            setTimeout(() => {
+                                console.log("Desktop: Calling testLogic.start(false)");
+                                testLogic.start(false);
+                            }, 300);
                         }
                     }
                 }
@@ -3615,14 +3618,7 @@
                 
                 window.addEventListener('resize', handleResize);
             });
-
-            // FIX: Removed duplicate handleOAuthReturn() immediate call.
-            // The old code called it from BOTH DOMContentLoaded AND here,
-            // causing the mobile test to start twice and wipe messages.
-            // Now only called from DOMContentLoaded above. URL-cleaning in
-            // handleOAuthReturn() prevents any accidental second run.
         })();
     </script>
 </body>
 </html>
-
