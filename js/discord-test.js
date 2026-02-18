@@ -175,7 +175,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Load questions from backend
     async function loadTestQuestions() {
         try {
-            const response = await fetch('https://mod-application-backend-production.up.railway.app/admin/api/test-questions', {
+            const response = await fetch('https://mod-application-backend.onrender.com/admin/api/test-questions', {
                 credentials: 'include'
             });
             const data = await response.json();
@@ -539,7 +539,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         }
                         
                         try {
-                            const response = await fetch('https://mod-application-backend-production.up.railway.app/submit-test-results', {
+                            const response = await fetch('https://mod-application-backend.onrender.com/submit-test-results', {
                                 method: 'POST',
                                 headers: { 'Content-Type': 'application/json' },
                                 body: JSON.stringify(submissionData)
