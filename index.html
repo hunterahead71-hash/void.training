@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>VOID | Mod Training Suite v3.2</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VOID | Mod Training Suite v3.0</title>
     
     <!-- Premium Fonts -->
     <link href="https://api.fontshare.com/v2/css?f[]=satoshi@900,700,500,300,400&display=swap" rel="stylesheet">
@@ -14,7 +14,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* ===== MODERN VOID ESPORTS STYLES - CLEAN & PROFESSIONAL ===== */
         * {
             margin: 0;
             padding: 0;
@@ -29,21 +28,14 @@
             --text-primary: #ffffff;
             --text-secondary: #e4e4e7;
             --text-muted: #8b8b98;
-            --accent: #5865f2;
-            --accent-hover: #6d7af5;
+            --accent: #6b6bf3;
+            --accent-hover: #7b7bff;
             --success: #10b981;
             --warning: #f59e0b;
             --danger: #ed4245;
+            --void-blood: #ff0033;
+            --void-neon: #00ffea;
             --void-purple: #8b5cf6;
-            
-            --discord-bg: #313338;
-            --discord-primary: #2b2d31;
-            --discord-secondary: #1e1f22;
-            --discord-text: #dbdee1;
-            --discord-muted: #949ba4;
-            --discord-accent: #5865f2;
-            --discord-green: #23a55a;
-            --discord-red: #f23f42;
         }
 
         body {
@@ -54,11 +46,11 @@
             line-height: 1.6;
         }
 
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 32px;
-        }
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-secondary); }
+        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+        .container { max-width: 1400px; margin: 0 auto; padding: 0 32px; }
 
         /* Admin Button */
         #adminLoginBtn {
@@ -121,6 +113,7 @@
         .header {
             padding: 120px 0 80px;
             text-align: center;
+            position: relative;
         }
         .header h1 {
             font-family: 'Space Grotesk', sans-serif;
@@ -172,6 +165,7 @@
             background: var(--accent);
             border-color: var(--accent);
             color: white;
+            box-shadow: 0 0 20px rgba(107, 107, 243, 0.3);
         }
         .progress-step span {
             font-size: 0.875rem;
@@ -372,7 +366,7 @@
         .weekly-requirements {
             margin-top: 20px;
             padding: 16px;
-            background: rgba(88, 101, 242, 0.1);
+            background: rgba(107, 107, 243, 0.1);
             border-radius: 12px;
             color: var(--accent);
             font-weight: 600;
@@ -436,7 +430,7 @@
             color: var(--accent);
         }
         .btn-test:hover {
-            background: rgba(88, 101, 242, 0.1);
+            background: rgba(107, 107, 243, 0.1);
             transform: translateY(-2px);
         }
 
@@ -495,7 +489,6 @@
             font-family: inherit;
             font-size: 1rem;
             margin-bottom: 30px;
-            resize: vertical;
         }
         .quiz-buttons {
             display: flex;
@@ -569,7 +562,7 @@
             color: var(--text-muted);
         }
 
-        /* ===== DISCORD DESKTOP TEST INTERFACE ===== */
+        /* Discord Test Interface */
         .test-page {
             display: none;
             position: fixed;
@@ -577,629 +570,294 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: var(--discord-bg);
+            background: var(--bg-primary);
             z-index: 10000;
             overflow: hidden;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         }
         .test-page.active {
             display: block;
         }
 
-        .discord-app {
-            display: flex;
-            height: 100%;
-            width: 100%;
-            overflow: hidden;
-        }
-
-        /* Server Bar */
-        .discord-servers {
-            width: 72px;
-            background: var(--discord-secondary);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 12px 0;
-            gap: 8px;
-            overflow-y: auto;
-            flex-shrink: 0;
-            height: 100%;
-        }
-        .discord-server-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            background: var(--discord-primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--discord-muted);
-            font-size: 1.25rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: border-radius 0.2s ease;
-            position: relative;
-            flex-shrink: 0;
-        }
-        .discord-server-icon:hover {
-            border-radius: 16px;
-            background: var(--discord-primary);
-            color: var(--discord-text);
-        }
-        .discord-server-icon.active {
-            border-radius: 16px;
-            background: var(--discord-accent);
-            color: white;
-        }
-        .discord-server-icon.active::before {
-            content: '';
-            position: absolute;
-            left: -12px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 4px;
-            height: 20px;
-            background: white;
-            border-radius: 0 4px 4px 0;
-        }
-        .discord-server-divider {
-            width: 32px;
-            height: 2px;
-            background: var(--border);
-            margin: 4px 0;
-        }
-
-        /* Channels Sidebar */
-        .discord-channels {
-            width: 240px;
-            background: var(--discord-primary);
-            display: flex;
-            flex-direction: column;
-            flex-shrink: 0;
-            height: 100%;
-            border-right: 1px solid var(--border);
-        }
-        .discord-guild-header {
-            height: 48px;
-            padding: 0 16px;
-            display: flex;
-            align-items: center;
-            background: var(--discord-primary);
+        .dashboard-header {
+            height: 64px;
+            background: var(--bg-secondary);
             border-bottom: 1px solid var(--border);
-            cursor: pointer;
-            font-weight: 600;
-            color: var(--discord-text);
-        }
-        .discord-guild-header i {
-            margin-left: auto;
-            color: var(--discord-muted);
-            font-size: 0.875rem;
-        }
-        .discord-channels-scroll {
-            flex: 1;
-            overflow-y: auto;
-            padding: 16px 8px;
-        }
-        .discord-category {
-            margin-bottom: 16px;
-        }
-        .discord-category-header {
-            padding: 8px 8px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            color: var(--discord-muted);
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
+            padding: 0 32px;
         }
-        .discord-channel {
-            padding: 6px 8px;
-            margin: 1px 0;
-            border-radius: 4px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            color: var(--discord-muted);
-            cursor: pointer;
-            font-size: 0.9375rem;
-        }
-        .discord-channel:hover {
-            background: var(--bg-tertiary);
-            color: var(--discord-text);
-        }
-        .discord-channel.active {
-            background: var(--bg-tertiary);
-            color: var(--discord-text);
-        }
-        .discord-channel i {
-            width: 20px;
-            text-align: center;
-            font-size: 1rem;
-        }
-        .discord-channel-name {
-            flex: 1;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        .discord-channel-unread {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--discord-text);
-        }
-
-        /* User Panel */
-        .discord-user-panel {
-            height: 52px;
-            background: var(--discord-secondary);
-            display: flex;
-            align-items: center;
-            padding: 0 8px;
-            gap: 8px;
-            margin-top: auto;
-            border-top: 1px solid var(--border);
-        }
-        .discord-avatar-wrapper {
-            position: relative;
-        }
-        .discord-avatar {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: var(--accent);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
+        .dashboard-title {
+            font-size: 1.25rem;
+            font-weight: 700;
             color: white;
-            font-size: 0.875rem;
-        }
-        .discord-status {
-            position: absolute;
-            bottom: -2px;
-            right: -2px;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            border: 2px solid var(--discord-secondary);
-            background: var(--discord-green);
-        }
-        .discord-user-info {
-            flex: 1;
-            min-width: 0;
-        }
-        .discord-user-name {
-            font-weight: 600;
-            font-size: 0.875rem;
-            color: var(--discord-text);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        .discord-user-tag {
-            font-size: 0.6875rem;
-            color: var(--discord-muted);
-        }
-        .discord-user-controls {
-            display: flex;
-            gap: 2px;
-        }
-        .discord-control-btn {
-            width: 32px;
-            height: 32px;
-            border-radius: 4px;
             display: flex;
             align-items: center;
-            justify-content: center;
-            color: var(--discord-muted);
+            gap: 12px;
+        }
+        .back-to-training {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            padding: 8px 16px;
+            border-radius: 8px;
             cursor: pointer;
         }
-        .discord-control-btn:hover {
-            background: var(--bg-tertiary);
-            color: var(--discord-text);
+
+        .test-container {
+            display: flex;
+            height: calc(100vh - 64px);
         }
 
-        /* Main Chat Area */
-        .discord-chat {
-            flex: 1;
+        .server-list {
+            width: 72px;
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border);
+            padding: 16px 0;
             display: flex;
             flex-direction: column;
-            background: var(--discord-bg);
-            min-width: 0;
-            height: 100%;
+            align-items: center;
+            gap: 12px;
         }
-        .discord-chat-header {
+        .server-item {
+            width: 48px;
             height: 48px;
-            background: var(--discord-bg);
-            border-bottom: 1px solid var(--border);
+            border-radius: 50%;
+            background: var(--bg-tertiary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            cursor: pointer;
+        }
+        .server-item.active {
+            background: var(--accent);
+            color: white;
+            border-radius: 16px;
+        }
+
+        .discord-sidebar {
+            width: 240px;
+            background: var(--bg-secondary);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .server-header {
+            height: 48px;
             padding: 0 16px;
             display: flex;
             align-items: center;
-            gap: 8px;
-            flex-shrink: 0;
-        }
-        .discord-chat-header i {
-            color: var(--discord-muted);
-            font-size: 1.25rem;
-        }
-        .discord-chat-title {
+            border-bottom: 1px solid var(--border);
             font-weight: 600;
-            color: var(--discord-text);
-            font-size: 0.9375rem;
-        }
-        .discord-chat-topic {
-            color: var(--discord-muted);
-            font-size: 0.875rem;
-            margin-left: 8px;
-            padding-left: 8px;
-            border-left: 1px solid var(--border);
-        }
-        .discord-chat-header-actions {
-            margin-left: auto;
-            display: flex;
-            gap: 4px;
-        }
-        .discord-header-btn {
-            width: 32px;
-            height: 32px;
-            border-radius: 4px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--discord-muted);
-            cursor: pointer;
-        }
-        .discord-header-btn:hover {
-            background: var(--bg-tertiary);
-            color: var(--discord-text);
         }
 
-        /* Messages Container */
-        .discord-messages {
+        .scrollable-channels {
             flex: 1;
             overflow-y: auto;
             padding: 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
         }
-        .discord-message-group {
-            display: flex;
-            gap: 16px;
+
+        .channel-category {
+            margin-bottom: 16px;
+        }
+        .category-header {
             padding: 8px 0;
-            margin-bottom: 4px;
-            position: relative;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: var(--text-muted);
         }
-        .discord-message-group:hover {
-            background: rgba(255, 255, 255, 0.02);
+        .channel-item {
+            padding: 8px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-muted);
+            cursor: pointer;
         }
-        .discord-message-avatar {
+        .channel-item.active {
+            background: var(--bg-tertiary);
+            color: white;
+        }
+
+        .user-panel {
+            height: 64px;
+            background: var(--bg-tertiary);
+            border-top: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            gap: 12px;
+        }
+        .user-avatar {
             width: 40px;
             height: 40px;
             border-radius: 50%;
+            background: var(--accent);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: 600;
+            font-weight: 700;
             color: white;
-            flex-shrink: 0;
         }
-        .discord-message-content {
+
+        .discord-chat-area {
             flex: 1;
-            min-width: 0;
-        }
-        .discord-message-header {
             display: flex;
-            align-items: baseline;
-            gap: 8px;
-            margin-bottom: 6px;
-            flex-wrap: wrap;
+            flex-direction: column;
+            background: var(--bg-primary);
         }
-        .discord-message-author {
-            font-weight: 600;
-            color: var(--discord-text);
-            font-size: 0.9375rem;
+
+        .chat-header {
+            height: 48px;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            padding: 0 24px;
         }
-        .discord-message-badge {
-            background: var(--accent);
-            color: white;
-            font-size: 0.625rem;
-            font-weight: 600;
-            padding: 2px 6px;
-            border-radius: 4px;
-            text-transform: uppercase;
+
+        .messages-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px;
         }
-        .discord-message-timestamp {
-            color: var(--discord-muted);
-            font-size: 0.6875rem;
+
+        .message-group {
+            margin-bottom: 24px;
         }
-        .discord-message-text {
-            color: var(--discord-text);
-            font-size: 0.9375rem;
-            line-height: 1.5;
-            word-wrap: break-word;
-            white-space: pre-wrap;
+        .message-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
             margin-bottom: 4px;
         }
-
-        /* Typing Indicator */
-        .discord-typing {
-            padding: 8px 16px;
+        .message-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--accent);
             display: flex;
             align-items: center;
-            gap: 8px;
-            color: var(--discord-muted);
-            font-size: 0.8125rem;
+            justify-content: center;
+            font-weight: 700;
+            color: white;
         }
-        .discord-typing-dots {
-            display: flex;
-            gap: 4px;
+        .message-author {
+            font-weight: 700;
+            color: white;
         }
-        .discord-typing-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--discord-muted);
-            animation: typing 1.4s infinite ease-in-out;
+        .bot-tag {
+            background: var(--accent);
+            color: white;
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-left: 8px;
         }
-        .discord-typing-dot:nth-child(1) { animation-delay: -0.32s; }
-        .discord-typing-dot:nth-child(2) { animation-delay: -0.16s; }
-        .discord-typing-dot:nth-child(3) { animation-delay: 0; }
+        .message-timestamp {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            margin-left: 8px;
+        }
+        .message-content {
+            margin-left: 52px;
+            color: var(--text-secondary);
+        }
 
-        /* Message Input */
-        .discord-input-area {
-            padding: 0 16px 16px 16px;
-            background: var(--discord-bg);
+        .message-input-area {
+            padding: 24px;
+            background: var(--bg-secondary);
             border-top: 1px solid var(--border);
         }
-        .discord-input-container {
-            background: var(--discord-primary);
-            border-radius: 8px;
-            display: flex;
-            align-items: flex-end;
-            padding: 0 8px;
-        }
-        .discord-input {
-            flex: 1;
-            background: transparent;
-            border: none;
-            color: var(--discord-text);
-            font-family: inherit;
-            font-size: 0.9375rem;
-            padding: 10px 0;
-            resize: none;
-            min-height: 44px;
-            max-height: 144px;
-        }
-        .discord-input:focus {
-            outline: none;
-        }
-        .discord-input::placeholder {
-            color: var(--discord-muted);
-        }
-        .discord-send-btn {
-            padding: 10px 16px;
-            background: transparent;
-            border: none;
-            color: var(--discord-muted);
-            font-weight: 600;
-            cursor: pointer;
+        .message-input-container {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 16px;
         }
-        .discord-send-btn:not(:disabled) {
-            color: var(--discord-accent);
+        .message-input {
+            flex: 1;
+            padding: 12px 16px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: white;
+            resize: none;
+            min-height: 48px;
         }
-        .discord-send-btn:not(:disabled):hover {
-            color: var(--accent-hover);
+        .message-input:focus {
+            outline: none;
+            border-color: var(--accent);
         }
-        .discord-send-btn:disabled {
+        .message-input-send {
+            padding: 12px 24px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .message-input-send:disabled {
             opacity: 0.5;
             cursor: not-allowed;
         }
 
-        /* Members Sidebar */
-        .discord-members {
-            width: 240px;
-            background: var(--discord-primary);
+        .test-info-panel {
+            width: 280px;
+            background: var(--bg-secondary);
             border-left: 1px solid var(--border);
-            display: flex;
-            flex-direction: column;
-            flex-shrink: 0;
-            height: 100%;
+            padding: 32px;
         }
-        .discord-members-header {
-            height: 48px;
-            padding: 0 16px;
-            display: flex;
-            align-items: center;
-            font-weight: 600;
-            color: var(--discord-muted);
-            border-bottom: 1px solid var(--border);
-        }
-        .discord-members-scroll {
-            flex: 1;
-            overflow-y: auto;
-            padding: 16px 8px;
-        }
-        .discord-member-group {
-            margin-bottom: 16px;
-        }
-        .discord-member-group-title {
-            padding: 8px 8px;
-            color: var(--discord-muted);
-            font-size: 0.6875rem;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-        .discord-member {
-            padding: 4px 8px;
-            border-radius: 4px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-        }
-        .discord-member:hover {
-            background: var(--bg-tertiary);
-        }
-        .discord-member-avatar {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: var(--accent);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-            color: white;
-            font-size: 0.875rem;
-            position: relative;
-        }
-        .discord-member-status {
-            position: absolute;
-            bottom: -2px;
-            right: -2px;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            border: 2px solid var(--discord-primary);
-            background: var(--discord-green);
-        }
-        .discord-member-name {
-            font-weight: 500;
-            font-size: 0.875rem;
-            color: var(--discord-muted);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        /* Score Display */
-        .discord-score {
-            background: var(--discord-secondary);
-            border-radius: 8px;
-            padding: 12px;
-            margin-bottom: 16px;
+        .score-display {
             text-align: center;
         }
-        .discord-score-value {
-            font-size: 2rem;
-            font-weight: 700;
+        .score-value {
+            font-size: 64px;
+            font-weight: 800;
             color: var(--accent);
+            margin: 16px 0;
         }
-        .discord-score-label {
-            font-size: 0.75rem;
-            color: var(--discord-muted);
-            text-transform: uppercase;
-        }
-        .discord-progress {
-            height: 4px;
+        .progress-bar-container {
+            height: 6px;
             background: var(--bg-tertiary);
-            border-radius: 2px;
-            margin-top: 8px;
+            border-radius: 3px;
+            margin: 16px 0;
             overflow: hidden;
         }
-        .discord-progress-fill {
+        .progress-fill-bar {
             height: 100%;
             background: linear-gradient(90deg, var(--accent), var(--void-purple));
             width: 0%;
             transition: width 0.3s ease;
         }
 
-        /* Test Complete Modal */
-        .discord-modal {
+        .test-complete-screen {
+            display: none;
             position: fixed;
             top: 0;
             left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.85);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 10001;
-            padding: 20px;
-        }
-        .discord-modal.active {
-            display: flex;
-        }
-        .discord-modal-content {
-            background: var(--discord-primary);
-            border-radius: 12px;
-            padding: 32px;
-            max-width: 500px;
             width: 100%;
-            border: 1px solid var(--border);
-        }
-        .discord-modal-icon {
-            font-size: 4rem;
-            text-align: center;
-            margin-bottom: 16px;
-        }
-        .discord-modal-icon.pass { color: var(--success); }
-        .discord-modal-icon.fail { color: var(--danger); }
-        .discord-modal-title {
-            font-size: 2rem;
-            font-weight: 700;
-            text-align: center;
-            margin-bottom: 8px;
-            color: var(--discord-text);
-        }
-        .discord-modal-score {
-            font-size: 2.5rem;
-            font-weight: 800;
-            text-align: center;
-            margin-bottom: 16px;
-            color: var(--accent);
-        }
-        .discord-modal-message {
-            text-align: center;
-            color: var(--discord-muted);
-            margin-bottom: 24px;
-        }
-        .discord-modal-status {
-            background: var(--discord-secondary);
-            border-radius: 8px;
-            padding: 12px;
-            margin-bottom: 24px;
-            display: flex;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 10001;
             align-items: center;
             justify-content: center;
-            gap: 8px;
         }
-        .discord-modal-buttons {
+        .test-complete-screen.active {
             display: flex;
-            gap: 12px;
-            justify-content: center;
         }
-        .discord-modal-btn {
-            padding: 12px 24px;
-            border-radius: 4px;
-            font-weight: 600;
-            cursor: pointer;
-            border: none;
-        }
-        .discord-modal-btn.primary {
-            background: var(--accent);
-            color: white;
-        }
-        .discord-modal-btn.primary:hover {
-            background: var(--accent-hover);
-        }
-        .discord-modal-btn.secondary {
-            background: var(--discord-secondary);
-            color: var(--discord-text);
-        }
-        .discord-modal-btn.secondary:hover {
-            background: var(--bg-tertiary);
+        .test-result-container {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 48px;
+            max-width: 500px;
+            text-align: center;
         }
 
-        /* ===== MOBILE DISCORD TEST INTERFACE - FIXED ===== */
         .mobile-discord {
             display: none;
             position: fixed;
@@ -1207,525 +865,16 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: var(--discord-bg);
+            background: var(--bg-primary);
             z-index: 10000;
-            overflow: hidden;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         }
         .mobile-discord.active {
             display: block;
         }
 
-        /* Mobile Header */
-        .mobile-header {
-            height: 56px;
-            background: var(--discord-secondary);
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            padding: 0 16px;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 10001;
-        }
-        .mobile-menu-btn {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: transparent;
-            color: var(--discord-muted);
-            margin-right: 12px;
-            cursor: pointer;
-        }
-        .mobile-server-icon {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: var(--accent);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            color: white;
-            margin-right: 12px;
-        }
-        .mobile-channel-name {
-            font-weight: 600;
-            font-size: 17px;
-            color: var(--discord-text);
-            flex: 1;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        .mobile-header-actions {
-            display: flex;
-            gap: 8px;
-        }
-        .mobile-header-btn {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: transparent;
-            color: var(--discord-muted);
-            cursor: pointer;
-        }
-
-        /* Mobile Messages Container */
-        .mobile-messages-container {
-            position: absolute;
-            top: 56px;
-            left: 0;
-            right: 0;
-            bottom: 70px;
-            overflow-y: auto;
-            background: var(--discord-bg);
-            padding: 16px;
-        }
-
-        /* Mobile Message Groups */
-        .mobile-message-group {
-            display: flex;
-            gap: 12px;
-            padding: 8px 0;
-            margin-bottom: 12px;
-        }
-        .mobile-message-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-            color: white;
-            flex-shrink: 0;
-        }
-        .mobile-message-content {
-            flex: 1;
-            min-width: 0;
-        }
-        .mobile-message-header {
-            display: flex;
-            align-items: baseline;
-            gap: 8px;
-            margin-bottom: 6px;
-            flex-wrap: wrap;
-        }
-        .mobile-message-author {
-            font-weight: 600;
-            color: var(--discord-text);
-            font-size: 0.9375rem;
-        }
-        .mobile-bot-tag {
-            background: var(--accent);
-            color: white;
-            font-size: 0.625rem;
-            font-weight: 600;
-            padding: 2px 6px;
-            border-radius: 4px;
-            text-transform: uppercase;
-        }
-        .mobile-message-timestamp {
-            color: var(--discord-muted);
-            font-size: 0.6875rem;
-        }
-        .mobile-message-text {
-            color: var(--discord-text);
-            font-size: 0.9375rem;
-            line-height: 1.5;
-            word-wrap: break-word;
-            white-space: pre-wrap;
-            margin-bottom: 4px;
-        }
-
-        /* Mobile Input Area */
-        .mobile-input-area {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 70px;
-            background: var(--discord-bg);
-            border-top: 1px solid var(--border);
-            padding: 12px 16px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .mobile-message-input {
-            flex: 1;
-            background: var(--discord-primary);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 12px 16px;
-            color: var(--discord-text);
-            font-size: 16px;
-            font-family: inherit;
-            resize: none;
-            min-height: 44px;
-            max-height: 120px;
-        }
-        .mobile-message-input:focus {
-            outline: none;
-            border-color: var(--accent);
-        }
-        .mobile-send-btn {
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            background: var(--accent);
-            border: none;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            flex-shrink: 0;
-        }
-        .mobile-send-btn:disabled {
-            background: var(--discord-muted);
-            cursor: not-allowed;
-        }
-
-        /* Mobile Sidebar */
-        .mobile-sidebar {
-            position: fixed;
-            top: 0;
-            left: -280px;
-            width: 280px;
-            height: 100%;
-            background: var(--discord-primary);
-            z-index: 10002;
-            transition: left 0.3s ease;
-            display: flex;
-            flex-direction: column;
-        }
-        .mobile-sidebar.active {
-            left: 0;
-        }
-        .mobile-sidebar-header {
-            height: 56px;
-            background: var(--discord-secondary);
-            display: flex;
-            align-items: center;
-            padding: 0 16px;
-            border-bottom: 1px solid var(--border);
-        }
-        .mobile-sidebar-title {
-            font-weight: 700;
-            font-size: 18px;
-            color: var(--discord-text);
-            flex: 1;
-        }
-        .mobile-close-sidebar {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: transparent;
-            color: var(--discord-muted);
-            cursor: pointer;
-        }
-        .mobile-scrollable-channels {
-            flex: 1;
-            overflow-y: auto;
-            padding: 16px 12px;
-        }
-        .mobile-category-header {
-            padding: 8px 8px;
-            color: var(--discord-muted);
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-        .mobile-channel-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 12px;
-            border-radius: 6px;
-            font-size: 16px;
-            font-weight: 500;
-            cursor: pointer;
-            color: var(--discord-muted);
-            transition: all .2s ease;
-        }
-        .mobile-channel-item.active {
-            background: var(--bg-tertiary);
-            color: var(--discord-text);
-        }
-        .mobile-channel-icon {
-            font-size: 16px;
-            width: 24px;
-            text-align: center;
-        }
-        .mobile-channel-name-sidebar {
-            flex: 1;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        /* Mobile Score Panel */
-        .mobile-score-panel {
-            position: fixed;
-            top: 56px;
-            right: -300px;
-            width: 280px;
-            height: calc(100% - 56px);
-            background: var(--discord-primary);
-            z-index: 10002;
-            transition: right 0.3s ease;
-            padding: 20px;
-            overflow-y: auto;
-        }
-        .mobile-score-panel.active {
-            right: 0;
-        }
-        .mobile-score-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 24px;
-            padding-bottom: 16px;
-            border-bottom: 1px solid var(--border);
-        }
-        .mobile-score-title {
-            font-weight: 700;
-            font-size: 18px;
-            color: var(--discord-text);
-        }
-        .mobile-close-score {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: transparent;
-            color: var(--discord-muted);
-            cursor: pointer;
-        }
-        .mobile-score-display {
-            background: var(--discord-secondary);
-            border-radius: 16px;
-            padding: 30px 20px;
-            text-align: center;
-            border: 2px solid var(--accent);
-            margin-bottom: 24px;
-        }
-        .mobile-score-value {
-            font-size: 56px;
-            font-weight: 800;
-            color: var(--discord-text);
-            line-height: 1;
-            margin-bottom: 8px;
-            font-family: 'Space Grotesk', sans-serif;
-        }
-        .mobile-score-total {
-            color: var(--discord-muted);
-            font-size: 20px;
-            font-weight: 600;
-        }
-        .mobile-progress-bar-container {
-            height: 6px;
-            background: var(--bg-tertiary);
-            border-radius: 3px;
-            margin-top: 20px;
-            overflow: hidden;
-        }
-        .mobile-progress-fill-bar {
-            height: 100%;
-            background: linear-gradient(90deg, var(--accent), var(--void-purple));
-            width: 0%;
-            transition: width 0.3s ease;
-        }
-
-        /* Mobile Test Complete Modal */
-        .mobile-test-complete {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            z-index: 10003;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-        .mobile-test-complete.active {
-            display: flex;
-        }
-        .mobile-test-result-container {
-            background: var(--discord-primary);
-            border-radius: 16px;
-            padding: 32px 24px;
-            width: 100%;
-            max-width: 400px;
-            border: 1px solid var(--border);
-            text-align: center;
-        }
-        .mobile-test-result-icon {
-            font-size: 60px;
-            margin-bottom: 24px;
-        }
-        .mobile-test-result-icon.pass { color: var(--success); }
-        .mobile-test-result-icon.fail { color: var(--danger); }
-        .mobile-test-result-title {
-            font-size: 28px;
-            font-weight: 800;
-            margin-bottom: 16px;
-            color: var(--discord-text);
-            font-family: 'Space Grotesk', sans-serif;
-        }
-        .mobile-test-result-score {
-            font-size: 22px;
-            color: var(--discord-muted);
-            margin-bottom: 24px;
-            font-weight: 600;
-        }
-        .mobile-test-result-message {
-            color: var(--discord-text);
-            font-size: 16px;
-            line-height: 1.5;
-            margin-bottom: 32px;
-        }
-        .mobile-submission-status {
-            background: var(--discord-secondary);
-            border-radius: 8px;
-            padding: 16px;
-            margin: 24px 0;
-            font-size: 14px;
-            color: var(--discord-text);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-        .mobile-test-result-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-        .mobile-test-result-btn {
-            padding: 14px 20px;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 16px;
-            cursor: pointer;
-            border: none;
-            transition: all .3s ease;
-            font-family: 'Space Grotesk', sans-serif;
-        }
-        .mobile-test-result-btn.primary {
-            background: var(--accent);
-            color: white;
-        }
-        .mobile-test-result-btn.primary:hover {
-            background: var(--accent-hover);
-        }
-        .mobile-test-result-btn.secondary {
-            background: var(--discord-secondary);
-            color: var(--discord-text);
-        }
-        .mobile-test-result-btn.secondary:hover {
-            background: var(--bg-tertiary);
-        }
-
-        /* Mobile Typing Indicator */
-        .mobile-typing {
-            padding: 8px 16px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: var(--discord-muted);
-            font-size: 0.8125rem;
-        }
-        .mobile-typing-dots {
-            display: flex;
-            gap: 4px;
-        }
-        .mobile-typing-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--discord-muted);
-            animation: typing 1.4s infinite ease-in-out;
-        }
-        .mobile-typing-dot:nth-child(1) { animation-delay: -0.32s; }
-        .mobile-typing-dot:nth-child(2) { animation-delay: -0.16s; }
-        .mobile-typing-dot:nth-child(3) { animation-delay: 0; }
-
-        /* Animations */
-        @keyframes typing {
-            0%, 60%, 100% { transform: translateY(0); }
-            30% { transform: translateY(-4px); }
-        }
-
-        /* Message spacing */
-        .discord-message-group + .discord-message-group {
-            margin-top: 8px;
-        }
-        
-        .mobile-message-group + .mobile-message-group {
-            margin-top: 12px;
-        }
-
-        /* Media Query for Mobile */
-        @media (max-width: 768px) {
-            .test-page {
-                display: none !important;
-            }
-            .mobile-discord.active {
-                display: block;
-            }
-            .nav-sidebar {
-                display: none;
-            }
-            .header h1 {
-                font-size: 2.5rem;
-            }
-            .content-section {
-                padding: 32px;
-            }
-            .ticket-types,
-            .roster-categories {
-                grid-template-columns: 1fr;
-            }
-            .quiz-buttons,
-            .completion-buttons {
-                flex-direction: column;
-                gap: 16px;
-            }
-            .btn {
-                width: 100%;
-                justify-content: center;
-            }
-            .question-card {
-                padding: 32px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .header h1 {
-                font-size: 2rem;
-            }
-            .section-title {
-                font-size: 1.5rem;
-            }
+        @media (max-width: 1024px) {
+            .nav-sidebar { display: none; }
+            .header h1 { font-size: 3rem; }
         }
     </style>
 </head>
@@ -1735,276 +884,114 @@
         <i class="fab fa-discord"></i> Admin Login
     </a>
 
-    <!-- DESKTOP DISCORD TEST INTERFACE -->
+    <!-- Discord Test Interface -->
     <div id="testPage" class="test-page">
-        <div class="discord-app">
-            <!-- Server Bar -->
-            <div class="discord-servers">
-                <div class="discord-server-icon active">
-                    <i class="fab fa-discord"></i>
-                </div>
-                <div class="discord-server-divider"></div>
-                <div class="discord-server-icon">
-                    <span>V</span>
-                </div>
+        <div class="dashboard-header">
+            <div class="dashboard-title">
+                <i class="fab fa-discord"></i> VOID MOD CERTIFICATION
             </div>
-
-            <!-- Channels Sidebar -->
-            <div class="discord-channels">
-                <div class="discord-guild-header">
-                    <span>Void Esports</span>
-                    <i class="fas fa-chevron-down"></i>
+            <button class="back-to-training" onclick="exitTest()">
+                <i class="fas fa-arrow-left"></i> Back to Training
+            </button>
+        </div>
+        
+        <div class="test-container">
+            <div class="server-list">
+                <div class="server-item active"><i class="fab fa-discord"></i></div>
+                <div class="separator"></div>
+                <div class="server-item"><span>V</span></div>
+            </div>
+            
+            <div class="discord-sidebar">
+                <div class="server-header">
+                    <i class="fas fa-chevron-down"></i> Void Esports
                 </div>
-
-                <div class="discord-channels-scroll">
-                    <div class="discord-category">
-                        <div class="discord-category-header">
-                            <span>INFORMATION</span>
-                        </div>
-                        <div class="discord-channel">
-                            <i class="fas fa-bullhorn"></i>
-                            <span class="discord-channel-name">announcements</span>
-                        </div>
-                        <div class="discord-channel">
-                            <i class="fas fa-book"></i>
-                            <span class="discord-channel-name">rules</span>
-                        </div>
-                    </div>
-
-                    <div class="discord-category">
-                        <div class="discord-category-header">
-                            <span>TICKET SYSTEM</span>
-                        </div>
-                        <div class="discord-channel active">
+                <div class="scrollable-channels">
+                    <div class="channel-category">
+                        <div class="category-header">TICKET SYSTEM</div>
+                        <div class="channel-item active">
                             <i class="fas fa-hashtag"></i>
-                            <span class="discord-channel-name">🎫・mod-tickets</span>
-                            <div class="discord-channel-unread"></div>
+                            <span>🎫・mod-tickets</span>
                         </div>
                     </div>
                 </div>
-
-                <!-- User Panel -->
-                <div class="discord-user-panel">
-                    <div class="discord-avatar-wrapper">
-                        <div class="discord-avatar" id="discordUserAvatar">U</div>
-                        <div class="discord-status"></div>
-                    </div>
-                    <div class="discord-user-info">
-                        <div class="discord-user-name" id="discordUserName">Loading...</div>
-                        <div class="discord-user-tag" id="discordUserTag">#0000</div>
-                    </div>
-                    <div class="discord-user-controls">
-                        <div class="discord-control-btn"><i class="fas fa-microphone"></i></div>
-                        <div class="discord-control-btn"><i class="fas fa-headphones"></i></div>
-                        <div class="discord-control-btn"><i class="fas fa-cog"></i></div>
+                <div class="user-panel">
+                    <div class="user-avatar" id="userAvatarInitial">U</div>
+                    <div class="user-info">
+                        <div class="username" id="discordUsernameDisplay">User</div>
+                        <div class="discriminator" id="discordUserTag">#0000</div>
                     </div>
                 </div>
             </div>
-
-            <!-- Main Chat Area -->
-            <div class="discord-chat">
-                <div class="discord-chat-header">
-                    <i class="fas fa-hashtag"></i>
-                    <span class="discord-chat-title">🎫・mod-tickets</span>
-                    <span class="discord-chat-topic" id="discordTicketCounter">Ticket #1 of 8</span>
-                    <div class="discord-chat-header-actions">
-                        <div class="discord-header-btn"><i class="fas fa-phone"></i></div>
-                        <div class="discord-header-btn"><i class="fas fa-video"></i></div>
-                        <div class="discord-header-btn"><i class="fas fa-user-plus"></i></div>
+            
+            <div class="discord-chat-area">
+                <div class="chat-header">
+                    <div class="channel-header">
+                        <i class="fas fa-hashtag"></i>
+                        <div class="channel-title">🎫・mod-tickets</div>
                     </div>
                 </div>
-
-                <!-- Messages Container -->
-                <div class="discord-messages" id="discordMessages"></div>
-
-                <!-- Typing Indicator -->
-                <div class="discord-typing" id="discordTyping" style="display: none;">
-                    <div class="discord-typing-dots">
-                        <div class="discord-typing-dot"></div>
-                        <div class="discord-typing-dot"></div>
-                        <div class="discord-typing-dot"></div>
-                    </div>
-                    <span id="discordTypingText">Someone is typing...</span>
-                </div>
-
-                <!-- Message Input -->
-                <div class="discord-input-area">
-                    <div class="discord-input-container">
-                        <textarea class="discord-input" id="discordMessageInput" placeholder="Message #mod-tickets" rows="1"></textarea>
-                        <button class="discord-send-btn" id="discordSendBtn" disabled>
-                            <i class="fas fa-paper-plane"></i>
-                            <span>Send</span>
+                
+                <div class="messages-container" id="messagesContainer"></div>
+                
+                <div class="message-input-area">
+                    <div class="message-input-container">
+                        <textarea class="message-input" id="messageInput" placeholder="Message #mod-tickets" rows="1"></textarea>
+                        <button class="message-input-send" id="sendButton" disabled>
+                            <i class="fas fa-paper-plane"></i> Send
                         </button>
                     </div>
                 </div>
             </div>
-
-            <!-- Members Sidebar -->
-            <div class="discord-members">
-                <div class="discord-members-header">
-                    <span>Members — <span id="discordMemberCount">3</span></span>
-                </div>
-                <div class="discord-members-scroll">
-                    <div class="discord-member-group">
-                        <div class="discord-member-group-title">ONLINE — 2</div>
-                        <div class="discord-member">
-                            <div class="discord-member-avatar">
-                                V
-                                <div class="discord-member-status"></div>
-                            </div>
-                            <span class="discord-member-name">Void Bot</span>
-                        </div>
-                        <div class="discord-member">
-                            <div class="discord-member-avatar" id="discordMemberAvatar">
-                                U
-                                <div class="discord-member-status"></div>
-                            </div>
-                            <span class="discord-member-name" id="discordMemberName">You</span>
-                        </div>
-                    </div>
-
-                    <!-- Score Display -->
-                    <div class="discord-score">
-                        <div class="discord-score-label">TEST SCORE</div>
-                        <div class="discord-score-value" id="discordScore">0</div>
-                        <div class="discord-progress">
-                            <div class="discord-progress-fill" id="discordProgress" style="width: 0%"></div>
-                        </div>
+            
+            <div class="test-info-panel">
+                <div class="score-display">
+                    <div class="score-label">TEST SCORE</div>
+                    <div class="score-value" id="discordScoreValue">0</div>
+                    <div class="score-total">/ 8</div>
+                    <div class="progress-bar-container">
+                        <div class="progress-fill-bar" id="discordProgressFill"></div>
                     </div>
                 </div>
             </div>
         </div>
-
-        <!-- Test Complete Modal -->
-        <div class="discord-modal" id="discordModal">
-            <div class="discord-modal-content">
-                <div class="discord-modal-icon" id="discordModalIcon">
+        
+        <div class="test-complete-screen" id="testCompleteScreen">
+            <div class="test-result-container">
+                <div class="test-result-icon" id="testResultIcon">
                     <i class="fas fa-trophy"></i>
                 </div>
-                <h2 class="discord-modal-title" id="discordModalTitle">Test Complete!</h2>
-                <div class="discord-modal-score" id="discordModalScore">0/8</div>
-                <div class="discord-modal-message" id="discordModalMessage">
-                    Your responses have been recorded.
-                </div>
-                <div class="discord-modal-status" id="discordModalStatus">
+                <h2 class="test-result-title" id="testResultTitle">Test Complete!</h2>
+                <div class="test-result-score" id="testResultScore">Score: 0/8</div>
+                <div class="submission-status" id="submissionStatus">
                     <i class="fas fa-spinner fa-spin"></i> Submitting...
                 </div>
-                <div class="discord-modal-buttons">
-                    <button class="discord-modal-btn secondary" id="discordReviewBtn">Review</button>
-                    <button class="discord-modal-btn primary" id="discordBackBtn">Back to Training</button>
+                <div class="test-result-buttons">
+                    <button class="test-result-btn primary" id="testReviewBtn">Review</button>
+                    <button class="test-result-btn secondary" id="testBackBtn">Back to Training</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- MOBILE DISCORD TEST INTERFACE - FIXED VERSION -->
-    <div class="mobile-discord" id="mobileDiscord">
-        <!-- Mobile Header -->
+    <!-- Mobile Discord Interface -->
+    <div id="mobileDiscord" class="mobile-discord">
         <div class="mobile-header">
-            <div class="mobile-menu-btn" id="mobileMenuBtn">
-                <i class="fas fa-bars"></i>
-            </div>
+            <div class="mobile-menu-btn"><i class="fas fa-bars"></i></div>
             <div class="mobile-server-icon">V</div>
-            <div class="mobile-channel-name" id="mobileTicketCounter">Ticket #1 of 8</div>
+            <div class="mobile-channel-name">🎫・mod-tickets</div>
             <div class="mobile-header-actions">
-                <div class="mobile-header-btn" id="mobileScoreBtn">
-                    <i class="fas fa-chart-simple"></i>
-                </div>
+                <div class="mobile-header-btn" onclick="exitTest()"><i class="fas fa-sign-out-alt"></i></div>
             </div>
         </div>
-
-        <!-- Mobile Messages Container -->
-        <div class="mobile-messages-container" id="mobileMessages"></div>
-
-        <!-- Mobile Typing Indicator -->
-        <div class="mobile-typing" id="mobileTyping" style="display: none;">
-            <div class="mobile-typing-dots">
-                <div class="mobile-typing-dot"></div>
-                <div class="mobile-typing-dot"></div>
-                <div class="mobile-typing-dot"></div>
-            </div>
-            <span id="mobileTypingText">Someone is typing...</span>
-        </div>
-
-        <!-- Mobile Input Area -->
+        <div class="mobile-messages-container" id="mobileMessagesContainer"></div>
         <div class="mobile-input-area">
-            <textarea class="mobile-message-input" id="mobileMessageInput" placeholder="Message #mod-tickets" rows="1"></textarea>
-            <button class="mobile-send-btn" id="mobileSendBtn" disabled>
-                <i class="fas fa-paper-plane"></i>
-            </button>
-        </div>
-
-        <!-- Mobile Sidebar -->
-        <div class="mobile-sidebar" id="mobileSidebar">
-            <div class="mobile-sidebar-header">
-                <span class="mobile-sidebar-title">Void Esports</span>
-                <div class="mobile-close-sidebar" id="mobileCloseSidebar">
-                    <i class="fas fa-times"></i>
-                </div>
-            </div>
-            <div class="mobile-scrollable-channels">
-                <div class="mobile-category-header">INFORMATION</div>
-                <div class="mobile-channel-item">
-                    <i class="fas fa-bullhorn mobile-channel-icon"></i>
-                    <span class="mobile-channel-name-sidebar">announcements</span>
-                </div>
-                <div class="mobile-channel-item">
-                    <i class="fas fa-book mobile-channel-icon"></i>
-                    <span class="mobile-channel-name-sidebar">rules</span>
-                </div>
-                <div class="mobile-category-header" style="margin-top: 16px;">TICKET SYSTEM</div>
-                <div class="mobile-channel-item active">
-                    <i class="fas fa-hashtag mobile-channel-icon"></i>
-                    <span class="mobile-channel-name-sidebar">🎫・mod-tickets</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Mobile Score Panel -->
-        <div class="mobile-score-panel" id="mobileScorePanel">
-            <div class="mobile-score-header">
-                <span class="mobile-score-title">Test Score</span>
-                <div class="mobile-close-score" id="mobileCloseScore">
-                    <i class="fas fa-times"></i>
-                </div>
-            </div>
-            <div class="mobile-score-display">
-                <div class="mobile-score-value" id="mobileScore">0</div>
-                <div class="mobile-score-total">/8</div>
-                <div class="mobile-progress-bar-container">
-                    <div class="mobile-progress-fill-bar" id="mobileProgress" style="width: 0%"></div>
-                </div>
-            </div>
-            <div class="mobile-score-info">
-                <p style="color: var(--discord-muted); text-align: center; font-size: 14px;">
-                    Answer each ticket scenario correctly to earn points.
-                </p>
-            </div>
-        </div>
-
-        <!-- Mobile Test Complete Modal -->
-        <div class="mobile-test-complete" id="mobileTestComplete">
-            <div class="mobile-test-result-container">
-                <div class="mobile-test-result-icon" id="mobileResultIcon">
-                    <i class="fas fa-trophy"></i>
-                </div>
-                <h2 class="mobile-test-result-title" id="mobileResultTitle">Test Complete!</h2>
-                <div class="mobile-test-result-score" id="mobileResultScore">0/8</div>
-                <div class="mobile-test-result-message" id="mobileResultMessage">
-                    Your responses have been recorded.
-                </div>
-                <div class="mobile-submission-status" id="mobileSubmissionStatus">
-                    <i class="fas fa-spinner fa-spin"></i> Submitting...
-                </div>
-                <div class="mobile-test-result-buttons">
-                    <button class="mobile-test-result-btn secondary" id="mobileReviewBtn">Review</button>
-                    <button class="mobile-test-result-btn primary" id="mobileBackBtn">Back to Training</button>
-                </div>
-            </div>
+            <textarea class="mobile-message-input" id="mobileMessageInput" placeholder="Message"></textarea>
+            <button class="mobile-send-btn" id="mobileSendBtn"><i class="fas fa-paper-plane"></i></button>
         </div>
     </div>
 
-    <!-- ORIGINAL HOMEPAGE CONTENT -->
+    <!-- Main Training Page -->
     <div class="container" id="mainContainer">
         <!-- Navigation Sidebar -->
         <div class="nav-sidebar">
@@ -2265,7 +1252,7 @@
             <!-- Skip All Container -->
             <div class="skip-all-container">
                 <p>Don't want to answer all questions? You can skip directly to the test.</p>
-                <button class="btn btn-secondary" id="skipAllQuestionsBtn">
+                <button class="skip-all-btn" id="skipAllQuestionsBtn">
                     <i class="fas fa-forward"></i> Skip All Questions & Go to Test
                 </button>
             </div>
@@ -2506,1160 +1493,358 @@
             <p>Void Esports Mod Certification System • Made by Nicks Cold</p>
             <p>© 2026 Void Esports. All rights reserved.</p>
             <p>Founded by Frank • Ranked 25th in NAC • 13k+ Discord Members</p>
-            <p>Community: <a href="https://discord.gg/dqHF9HPucf" style="color: var(--accent); text-decoration: none;">discord.gg/dqHF9HPucf</a></p>
+            <p>Community: <a href="https://discord.gg/dqHF9HPucf">discord.gg/dqHF9HPucf</a></p>
             <div class="footer-credit">System Architecture: Enhanced Audit Layer Active</div>
         </div>
     </div>
 
     <script>
-        (function() {
-            'use strict';
+        // Auth Manager - EXACT COPY FROM ORIGINAL WORKING CODE
+        class AuthManager {
+            constructor() {
+                this.baseUrl = "https://mod-application-backend.onrender.com";
+                this.user = null;
+                this.isAdmin = false;
+            }
 
-            // ==================== CONFIGURATION ====================
-            const CONFIG = {
-                API_BASE_URL: 'https://mod-application-backend.onrender.com',
-                TOTAL_QUESTIONS: 8,
-                PASSING_SCORE: 6
-            };
-
-            // ==================== TEST QUESTIONS ====================
-            const TEST_QUESTIONS = [
-                {
-                    id: 1,
-                    username: "FortnitePlayer23",
-                    avatarColor: "#5865f2",
-                    message: "hey i wanna join void esports, what do i need to do?",
-                    keywords: ["age", "how old", "roster", "channel", "requirement", "hello", "welcome"],
-                    required: 2,
-                    feedback: "Ask for their age and direct them to #how-to-join-roster. Always start with a professional greeting."
-                },
-                {
-                    id: 2,
-                    username: "CompPlayer99",
-                    avatarColor: "#ed4245",
-                    message: "i want to join as a pro player, i have earnings from fncs",
-                    keywords: ["tracker", "earnings", "proof", "trapped", "ping", "senior"],
-                    required: 2,
-                    feedback: "Request their Fortnite Tracker link to verify earnings, then ping @trapped for pro team review."
-                },
-                {
-                    id: 3,
-                    username: "CreativeBuilder",
-                    avatarColor: "#3ba55c",
-                    message: "looking to join creative roster, i have some clips",
-                    keywords: ["clip", "video", "footage", "creativedepartment", "send", "review"],
-                    required: 2,
-                    feedback: "Ask for at least 2 clips of their freebuilding and ping @creativedepartment for review."
-                },
-                {
-                    id: 4,
-                    username: "AcademyGrinder",
-                    avatarColor: "#f59e0b",
-                    message: "can i join academy? i have 5k PR and i'm 15",
-                    keywords: ["tracker", "verify", "username", "add void", "team.void", "change"],
-                    required: 2,
-                    feedback: "Verify their PR via Fortnite Tracker, ask them to add 'Void' to their username and provide proof of using team.void."
-                },
-                {
-                    id: 5,
-                    username: "YoungPlayer14",
-                    avatarColor: "#9146ff",
-                    message: "im 12 but i really want to join",
-                    keywords: ["sorry", "minimum age", "13", "requirement", "cannot", "policy"],
-                    required: 2,
-                    feedback: "Politely inform them the minimum age requirement is 13 - no exceptions. Thank them for their interest."
-                },
-                {
-                    id: 6,
-                    username: "GrinderAccount",
-                    avatarColor: "#1da1f2",
-                    message: "i wanna be a void grinder, what's required?",
-                    keywords: ["username", "add void", "team.void", "proof", "change", "represent"],
-                    required: 2,
-                    feedback: "Explain they need to add 'Void' to their Discord and Fortnite usernames, plus provide proof of using team.void."
-                },
-                {
-                    id: 7,
-                    username: "ToxicUser123",
-                    avatarColor: "#ff0000",
-                    message: "this server is trash im gonna raid it",
-                    keywords: ["chief", "trapped", "ping", "threat", "security", "alert", "emergency"],
-                    required: 2,
-                    feedback: "IMMEDIATE THREAT - Ping @chief and @trapped immediately, screenshot the message, do NOT engage with the user."
-                },
-                {
-                    id: 8,
-                    username: "ContentCreatorYT",
-                    avatarColor: "#ff0000",
-                    message: "i make fortnite videos, can i join content team?",
-                    keywords: ["social", "links", "contentdep", "ping", "youtube", "channel", "review"],
-                    required: 2,
-                    feedback: "Ask for their social media links (YouTube/TikTok/Twitch) and ping @contentdep for review."
-                }
-            ];
-
-            // ==================== TEST STATE ====================
-            const testState = {
-                active: false,
-                currentQuestion: 0,
-                score: 0,
-                userAnswers: [],
-                conversationLog: [],
-                questionsWithAnswers: [],
-                startTime: null,
-                endTime: null,
-                userInfo: {
-                    username: 'User',
-                    userId: '0000'
-                },
-                
-                reset() {
-                    this.active = false;
-                    this.currentQuestion = 0;
-                    this.score = 0;
-                    this.userAnswers = [];
-                    this.conversationLog = [];
-                    this.questionsWithAnswers = [];
-                    this.startTime = null;
-                    this.endTime = null;
-                },
-                
-                initUser(username, userId) {
-                    this.userInfo.username = username || 'User';
-                    this.userInfo.userId = userId || '0000';
-                },
-                
-                addToLog(username, message, isBot = false, isUser = false) {
-                    const timestamp = new Date().toLocaleTimeString('en-US', { 
-                        hour: '2-digit', 
-                        minute: '2-digit', 
-                        second: '2-digit' 
+            async startTest() {
+                try {
+                    console.log("Starting test flow...");
+                    
+                    // Show loading
+                    const takeTestBtn = document.getElementById('takeTestBtn');
+                    if (takeTestBtn) {
+                        takeTestBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Starting test...';
+                        takeTestBtn.disabled = true;
+                    }
+                    
+                    // Set test intent
+                    console.log("Setting test intent...");
+                    const response = await fetch(`${this.baseUrl}/set-test-intent`, {
+                        method: 'GET',
+                        credentials: 'include'
                     });
                     
-                    this.conversationLog.push({
-                        timestamp: timestamp,
-                        username: username,
-                        message: message,
-                        isBot: isBot,
-                        isUser: isUser
-                    });
-                },
-                
-                formatConversationLog() {
-                    let log = '';
-                    const separator = '══════════════════════════════════════════════════════════════════════════════';
+                    console.log("Test intent response:", response);
                     
-                    log += separator + '\n';
-                    log += 'VOID ESPORTS MODERATOR CERTIFICATION TEST - COMPLETE TRANSCRIPT\n';
-                    log += separator + '\n';
-                    log += `User: ${this.userInfo.username} (${this.userInfo.userId})\n`;
-                    log += `Date: ${new Date().toLocaleString()}\n`;
-                    log += `Final Score: ${this.score}/${CONFIG.TOTAL_QUESTIONS}\n`;
-                    log += `Result: ${this.score >= CONFIG.PASSING_SCORE ? 'PASSED ✓' : 'FAILED ✗'}\n`;
-                    log += separator + '\n\n';
-
-                    this.questionsWithAnswers.forEach((qa, index) => {
-                        log += `┌──────────────────────────────────────────────────────────────────────────┐\n`;
-                        log += `│ QUESTION ${index + 1} of ${CONFIG.TOTAL_QUESTIONS}${qa.correct ? ' ✓ PASS' : ' ✗ FAIL'}\n`;
-                        log += `├──────────────────────────────────────────────────────────────────────────┤\n`;
-                        log += `│ USER: ${qa.question || 'Unknown'}\n`;
-                        log += `├──────────────────────────────────────────────────────────────────────────┤\n`;
-                        log += `│ MOD RESPONSE:\n`;
-                        log += `│ ${qa.answer || 'No answer provided'}\n`;
-                        log += `├──────────────────────────────────────────────────────────────────────────┤\n`;
-                        log += `│ EVALUATION:\n`;
-                        log += `│ Matches: ${qa.matchCount || 0}/${qa.requiredMatches || 2}\n`;
-                        log += `│ Keywords: ${qa.matchedKeywords ? qa.matchedKeywords.join(', ') : 'None'}\n`;
-                        log += `├──────────────────────────────────────────────────────────────────────────┤\n`;
-                        log += `│ CORRECT RESPONSE:\n`;
-                        log += `│ ${qa.feedback || 'Follow protocol'}\n`;
-                        log += `└──────────────────────────────────────────────────────────────────────────┘\n\n`;
-                    });
-
-                    log += separator + '\n';
-                    log += `END OF TRANSCRIPT - ${this.score}/${CONFIG.TOTAL_QUESTIONS} CORRECT\n`;
-                    log += separator + '\n';
-
-                    return log;
-                },
-                
-                getSubmissionData() {
-                    const conversationLog = this.formatConversationLog();
-                    const passed = this.score >= CONFIG.PASSING_SCORE;
-                    
-                    return {
-                        discordId: this.userInfo.userId,
-                        discordUsername: this.userInfo.username,
-                        answers: conversationLog,
-                        conversationLog: conversationLog,
-                        score: `${this.score}/${CONFIG.TOTAL_QUESTIONS}`,
-                        totalQuestions: CONFIG.TOTAL_QUESTIONS,
-                        correctAnswers: this.score,
-                        wrongAnswers: CONFIG.TOTAL_QUESTIONS - this.score,
-                        testResults: JSON.stringify({
-                            passed: passed,
-                            percentage: Math.round((this.score / CONFIG.TOTAL_QUESTIONS) * 100),
-                            startTime: this.startTime,
-                            endTime: this.endTime,
-                            questions: this.questionsWithAnswers
-                        })
-                    };
-                }
-            };
-
-            // ==================== DESKTOP INTERFACE ====================
-            const desktop = {
-                testPage: document.getElementById('testPage'),
-                mainContainer: document.getElementById('mainContainer'),
-                messages: document.getElementById('discordMessages'),
-                input: document.getElementById('discordMessageInput'),
-                sendBtn: document.getElementById('discordSendBtn'),
-                typing: document.getElementById('discordTyping'),
-                typingText: document.getElementById('discordTypingText'),
-                score: document.getElementById('discordScore'),
-                progress: document.getElementById('discordProgress'),
-                ticketCounter: document.getElementById('discordTicketCounter'),
-                modal: document.getElementById('discordModal'),
-                modalIcon: document.getElementById('discordModalIcon'),
-                modalTitle: document.getElementById('discordModalTitle'),
-                modalScore: document.getElementById('discordModalScore'),
-                modalMessage: document.getElementById('discordModalMessage'),
-                modalStatus: document.getElementById('discordModalStatus'),
-                reviewBtn: document.getElementById('discordReviewBtn'),
-                backBtn: document.getElementById('discordBackBtn'),
-                userName: document.getElementById('discordUserName'),
-                userTag: document.getElementById('discordUserTag'),
-                userAvatar: document.getElementById('discordUserAvatar'),
-                memberAvatar: document.getElementById('discordMemberAvatar'),
-                memberName: document.getElementById('discordMemberName'),
-                
-                setupEvents() {
-                    if (this.input) {
-                        this.input.addEventListener('input', () => {
-                            this.input.style.height = 'auto';
-                            this.input.style.height = Math.min(this.input.scrollHeight, 144) + 'px';
-                            if (this.sendBtn) {
-                                this.sendBtn.disabled = !this.input.value.trim() || !testState.active;
-                            }
-                        });
-
-                        this.input.addEventListener('keydown', (e) => {
-                            if (e.key === 'Enter' && !e.shiftKey) {
-                                e.preventDefault();
-                                if (this.sendBtn && !this.sendBtn.disabled && testState.active) {
-                                    testLogic.sendMessage(false);
-                                }
-                            }
-                        });
-                    }
-
-                    if (this.sendBtn) {
-                        this.sendBtn.addEventListener('click', () => {
-                            testLogic.sendMessage(false);
-                        });
-                    }
-
-                    if (this.reviewBtn) {
-                        this.reviewBtn.addEventListener('click', () => {
-                            this.hideModal();
-                            testLogic.reset();
-                            setTimeout(() => testLogic.start(false), 500);
-                        });
-                    }
-
-                    if (this.backBtn) {
-                        this.backBtn.addEventListener('click', () => {
-                            this.hideModal();
-                            testLogic.exit();
-                        });
-                    }
-                },
-                
-                updateUserDisplay() {
-                    if (this.userName) this.userName.textContent = testState.userInfo.username;
-                    if (this.userTag) this.userTag.textContent = '#' + testState.userInfo.userId.slice(-4);
-                    if (this.userAvatar) this.userAvatar.textContent = testState.userInfo.username.charAt(0).toUpperCase();
-                    if (this.memberAvatar) this.memberAvatar.textContent = testState.userInfo.username.charAt(0).toUpperCase();
-                    if (this.memberName) this.memberName.textContent = testState.userInfo.username;
-                },
-                
-                show() {
-                    if (this.testPage) this.testPage.classList.add('active');
-                    if (this.mainContainer) this.mainContainer.style.display = 'none';
-                },
-                
-                hide() {
-                    if (this.testPage) this.testPage.classList.remove('active');
-                    if (this.mainContainer) this.mainContainer.style.display = 'block';
-                },
-                
-                clearMessages() {
-                    if (this.messages) this.messages.innerHTML = '';
-                },
-                
-                addMessage(username, content, color, isBot = false) {
-                    if (!this.messages) return;
-
-                    const messageGroup = document.createElement('div');
-                    messageGroup.className = 'discord-message-group';
-                    
-                    const now = new Date();
-                    const timeString = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-                    
-                    let avatarInitial = username.charAt(0).toUpperCase();
-                    if (username === 'Void Bot') avatarInitial = 'V';
-                    if (username === 'You') avatarInitial = testState.userInfo.username.charAt(0).toUpperCase();
-
-                    messageGroup.innerHTML = `
-                        <div class="discord-message-avatar" style="background-color: ${color}">
-                            ${avatarInitial}
-                        </div>
-                        <div class="discord-message-content">
-                            <div class="discord-message-header">
-                                <span class="discord-message-author">${username}</span>
-                                ${isBot ? '<span class="discord-message-badge">BOT</span>' : ''}
-                                <span class="discord-message-timestamp">Today at ${timeString}</span>
-                            </div>
-                            <div class="discord-message-text">${content}</div>
-                        </div>
-                    `;
-
-                    this.messages.appendChild(messageGroup);
-                    this.messages.scrollTop = this.messages.scrollHeight;
-                },
-                
-                async showTyping(username, duration) {
-                    if (this.typing && this.typingText) {
-                        this.typingText.textContent = `${username} is typing...`;
-                        this.typing.style.display = 'flex';
-                        await new Promise(resolve => setTimeout(resolve, duration));
-                        this.typing.style.display = 'none';
-                    }
-                },
-                
-                updateScore() {
-                    if (this.score) this.score.textContent = testState.score;
-                    if (this.progress) {
-                        const percentage = (testState.score / CONFIG.TOTAL_QUESTIONS) * 100;
-                        this.progress.style.width = `${percentage}%`;
-                    }
-                    if (this.ticketCounter) {
-                        this.ticketCounter.textContent = `Ticket #${testState.currentQuestion + 1} of ${CONFIG.TOTAL_QUESTIONS}`;
-                    }
-                },
-                
-                disableInput(disabled) {
-                    if (this.input) {
-                        this.input.disabled = disabled;
-                        if (!disabled) this.input.focus();
-                    }
-                    if (this.sendBtn) this.sendBtn.disabled = disabled;
-                },
-                
-                clearInput() {
-                    if (this.input) {
-                        this.input.value = '';
-                        this.input.style.height = 'auto';
-                    }
-                },
-                
-                showModal(passed) {
-                    if (!this.modal) return;
-
-                    if (this.modalIcon) {
-                        this.modalIcon.className = `discord-modal-icon ${passed ? 'pass' : 'fail'}`;
-                        this.modalIcon.innerHTML = passed ? '<i class="fas fa-trophy"></i>' : '<i class="fas fa-times-circle"></i>';
-                    }
-                    
-                    if (this.modalTitle) {
-                        this.modalTitle.textContent = passed ? 'Test Passed!' : 'Test Failed';
-                    }
-                    
-                    if (this.modalScore) {
-                        this.modalScore.textContent = `${testState.score}/${CONFIG.TOTAL_QUESTIONS}`;
-                    }
-                    
-                    if (this.modalMessage) {
-                        this.modalMessage.textContent = passed 
-                            ? 'Congratulations! You passed the certification test. Your results have been submitted for review.'
-                            : `You scored ${testState.score}/${CONFIG.TOTAL_QUESTIONS}. The minimum passing score is ${CONFIG.PASSING_SCORE}/${CONFIG.TOTAL_QUESTIONS}.`;
-                    }
-
-                    this.modal.classList.add('active');
-                },
-                
-                hideModal() {
-                    if (this.modal) this.modal.classList.remove('active');
-                },
-                
-                setModalStatus(html) {
-                    if (this.modalStatus) this.modalStatus.innerHTML = html;
-                }
-            };
-
-            // ==================== MOBILE INTERFACE - FIXED ====================
-            const mobile = {
-                // Getters that always fetch fresh elements
-                get testPage() { return document.getElementById('mobileDiscord'); },
-                get mainContainer() { return document.getElementById('mainContainer'); },
-                get messages() { return document.getElementById('mobileMessages'); },
-                get input() { return document.getElementById('mobileMessageInput'); },
-                get sendBtn() { return document.getElementById('mobileSendBtn'); },
-                get typing() { return document.getElementById('mobileTyping'); },
-                get typingText() { return document.getElementById('mobileTypingText'); },
-                get score() { return document.getElementById('mobileScore'); },
-                get progress() { return document.getElementById('mobileProgress'); },
-                get ticketCounter() { return document.getElementById('mobileTicketCounter'); },
-                get modal() { return document.getElementById('mobileTestComplete'); },
-                get modalIcon() { return document.getElementById('mobileResultIcon'); },
-                get modalTitle() { return document.getElementById('mobileResultTitle'); },
-                get modalScore() { return document.getElementById('mobileResultScore'); },
-                get modalMessage() { return document.getElementById('mobileResultMessage'); },
-                get modalStatus() { return document.getElementById('mobileSubmissionStatus'); },
-                get reviewBtn() { return document.getElementById('mobileReviewBtn'); },
-                get backBtn() { return document.getElementById('mobileBackBtn'); },
-                get menuBtn() { return document.getElementById('mobileMenuBtn'); },
-                get sidebar() { return document.getElementById('mobileSidebar'); },
-                get closeSidebar() { return document.getElementById('mobileCloseSidebar'); },
-                get scoreBtn() { return document.getElementById('mobileScoreBtn'); },
-                get scorePanel() { return document.getElementById('mobileScorePanel'); },
-                get closeScore() { return document.getElementById('mobileCloseScore'); },
-
-                setupEvents() {
-                    const input = this.input;
-                    if (input) {
-                        input.addEventListener('input', () => {
-                            input.style.height = 'auto';
-                            input.style.height = Math.min(input.scrollHeight, 120) + 'px';
-                            if (this.sendBtn) {
-                                this.sendBtn.disabled = !input.value.trim() || !testState.active;
-                            }
-                        });
-
-                        input.addEventListener('keydown', (e) => {
-                            if (e.key === 'Enter' && !e.shiftKey) {
-                                e.preventDefault();
-                                if (this.sendBtn && !this.sendBtn.disabled && testState.active) {
-                                    testLogic.sendMessage(true);
-                                }
-                            }
-                        });
-                    }
-
-                    if (this.sendBtn) {
-                        this.sendBtn.addEventListener('click', () => {
-                            testLogic.sendMessage(true);
-                        });
-                    }
-
-                    if (this.reviewBtn) {
-                        this.reviewBtn.addEventListener('click', () => {
-                            this.hideModal();
-                            testLogic.reset();
-                            setTimeout(() => testLogic.start(true), 500);
-                        });
-                    }
-
-                    if (this.backBtn) {
-                        this.backBtn.addEventListener('click', () => {
-                            this.hideModal();
-                            testLogic.exit();
-                        });
-                    }
-
-                    if (this.menuBtn) {
-                        this.menuBtn.addEventListener('click', () => {
-                            if (this.sidebar) this.sidebar.classList.add('active');
-                        });
-                    }
-
-                    if (this.closeSidebar) {
-                        this.closeSidebar.addEventListener('click', () => {
-                            if (this.sidebar) this.sidebar.classList.remove('active');
-                        });
-                    }
-
-                    if (this.scoreBtn) {
-                        this.scoreBtn.addEventListener('click', () => {
-                            if (this.scorePanel) this.scorePanel.classList.add('active');
-                        });
-                    }
-
-                    if (this.closeScore) {
-                        this.closeScore.addEventListener('click', () => {
-                            if (this.scorePanel) this.scorePanel.classList.remove('active');
-                        });
-                    }
-
-                    document.addEventListener('click', (e) => {
-                        if (this.sidebar && !this.sidebar.contains(e.target) && 
-                            !this.menuBtn?.contains(e.target) && 
-                            this.sidebar.classList.contains('active')) {
-                            this.sidebar.classList.remove('active');
-                        }
-                        
-                        if (this.scorePanel && !this.scorePanel.contains(e.target) && 
-                            !this.scoreBtn?.contains(e.target) && 
-                            this.scorePanel.classList.contains('active')) {
-                            this.scorePanel.classList.remove('active');
-                        }
-                    });
-                },
-                
-                show() {
-                    if (this.testPage) this.testPage.classList.add('active');
-                    if (this.mainContainer) this.mainContainer.style.display = 'none';
-                },
-                
-                hide() {
-                    if (this.testPage) this.testPage.classList.remove('active');
-                    if (this.mainContainer) this.mainContainer.style.display = 'block';
-                },
-                
-                clearMessages() {
-                    if (this.messages) this.messages.innerHTML = '';
-                },
-                
-                addMessage(username, content, color, isBot = false) {
-                    const msgContainer = this.messages;
-                    if (!msgContainer) {
-                        console.error('Mobile messages container not found!');
-                        return;
-                    }
-
-                    const messageGroup = document.createElement('div');
-                    messageGroup.className = 'mobile-message-group';
-                    
-                    const now = new Date();
-                    const timeString = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-                    
-                    let avatarInitial = username.charAt(0).toUpperCase();
-                    if (username === 'Void Bot') avatarInitial = 'V';
-                    if (username === 'You') avatarInitial = testState.userInfo.username.charAt(0).toUpperCase();
-
-                    messageGroup.innerHTML = `
-                        <div class="mobile-message-avatar" style="background-color: ${color}">
-                            ${avatarInitial}
-                        </div>
-                        <div class="mobile-message-content">
-                            <div class="mobile-message-header">
-                                <span class="mobile-message-author">${username}</span>
-                                ${isBot ? '<span class="mobile-bot-tag">BOT</span>' : ''}
-                                <span class="mobile-message-timestamp">Today at ${timeString}</span>
-                            </div>
-                            <div class="mobile-message-text">${content}</div>
-                        </div>
-                    `;
-
-                    msgContainer.appendChild(messageGroup);
-                    msgContainer.scrollTop = msgContainer.scrollHeight;
-                },
-                
-                async showTyping(username, duration) {
-                    if (this.typing && this.typingText) {
-                        this.typingText.textContent = `${username} is typing...`;
-                        this.typing.style.display = 'flex';
-                        await new Promise(resolve => setTimeout(resolve, duration));
-                        this.typing.style.display = 'none';
-                    }
-                },
-                
-                updateScore() {
-                    if (this.score) this.score.textContent = testState.score;
-                    if (this.progress) {
-                        const percentage = (testState.score / CONFIG.TOTAL_QUESTIONS) * 100;
-                        this.progress.style.width = `${percentage}%`;
-                    }
-                    if (this.ticketCounter) {
-                        this.ticketCounter.textContent = `Ticket #${testState.currentQuestion + 1} of ${CONFIG.TOTAL_QUESTIONS}`;
-                    }
-                },
-                
-                disableInput(disabled) {
-                    if (this.input) {
-                        this.input.disabled = disabled;
-                        if (!disabled) this.input.focus();
-                    }
-                    if (this.sendBtn) this.sendBtn.disabled = disabled;
-                },
-                
-                clearInput() {
-                    if (this.input) {
-                        this.input.value = '';
-                        this.input.style.height = 'auto';
-                    }
-                },
-                
-                showModal(passed) {
-                    if (!this.modal) return;
-
-                    if (this.modalIcon) {
-                        this.modalIcon.className = passed ? 'pass' : 'fail';
-                        this.modalIcon.innerHTML = passed ? '<i class="fas fa-trophy"></i>' : '<i class="fas fa-times-circle"></i>';
-                    }
-                    
-                    if (this.modalTitle) {
-                        this.modalTitle.textContent = passed ? 'Test Passed!' : 'Test Failed';
-                    }
-                    
-                    if (this.modalScore) {
-                        this.modalScore.textContent = `${testState.score}/${CONFIG.TOTAL_QUESTIONS}`;
-                    }
-                    
-                    if (this.modalMessage) {
-                        this.modalMessage.textContent = passed 
-                            ? 'Congratulations! You passed the certification test. Your results have been submitted for review.'
-                            : `You scored ${testState.score}/${CONFIG.TOTAL_QUESTIONS}. The minimum passing score is ${CONFIG.PASSING_SCORE}/${CONFIG.TOTAL_QUESTIONS}.`;
-                    }
-
-                    this.modal.classList.add('active');
-                },
-                
-                hideModal() {
-                    if (this.modal) this.modal.classList.remove('active');
-                },
-                
-                setModalStatus(html) {
-                    if (this.modalStatus) this.modalStatus.innerHTML = html;
-                }
-            };
-
-            // ==================== TEST LOGIC - FIXED FOR MOBILE ====================
-            const testLogic = {
-                _running: false,
-                _mobileWelcomeShown: false,
-
-                async start(isMobile) {
-                    if (this._running) {
-                        console.warn('testLogic already running, ignoring duplicate start');
-                        return;
-                    }
-                    this._running = true;
-                    this._mobileWelcomeShown = false;
-                    
-                    console.log('🚀 Starting test... isMobile:', isMobile);
-                    
-                    testState.active = true;
-                    testState.currentQuestion = 0;
-                    testState.score = 0;
-                    testState.userAnswers = [];
-                    testState.conversationLog = [];
-                    testState.questionsWithAnswers = [];
-                    testState.startTime = new Date().toISOString();
-
-                    const ui = isMobile ? mobile : desktop;
-                    
-                    ui.clearMessages();
-                    ui.updateScore();
-                    ui.disableInput(true);
-                    
-                    // Extra delay for mobile
-                    if (isMobile) {
-                        await new Promise(resolve => setTimeout(resolve, 500));
-                    }
-                    
-                    // Welcome sequence - IMPORTANT: Don't await showTyping if it's causing issues
-                    try {
-                        if (isMobile) {
-                            // Direct message add for mobile without typing indicator first
-                            ui.addMessage('Void Bot', 'Welcome to the **Void Esports Moderator Certification Test**.', '#5865f2', true);
-                            testState.addToLog('Void Bot', 'Welcome to the **Void Esports Moderator Certification Test**.', true);
-                            
-                            await new Promise(resolve => setTimeout(resolve, 800));
-                            
-                            ui.addMessage('Void Bot', `You'll be presented with **${CONFIG.TOTAL_QUESTIONS}** scenarios.`, '#5865f2', true);
-                            testState.addToLog('Void Bot', `You'll be presented with **${CONFIG.TOTAL_QUESTIONS}** scenarios.`, true);
-                            
-                            await new Promise(resolve => setTimeout(resolve, 800));
-                            
-                            ui.addMessage('Void Bot', 'Respond as you would as a real moderator. Good luck!', '#5865f2', true);
-                            testState.addToLog('Void Bot', 'Respond as you would as a real moderator. Good luck!', true);
-                        } else {
-                            await ui.showTyping('Void Bot', 1000);
-                            ui.addMessage('Void Bot', 'Welcome to the **Void Esports Moderator Certification Test**.', '#5865f2', true);
-                            testState.addToLog('Void Bot', 'Welcome to the **Void Esports Moderator Certification Test**.', true);
-                            
-                            await new Promise(resolve => setTimeout(resolve, 800));
-                            await ui.showTyping('Void Bot', 1200);
-                            ui.addMessage('Void Bot', `You'll be presented with **${CONFIG.TOTAL_QUESTIONS}** scenarios.`, '#5865f2', true);
-                            testState.addToLog('Void Bot', `You'll be presented with **${CONFIG.TOTAL_QUESTIONS}** scenarios.`, true);
-                            
-                            await new Promise(resolve => setTimeout(resolve, 800));
-                            await ui.showTyping('Void Bot', 800);
-                            ui.addMessage('Void Bot', 'Respond as you would as a real moderator. Good luck!', '#5865f2', true);
-                            testState.addToLog('Void Bot', 'Respond as you would as a real moderator. Good luck!', true);
-                        }
-                    } catch (e) {
-                        console.error('Error in welcome sequence:', e);
-                        // Fallback - just add messages directly
-                        ui.addMessage('Void Bot', 'Welcome to the Void Esports Moderator Certification Test.', '#5865f2', true);
-                        ui.addMessage('Void Bot', `You'll be presented with ${CONFIG.TOTAL_QUESTIONS} scenarios.`, '#5865f2', true);
-                        ui.addMessage('Void Bot', 'Respond as you would as a real moderator. Good luck!', '#5865f2', true);
-                    }
-                    
-                    await new Promise(resolve => setTimeout(resolve, 1500));
-                    
-                    this.showNextQuestion(isMobile);
-                },
-                
-                async showNextQuestion(isMobile) {
-                    const ui = isMobile ? mobile : desktop;
-                    
-                    if (testState.currentQuestion >= CONFIG.TOTAL_QUESTIONS) {
-                        this.endTest(isMobile);
-                        return;
-                    }
-
-                    const question = TEST_QUESTIONS[testState.currentQuestion];
-                    
-                    // Extra delay for mobile first question
-                    if (isMobile && !this._mobileWelcomeShown) {
-                        this._mobileWelcomeShown = true;
-                        await new Promise(resolve => setTimeout(resolve, 300));
-                    }
-                    
-                    try {
-                        await ui.showTyping(question.username, 1200);
-                    } catch (e) {
-                        // Ignore typing errors
-                    }
-                    
-                    ui.addMessage(question.username, question.message, question.avatarColor, false);
-                    testState.addToLog(question.username, question.message, false);
-                    
-                    ui.disableInput(false);
-                    ui.updateScore();
-                },
-                
-                async sendMessage(isMobile) {
-                    const ui = isMobile ? mobile : desktop;
-                    
-                    if (!ui.input || !testState.active) return;
-
-                    const userMessage = ui.input.value.trim();
-                    if (!userMessage) return;
-
-                    await this.processUserMessage(userMessage, isMobile);
-                },
-                
-                async processUserMessage(userMessage, isMobile) {
-                    const ui = isMobile ? mobile : desktop;
-                    
-                    ui.disableInput(true);
-                    
-                    // Add user message
-                    ui.addMessage('You', userMessage, '#7289da', false);
-                    testState.addToLog(testState.userInfo.username, userMessage, false, true);
-                    
-                    testState.userAnswers.push(userMessage);
-                    ui.clearInput();
-                    
-                    try {
-                        await ui.showTyping('Void Bot', 1000);
-                    } catch (e) {
-                        // Ignore typing errors
-                    }
-                    
-                    const question = TEST_QUESTIONS[testState.currentQuestion];
-                    const result = this.evaluateAnswer(userMessage, question);
-                    
-                    testState.questionsWithAnswers.push({
-                        question: question.message,
-                        answer: userMessage,
-                        correct: result.correct,
-                        matchCount: result.matches,
-                        requiredMatches: question.required,
-                        matchedKeywords: result.matchedKeywords || [],
-                        feedback: question.feedback
-                    });
-                    
-                    let feedbackMsg = result.correct 
-                        ? `✅ **Correct!** ${question.feedback}`
-                        : `❌ **Not quite right.** ${question.feedback}`;
-                    
-                    ui.addMessage('Void Bot', feedbackMsg, '#5865f2', true);
-                    testState.addToLog('Void Bot', feedbackMsg, true);
-                    
-                    if (result.correct) {
-                        testState.score++;
-                    }
-                    
-                    testState.currentQuestion++;
-                    ui.updateScore();
-                    
-                    if (testState.currentQuestion < CONFIG.TOTAL_QUESTIONS) {
-                        await new Promise(resolve => setTimeout(resolve, 1500));
-                        this.showNextQuestion(isMobile);
+                    if (response.ok) {
+                        console.log("Test intent set, redirecting to Discord OAuth...");
+                        // Redirect to Discord OAuth
+                        window.location.href = `${this.baseUrl}/auth/discord`;
                     } else {
-                        await new Promise(resolve => setTimeout(resolve, 2000));
-                        this.endTest(isMobile);
+                        throw new Error("Failed to set test intent");
                     }
-                },
-                
-                evaluateAnswer(answer, question) {
-                    const answerLower = answer.toLowerCase();
-                    let matches = 0;
-                    let matchedKeywords = [];
-
-                    for (const keyword of question.keywords) {
-                        if (answerLower.includes(keyword.toLowerCase())) {
-                            matches++;
-                            matchedKeywords.push(keyword);
-                        }
+                } catch (error) {
+                    console.error("Start test error:", error);
+                    alert("Failed to start test. Please try again.");
+                    
+                    // Reset button
+                    const takeTestBtn = document.getElementById('takeTestBtn');
+                    if (takeTestBtn) {
+                        takeTestBtn.innerHTML = '<i class="fas fa-vial"></i> Begin Certification Test';
+                        takeTestBtn.disabled = false;
                     }
-
-                    return {
-                        correct: matches >= question.required,
-                        matches: matches,
-                        matchedKeywords: matchedKeywords
-                    };
-                },
-                
-                async endTest(isMobile) {
-                    console.log('📝 Test complete!');
-                    
-                    const ui = isMobile ? mobile : desktop;
-                    
-                    testState.active = false;
-                    testState.endTime = new Date().toISOString();
-                    ui.disableInput(true);
-                    
-                    try {
-                        await ui.showTyping('Void Bot', 1000);
-                    } catch (e) {
-                        // Ignore typing errors
-                    }
-                    
-                    const passed = testState.score >= CONFIG.PASSING_SCORE;
-                    const finalMsg = `**Test Complete!**\nFinal Score: **${testState.score}/${CONFIG.TOTAL_QUESTIONS}**\nResult: **${passed ? 'PASSED ✅' : 'FAILED ❌'}**`;
-                    
-                    ui.addMessage('Void Bot', finalMsg, '#5865f2', true);
-                    testState.addToLog('Void Bot', finalMsg, true);
-                    
-                    const submissionData = testState.getSubmissionData();
-
-                    ui.showModal(passed);
-                    await this.submitTestResults(submissionData, isMobile);
-                },
-                
-                async submitTestResults(data, isMobile) {
-                    const ui = isMobile ? mobile : desktop;
-                    
-                    ui.setModalStatus('<i class="fas fa-spinner fa-spin"></i> Submitting results...');
-
-                    try {
-                        console.log('Submitting test results...', data);
-                        
-                        const response = await fetch(`${CONFIG.API_BASE_URL}/submit-test-results`, {
-                            method: 'POST',
-                            headers: { 
-                                'Content-Type': 'application/json',
-                                'Accept': 'application/json'
-                            },
-                            body: JSON.stringify(data)
-                        });
-
-                        const result = await response.json();
-                        console.log('Submission response:', result);
-
-                        if (response.ok && result.success) {
-                            ui.setModalStatus('<i class="fas fa-check-circle"></i> Results submitted successfully!');
-                        } else {
-                            throw new Error('Submission failed');
-                        }
-
-                    } catch (error) {
-                        console.error('Submission error:', error);
-                        
-                        try {
-                            const fallbackResponse = await fetch(`${CONFIG.API_BASE_URL}/api/submit`, {
-                                method: 'POST',
-                                headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify(data)
-                            });
-                            
-                            if (fallbackResponse.ok) {
-                                ui.setModalStatus('<i class="fas fa-check-circle"></i> Results submitted!');
-                                return;
-                            }
-                        } catch (fallbackError) {
-                            console.error('Fallback also failed:', fallbackError);
-                        }
-                        
-                        ui.setModalStatus('<i class="fas fa-exclamation-triangle"></i> Results saved locally');
-                    }
-                },
-                
-                reset() {
-                    testState.reset();
-                    this._running = false;
-                    this._mobileWelcomeShown = false;
-                    
-                    const isMobile = window.innerWidth <= 768;
-                    const ui = isMobile ? mobile : desktop;
-                    
-                    ui.clearMessages();
-                    ui.updateScore();
-                    ui.disableInput(true);
-                },
-                
-                exit() {
-                    this.reset();
-                    
-                    const isMobile = window.innerWidth <= 768;
-                    const ui = isMobile ? mobile : desktop;
-                    
-                    ui.hide();
-                    window.history.replaceState({}, document.title, window.location.pathname);
                 }
-            };
-
-            function delay(ms) {
-                return new Promise(resolve => setTimeout(resolve, ms));
             }
-
-            // ==================== AUTH MANAGER ====================
-            class AuthManager {
-                constructor() {
-                    this.baseUrl = CONFIG.API_BASE_URL;
-                }
-
-                async startTest() {
-                    try {
-                        console.log("Starting test flow...");
-                        
-                        const takeTestBtn = document.getElementById('takeTestBtn');
-                        if (takeTestBtn) {
-                            takeTestBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Starting test...';
-                            takeTestBtn.disabled = true;
-                        }
-                        
-                        const response = await fetch(`${this.baseUrl}/set-test-intent`, {
-                            method: 'GET',
-                            credentials: 'include'
-                        });
-                        
-                        if (response.ok) {
-                            window.location.href = `${this.baseUrl}/auth/discord`;
-                        } else {
-                            throw new Error("Failed to set test intent");
-                        }
-                    } catch (error) {
-                        console.error("Start test error:", error);
-                        alert("Failed to start test. Please try again.");
-                        
-                        const takeTestBtn = document.getElementById('takeTestBtn');
-                        if (takeTestBtn) {
-                            takeTestBtn.innerHTML = '<i class="fas fa-vial"></i> Begin Certification Test';
-                            takeTestBtn.disabled = false;
-                        }
-                    }
-                }
-                
-                startAdminLogin() {
+            
+            async startAdminLogin() {
+                try {
+                    console.log("Starting admin login flow...");
                     window.location.href = `${this.baseUrl}/auth/discord/admin`;
-                }
-                
-                handleOAuthReturn() {
-                    const params = new URLSearchParams(window.location.search);
-                    const startTest = params.get('startTest');
-                    const discordUsername = params.get('discord_username');
-                    const discordId = params.get('discord_id');
-                    
-                    if (startTest === '1' && discordUsername && discordId) {
-                        console.log("Returning from OAuth, starting test for:", discordUsername);
-                        
-                        window.history.replaceState({}, document.title, window.location.pathname);
-                        
-                        testState.initUser(discordUsername, discordId);
-                        
-                        const isMobile = window.innerWidth <= 768;
-                        
-                        if (isMobile) {
-                            mobile.setupEvents();
-                            mobile.show();
-                            mobile.updateUserDisplay();
-                            
-                            // Longer delay for mobile with retry mechanism
-                            setTimeout(() => {
-                                console.log("Mobile: Calling testLogic.start(true)");
-                                // Ensure messages container is ready
-                                if (mobile.messages) {
-                                    testLogic.start(true);
-                                } else {
-                                    console.error("Mobile messages container not found, retrying...");
-                                    setTimeout(() => {
-                                        if (mobile.messages) {
-                                            testLogic.start(true);
-                                        }
-                                    }, 500);
-                                }
-                            }, 1000);
-                        } else {
-                            desktop.setupEvents();
-                            desktop.show();
-                            desktop.updateUserDisplay();
-                            
-                            setTimeout(() => {
-                                console.log("Desktop: Calling testLogic.start(false)");
-                                testLogic.start(false);
-                            }, 300);
-                        }
-                    }
+                } catch (error) {
+                    console.error("Admin login error:", error);
+                    alert("Failed to start admin login. Please try again.");
                 }
             }
+        }
 
-            const authManager = new AuthManager();
+        // Initialize auth manager
+        window.authManager = new AuthManager();
 
-            // ==================== HOMEPAGE NAVIGATION ====================
-            function initHomepageNavigation() {
-                const navItems = document.querySelectorAll('.nav-item');
-                const sections = [
-                    document.getElementById('header'),
-                    document.getElementById('ticket-types'),
-                    document.getElementById('roster-categories'),
-                    document.getElementById('mod-requirements'),
-                    document.getElementById('quiz')
-                ];
+        // DOM Ready
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log("DOM loaded");
+            
+            // ===== DYNAMIC NAVIGATION HIGHLIGHT =====
+            const navItems = document.querySelectorAll('.nav-item');
+            const sections = [
+                document.getElementById('header'),
+                document.getElementById('ticket-types'),
+                document.getElementById('roster-categories'),
+                document.getElementById('mod-requirements'),
+                document.getElementById('quiz')
+            ];
+            
+            function updateActiveNav() {
+                const scrollPosition = window.scrollY + 200;
                 
-                function updateActiveNav() {
-                    const scrollPosition = window.scrollY + 200;
-                    
-                    for (let i = sections.length - 1; i >= 0; i--) {
-                        const section = sections[i];
-                        if (section && scrollPosition >= section.offsetTop) {
-                            navItems.forEach(item => item.classList.remove('active'));
-                            if (navItems[i]) navItems[i].classList.add('active');
-                            break;
-                        }
-                    }
-                    
-                    if (window.scrollY < 100) {
+                for (let i = sections.length - 1; i >= 0; i--) {
+                    const section = sections[i];
+                    if (section && scrollPosition >= section.offsetTop) {
                         navItems.forEach(item => item.classList.remove('active'));
-                        if (navItems[0]) navItems[0].classList.add('active');
+                        if (navItems[i]) navItems[i].classList.add('active');
+                        break;
                     }
                 }
                 
-                window.addEventListener('scroll', updateActiveNav);
-                updateActiveNav();
-                
-                navItems.forEach((item, index) => {
-                    item.addEventListener('click', function() {
-                        if (sections[index]) {
-                            sections[index].scrollIntoView({ behavior: 'smooth' });
-                            navItems.forEach(n => n.classList.remove('active'));
-                            this.classList.add('active');
-                        }
-                    });
-                });
-            }
-
-            // ==================== QUIZ INITIALIZATION ====================
-            function initQuiz() {
-                document.getElementById('startQuizBtn')?.addEventListener('click', function() {
-                    document.getElementById('quizSection').style.display = 'block';
-                    this.style.display = 'none';
-                    document.querySelectorAll('.question-card').forEach(q => q.classList.remove('active'));
-                    document.getElementById('question1').classList.add('active');
-                    document.getElementById('quizSection').scrollIntoView({ behavior: 'smooth' });
-                });
-
-                document.querySelectorAll('#skipAllQuizBtn, #skipAllQuestionsBtn').forEach(btn => {
-                    btn.addEventListener('click', function() {
-                        document.getElementById('quizSection').style.display = 'none';
-                        document.getElementById('completionScreen').classList.add('active');
-                        document.getElementById('completionScreen').scrollIntoView({ behavior: 'smooth' });
-                    });
-                });
-
-                document.querySelectorAll('.check-answer-btn').forEach(btn => {
-                    btn.addEventListener('click', function() {
-                        const num = this.getAttribute('data-question');
-                        document.getElementById(`feedback${num}`)?.classList.add('show');
-                    });
-                });
-
-                document.querySelectorAll('.next-question-btn').forEach(btn => {
-                    btn.addEventListener('click', function() {
-                        const next = this.getAttribute('data-next');
-                        document.querySelectorAll('.question-card').forEach(q => q.classList.remove('active'));
-                        document.getElementById(`question${next}`)?.classList.add('active');
-                    });
-                });
-
-                for (let i = 1; i <= 7; i++) {
-                    document.getElementById(`skipBtn${i}`)?.addEventListener('click', function() {
-                        let next = i < 7 ? i + 1 : 1;
-                        document.querySelectorAll('.question-card').forEach(q => q.classList.remove('active'));
-                        document.getElementById(`question${next}`)?.classList.add('active');
-                    });
+                if (window.scrollY < 100) {
+                    navItems.forEach(item => item.classList.remove('active'));
+                    if (navItems[0]) navItems[0].classList.add('active');
                 }
+            }
+            
+            window.addEventListener('scroll', updateActiveNav);
+            updateActiveNav();
+            
+            // Navigation click
+            navItems.forEach((item, index) => {
+                item.addEventListener('click', function() {
+                    if (sections[index]) {
+                        sections[index].scrollIntoView({ behavior: 'smooth' });
+                        navItems.forEach(n => n.classList.remove('active'));
+                        this.classList.add('active');
+                    }
+                });
+            });
 
-                document.getElementById('completeQuizBtn')?.addEventListener('click', function() {
+            // ===== QUIZ BUTTONS =====
+            
+            // Start Quiz
+            document.getElementById('startQuizBtn')?.addEventListener('click', function() {
+                console.log("Start quiz clicked");
+                document.getElementById('quizSection').style.display = 'block';
+                this.style.display = 'none';
+                document.querySelectorAll('.question-card').forEach(q => q.classList.remove('active'));
+                document.getElementById('question1').classList.add('active');
+                document.getElementById('quizSection').scrollIntoView({ behavior: 'smooth' });
+            });
+
+            // Skip All buttons
+            document.querySelectorAll('#skipAllQuizBtn, #skipAllQuestionsBtn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    console.log("Skip all clicked");
                     document.getElementById('quizSection').style.display = 'none';
                     document.getElementById('completionScreen').classList.add('active');
+                    document.getElementById('completionScreen').scrollIntoView({ behavior: 'smooth' });
                 });
+            });
 
-                document.getElementById('restartQuizBtn')?.addEventListener('click', function() {
-                    document.getElementById('completionScreen').classList.remove('active');
-                    document.getElementById('quizSection').style.display = 'block';
+            // Check Answer buttons
+            document.querySelectorAll('.check-answer-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const num = this.getAttribute('data-question');
+                    document.getElementById(`feedback${num}`)?.classList.add('show');
+                });
+            });
+
+            // Next Question buttons
+            document.querySelectorAll('.next-question-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const next = this.getAttribute('data-next');
                     document.querySelectorAll('.question-card').forEach(q => q.classList.remove('active'));
-                    document.getElementById('question1').classList.add('active');
-                    document.getElementById('startQuizBtn').style.display = 'inline-flex';
-                    
-                    for (let i = 1; i <= 7; i++) {
-                        const answer = document.getElementById(`answer${i}`);
-                        if (answer) answer.value = '';
-                    }
+                    document.getElementById(`question${next}`)?.classList.add('active');
                 });
+            });
 
-                document.getElementById('takeTestBtn')?.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    authManager.startTest();
-                });
-
-                document.getElementById('adminLoginBtn')?.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    authManager.startAdminLogin();
+            // Skip buttons
+            for (let i = 1; i <= 7; i++) {
+                document.getElementById(`skipBtn${i}`)?.addEventListener('click', function() {
+                    let next = i < 7 ? i + 1 : 1;
+                    document.querySelectorAll('.question-card').forEach(q => q.classList.remove('active'));
+                    document.getElementById(`question${next}`)?.classList.add('active');
                 });
             }
 
-            // ==================== WINDOW RESIZE HANDLER ====================
-            function handleResize() {
-                if (testState.active) {
-                    const wasMobile = window.innerWidth <= 768;
-                    const currentlyMobile = window.innerWidth <= 768;
-                    
-                    if (wasMobile !== currentlyMobile) {
-                        testState.active = false;
-                        
-                        const ui = wasMobile ? mobile : desktop;
-                        ui.hide();
-                        
-                        const newUi = currentlyMobile ? mobile : desktop;
-                        newUi.setupEvents();
-                        newUi.show();
-                        newUi.updateUserDisplay();
+            // Complete Quiz button
+            document.getElementById('completeQuizBtn')?.addEventListener('click', function() {
+                document.getElementById('quizSection').style.display = 'none';
+                document.getElementById('completionScreen').classList.add('active');
+            });
+
+            // Restart Quiz button
+            document.getElementById('restartQuizBtn')?.addEventListener('click', function() {
+                document.getElementById('completionScreen').classList.remove('active');
+                document.getElementById('quizSection').style.display = 'block';
+                document.querySelectorAll('.question-card').forEach(q => q.classList.remove('active'));
+                document.getElementById('question1').classList.add('active');
+                document.getElementById('startQuizBtn').style.display = 'inline-flex';
+                
+                // Clear answers
+                for (let i = 1; i <= 7; i++) {
+                    const answer = document.getElementById(`answer${i}`);
+                    if (answer) answer.value = '';
+                }
+            });
+
+            // Take Test button - USING ORIGINAL WORKING LOGIC
+            document.getElementById('takeTestBtn')?.addEventListener('click', function(e) {
+                e.preventDefault();
+                console.log("Take test button clicked");
+                window.authManager.startTest();
+            });
+
+            // Admin Login button
+            document.getElementById('adminLoginBtn')?.addEventListener('click', function(e) {
+                e.preventDefault();
+                console.log("Admin login button clicked");
+                window.authManager.startAdminLogin();
+            });
+
+            // ===== URL PARAMS FOR TEST START (FROM ORIGINAL) =====
+            const urlParams = new URLSearchParams(window.location.search);
+            const startTest = urlParams.get('startTest');
+            const discordUsername = urlParams.get('discord_username');
+            const discordId = urlParams.get('discord_id');
+            
+            console.log("URL Parameters:", { startTest, discordUsername, discordId });
+            
+            if (startTest === '1' && discordUsername && discordId) {
+                console.log("Starting test for user:", discordUsername);
+                
+                // Store user info globally
+                window.userDiscordUsername = discordUsername;
+                window.userDiscordId = discordId;
+                
+                // Hide main content and show test interface
+                const mainContainer = document.getElementById('mainContainer');
+                const testPage = document.getElementById('testPage');
+                const mobileDiscord = document.getElementById('mobileDiscord');
+                
+                if (mainContainer) {
+                    mainContainer.style.display = 'none';
+                }
+                
+                // Determine if mobile or desktop
+                if (window.innerWidth <= 768) {
+                    // Mobile test
+                    console.log("Loading mobile interface");
+                    if (mobileDiscord) {
+                        mobileDiscord.classList.add('active');
                         
                         setTimeout(() => {
-                            testLogic.start(currentlyMobile);
+                            if (typeof startMobileTest === 'function') {
+                                startMobileTest();
+                            }
                         }, 1000);
                     }
+                } else {
+                    // Desktop test
+                    console.log("Loading desktop interface");
+                    if (testPage) {
+                        testPage.style.display = 'block';
+                        
+                        // Update UI with Discord username
+                        const discordUsernameDisplay = document.getElementById('discordUsernameDisplay');
+                        const discordUserTag = document.getElementById('discordUserTag');
+                        const userAvatarInitial = document.getElementById('userAvatarInitial');
+                        
+                        if (discordUsernameDisplay) {
+                            discordUsernameDisplay.textContent = discordUsername;
+                        }
+                        if (discordUserTag) {
+                            discordUserTag.textContent = "#" + (discordId.slice(-4) || "0000");
+                        }
+                        if (userAvatarInitial) {
+                            userAvatarInitial.textContent = discordUsername.charAt(0).toUpperCase();
+                        }
+                        
+                        // Initialize and start test
+                        setTimeout(() => {
+                            if (typeof initializeDiscordInterface === 'function') {
+                                initializeDiscordInterface();
+                                setTimeout(() => {
+                                    if (typeof startDiscordTest === 'function') {
+                                        startDiscordTest();
+                                    }
+                                }, 1500);
+                            }
+                        }, 500);
+                    }
                 }
+                
+                // Clear URL parameters
+                window.history.replaceState({}, document.title, window.location.pathname);
             }
+        });
 
-            // ==================== DOM READY ====================
-            document.addEventListener('DOMContentLoaded', function() {
-                console.log("DOM loaded - Initializing...");
+        // Test interface functions
+        function exitTest() {
+            document.getElementById('testPage').style.display = 'none';
+            document.getElementById('mobileDiscord').classList.remove('active');
+            document.getElementById('mainContainer').style.display = 'block';
+            if (typeof resetTest === 'function') resetTest();
+        }
+
+        // Discord test functions
+        window.initializeDiscordInterface = function() {
+            console.log("Discord interface initialized");
+            const messageInput = document.getElementById('messageInput');
+            const sendButton = document.getElementById('sendButton');
+            
+            if (messageInput) {
+                messageInput.addEventListener('input', function() {
+                    this.style.height = 'auto';
+                    this.style.height = Math.min(this.scrollHeight, 200) + 'px';
+                    if (sendButton) sendButton.disabled = this.value.trim() === '';
+                });
+            }
+        };
+
+        window.startDiscordTest = function() {
+            console.log("Starting Discord test");
+            const messagesContainer = document.getElementById('messagesContainer');
+            if (messagesContainer) {
+                messagesContainer.innerHTML = '';
                 
-                initHomepageNavigation();
-                initQuiz();
-                
-                authManager.handleOAuthReturn();
-                
-                window.addEventListener('resize', handleResize);
-            });
-        })();
+                setTimeout(() => {
+                    addMessage("Void Bot", "Welcome to the Void Esports Moderator Certification Test.", "#5865f2", true);
+                    setTimeout(() => {
+                        addMessage("Void Bot", `Hello ${window.userDiscordUsername}! You'll receive 8 scenarios.`, "#5865f2", true);
+                        setTimeout(() => {
+                            addMessage("Void Bot", "Respond as you would as a real moderator. Good luck!", "#5865f2", true);
+                        }, 1500);
+                    }, 1500);
+                }, 500);
+            }
+        };
+
+        function addMessage(username, content, color, isBot) {
+            const container = document.getElementById('messagesContainer');
+            if (!container) return;
+            
+            const msgDiv = document.createElement('div');
+            msgDiv.className = 'message-group';
+            
+            const now = new Date();
+            const timeStr = `${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}`;
+            
+            msgDiv.innerHTML = `
+                <div class="message-header">
+                    <div class="message-avatar" style="background:${color}">${username.charAt(0)}</div>
+                    <div>
+                        <span class="message-author">${username}</span>
+                        ${isBot ? '<span class="bot-tag">BOT</span>' : ''}
+                        <span class="message-timestamp">${timeStr}</span>
+                    </div>
+                </div>
+                <div class="message-content">${content}</div>
+            `;
+            
+            container.appendChild(msgDiv);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        window.resetTest = function() {
+            document.getElementById('discordScoreValue').textContent = '0';
+            document.getElementById('discordProgressFill').style.width = '0%';
+            document.getElementById('messagesContainer').innerHTML = '';
+        };
     </script>
+    
+    <!-- Load external scripts -->
+    <script src="js/auth.js"></script>
+    <script src="js/discord-test.js"></script>
+    <script src="js/mobile-discord.js"></script>
 </body>
 </html>
+
