@@ -3129,8 +3129,16 @@
 
             // ==================== TEST LOGIC ====================
             const testLogic = {
+                _running: false, // FIX: Prevent double-start race condition on mobile
+
                 async start(isMobile) {
-                    console.log('🚀 Starting test...');
+                    // FIX: Ignore duplicate calls (mobile OAuth redirect fires handleOAuthReturn twice)
+                    if (this._running) {
+                        console.warn('testLogic already running, ignoring duplicate start');
+                        return;
+                    }
+                    this._running = true;
+                    console.log('🚀 Starting test... isMobile:', isMobile);
                     
                     testState.active = true;
                     testState.currentQuestion = 0;
@@ -3343,6 +3351,7 @@
                 
                 reset() {
                     testState.reset();
+                    this._running = false; // Allow re-start
                     
                     const isMobile = window.innerWidth <= 768;
                     const ui = isMobile ? mobile : desktop;
@@ -3418,32 +3427,40 @@
                     if (startTest === '1' && discordUsername && discordId) {
                         console.log("Returning from OAuth, starting test for:", discordUsername);
                         
+                        // FIX: Clean URL FIRST so if this fires twice (DOMContentLoaded race),
+                        // the second call won't find the params and will skip
+                        window.history.replaceState({}, document.title, window.location.pathname);
+                        
                         testState.initUser(discordUsername, discordId);
                         
                         const isMobile = window.innerWidth <= 768;
                         
                         if (isMobile) {
-                            // CRITICAL FIX: Ensure mobile elements exist and test starts
                             mobile.setupEvents();
                             mobile.show();
                             mobile.updateUserDisplay();
                             
-                            // Force test start after a short delay
-                            setTimeout(() => {
-                                testLogic.start(true);
-                            }, 300);
+                            // FIX: Use requestAnimationFrame + longer delay on mobile to ensure
+                            // the DOM is fully painted before starting async test logic
+                            // (Mobile browsers are slower to paint after show())
+                            requestAnimationFrame(() => {
+                                setTimeout(() => {
+                                    console.log("Mobile: Calling testLogic.start(true)");
+                                    testLogic.start(true);
+                                }, 600);
+                            });
                         } else {
                             desktop.setupEvents();
                             desktop.show();
                             desktop.updateUserDisplay();
                             
-                            setTimeout(() => {
-                                testLogic.start(false);
-                            }, 300);
+                            requestAnimationFrame(() => {
+                                setTimeout(() => {
+                                    console.log("Desktop: Calling testLogic.start(false)");
+                                    testLogic.start(false);
+                                }, 300);
+                            });
                         }
-                        
-                        // Clean URL
-                        window.history.replaceState({}, document.title, window.location.pathname);
                     }
                 }
             }
@@ -3599,10 +3616,11 @@
                 window.addEventListener('resize', handleResize);
             });
 
-            // Also handle OAuth return immediately if DOM already loaded
-            if (document.readyState === 'complete' || document.readyState === 'interactive') {
-                setTimeout(() => authManager.handleOAuthReturn(), 100);
-            }
+            // FIX: Removed duplicate handleOAuthReturn() immediate call.
+            // The old code called it from BOTH DOMContentLoaded AND here,
+            // causing the mobile test to start twice and wipe messages.
+            // Now only called from DOMContentLoaded above. URL-cleaning in
+            // handleOAuthReturn() prevents any accidental second run.
         })();
     </script>
 </body>
