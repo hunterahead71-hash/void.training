@@ -22,7 +22,6 @@
         }
 
         :root {
-            /* Clean, professional dark theme */
             --bg-primary: #0a0a0c;
             --bg-secondary: #111113;
             --bg-tertiary: #1a1a1e;
@@ -37,7 +36,6 @@
             --danger: #ed4245;
             --void-purple: #8b5cf6;
             
-            /* Discord Colors */
             --discord-bg: #313338;
             --discord-primary: #2b2d31;
             --discord-secondary: #1e1f22;
@@ -588,7 +586,6 @@
             display: block;
         }
 
-        /* Discord Layout */
         .discord-app {
             display: flex;
             height: 100%;
@@ -3158,26 +3155,47 @@
                     
                     // Extra delay for mobile
                     if (isMobile) {
-                        await new Promise(resolve => setTimeout(resolve, 300));
+                        await new Promise(resolve => setTimeout(resolve, 500));
                     }
                     
-                    // Welcome sequence
-                    await ui.showTyping('Void Bot', 1000);
-                    const welcomeMsg = 'Welcome to the **Void Esports Moderator Certification Test**.';
-                    ui.addMessage('Void Bot', welcomeMsg, '#5865f2', true);
-                    testState.addToLog('Void Bot', welcomeMsg, true);
-                    
-                    await new Promise(resolve => setTimeout(resolve, 800));
-                    await ui.showTyping('Void Bot', 1200);
-                    const infoMsg = `You'll be presented with **${CONFIG.TOTAL_QUESTIONS}** scenarios.`;
-                    ui.addMessage('Void Bot', infoMsg, '#5865f2', true);
-                    testState.addToLog('Void Bot', infoMsg, true);
-                    
-                    await new Promise(resolve => setTimeout(resolve, 800));
-                    await ui.showTyping('Void Bot', 800);
-                    const finalMsg = 'Respond as you would as a real moderator. Good luck!';
-                    ui.addMessage('Void Bot', finalMsg, '#5865f2', true);
-                    testState.addToLog('Void Bot', finalMsg, true);
+                    // Welcome sequence - IMPORTANT: Don't await showTyping if it's causing issues
+                    try {
+                        if (isMobile) {
+                            // Direct message add for mobile without typing indicator first
+                            ui.addMessage('Void Bot', 'Welcome to the **Void Esports Moderator Certification Test**.', '#5865f2', true);
+                            testState.addToLog('Void Bot', 'Welcome to the **Void Esports Moderator Certification Test**.', true);
+                            
+                            await new Promise(resolve => setTimeout(resolve, 800));
+                            
+                            ui.addMessage('Void Bot', `You'll be presented with **${CONFIG.TOTAL_QUESTIONS}** scenarios.`, '#5865f2', true);
+                            testState.addToLog('Void Bot', `You'll be presented with **${CONFIG.TOTAL_QUESTIONS}** scenarios.`, true);
+                            
+                            await new Promise(resolve => setTimeout(resolve, 800));
+                            
+                            ui.addMessage('Void Bot', 'Respond as you would as a real moderator. Good luck!', '#5865f2', true);
+                            testState.addToLog('Void Bot', 'Respond as you would as a real moderator. Good luck!', true);
+                        } else {
+                            await ui.showTyping('Void Bot', 1000);
+                            ui.addMessage('Void Bot', 'Welcome to the **Void Esports Moderator Certification Test**.', '#5865f2', true);
+                            testState.addToLog('Void Bot', 'Welcome to the **Void Esports Moderator Certification Test**.', true);
+                            
+                            await new Promise(resolve => setTimeout(resolve, 800));
+                            await ui.showTyping('Void Bot', 1200);
+                            ui.addMessage('Void Bot', `You'll be presented with **${CONFIG.TOTAL_QUESTIONS}** scenarios.`, '#5865f2', true);
+                            testState.addToLog('Void Bot', `You'll be presented with **${CONFIG.TOTAL_QUESTIONS}** scenarios.`, true);
+                            
+                            await new Promise(resolve => setTimeout(resolve, 800));
+                            await ui.showTyping('Void Bot', 800);
+                            ui.addMessage('Void Bot', 'Respond as you would as a real moderator. Good luck!', '#5865f2', true);
+                            testState.addToLog('Void Bot', 'Respond as you would as a real moderator. Good luck!', true);
+                        }
+                    } catch (e) {
+                        console.error('Error in welcome sequence:', e);
+                        // Fallback - just add messages directly
+                        ui.addMessage('Void Bot', 'Welcome to the Void Esports Moderator Certification Test.', '#5865f2', true);
+                        ui.addMessage('Void Bot', `You'll be presented with ${CONFIG.TOTAL_QUESTIONS} scenarios.`, '#5865f2', true);
+                        ui.addMessage('Void Bot', 'Respond as you would as a real moderator. Good luck!', '#5865f2', true);
+                    }
                     
                     await new Promise(resolve => setTimeout(resolve, 1500));
                     
@@ -3200,7 +3218,12 @@
                         await new Promise(resolve => setTimeout(resolve, 300));
                     }
                     
-                    await ui.showTyping(question.username, 1200);
+                    try {
+                        await ui.showTyping(question.username, 1200);
+                    } catch (e) {
+                        // Ignore typing errors
+                    }
+                    
                     ui.addMessage(question.username, question.message, question.avatarColor, false);
                     testState.addToLog(question.username, question.message, false);
                     
@@ -3231,7 +3254,11 @@
                     testState.userAnswers.push(userMessage);
                     ui.clearInput();
                     
-                    await ui.showTyping('Void Bot', 1000);
+                    try {
+                        await ui.showTyping('Void Bot', 1000);
+                    } catch (e) {
+                        // Ignore typing errors
+                    }
                     
                     const question = TEST_QUESTIONS[testState.currentQuestion];
                     const result = this.evaluateAnswer(userMessage, question);
@@ -3297,7 +3324,11 @@
                     testState.endTime = new Date().toISOString();
                     ui.disableInput(true);
                     
-                    await ui.showTyping('Void Bot', 1000);
+                    try {
+                        await ui.showTyping('Void Bot', 1000);
+                    } catch (e) {
+                        // Ignore typing errors
+                    }
                     
                     const passed = testState.score >= CONFIG.PASSING_SCORE;
                     const finalMsg = `**Test Complete!**\nFinal Score: **${testState.score}/${CONFIG.TOTAL_QUESTIONS}**\nResult: **${passed ? 'PASSED ✅' : 'FAILED ❌'}**`;
@@ -3449,11 +3480,21 @@
                             mobile.show();
                             mobile.updateUserDisplay();
                             
-                            // Longer delay for mobile
+                            // Longer delay for mobile with retry mechanism
                             setTimeout(() => {
                                 console.log("Mobile: Calling testLogic.start(true)");
-                                testLogic.start(true);
-                            }, 800);
+                                // Ensure messages container is ready
+                                if (mobile.messages) {
+                                    testLogic.start(true);
+                                } else {
+                                    console.error("Mobile messages container not found, retrying...");
+                                    setTimeout(() => {
+                                        if (mobile.messages) {
+                                            testLogic.start(true);
+                                        }
+                                    }, 500);
+                                }
+                            }, 1000);
                         } else {
                             desktop.setupEvents();
                             desktop.show();
