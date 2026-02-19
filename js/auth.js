@@ -55,18 +55,35 @@ class AuthManager {
             const isMobile = window.innerWidth <= 768;
             
             if (isMobile) {
-                mobile.init();
-                mobile.show();
-                mobile.updateUserDisplay();
+                if (window.mobileInterface) {
+                    window.mobileInterface.init();
+                    window.mobileInterface.show();
+                    window.mobileInterface.updateUserDisplay();
+                    setTimeout(() => {
+                        window.mobileInterface.start();
+                    }, 1000);
+                } else {
+                    // Fallback to testLogic
+                    setTimeout(() => {
+                        window.testLogic.start(true);
+                    }, 1000);
+                }
             } else {
-                desktop.init();
-                desktop.show();
-                desktop.updateUserDisplay();
+                // Use desktop interface from desktop-interface.js
+                if (window.desktop) {
+                    window.desktop.init();
+                    window.desktop.show();
+                    window.desktop.updateUserDisplay();
+                    setTimeout(() => {
+                        window.testLogic.start(false);
+                    }, 1000);
+                } else {
+                    // Fallback to testLogic
+                    setTimeout(() => {
+                        window.testLogic.start(false);
+                    }, 1000);
+                }
             }
-            
-            setTimeout(() => {
-                testLogic.start(isMobile);
-            }, 1000);
         }
     }
 }
