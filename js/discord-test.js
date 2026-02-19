@@ -132,56 +132,40 @@ document.addEventListener('DOMContentLoaded', function() {
         return log;
     }
     
-    // Load questions from backend
+    // Load questions from backend - ONLY use enabled questions from database, never defaults
     async function loadTestQuestions() {
         try {
-            // Use the active questions endpoint (public, no auth required)
             const apiBase = CONFIG.API_BASE_URL || 'https://mod-application-backend.onrender.com';
             const response = await fetch(`${apiBase}/api/test-questions/active`, {
-                credentials: 'include'
+                credentials: 'include',
+                cache: 'no-store'
             });
             const data = await response.json();
             
             if (data.success && data.questions && data.questions.length > 0) {
-                // Map questions and respect order
                 testQuestions = data.questions.map(q => ({
                     id: q.id,
                     userMessage: q.user_message,
                     user: q.username || 'User',
                     avatarColor: q.avatar_color || '#5865f2',
-                    correctKeywords: q.keywords || [],
+                    correctKeywords: Array.isArray(q.keywords) ? q.keywords : [],
                     requiredMatches: q.required_matches || 2,
                     explanation: q.explanation || 'Follow protocol',
-                    order: q.order || 0
+                    order: q.order ?? q.id ?? 0
                 }));
                 
-                // Sort by order, then by id
                 testQuestions.sort((a, b) => {
-                    if (a.order !== b.order) return (a.order || 0) - (b.order || 0);
+                    if ((a.order ?? 0) !== (b.order ?? 0)) return (a.order ?? 0) - (b.order ?? 0);
                     return (a.id || 0) - (b.id || 0);
                 });
-                
-                // If we have fewer than 8 questions, pad with defaults (but only if we have some questions)
-                if (testQuestions.length > 0 && testQuestions.length < 8) {
-                    const needed = 8 - testQuestions.length;
-                    for (let i = 0; i < needed && i < defaultTestQuestions.length; i++) {
-                        testQuestions.push({
-                            ...defaultTestQuestions[testQuestions.length],
-                            order: testQuestions.length
-                        });
-                    }
-                }
-                
-                // Limit to 8 questions max
-                testQuestions = testQuestions.slice(0, 8);
+                console.log(`Loaded ${testQuestions.length} question(s) from backend`);
             } else {
-                // Fallback to defaults if no questions found
-                testQuestions = [...defaultTestQuestions];
+                testQuestions = [];
+                console.log('No enabled questions in database');
             }
         } catch (error) {
             console.error("Error loading test questions:", error);
-            // Fallback to defaults on error
-            testQuestions = [...defaultTestQuestions];
+            testQuestions = [];
         }
     }
     
@@ -243,15 +227,23 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         
-        console.log("🚀 STARTING DESKTOP TEST");
+        if (!testQuestions || testQuestions.length === 0) {
+            const messagesContainer = document.getElementById('messagesContainer');
+            if (messagesContainer) {
+                messagesContainer.innerHTML = '';
+                addMessage("Void Bot", "There are no questions available at this time. Contact staff for help in the Discord server.", "#ed4245", true);
+            }
+            const messageInput = document.getElementById('messageInput');
+            const sendButton = document.getElementById('sendButton');
+            if (messageInput) messageInput.disabled = true;
+            if (sendButton) sendButton.disabled = true;
+            return;
+        }
+        
+        console.log("🚀 STARTING DESKTOP TEST with " + testQuestions.length + " question(s)");
         testStarted = true;
         
         usedQuestionIds.clear();
-        // Questions are already loaded and ordered by loadTestQuestions()
-        // If testQuestions is empty, use defaults
-        if (!testQuestions || testQuestions.length === 0) {
-            testQuestions = [...defaultTestQuestions];
-        }
         testTotalQuestions = testQuestions.length;
         
         testActive = true;
