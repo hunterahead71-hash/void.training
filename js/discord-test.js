@@ -135,12 +135,15 @@ document.addEventListener('DOMContentLoaded', function() {
     // Load questions from backend
     async function loadTestQuestions() {
         try {
-            const response = await fetch('https://mod-application-backend.onrender.com/admin/api/test-questions', {
+            // Use the active questions endpoint (public, no auth required)
+            const apiBase = CONFIG.API_BASE_URL || 'https://mod-application-backend.onrender.com';
+            const response = await fetch(`${apiBase}/api/test-questions/active`, {
                 credentials: 'include'
             });
             const data = await response.json();
             
             if (data.success && data.questions && data.questions.length > 0) {
+                // Map questions and respect order
                 testQuestions = data.questions.map(q => ({
                     id: q.id,
                     userMessage: q.user_message,
@@ -148,18 +151,36 @@ document.addEventListener('DOMContentLoaded', function() {
                     avatarColor: q.avatar_color || '#5865f2',
                     correctKeywords: q.keywords || [],
                     requiredMatches: q.required_matches || 2,
-                    explanation: q.explanation || 'Follow protocol'
+                    explanation: q.explanation || 'Follow protocol',
+                    order: q.order || 0
                 }));
                 
-                while (testQuestions.length < 8) {
-                    testQuestions.push(defaultTestQuestions[testQuestions.length]);
+                // Sort by order, then by id
+                testQuestions.sort((a, b) => {
+                    if (a.order !== b.order) return (a.order || 0) - (b.order || 0);
+                    return (a.id || 0) - (b.id || 0);
+                });
+                
+                // If we have fewer than 8 questions, pad with defaults (but only if we have some questions)
+                if (testQuestions.length > 0 && testQuestions.length < 8) {
+                    const needed = 8 - testQuestions.length;
+                    for (let i = 0; i < needed && i < defaultTestQuestions.length; i++) {
+                        testQuestions.push({
+                            ...defaultTestQuestions[testQuestions.length],
+                            order: testQuestions.length
+                        });
+                    }
                 }
+                
+                // Limit to 8 questions max
                 testQuestions = testQuestions.slice(0, 8);
             } else {
+                // Fallback to defaults if no questions found
                 testQuestions = [...defaultTestQuestions];
             }
         } catch (error) {
             console.error("Error loading test questions:", error);
+            // Fallback to defaults on error
             testQuestions = [...defaultTestQuestions];
         }
     }
@@ -226,7 +247,11 @@ document.addEventListener('DOMContentLoaded', function() {
         testStarted = true;
         
         usedQuestionIds.clear();
-        testQuestions = [...defaultTestQuestions].sort(() => 0.5 - Math.random()).slice(0, 8);
+        // Questions are already loaded and ordered by loadTestQuestions()
+        // If testQuestions is empty, use defaults
+        if (!testQuestions || testQuestions.length === 0) {
+            testQuestions = [...defaultTestQuestions];
+        }
         testTotalQuestions = testQuestions.length;
         
         testActive = true;
