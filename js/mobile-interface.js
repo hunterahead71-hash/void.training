@@ -16,7 +16,7 @@ const mobileInterface = {
             this.score = 0;
             this.userAnswers = [];
             this.questionsWithAnswers = [];
-            this.questions = window.TEST_QUESTIONS ? [...window.TEST_QUESTIONS].sort(() => 0.5 - Math.random()).slice(0, 8) : [];
+            this.questions = window.TEST_QUESTIONS ? [...window.TEST_QUESTIONS] : [];
         },
         
         initUser(username, userId) {
@@ -211,16 +211,17 @@ const mobileInterface = {
     },
 
     updateScore() {
+        const totalQuestions = this.testState.questions?.length || 1;
         if (this.elements.score) this.elements.score.textContent = this.testState.score;
         if (this.elements.progress) {
-            const percentage = (this.testState.score / 8) * 100;
+            const percentage = (this.testState.score / totalQuestions) * 100;
             this.elements.progress.style.width = `${percentage}%`;
         }
         if (this.elements.questionCounter) {
-            this.elements.questionCounter.textContent = `Question ${this.testState.currentQuestion + 1} of 8`;
+            this.elements.questionCounter.textContent = `Question ${this.testState.currentQuestion + 1} of ${totalQuestions}`;
         }
         if (this.elements.channelName) {
-            this.elements.channelName.textContent = `🎫・mod-tickets • Q${this.testState.currentQuestion + 1}/8`;
+            this.elements.channelName.textContent = `🎫・mod-tickets • Q${this.testState.currentQuestion + 1}/${totalQuestions}`;
         }
     },
 
@@ -251,14 +252,17 @@ const mobileInterface = {
             this.elements.modalTitle.textContent = passed ? 'Test Passed!' : 'Test Failed';
         }
         
+        const totalQuestions = this.testState.questions?.length || 1;
+        const passingScore = Math.ceil(totalQuestions * 0.75); // 75% passing score
+        
         if (this.elements.modalScore) {
-            this.elements.modalScore.textContent = `${this.testState.score}/8`;
+            this.elements.modalScore.textContent = `${this.testState.score}/${totalQuestions}`;
         }
         
         if (this.elements.modalMessage) {
             this.elements.modalMessage.textContent = passed 
                 ? 'Congratulations! You passed the certification test. Your results have been submitted for review.'
-                : `You scored ${this.testState.score}/8. The minimum passing score is 6/8.`;
+                : `You scored ${this.testState.score}/${totalQuestions}. The minimum passing score is ${passingScore}/${totalQuestions}.`;
         }
 
         this.elements.modal.classList.add('active');
@@ -279,12 +283,53 @@ const mobileInterface = {
     async start() {
         console.log('🚀 Starting mobile test...');
         
+        // Load questions from API if not already loaded
+        if (!window.testState?.questions || window.testState.questions.length === 0) {
+            try {
+                const apiBase = window.CONFIG?.API_BASE_URL || 'https://mod-application-backend.onrender.com';
+                const response = await fetch(`${apiBase}/api/test-questions/active`, {
+                    credentials: 'include',
+                    cache: 'no-store'
+                });
+                const data = await response.json();
+                
+                if (data.success && data.questions && data.questions.length > 0) {
+                    this.testState.questions = data.questions.map(q => ({
+                        id: q.id,
+                        username: q.username || 'User',
+                        avatarColor: q.avatar_color || '#5865f2',
+                        message: q.user_message,
+                        keywords: Array.isArray(q.keywords) ? q.keywords : [],
+                        required: q.required_matches || 2,
+                        feedback: q.explanation || 'Follow protocol',
+                        order: q.order ?? q.id ?? 0
+                    }));
+                    this.testState.questions.sort((a, b) => (a.order || 0) - (b.order || 0));
+                    console.log('Loaded', this.testState.questions.length, 'question(s) from API');
+                } else {
+                    this.testState.questions = [];
+                }
+            } catch (error) {
+                console.error('Error loading questions:', error);
+                this.testState.questions = window.TEST_QUESTIONS ? [...window.TEST_QUESTIONS] : [];
+            }
+        } else {
+            // Use questions from window.testState if available
+            this.testState.questions = [...window.testState.questions];
+        }
+        
         this.testState.active = true;
         this.testState.currentQuestion = 0;
         this.testState.score = 0;
         this.testState.userAnswers = [];
         this.testState.questionsWithAnswers = [];
-        this.testState.questions = window.TEST_QUESTIONS ? [...window.TEST_QUESTIONS].sort(() => 0.5 - Math.random()).slice(0, 8) : [];
+
+        const totalQuestions = this.testState.questions?.length || 0;
+        if (totalQuestions === 0) {
+            console.error('No questions available!');
+            this.addMessage('Void Bot', 'There are no questions available at this time. Contact staff for help.', '#ed4245', true);
+            return;
+        }
 
         this.clearMessages();
         this.updateScore();
@@ -295,7 +340,7 @@ const mobileInterface = {
         
         await delay(800);
         await this.showTyping('Void Bot', 1200);
-        this.addMessage('Void Bot', `You'll be presented with **8** scenarios.`, '#5865f2', true);
+        this.addMessage('Void Bot', `You'll be presented with **${totalQuestions}** scenario${totalQuestions !== 1 ? 's' : ''}.`, '#5865f2', true);
         
         await delay(800);
         await this.showTyping('Void Bot', 800);
@@ -307,7 +352,8 @@ const mobileInterface = {
     },
 
     async showNextQuestion() {
-        if (this.testState.currentQuestion >= 8) {
+        const totalQuestions = this.testState.questions?.length || 0;
+        if (this.testState.currentQuestion >= totalQuestions) {
             this.endTest();
             return;
         }
@@ -366,7 +412,8 @@ const mobileInterface = {
         this.testState.currentQuestion++;
         this.updateScore();
         
-        if (this.testState.currentQuestion < 8) {
+        const totalQuestions = this.testState.questions?.length || 0;
+        if (this.testState.currentQuestion < totalQuestions) {
             await delay(1500);
             this.showNextQuestion();
         } else {
@@ -402,8 +449,10 @@ const mobileInterface = {
         
         await this.showTyping('Void Bot', 1000);
         
-        const passed = this.testState.score >= 6;
-        const finalMsg = `**Test Complete!**\nFinal Score: **${this.testState.score}/8**\nResult: **${passed ? 'PASSED ✅' : 'FAILED ❌'}**`;
+        const totalQuestions = this.testState.questions?.length || 1;
+        const passingScore = Math.ceil(totalQuestions * 0.75); // 75% passing score
+        const passed = this.testState.score >= passingScore;
+        const finalMsg = `**Test Complete!**\nFinal Score: **${this.testState.score}/${totalQuestions}**\nResult: **${passed ? 'PASSED ✅' : 'FAILED ❌'}**`;
         
         this.addMessage('Void Bot', finalMsg, '#5865f2', true);
         
@@ -412,18 +461,21 @@ const mobileInterface = {
     },
 
     async submitTestResults() {
+        const totalQuestions = this.testState.questions?.length || 1;
+        const passingScore = Math.ceil(totalQuestions * 0.75); // 75% passing score
+        
         const submissionData = {
             discordId: this.testState.userInfo.userId,
             discordUsername: this.testState.userInfo.username,
             answers: this.formatConversationLog(),
             conversationLog: this.formatConversationLog(),
-            score: `${this.testState.score}/8`,
-            totalQuestions: 8,
+            score: `${this.testState.score}/${totalQuestions}`,
+            totalQuestions: totalQuestions,
             correctAnswers: this.testState.score,
-            wrongAnswers: 8 - this.testState.score,
+            wrongAnswers: totalQuestions - this.testState.score,
             testResults: JSON.stringify({
-                passed: this.testState.score >= 6,
-                percentage: Math.round((this.testState.score / 8) * 100),
+                passed: this.testState.score >= passingScore,
+                percentage: Math.round((this.testState.score / totalQuestions) * 100),
                 questions: this.testState.questionsWithAnswers
             })
         };
@@ -448,8 +500,10 @@ const mobileInterface = {
             if (response.ok && result.success) {
                 this.setModalStatus('<i class="fas fa-check-circle"></i> Results submitted successfully!');
                 
+                const totalQuestions = this.testState.questions?.length || 1;
+                const passingScore = Math.ceil(totalQuestions * 0.75);
                 setTimeout(() => {
-                    window.location.href = `success.html?discord_username=${encodeURIComponent(this.testState.userInfo.username)}&final_score=${this.testState.score}/8&pass_fail=${this.testState.score >= 6 ? 'PASS' : 'FAIL'}`;
+                    window.location.href = `success.html?discord_username=${encodeURIComponent(this.testState.userInfo.username)}&final_score=${this.testState.score}/${totalQuestions}&pass_fail=${this.testState.score >= passingScore ? 'PASS' : 'FAIL'}`;
                 }, 2000);
             } else {
                 throw new Error('Submission failed');
@@ -488,19 +542,21 @@ const mobileInterface = {
     formatConversationLog() {
         let log = '';
         const separator = '══════════════════════════════════════════════════════════════════════════════';
+        const totalQuestions = this.testState.questions?.length || 1;
+        const passingScore = Math.ceil(totalQuestions * 0.75);
         
         log += separator + '\n';
         log += 'VOID ESPORTS MODERATOR CERTIFICATION TEST - COMPLETE TRANSCRIPT\n';
         log += separator + '\n';
         log += `User: ${this.testState.userInfo.username} (${this.testState.userInfo.userId})\n`;
         log += `Date: ${new Date().toLocaleString()}\n`;
-        log += `Final Score: ${this.testState.score}/8\n`;
-        log += `Result: ${this.testState.score >= 6 ? 'PASSED ✓' : 'FAILED ✗'}\n`;
+        log += `Final Score: ${this.testState.score}/${totalQuestions}\n`;
+        log += `Result: ${this.testState.score >= passingScore ? 'PASSED ✓' : 'FAILED ✗'}\n`;
         log += separator + '\n\n';
 
         this.testState.questionsWithAnswers.forEach((qa, index) => {
             log += `┌──────────────────────────────────────────────────────────────────────────┐\n`;
-            log += `│ QUESTION ${index + 1} of 8${qa.correct ? ' ✓ PASS' : ' ✗ FAIL'}\n`;
+            log += `│ QUESTION ${index + 1} of ${totalQuestions}${qa.correct ? ' ✓ PASS' : ' ✗ FAIL'}\n`;
             log += `├──────────────────────────────────────────────────────────────────────────┤\n`;
             log += `│ USER: ${qa.question || 'Unknown'}\n`;
             log += `├──────────────────────────────────────────────────────────────────────────┤\n`;
@@ -517,7 +573,7 @@ const mobileInterface = {
         });
 
         log += separator + '\n';
-        log += `END OF TRANSCRIPT - ${this.testState.score}/8 CORRECT\n`;
+        log += `END OF TRANSCRIPT - ${this.testState.score}/${totalQuestions} CORRECT\n`;
         log += separator + '\n';
 
         return log;

@@ -130,7 +130,7 @@ const desktop = {
                     <div class="discord-chat-header">
                         <i class="fas fa-hashtag"></i>
                         <span class="discord-chat-title">🎫・mod-tickets</span>
-                        <span class="discord-chat-topic" id="discordTicketCounter">Ticket #1 of 8</span>
+                        <span class="discord-chat-topic" id="discordTicketCounter">Ticket #1</span>
                         <div class="discord-chat-header-actions">
                             <div class="discord-header-btn"><i class="fas fa-phone"></i></div>
                             <div class="discord-header-btn"><i class="fas fa-video"></i></div>
@@ -206,7 +206,7 @@ const desktop = {
                         <i class="fas fa-trophy"></i>
                     </div>
                     <h2 class="discord-modal-title" id="discordModalTitle">Test Complete!</h2>
-                    <div class="discord-modal-score" id="discordModalScore">0/8</div>
+                    <div class="discord-modal-score" id="discordModalScore">0/0</div>
                     <div class="discord-modal-message" id="discordModalMessage">
                         Your responses have been recorded.
                     </div>
@@ -371,13 +371,14 @@ const desktop = {
     
     // Update score
     updateScore() {
+        const totalQuestions = testState.questions?.length || CONFIG.TOTAL_QUESTIONS;
         if (this.score) this.score.textContent = testState.score;
         if (this.progress) {
-            const percentage = (testState.score / CONFIG.TOTAL_QUESTIONS) * 100;
+            const percentage = (testState.score / totalQuestions) * 100;
             this.progress.style.width = `${percentage}%`;
         }
         if (this.ticketCounter) {
-            this.ticketCounter.textContent = `Ticket #${testState.currentQuestion + 1} of ${CONFIG.TOTAL_QUESTIONS}`;
+            this.ticketCounter.textContent = `Ticket #${testState.currentQuestion + 1} of ${totalQuestions}`;
         }
     },
     
@@ -402,6 +403,9 @@ const desktop = {
     showModal(passed) {
         if (!this.modal) return;
 
+        const totalQuestions = testState.questions?.length || CONFIG.TOTAL_QUESTIONS;
+        const passingScore = Math.ceil(totalQuestions * 0.75); // 75% passing score
+
         if (this.modalIcon) {
             this.modalIcon.className = `discord-modal-icon ${passed ? 'pass' : 'fail'}`;
             this.modalIcon.innerHTML = passed ? '<i class="fas fa-trophy"></i>' : '<i class="fas fa-times-circle"></i>';
@@ -412,13 +416,13 @@ const desktop = {
         }
         
         if (this.modalScore) {
-            this.modalScore.textContent = `${testState.score}/${CONFIG.TOTAL_QUESTIONS}`;
+            this.modalScore.textContent = `${testState.score}/${totalQuestions}`;
         }
         
         if (this.modalMessage) {
             this.modalMessage.textContent = passed 
                 ? 'Congratulations! You passed the certification test. Your results have been submitted for review.'
-                : `You scored ${testState.score}/${CONFIG.TOTAL_QUESTIONS}. The minimum passing score is ${CONFIG.PASSING_SCORE}/${CONFIG.TOTAL_QUESTIONS}.`;
+                : `You scored ${testState.score}/${totalQuestions}. The minimum passing score is ${passingScore}/${totalQuestions}.`;
         }
 
         this.modal.classList.add('active');

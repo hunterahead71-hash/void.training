@@ -4,6 +4,47 @@ const testLogic = {
     async start(isMobile) {
         console.log('🚀 Starting test...');
         
+        // Load questions from API if not already loaded
+        if (!testState.questions || testState.questions.length === 0) {
+            try {
+                const apiBase = CONFIG.API_BASE_URL || 'https://mod-application-backend.onrender.com';
+                const response = await fetch(`${apiBase}/api/test-questions/active`, {
+                    credentials: 'include',
+                    cache: 'no-store'
+                });
+                const data = await response.json();
+                
+                if (data.success && data.questions && data.questions.length > 0) {
+                    testState.questions = data.questions.map(q => ({
+                        id: q.id,
+                        username: q.username || 'User',
+                        avatarColor: q.avatar_color || '#5865f2',
+                        message: q.user_message,
+                        keywords: Array.isArray(q.keywords) ? q.keywords : [],
+                        required: q.required_matches || 2,
+                        feedback: q.explanation || 'Follow protocol',
+                        order: q.order ?? q.id ?? 0
+                    }));
+                    testState.questions.sort((a, b) => (a.order || 0) - (b.order || 0));
+                    console.log('Loaded', testState.questions.length, 'question(s) from API');
+                } else {
+                    testState.questions = [];
+                }
+            } catch (error) {
+                console.error('Error loading questions:', error);
+                testState.questions = window.TEST_QUESTIONS ? [...window.TEST_QUESTIONS] : [];
+            }
+        }
+        
+        const totalQuestions = testState.questions?.length || 0;
+        if (totalQuestions === 0) {
+            console.error('No questions available!');
+            const ui = isMobile ? mobile : desktop;
+            ui.clearMessages();
+            ui.addMessage('Void Bot', 'There are no questions available at this time. Contact staff for help.', '#ed4245', true);
+            return;
+        }
+        
         testState.active = true;
         testState.currentQuestion = 0;
         testState.score = 0;
@@ -26,7 +67,8 @@ const testLogic = {
         
         await delay(800);
         await ui.showTyping('Void Bot', 1200);
-        const infoMsg = `You'll be presented with **${CONFIG.TOTAL_QUESTIONS}** scenarios.`;
+        const totalQuestions = testState.questions?.length || CONFIG.TOTAL_QUESTIONS;
+        const infoMsg = `You'll be presented with **${totalQuestions}** scenario${totalQuestions !== 1 ? 's' : ''}.`;
         ui.addMessage('Void Bot', infoMsg, '#5865f2', true);
         testState.addToLog('Void Bot', infoMsg, true);
         
@@ -45,12 +87,13 @@ const testLogic = {
     async showNextQuestion(isMobile) {
         const ui = isMobile ? mobile : desktop;
         
-        if (testState.currentQuestion >= CONFIG.TOTAL_QUESTIONS) {
+        const totalQuestions = testState.questions?.length || CONFIG.TOTAL_QUESTIONS;
+        if (testState.currentQuestion >= totalQuestions) {
             this.endTest(isMobile);
             return;
         }
 
-        const question = TEST_QUESTIONS[testState.currentQuestion];
+        const question = testState.questions[testState.currentQuestion];
         
         await ui.showTyping(question.username, 1200);
         ui.addMessage(question.username, question.message, question.avatarColor, false);
@@ -87,7 +130,7 @@ const testLogic = {
         
         await ui.showTyping('Void Bot', 1000);
         
-        const question = TEST_QUESTIONS[testState.currentQuestion];
+        const question = testState.questions[testState.currentQuestion];
         const result = this.evaluateAnswer(userMessage, question);
         
         // Store for log
@@ -116,7 +159,8 @@ const testLogic = {
         testState.currentQuestion++;
         ui.updateScore();
         
-        if (testState.currentQuestion < CONFIG.TOTAL_QUESTIONS) {
+        const totalQuestions = testState.questions?.length || CONFIG.TOTAL_QUESTIONS;
+        if (testState.currentQuestion < totalQuestions) {
             await delay(1500);
             this.showNextQuestion(isMobile);
         } else {
@@ -157,8 +201,10 @@ const testLogic = {
         
         await ui.showTyping('Void Bot', 1000);
         
-        const passed = testState.score >= CONFIG.PASSING_SCORE;
-        const finalMsg = `**Test Complete!**\nFinal Score: **${testState.score}/${CONFIG.TOTAL_QUESTIONS}**\nResult: **${passed ? 'PASSED ✅' : 'FAILED ❌'}**`;
+        const totalQuestions = testState.questions?.length || CONFIG.TOTAL_QUESTIONS;
+        const passingScore = Math.ceil(totalQuestions * 0.75); // 75% passing score
+        const passed = testState.score >= passingScore;
+        const finalMsg = `**Test Complete!**\nFinal Score: **${testState.score}/${totalQuestions}**\nResult: **${passed ? 'PASSED ✅' : 'FAILED ❌'}**`;
         
         ui.addMessage('Void Bot', finalMsg, '#5865f2', true);
         testState.addToLog('Void Bot', finalMsg, true);
