@@ -223,6 +223,9 @@ const mobileInterface = {
         if (this.elements.channelName) {
             this.elements.channelName.textContent = `🎫・mod-tickets • Q${this.testState.currentQuestion + 1}/${totalQuestions}`;
         }
+        // Update mobile score total in old interface if it exists
+        const mobileScoreTotal = document.getElementById('mobileScoreTotal');
+        if (mobileScoreTotal) mobileScoreTotal.textContent = `/ ${totalQuestions}`;
     },
 
     disableInput(disabled) {

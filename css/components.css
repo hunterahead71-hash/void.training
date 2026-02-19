@@ -369,6 +369,103 @@
     font-family: var(--font-heading);
 }
 
+/* Role-Specific Instructions */
+.requirement-content h4 {
+    font-family: var(--font-heading);
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: white;
+    margin-top: 32px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.requirement-content h4:first-of-type {
+    margin-top: 0;
+}
+
+.role-instruction {
+    background: rgba(20, 20, 40, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    transition: all 0.3s ease;
+}
+
+.role-instruction:hover {
+    border-color: var(--void-cyan);
+    background: rgba(20, 20, 40, 0.7);
+    transform: translateX(4px);
+}
+
+.role-instruction h5 {
+    font-family: var(--font-heading);
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--void-cyan);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.role-instruction h5::before {
+    content: '▸';
+    color: var(--void-cyan);
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+.role-instruction p {
+    color: rgba(255, 255, 255, 0.85);
+    line-height: 1.7;
+    margin-bottom: 12px;
+}
+
+.role-instruction p:last-child {
+    margin-bottom: 0;
+}
+
+.role-instruction ul {
+    margin: 12px 0;
+    padding-left: 24px;
+    list-style: none;
+}
+
+.role-instruction ul li {
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 8px;
+    padding-left: 20px;
+    position: relative;
+    line-height: 1.6;
+}
+
+.role-instruction ul li::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    color: var(--void-cyan);
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.requirement-content > h4 + .role-instruction {
+    margin-top: 0;
+}
+
+.requirement-content > p {
+    margin-bottom: 16px;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.requirement-content > p:last-of-type {
+    margin-bottom: 0;
+}
+
 /* ===== QUIZ SECTION ===== */
 .quiz-instructions {
     background: linear-gradient(135deg, rgba(255, 0, 51, 0.15), rgba(0, 255, 234, 0.05));

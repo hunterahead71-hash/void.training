@@ -649,53 +649,61 @@
 
 .discord-modal-content {
     background: var(--discord-bg-secondary);
-    border-radius: 12px;
-    padding: 32px;
-    max-width: 500px;
+    border-radius: 8px;
+    padding: 24px;
+    max-width: 440px;
     width: 100%;
-    border: 1px solid var(--discord-divider);
+    border: none;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
 }
 
 .discord-modal-icon {
-    font-size: 4rem;
+    font-size: 3.5rem;
     text-align: center;
-    margin-bottom: 16px;
+    margin-bottom: 20px;
+    line-height: 1;
 }
 
 .discord-modal-icon.pass { color: var(--discord-green); }
 .discord-modal-icon.fail { color: var(--discord-red); }
 
 .discord-modal-title {
-    font-size: 2rem;
+    font-size: 1.5rem;
     font-weight: 700;
     text-align: center;
-    margin-bottom: 8px;
-    color: var(--discord-text-normal);
+    margin-bottom: 12px;
+    color: var(--discord-text);
+    line-height: 1.2;
 }
 
 .discord-modal-score {
-    font-size: 2.5rem;
-    font-weight: 800;
+    font-size: 2rem;
+    font-weight: 700;
     text-align: center;
-    margin-bottom: 16px;
-    color: var(--discord-blurple);
+    margin-bottom: 20px;
+    color: var(--discord-text);
+    font-family: 'JetBrains Mono', monospace;
 }
 
 .discord-modal-message {
     text-align: center;
     color: var(--discord-text-muted);
-    margin-bottom: 24px;
+    margin-bottom: 20px;
+    line-height: 1.5;
+    font-size: 0.95rem;
 }
 
 .discord-modal-status {
     background: var(--discord-bg-tertiary);
-    border-radius: 8px;
-    padding: 12px;
-    margin-bottom: 24px;
+    border-radius: 4px;
+    padding: 10px 16px;
+    margin-bottom: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
+    color: var(--discord-text-muted);
+    font-size: 0.875rem;
 }
 
 .discord-modal-buttons {
@@ -705,11 +713,18 @@
 }
 
 .discord-modal-btn {
-    padding: 12px 24px;
-    border-radius: 4px;
-    font-weight: 600;
+    padding: 10px 16px;
+    border-radius: 3px;
+    font-weight: 500;
     cursor: pointer;
     border: none;
+    font-size: 0.875rem;
+    transition: all 0.2s ease;
+    flex: 1;
+}
+
+.discord-modal-btn:hover {
+    transform: translateY(-1px);
 }
 
 .discord-modal-btn.primary {
@@ -717,9 +732,18 @@
     color: white;
 }
 
+.discord-modal-btn.primary:hover {
+    background: #4752c4;
+}
+
 .discord-modal-btn.secondary {
     background: var(--discord-bg-tertiary);
-    color: var(--discord-text-normal);
+    color: var(--discord-text);
+    border: 1px solid var(--discord-divider);
+}
+
+.discord-modal-btn.secondary:hover {
+    background: var(--discord-bg);
 }
 
 /* ===== MOBILE DISCORD TEST INTERFACE ===== */

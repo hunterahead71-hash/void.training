@@ -380,6 +380,16 @@ const desktop = {
         if (this.ticketCounter) {
             this.ticketCounter.textContent = `Ticket #${testState.currentQuestion + 1} of ${totalQuestions}`;
         }
+        // Update score total in old interface if it exists
+        const scoreTotal = document.getElementById('discordScoreTotal');
+        if (scoreTotal) scoreTotal.textContent = `/ ${totalQuestions}`;
+        const scoreValue = document.getElementById('discordScoreValue');
+        if (scoreValue) scoreValue.textContent = testState.score;
+        const progressFill = document.getElementById('discordProgressFill');
+        if (progressFill) {
+            const percentage = ((testState.currentQuestion + 1) / totalQuestions) * 100;
+            progressFill.style.width = `${percentage}%`;
+        }
     },
     
     // Disable/enable input

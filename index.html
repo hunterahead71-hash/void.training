@@ -1598,7 +1598,7 @@
                 <div class="score-display">
                     <div class="score-label">TEST SCORE</div>
                     <div class="score-value" id="discordScoreValue">0</div>
-                    <div class="score-total">/ 8</div>
+                    <div class="score-total" id="discordScoreTotal">/ 0</div>
                     <div class="progress-bar-container">
                         <div class="progress-fill-bar" id="discordProgressFill"></div>
                     </div>
@@ -1702,7 +1702,7 @@
             </div>
             <div class="mobile-score-display">
                 <div class="mobile-score-value" id="mobileScore">0</div>
-                <div class="mobile-score-total">/ 8</div>
+                <div class="mobile-score-total" id="mobileScoreTotal">/ 0</div>
                 <div class="mobile-progress-bar-container">
                     <div class="mobile-progress-fill-bar" id="mobileProgress" style="width: 0%"></div>
                 </div>
@@ -2886,12 +2886,50 @@
             async start() {
                 console.log('🚀 Starting mobile test...');
                 
+                // Load questions from API if not already loaded
+                if (!testState.questions || testState.questions.length === 0) {
+                    try {
+                        const apiBase = CONFIG.API_BASE_URL || 'https://mod-application-backend.onrender.com';
+                        const response = await fetch(`${apiBase}/api/test-questions/active`, {
+                            credentials: 'include',
+                            cache: 'no-store'
+                        });
+                        const data = await response.json();
+                        
+                        if (data.success && data.questions && data.questions.length > 0) {
+                            testState.questions = data.questions.map(q => ({
+                                id: q.id,
+                                username: q.username || 'User',
+                                avatarColor: q.avatar_color || '#5865f2',
+                                message: q.user_message,
+                                keywords: Array.isArray(q.keywords) ? q.keywords : [],
+                                required: q.required_matches || 2,
+                                feedback: q.explanation || 'Follow protocol',
+                                order: q.order ?? q.id ?? 0
+                            }));
+                            testState.questions.sort((a, b) => (a.order || 0) - (b.order || 0));
+                            console.log('Loaded', testState.questions.length, 'question(s) from API');
+                        } else {
+                            testState.questions = [];
+                        }
+                    } catch (error) {
+                        console.error('Error loading questions:', error);
+                        testState.questions = window.TEST_QUESTIONS ? [...window.TEST_QUESTIONS] : [];
+                    }
+                }
+                
+                const totalQuestions = testState.questions?.length || 0;
+                if (totalQuestions === 0) {
+                    console.error('No questions available!');
+                    this.addMessage('Void Bot', 'There are no questions available at this time. Contact staff for help.', '#ed4245', true);
+                    return;
+                }
+                
                 testState.active = true;
                 testState.currentQuestion = 0;
                 testState.score = 0;
                 testState.userAnswers = [];
                 testState.questionsWithAnswers = [];
-                testState.questions = [...TEST_QUESTIONS].sort(() => 0.5 - Math.random()).slice(0, 8);
 
                 this.clearMessages();
                 this.updateScore();
@@ -2902,7 +2940,7 @@
                 
                 await delay(800);
                 await this.showTyping('Void Bot', 1200);
-                this.addMessage('Void Bot', `You'll be presented with **${testState.questions.length}** scenario(s).`, '#5865f2', true);
+                this.addMessage('Void Bot', `You'll be presented with **${totalQuestions}** scenario${totalQuestions !== 1 ? 's' : ''}.`, '#5865f2', true);
                 
                 await delay(800);
                 await this.showTyping('Void Bot', 800);
@@ -3009,8 +3047,9 @@
                 
                 await this.showTyping('Void Bot', 1000);
                 
-                const passed = testState.score >= CONFIG.PASSING_SCORE;
                 const total = testState.questions?.length || 1;
+                const passingScore = Math.ceil(total * 0.75); // 75% passing score
+                const passed = testState.score >= passingScore;
                 const finalMsg = `**Test Complete!**\nFinal Score: **${testState.score}/${total}**\nResult: **${passed ? 'PASSED ✅' : 'FAILED ❌'}**`;
                 
                 this.addMessage('Void Bot', finalMsg, '#5865f2', true);
@@ -3042,8 +3081,10 @@
                     if (response.ok && result.success) {
                         this.setModalStatus('<i class="fas fa-check-circle"></i> Results submitted successfully!');
                         
+                        const total = testState.questions?.length || 1;
+                        const passingScore = Math.ceil(total * 0.75);
                         setTimeout(() => {
-                            window.location.href = `success.html?discord_username=${encodeURIComponent(testState.userInfo.username)}&final_score=${testState.score}/${testState.questions?.length || 1}&pass_fail=${testState.score >= CONFIG.PASSING_SCORE ? 'PASS' : 'FAIL'}`;
+                            window.location.href = `success.html?discord_username=${encodeURIComponent(testState.userInfo.username)}&final_score=${testState.score}/${total}&pass_fail=${testState.score >= passingScore ? 'PASS' : 'FAIL'}`;
                         }, 2000);
                     } else {
                         throw new Error('Submission failed');
