@@ -1,4366 +1,965 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>VOID | Mod Training Suite v3.0</title>
-    
-    <!-- Premium Fonts -->
-    <link href="https://api.fontshare.com/v2/css?f[]=satoshi@900,700,500,300,400&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100;200;300;400;500;600;700;800&display=swap" rel="stylesheet">
-    
-    <!-- Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --bg-primary: #0a0a0c;
-            --bg-secondary: #111113;
-            --bg-tertiary: #1a1a1e;
-            --border: #2a2a2e;
-            --text-primary: #ffffff;
-            --text-secondary: #e4e4e7;
-            --text-muted: #8b8b98;
-            --accent: #6b6bf3;
-            --accent-hover: #7b7bff;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --danger: #ed4245;
-            --void-blood: #ff0033;
-            --void-neon: #00ffea;
-            --void-purple: #8b5cf6;
-            
-            /* Discord Mobile Colors */
-            --discord-bg: #313338;
-            --discord-bg-secondary: #2b2d31;
-            --discord-bg-tertiary: #1e1f22;
-            --discord-text: #dbdee1;
-            --discord-text-muted: #949ba4;
-            --discord-divider: #3c3f45;
-            --discord-blurple: #5865f2;
-            --discord-green: #23a55a;
-            --discord-red: #f23f42;
-        }
-
-        body {
-            font-family: 'Satoshi', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-secondary);
-            min-height: 100vh;
-            line-height: 1.6;
-        }
-
-        ::-webkit-scrollbar { width: 8px; height: 8px; }
-        ::-webkit-scrollbar-track { background: var(--bg-secondary); }
-        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
-
-        .container { max-width: 1400px; margin: 0 auto; padding: 0 32px; }
-
-        /* Admin Button */
-        #adminLoginBtn {
-            position: fixed;
-            top: 24px;
-            right: 24px;
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border);
-            color: var(--text-primary);
-            padding: 12px 24px;
-            border-radius: 10px;
-            text-decoration: none;
-            font-weight: 600;
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        #adminLoginBtn:hover {
-            border-color: var(--accent);
-            transform: translateY(-2px);
-        }
-
-        /* Navigation Sidebar */
-        .nav-sidebar {
-            position: fixed;
-            left: 32px;
-            top: 50%;
-            transform: translateY(-50%);
-            z-index: 100;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            background: var(--bg-secondary);
-            padding: 16px 8px;
-            border-radius: 20px;
-            border: 1px solid var(--border);
-        }
-        .nav-item {
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: transparent;
-            color: var(--text-muted);
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        .nav-item:hover, .nav-item.active {
-            background: var(--bg-tertiary);
-            color: var(--accent);
-            transform: translateX(4px);
-        }
-
-        /* Header */
-        .header {
-            padding: 120px 0 80px;
-            text-align: center;
-            position: relative;
-        }
-        .header h1 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 4.5rem;
-            font-weight: 800;
-            margin-bottom: 24px;
-            background: linear-gradient(135deg, #fff, var(--accent));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-        .header p {
-            font-size: 1.25rem;
-            max-width: 720px;
-            margin: 0 auto 48px;
-            color: var(--text-muted);
-        }
-
-        /* Progress Steps */
-        .progress-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            max-width: 800px;
-            margin: 60px auto 0;
-            gap: 24px;
-        }
-        .progress-step {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 12px;
-            flex: 1;
-        }
-        .step-icon {
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: var(--bg-tertiary);
-            border: 2px solid var(--border);
-            color: var(--text-muted);
-            font-size: 1.25rem;
-            transition: all 0.3s ease;
-        }
-        .step-icon.active {
-            background: var(--accent);
-            border-color: var(--accent);
-            color: white;
-            box-shadow: 0 0 20px rgba(107, 107, 243, 0.3);
-        }
-        .progress-step span {
-            font-size: 0.875rem;
-            font-weight: 600;
-            color: var(--text-muted);
-        }
-        .progress-step.active span {
-            color: var(--text-primary);
-        }
-        .progress-bar {
-            flex: 2;
-            height: 2px;
-            background: var(--border);
-            position: relative;
-        }
-        .progress-fill {
-            position: absolute;
-            top: 0;
-            left: 0;
-            height: 100%;
-            width: 0%;
-            background: linear-gradient(90deg, var(--accent), var(--void-purple));
-            transition: width 0.5s ease;
-        }
-
-        .made-by {
-            position: absolute;
-            bottom: 32px;
-            right: 32px;
-            font-size: 0.875rem;
-            color: var(--text-muted);
-            font-family: monospace;
-        }
-
-        /* Content Sections */
-        .content-section {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: 24px;
-            padding: 48px;
-            margin-bottom: 48px;
-        }
-        .section-title {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 32px;
-            color: var(--text-primary);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding-bottom: 16px;
-            border-bottom: 1px solid var(--border);
-        }
-        .section-title i {
-            color: var(--accent);
-        }
-
-        /* Ticket Types */
-        .intro-text {
-            font-size: 1.125rem;
-            color: var(--text-muted);
-            margin-bottom: 32px;
-            padding: 24px;
-            background: var(--bg-tertiary);
-            border-radius: 16px;
-            border-left: 4px solid var(--accent);
-        }
-        .ticket-types {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 24px;
-            margin: 32px 0;
-        }
-        .ticket-card {
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 32px;
-            transition: all 0.3s ease;
-        }
-        .ticket-card:hover {
-            transform: translateY(-4px);
-            border-color: var(--accent);
-        }
-        .ticket-card h3 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.375rem;
-            font-weight: 700;
-            margin-bottom: 16px;
-            color: var(--text-primary);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .ticket-card p {
-            color: var(--text-muted);
-            line-height: 1.7;
-        }
-
-        /* Roster Categories */
-        .roster-categories {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 24px;
-            margin: 32px 0;
-        }
-        .roster-card {
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 32px;
-            transition: all 0.3s ease;
-        }
-        .roster-card:hover {
-            border-color: var(--void-purple);
-        }
-        .roster-header {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            margin-bottom: 24px;
-            padding-bottom: 16px;
-            border-bottom: 1px solid var(--border);
-        }
-        .roster-icon {
-            font-size: 1.5rem;
-            width: 48px;
-            height: 48px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(139, 92, 246, 0.1);
-            border-radius: 12px;
-            color: var(--void-purple);
-        }
-        .roster-title {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: var(--text-primary);
-        }
-        .roster-requirements {
-            list-style: none;
-        }
-        .roster-requirements li {
-            color: var(--text-muted);
-            margin-bottom: 12px;
-            padding-left: 20px;
-            position: relative;
-        }
-        .roster-requirements li:before {
-            content: '→';
-            position: absolute;
-            left: 0;
-            color: var(--void-purple);
-        }
-
-        /* Mod Requirements */
-        .mod-requirements {
-            margin-top: 48px;
-        }
-        .requirement-section {
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 32px;
-            margin-bottom: 24px;
-        }
-        .requirement-title {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.25rem;
-            font-weight: 700;
-            margin-bottom: 20px;
-            color: var(--text-primary);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .requirement-content {
-            color: var(--text-muted);
-        }
-        .requirement-list {
-            list-style: none;
-            margin: 20px 0;
-        }
-        .requirement-list li {
-            margin-bottom: 10px;
-            padding-left: 24px;
-            position: relative;
-        }
-        .requirement-list li:before {
-            content: '▸';
-            position: absolute;
-            left: 8px;
-            color: var(--accent);
-        }
-        .weekly-requirements {
-            margin-top: 20px;
-            padding: 16px;
-            background: rgba(107, 107, 243, 0.1);
-            border-radius: 12px;
-            color: var(--accent);
-            font-weight: 600;
-        }
-
-        /* Ticket Handling Guidelines - COMPLETELY REVISED */
-        .ticket-handling-section {
-            margin-top: 48px;
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 36px;
-        }
-        
-        .ticket-handling-section h3 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--text-primary);
-            margin-bottom: 24px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding-bottom: 16px;
-            border-bottom: 2px solid var(--accent);
-        }
-        
-        .handling-intro {
-            margin-bottom: 40px;
-            padding: 20px 24px;
-            background: rgba(107, 107, 243, 0.08);
-            border-radius: 14px;
-            border-left: 4px solid var(--accent);
-            line-height: 1.8;
-            color: var(--text-secondary);
-        }
-        
-        .handling-category {
-            margin-bottom: 48px;
-        }
-        
-        .handling-category:last-child {
-            margin-bottom: 0;
-        }
-        
-        .handling-category h4 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: var(--text-primary);
-            margin-bottom: 24px;
-            padding-left: 12px;
-            border-left: 4px solid var(--void-neon);
-        }
-        
-        .handling-cards-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
-            gap: 20px;
-        }
-        
-        .handling-card {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            overflow: hidden;
-            transition: all 0.25s ease;
-        }
-        
-        .handling-card:hover {
-            border-color: var(--void-neon);
-            transform: translateY(-4px);
-            box-shadow: 0 12px 30px rgba(0, 255, 234, 0.15);
-        }
-        
-        .handling-card-header {
-            background: rgba(0, 255, 234, 0.1);
-            padding: 18px 20px;
-            border-bottom: 1px solid rgba(0, 255, 234, 0.3);
-            font-family: 'Space Grotesk', sans-serif;
-            font-weight: 700;
-            font-size: 1.1rem;
-            color: var(--void-neon);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        
-        .handling-card-header i {
-            color: var(--void-neon);
-            font-size: 1.2rem;
-        }
-        
-        .handling-card-content {
-            padding: 20px;
-        }
-        
-        .handling-card-content p {
-            color: var(--text-secondary);
-            line-height: 1.7;
-            margin-bottom: 16px;
-            font-size: 1rem;
-        }
-        
-        .handling-card-content ul {
-            list-style: none;
-            margin-top: 12px;
-        }
-        
-        .handling-card-content ul li {
-            color: var(--text-muted);
-            margin-bottom: 10px;
-            padding-left: 24px;
-            position: relative;
-            line-height: 1.6;
-        }
-        
-        .handling-card-content ul li:before {
-            content: '•';
-            position: absolute;
-            left: 6px;
-            color: var(--void-neon);
-            font-weight: bold;
-            font-size: 1.2rem;
-        }
-        
-        .highlight-role {
-            color: var(--void-neon);
-            font-weight: 600;
-            background: rgba(0, 255, 234, 0.1);
-            padding: 2px 8px;
-            border-radius: 6px;
-            display: inline-block;
-            margin-right: 4px;
-        }
-        
-        .handling-divider {
-            margin: 40px 0 20px;
-            border: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--border), transparent);
-        }
-        
-        .handling-note {
-            margin-top: 40px;
-            padding: 24px;
-            background: rgba(16, 185, 129, 0.1);
-            border: 1px solid rgba(16, 185, 129, 0.3);
-            border-radius: 16px;
-            color: var(--text-secondary);
-            line-height: 1.8;
-        }
-        
-        .handling-note strong {
-            color: var(--success);
-            font-size: 1.1rem;
-        }
-
-        /* Quiz Instructions */
-        .quiz-instructions {
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 40px;
-            margin: 40px 0;
-            text-align: center;
-        }
-        .quiz-instructions h3 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.75rem;
-            font-weight: 700;
-            margin-bottom: 20px;
-            color: var(--text-primary);
-        }
-        .quiz-instructions p {
-            color: var(--text-muted);
-            max-width: 600px;
-            margin: 0 auto 30px;
-        }
-
-        /* Buttons */
-        .btn {
-            padding: 14px 32px;
-            border-radius: 12px;
-            font-weight: 600;
-            font-size: 1rem;
-            cursor: pointer;
-            border: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            font-family: 'Space Grotesk', sans-serif;
-            transition: all 0.2s ease;
-        }
-        .btn-primary {
-            background: var(--accent);
-            color: white;
-        }
-        .btn-primary:hover {
-            background: var(--accent-hover);
-            transform: translateY(-2px);
-        }
-        .btn-secondary {
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border);
-            color: var(--text-primary);
-        }
-        .btn-secondary:hover {
-            border-color: var(--accent);
-        }
-        .btn-test {
-            background: transparent;
-            border: 2px solid var(--accent);
-            color: var(--accent);
-        }
-        .btn-test:hover {
-            background: rgba(107, 107, 243, 0.1);
-            transform: translateY(-2px);
-        }
-
-        /* Training Quiz */
-        .training-quiz {
-            margin: 48px 0;
-        }
-        .question-card {
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border);
-            border-radius: 24px;
-            padding: 40px;
-            margin-bottom: 30px;
-            display: none;
-        }
-        .question-card.active {
-            display: block;
-        }
-        .question-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid var(--border);
-        }
-        .question-title {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--text-primary);
-        }
-        .question-number {
-            color: var(--text-muted);
-            font-size: 0.875rem;
-            padding: 6px 12px;
-            background: var(--bg-secondary);
-            border-radius: 20px;
-        }
-        .question-description {
-            background: var(--bg-secondary);
-            border-radius: 16px;
-            padding: 24px;
-            margin-bottom: 30px;
-            color: var(--text-muted);
-            border-left: 4px solid var(--accent);
-        }
-        .answer-box {
-            width: 100%;
-            min-height: 150px;
-            padding: 20px;
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            color: var(--text-primary);
-            font-family: inherit;
-            font-size: 1rem;
-            margin-bottom: 30px;
-        }
-        .quiz-buttons {
-            display: flex;
-            gap: 16px;
-            justify-content: space-between;
-        }
-
-        /* Answer Feedback */
-        .answer-feedback {
-            margin-top: 30px;
-            padding: 30px;
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            display: none;
-        }
-        .answer-feedback.show {
-            display: block;
-        }
-        .feedback-title {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 1.25rem;
-            font-weight: 700;
-            margin-bottom: 20px;
-            color: var(--accent);
-        }
-
-        /* Skip All */
-        .skip-all-container {
-            text-align: center;
-            margin: 30px 0 50px;
-            padding: 30px;
-            background: var(--bg-tertiary);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-        }
-
-        /* Completion Screen */
-        .completion-screen {
-            text-align: center;
-            padding: 80px 0;
-            display: none;
-        }
-        .completion-screen.active {
-            display: block;
-        }
-        .completion-icon {
-            font-size: 80px;
-            color: var(--success);
-            margin-bottom: 30px;
-        }
-        .completion-title {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 3rem;
-            font-weight: 800;
-            margin-bottom: 20px;
-            color: var(--text-primary);
-        }
-        .completion-buttons {
-            display: flex;
-            gap: 20px;
-            justify-content: center;
-        }
-
-        /* Footer */
-        .footer {
-            text-align: center;
-            padding: 60px 0 40px;
-            margin-top: 60px;
-            border-top: 1px solid var(--border);
-            color: var(--text-muted);
-        }
-
-        /* ===== DESKTOP DISCORD TEST INTERFACE - COMPLETE 1:1 REPLICA ===== */
-        .test-page {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #313338;
-            z-index: 10000;
-            overflow: hidden;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-        }
-
-        .test-page.active {
-            display: block;
-        }
-
-        /* Discord Color Variables */
-        .test-page {
-            --discord-bg-primary: #313338;
-            --discord-bg-secondary: #2b2d31;
-            --discord-bg-tertiary: #1e1f22;
-            --discord-text-normal: #dbdee1;
-            --discord-text-muted: #949ba4;
-            --discord-text-link: #00a8fc;
-            --discord-divider: #3c3f45;
-            --discord-channel-hover: #3c3f45;
-            --discord-channel-selected: #404249;
-            --discord-blurple: #5865f2;
-            --discord-green: #23a55a;
-            --discord-red: #f23f42;
-            --discord-online: #23a55a;
-        }
-
-        /* Discord Layout */
-        .discord-app {
-            display: flex;
-            height: 100%;
-            width: 100%;
-            overflow: hidden;
-        }
-
-        /* Server Bar */
-        .discord-servers {
-            width: 72px;
-            background: var(--discord-bg-tertiary);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 12px 0;
-            gap: 8px;
-            overflow-y: auto;
-            flex-shrink: 0;
-            height: 100%;
-        }
-
-        .discord-server-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            background: var(--discord-bg-secondary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--discord-text-muted);
-            font-size: 1.25rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: border-radius 0.2s ease;
-            position: relative;
-            flex-shrink: 0;
-        }
-
-        .discord-server-icon:hover {
-            border-radius: 16px;
-            background: var(--discord-channel-hover);
-            color: var(--discord-text-normal);
-        }
-
-        .discord-server-icon.active {
-            border-radius: 16px;
-            background: var(--discord-blurple);
-            color: white;
-        }
-
-        .discord-server-icon.active::before {
-            content: '';
-            position: absolute;
-            left: -12px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 4px;
-            height: 20px;
-            background: white;
-            border-radius: 0 4px 4px 0;
-        }
-
-        .discord-server-divider {
-            width: 32px;
-            height: 2px;
-            background: var(--discord-divider);
-            margin: 4px 0;
-        }
-
-        /* Channels Sidebar */
-        .discord-channels {
-            width: 240px;
-            background: var(--discord-bg-secondary);
-            display: flex;
-            flex-direction: column;
-            flex-shrink: 0;
-            height: 100%;
-            border-right: 1px solid var(--discord-divider);
-        }
-
-        .discord-guild-header {
-            height: 48px;
-            padding: 0 16px;
-            display: flex;
-            align-items: center;
-            background: var(--discord-bg-secondary);
-            border-bottom: 1px solid var(--discord-divider);
-            cursor: pointer;
-            font-weight: 600;
-            color: var(--discord-text-normal);
-        }
-
-        .discord-guild-header i {
-            margin-left: auto;
-            color: var(--discord-text-muted);
-            font-size: 0.875rem;
-        }
-
-        .discord-channels-scroll {
-            flex: 1;
-            overflow-y: auto;
-            padding: 16px 8px;
-        }
-
-        .discord-category {
-            margin-bottom: 16px;
-        }
-
-        .discord-category-header {
-            padding: 8px 8px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            color: var(--discord-text-muted);
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.02em;
-        }
-
-        .discord-channel {
-            padding: 6px 8px;
-            margin: 1px 0;
-            border-radius: 4px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            color: var(--discord-text-muted);
-            cursor: pointer;
-            font-size: 0.9375rem;
-        }
-
-        .discord-channel:hover {
-            background: var(--discord-channel-hover);
-            color: var(--discord-text-normal);
-        }
-
-        .discord-channel.active {
-            background: var(--discord-channel-selected);
-            color: var(--discord-text-normal);
-        }
-
-        .discord-channel i {
-            width: 20px;
-            text-align: center;
-            font-size: 1rem;
-        }
-
-        .discord-channel-name {
-            flex: 1;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .discord-channel-unread {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--discord-text-normal);
-        }
-
-        /* User Panel */
-        .discord-user-panel {
-            height: 52px;
-            background: var(--discord-bg-tertiary);
-            display: flex;
-            align-items: center;
-            padding: 0 8px;
-            gap: 8px;
-            margin-top: auto;
-            border-top: 1px solid var(--discord-divider);
-        }
-
-        .discord-avatar-wrapper {
-            position: relative;
-        }
-
-        .discord-avatar {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: var(--discord-blurple);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-            color: white;
-            font-size: 0.875rem;
-        }
-
-        .discord-status {
-            position: absolute;
-            bottom: -2px;
-            right: -2px;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            border: 2px solid var(--discord-bg-tertiary);
-            background: var(--discord-online);
-        }
-
-        .discord-user-info {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .discord-user-name {
-            font-weight: 600;
-            font-size: 0.875rem;
-            color: var(--discord-text-normal);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .discord-user-tag {
-            font-size: 0.6875rem;
-            color: var(--discord-text-muted);
-        }
-
-        .discord-user-controls {
-            display: flex;
-            gap: 2px;
-        }
-
-        .discord-control-btn {
-            width: 32px;
-            height: 32px;
-            border-radius: 4px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--discord-text-muted);
-            cursor: pointer;
-        }
-
-        .discord-control-btn:hover {
-            background: var(--discord-channel-hover);
-            color: var(--discord-text-normal);
-        }
-
-        /* Main Chat Area */
-        .discord-chat {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            background: var(--discord-bg-primary);
-            min-width: 0;
-            height: 100%;
-        }
-
-        .discord-chat-header {
-            height: 48px;
-            background: var(--discord-bg-primary);
-            border-bottom: 1px solid var(--discord-divider);
-            padding: 0 16px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            flex-shrink: 0;
-        }
-
-        .discord-chat-header i {
-            color: var(--discord-text-muted);
-            font-size: 1.25rem;
-        }
-
-        .discord-chat-title {
-            font-weight: 600;
-            color: var(--discord-text-normal);
-            font-size: 0.9375rem;
-        }
-
-        .discord-chat-topic {
-            color: var(--discord-text-muted);
-            font-size: 0.875rem;
-            margin-left: 8px;
-            padding-left: 8px;
-            border-left: 1px solid var(--discord-divider);
-        }
-
-        .discord-chat-header-actions {
-            margin-left: auto;
-            display: flex;
-            gap: 4px;
-        }
-
-        .discord-header-btn {
-            width: 32px;
-            height: 32px;
-            border-radius: 4px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--discord-text-muted);
-            cursor: pointer;
-        }
-
-        .discord-header-btn:hover {
-            background: var(--discord-channel-hover);
-            color: var(--discord-text-normal);
-        }
-
-        /* Messages Container - FIXED SPACING */
-        .discord-messages {
-            flex: 1;
-            overflow-y: auto;
-            padding: 24px 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .discord-message-group {
-            display: flex;
-            gap: 16px;
-            padding: 8px 0;
-            position: relative;
-            margin-bottom: 8px;
-            border-bottom: 1px solid transparent;
-        }
-
-        .discord-message-group:hover {
-            background: rgba(255, 255, 255, 0.02);
-        }
-
-        .discord-message-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-            color: white;
-            flex-shrink: 0;
-        }
-
-        .discord-message-content {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .discord-message-header {
-            display: flex;
-            align-items: baseline;
-            gap: 8px;
-            margin-bottom: 8px;
-            flex-wrap: wrap;
-        }
-
-        .discord-message-author {
-            font-weight: 600;
-            color: var(--discord-text-normal);
-            font-size: 1rem;
-        }
-
-        .discord-message-badge {
-            background: var(--discord-blurple);
-            color: white;
-            font-size: 0.6875rem;
-            font-weight: 600;
-            padding: 3px 8px;
-            border-radius: 4px;
-            text-transform: uppercase;
-        }
-
-        .discord-message-timestamp {
-            color: var(--discord-text-muted);
-            font-size: 0.75rem;
-        }
-
-        .discord-message-text {
-            color: var(--discord-text-normal);
-            font-size: 1rem;
-            line-height: 1.5;
-            word-wrap: break-word;
-            white-space: pre-wrap;
-            margin-top: 4px;
-        }
-
-        /* Typing Indicator */
-        .discord-typing {
-            padding: 12px 16px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: var(--discord-text-muted);
-            font-size: 0.875rem;
-            border-top: 1px solid var(--discord-divider);
-        }
-
-        .discord-typing-dots {
-            display: flex;
-            gap: 4px;
-        }
-
-        .discord-typing-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--discord-text-muted);
-            animation: discordTyping 1.4s infinite ease-in-out;
-        }
-
-        .discord-typing-dot:nth-child(1) { animation-delay: -0.32s; }
-        .discord-typing-dot:nth-child(2) { animation-delay: -0.16s; }
-        .discord-typing-dot:nth-child(3) { animation-delay: 0; }
-
-        @keyframes discordTyping {
-            0%, 60%, 100% { transform: translateY(0); }
-            30% { transform: translateY(-4px); }
-        }
-
-        /* Message Input */
-        .discord-input-area {
-            padding: 16px 16px 20px 16px;
-            background: var(--discord-bg-primary);
-            border-top: 1px solid var(--discord-divider);
-        }
-
-        .discord-input-container {
-            background: var(--discord-bg-tertiary);
-            border-radius: 8px;
-            display: flex;
-            align-items: flex-end;
-            padding: 0 12px;
-        }
-
-        .discord-input {
-            flex: 1;
-            background: transparent;
-            border: none;
-            color: var(--discord-text-normal);
-            font-family: inherit;
-            font-size: 0.9375rem;
-            padding: 12px 0;
-            resize: none;
-            min-height: 44px;
-            max-height: 144px;
-        }
-
-        .discord-input:focus {
-            outline: none;
-        }
-
-        .discord-input::placeholder {
-            color: var(--discord-text-muted);
-        }
-
-        .discord-send-btn {
-            padding: 12px 16px;
-            background: transparent;
-            border: none;
-            color: var(--discord-text-muted);
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .discord-send-btn:not(:disabled) {
-            color: var(--discord-text-link);
-        }
-
-        .discord-send-btn:not(:disabled):hover {
-            color: var(--discord-blurple);
-        }
-
-        .discord-send-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        /* Members Sidebar */
-        .discord-members {
-            width: 240px;
-            background: var(--discord-bg-secondary);
-            border-left: 1px solid var(--discord-divider);
-            display: flex;
-            flex-direction: column;
-            flex-shrink: 0;
-            height: 100%;
-        }
-
-        .discord-members-header {
-            height: 48px;
-            padding: 0 16px;
-            display: flex;
-            align-items: center;
-            font-weight: 600;
-            color: var(--discord-text-muted);
-            border-bottom: 1px solid var(--discord-divider);
-        }
-
-        .discord-members-scroll {
-            flex: 1;
-            overflow-y: auto;
-            padding: 16px 8px;
-        }
-
-        .discord-member-group {
-            margin-bottom: 20px;
-        }
-
-        .discord-member-group-title {
-            padding: 8px 8px;
-            color: var(--discord-text-muted);
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .discord-member {
-            padding: 6px 8px;
-            border-radius: 4px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-        }
-
-        .discord-member:hover {
-            background: var(--discord-channel-hover);
-        }
-
-        .discord-member-avatar {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: var(--discord-blurple);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-            color: white;
-            font-size: 0.875rem;
-            position: relative;
-        }
-
-        .discord-member-status {
-            position: absolute;
-            bottom: -2px;
-            right: -2px;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            border: 2px solid var(--discord-bg-secondary);
-            background: var(--discord-online);
-        }
-
-        .discord-member-name {
-            font-weight: 500;
-            font-size: 0.9375rem;
-            color: var(--discord-text-muted);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        /* Score Display */
-        .discord-score {
-            background: var(--discord-bg-tertiary);
-            border-radius: 8px;
-            padding: 16px;
-            margin: 16px 0 8px;
-            text-align: center;
-        }
-
-        .discord-score-value {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--discord-blurple);
-            line-height: 1.2;
-        }
-
-        .discord-score-label {
-            font-size: 0.75rem;
-            color: var(--discord-text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .discord-progress {
-            height: 4px;
-            background: var(--discord-bg-primary);
-            border-radius: 2px;
-            margin-top: 12px;
-            overflow: hidden;
-        }
-
-        .discord-progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--discord-blurple), #eb459e);
-            width: 0%;
-            transition: width 0.3s ease;
-        }
-
-        /* Test Complete Modal */
-        .discord-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.85);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 10001;
-            padding: 20px;
-        }
-
-        .discord-modal.active {
-            display: flex;
-        }
-
-        .discord-modal-content {
-            background: var(--discord-bg-secondary);
-            border-radius: 8px;
-            padding: 32px;
-            max-width: 440px;
-            width: 100%;
-            border: none;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-        }
-
-        .discord-modal-icon {
-            font-size: 3.5rem;
-            text-align: center;
-            margin-bottom: 20px;
-            line-height: 1;
-        }
-
-        .discord-modal-icon.pass { color: var(--discord-green); }
-        .discord-modal-icon.fail { color: var(--discord-red); }
-
-        .discord-modal-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            text-align: center;
-            margin-bottom: 16px;
-            color: var(--discord-text-normal);
-            line-height: 1.2;
-        }
-
-        .discord-modal-score {
-            font-size: 2rem;
-            font-weight: 700;
-            text-align: center;
-            margin-bottom: 20px;
-            color: var(--discord-text-normal);
-            font-family: 'JetBrains Mono', monospace;
-        }
-
-        .discord-modal-message {
-            text-align: center;
-            color: var(--discord-text-muted);
-            margin-bottom: 20px;
-            line-height: 1.6;
-            font-size: 0.95rem;
-        }
-
-        .discord-modal-status {
-            background: var(--discord-bg-tertiary);
-            border-radius: 4px;
-            padding: 12px 16px;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            color: var(--discord-text-muted);
-            font-size: 0.875rem;
-        }
-
-        .discord-modal-buttons {
-            display: flex;
-            gap: 12px;
-            justify-content: center;
-        }
-
-        .discord-modal-btn {
-            padding: 12px 20px;
-            border-radius: 3px;
-            font-weight: 500;
-            cursor: pointer;
-            border: none;
-            font-size: 0.875rem;
-            transition: all 0.2s ease;
-            flex: 1;
-        }
-
-        .discord-modal-btn:hover {
-            transform: translateY(-1px);
-        }
-
-        .discord-modal-btn.primary {
-            background: var(--discord-blurple);
-            color: white;
-        }
-
-        .discord-modal-btn.primary:hover {
-            background: #4752c4;
-        }
-
-        .discord-modal-btn.secondary {
-            background: var(--discord-bg-tertiary);
-            color: var(--discord-text-normal);
-            border: 1px solid var(--discord-divider);
-        }
-
-        .discord-modal-btn.secondary:hover {
-            background: var(--discord-bg-primary);
-        }
-
-        /* ===== MOBILE DISCORD TEST INTERFACE ===== */
-        .mobile-discord {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #313338;
-            z-index: 10000;
-            overflow: hidden;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-        }
-
-        .mobile-discord.active {
-            display: block;
-        }
-
-        /* Mobile Header */
-        .mobile-header {
-            height: 56px;
-            background: #1e1f22;
-            border-bottom: 1px solid #3c3f45;
-            display: flex;
-            align-items: center;
-            padding: 0 12px;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 10001;
-        }
-
-        .mobile-menu-btn {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: transparent;
-            color: #b5bac1;
-            margin-right: 8px;
-            cursor: pointer;
-        }
-
-        .mobile-menu-btn:active {
-            background: #404249;
-        }
-
-        .mobile-server-icon {
-            width: 32px;
-            height: 32px;
-            border-radius: 8px;
-            background: #5865f2;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            color: white;
-            margin-right: 12px;
-            font-size: 16px;
-        }
-
-        .mobile-channel-name {
-            font-weight: 600;
-            font-size: 16px;
-            color: #dbdee1;
-            flex: 1;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .mobile-header-actions {
-            display: flex;
-            gap: 4px;
-        }
-
-        .mobile-header-btn {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: transparent;
-            color: #b5bac1;
-            cursor: pointer;
-        }
-
-        .mobile-header-btn:active {
-            background: #404249;
-        }
-
-        /* Mobile Messages Container - FIXED SPACING */
-        .mobile-messages-container {
-            position: absolute;
-            top: 56px;
-            left: 0;
-            right: 0;
-            bottom: 72px;
-            overflow-y: auto;
-            background: #313338;
-            padding: 20px 12px;
-            -webkit-overflow-scrolling: touch;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        /* Mobile Message Groups */
-        .mobile-message-group {
-            display: flex;
-            gap: 12px;
-            padding: 8px 0;
-            margin-bottom: 8px;
-        }
-
-        .mobile-message-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-            color: white;
-            flex-shrink: 0;
-            font-size: 16px;
-        }
-
-        .mobile-message-content {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .mobile-message-header {
-            display: flex;
-            align-items: baseline;
-            gap: 8px;
-            margin-bottom: 6px;
-            flex-wrap: wrap;
-        }
-
-        .mobile-message-author {
-            font-weight: 600;
-            color: #dbdee1;
-            font-size: 15px;
-        }
-
-        .mobile-bot-tag {
-            background: #5865f2;
-            color: white;
-            font-size: 10px;
-            font-weight: 600;
-            padding: 2px 6px;
-            border-radius: 4px;
-            text-transform: uppercase;
-        }
-
-        .mobile-message-timestamp {
-            color: #949ba4;
-            font-size: 11px;
-        }
-
-        .mobile-message-text {
-            color: #dbdee1;
-            font-size: 15px;
-            line-height: 1.5;
-            word-wrap: break-word;
-            white-space: pre-wrap;
-        }
-
-        /* Mobile Input Area */
-        .mobile-input-area {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 72px;
-            background: #313338;
-            border-top: 1px solid #3c3f45;
-            padding: 12px 12px;
-            display: flex;
-            align-items: flex-end;
-            gap: 8px;
-        }
-
-        .mobile-message-input {
-            flex: 1;
-            background: #1e1f22;
-            border: 1px solid #3c3f45;
-            border-radius: 24px;
-            padding: 12px 16px;
-            color: #dbdee1;
-            font-size: 16px;
-            font-family: inherit;
-            resize: none;
-            min-height: 44px;
-            max-height: 120px;
-            line-height: 1.4;
-        }
-
-        .mobile-message-input:focus {
-            outline: none;
-            border-color: #5865f2;
-        }
-
-        .mobile-message-input::placeholder {
-            color: #949ba4;
-        }
-
-        .mobile-send-btn {
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            background: #5865f2;
-            border: none;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            flex-shrink: 0;
-            transition: opacity 0.2s;
-        }
-
-        .mobile-send-btn:active {
-            opacity: 0.8;
-        }
-
-        .mobile-send-btn:disabled {
-            background: #404249;
-            color: #5d5f64;
-            cursor: not-allowed;
-            opacity: 0.5;
-        }
-
-        /* Mobile Sidebar */
-        .mobile-sidebar {
-            position: fixed;
-            top: 0;
-            left: -300px;
-            width: 300px;
-            height: 100%;
-            background: #2b2d31;
-            z-index: 10002;
-            transition: left 0.3s ease;
-            display: flex;
-            flex-direction: column;
-            box-shadow: 2px 0 8px rgba(0,0,0,0.5);
-        }
-
-        .mobile-sidebar.active {
-            left: 0;
-        }
-
-        .mobile-sidebar-header {
-            height: 56px;
-            background: #1e1f22;
-            display: flex;
-            align-items: center;
-            padding: 0 16px;
-            border-bottom: 1px solid #3c3f45;
-        }
-
-        .mobile-sidebar-title {
-            font-weight: 700;
-            font-size: 18px;
-            color: #dbdee1;
-            flex: 1;
-        }
-
-        .mobile-close-sidebar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: transparent;
-            color: #b5bac1;
-            cursor: pointer;
-        }
-
-        .mobile-close-sidebar:active {
-            background: #404249;
-        }
-
-        .mobile-scrollable-channels {
-            flex: 1;
-            overflow-y: auto;
-            padding: 16px 8px;
-            -webkit-overflow-scrolling: touch;
-        }
-
-        .mobile-category-header {
-            padding: 8px 12px;
-            color: #949ba4;
-            font-size: 12px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .mobile-channel-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 10px 12px;
-            border-radius: 8px;
-            font-size: 16px;
-            cursor: pointer;
-            color: #949ba4;
-            transition: background 0.2s;
-            margin: 2px 0;
-        }
-
-        .mobile-channel-item:active {
-            background: #404249;
-        }
-
-        .mobile-channel-item.active {
-            background: #404249;
-            color: #dbdee1;
-        }
-
-        .mobile-channel-icon {
-            font-size: 18px;
-            width: 24px;
-            text-align: center;
-        }
-
-        .mobile-channel-name-sidebar {
-            flex: 1;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        /* Mobile Score Panel */
-        .mobile-score-panel {
-            position: fixed;
-            top: 56px;
-            right: -300px;
-            width: 280px;
-            height: calc(100% - 56px);
-            background: #2b2d31;
-            z-index: 10002;
-            transition: right 0.3s ease;
-            padding: 20px 16px;
-            overflow-y: auto;
-            box-shadow: -2px 0 8px rgba(0,0,0,0.5);
-        }
-
-        .mobile-score-panel.active {
-            right: 0;
-        }
-
-        .mobile-score-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 20px;
-            padding-bottom: 12px;
-            border-bottom: 1px solid #3c3f45;
-        }
-
-        .mobile-score-title {
-            font-weight: 700;
-            font-size: 18px;
-            color: #dbdee1;
-        }
-
-        .mobile-close-score {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: transparent;
-            color: #b5bac1;
-            cursor: pointer;
-        }
-
-        .mobile-close-score:active {
-            background: #404249;
-        }
-
-        .mobile-score-display {
-            background: #1e1f22;
-            border-radius: 16px;
-            padding: 24px 20px;
-            text-align: center;
-            border: 2px solid #5865f2;
-            margin-bottom: 20px;
-        }
-
-        .mobile-score-value {
-            font-size: 56px;
-            font-weight: 800;
-            color: #dbdee1;
-            line-height: 1;
-            margin-bottom: 4px;
-            font-family: 'Space Grotesk', sans-serif;
-        }
-
-        .mobile-score-total {
-            color: #949ba4;
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 16px;
-        }
-
-        .mobile-progress-bar-container {
-            height: 6px;
-            background: #313338;
-            border-radius: 3px;
-            margin: 16px 0 8px;
-            overflow: hidden;
-        }
-
-        .mobile-progress-fill-bar {
-            height: 100%;
-            background: linear-gradient(90deg, #5865f2, #eb459e);
-            width: 0%;
-            transition: width 0.3s ease;
-        }
-
-        .mobile-question-counter {
-            color: #949ba4;
-            font-size: 14px;
-            margin-top: 8px;
-        }
-
-        /* Mobile Typing Indicator */
-        .mobile-typing {
-            position: absolute;
-            bottom: 72px;
-            left: 0;
-            right: 0;
-            padding: 12px 16px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: #949ba4;
-            font-size: 13px;
-            background: #313338;
-            border-top: 1px solid #3c3f45;
-        }
-
-        .mobile-typing-dots {
-            display: flex;
-            gap: 4px;
-        }
-
-        .mobile-typing-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #949ba4;
-            animation: mobileTyping 1.4s infinite ease-in-out;
-        }
-
-        .mobile-typing-dot:nth-child(1) { animation-delay: -0.32s; }
-        .mobile-typing-dot:nth-child(2) { animation-delay: -0.16s; }
-        .mobile-typing-dot:nth-child(3) { animation-delay: 0; }
-
-        @keyframes mobileTyping {
-            0%, 60%, 100% { transform: translateY(0); }
-            30% { transform: translateY(-4px); }
-        }
-
-        /* Mobile Test Complete Modal */
-        .mobile-test-complete {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.85);
-            z-index: 10003;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            backdrop-filter: blur(5px);
-        }
-
-        .mobile-test-complete.active {
-            display: flex;
-        }
-
-        .mobile-test-result-container {
-            background: #2b2d31;
-            border-radius: 20px;
-            padding: 32px 24px;
-            width: 100%;
-            max-width: 380px;
-            border: 1px solid #3c3f45;
-            text-align: center;
-            animation: fadeInUp 0.3s ease;
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .mobile-test-result-icon {
-            font-size: 60px;
-            margin-bottom: 20px;
-        }
-
-        .mobile-test-result-icon.pass { color: #23a55a; }
-        .mobile-test-result-icon.fail { color: #f23f42; }
-
-        .mobile-test-result-title {
-            font-size: 28px;
-            font-weight: 800;
-            margin-bottom: 12px;
-            color: #dbdee1;
-            font-family: 'Space Grotesk', sans-serif;
-        }
-
-        .mobile-test-result-score {
-            font-size: 24px;
-            color: #5865f2;
-            margin-bottom: 16px;
-            font-weight: 700;
-        }
-
-        .mobile-test-result-message {
-            color: #949ba4;
-            font-size: 15px;
-            line-height: 1.5;
-            margin-bottom: 24px;
-        }
-
-        .mobile-submission-status {
-            background: #1e1f22;
-            border-radius: 10px;
-            padding: 14px;
-            margin: 20px 0 16px;
-            font-size: 14px;
-            color: #dbdee1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .mobile-test-result-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .mobile-test-result-btn {
-            padding: 16px 20px;
-            border-radius: 12px;
-            font-weight: 600;
-            font-size: 16px;
-            cursor: pointer;
-            border: none;
-            transition: all 0.2s;
-            font-family: 'Space Grotesk', sans-serif;
-        }
-
-        .mobile-test-result-btn:active {
-            transform: scale(0.98);
-        }
-
-        .mobile-test-result-btn.primary {
-            background: #5865f2;
-            color: white;
-        }
-
-        .mobile-test-result-btn.primary:active {
-            background: #4752c4;
-        }
-
-        .mobile-test-result-btn.secondary {
-            background: #1e1f22;
-            color: #dbdee1;
-            border: 1px solid #3c3f45;
-        }
-
-        .mobile-test-result-btn.secondary:active {
-            background: #2b2d31;
-        }
-
-        /* Media Query for Mobile */
-        @media (max-width: 768px) {
-            .test-page {
-                display: none !important;
-            }
-            
-            .nav-sidebar {
-                display: none;
-            }
-            
-            .header h1 {
-                font-size: 2.5rem;
-            }
-            
-            .content-section {
-                padding: 32px 20px;
-            }
-            
-            .ticket-types,
-            .roster-categories {
-                grid-template-columns: 1fr;
-            }
-            
-            .handling-cards-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .quiz-buttons,
-            .completion-buttons {
-                flex-direction: column;
-                gap: 12px;
-            }
-            
-            .btn {
-                width: 100%;
-                justify-content: center;
-            }
-            
-            .question-card {
-                padding: 24px;
-            }
-            
-            .container {
-                padding: 0 20px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .header h1 {
-                font-size: 2rem;
-            }
-            
-            .section-title {
-                font-size: 1.5rem;
-            }
-            
-            .modal-content {
-                padding: 32px 20px;
-            }
-            
-            .progress-step span {
-                font-size: 0.75rem;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VOID | Mod Training Suite v3.0</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="css/app.css">
 </head>
 <body>
-    <!-- Admin Login Button -->
-    <a href="#" id="adminLoginBtn">
-        <i class="fab fa-discord"></i> Admin Login
-    </a>
-
-    <!-- Desktop Discord Test Interface - COMPLETE 1:1 REPLICA -->
-    <div id="testPage" class="test-page">
-        <div class="discord-app">
-            <!-- Server Bar -->
-            <div class="discord-servers">
-                <div class="discord-server-icon active">
-                    <i class="fab fa-discord"></i>
-                </div>
-                <div class="discord-server-divider"></div>
-                <div class="discord-server-icon">
-                    <span>V</span>
-                </div>
-            </div>
-
-            <!-- Channels Sidebar -->
-            <div class="discord-channels">
-                <div class="discord-guild-header">
-                    <span>Void Esports</span>
-                    <i class="fas fa-chevron-down"></i>
-                </div>
-
-                <div class="discord-channels-scroll">
-                    <div class="discord-category">
-                        <div class="discord-category-header">
-                            <span>INFORMATION</span>
-                        </div>
-                        <div class="discord-channel">
-                            <i class="fas fa-bullhorn"></i>
-                            <span class="discord-channel-name">announcements</span>
-                        </div>
-                        <div class="discord-channel">
-                            <i class="fas fa-book"></i>
-                            <span class="discord-channel-name">rules</span>
-                        </div>
-                    </div>
-
-                    <div class="discord-category">
-                        <div class="discord-category-header">
-                            <span>TICKET SYSTEM</span>
-                        </div>
-                        <div class="discord-channel active">
-                            <i class="fas fa-hashtag"></i>
-                            <span class="discord-channel-name">🎫・mod-tickets</span>
-                            <div class="discord-channel-unread"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- User Panel -->
-                <div class="discord-user-panel">
-                    <div class="discord-avatar-wrapper">
-                        <div class="discord-avatar" id="discordUserAvatar">U</div>
-                        <div class="discord-status"></div>
-                    </div>
-                    <div class="discord-user-info">
-                        <div class="discord-user-name" id="discordUserName">Loading...</div>
-                        <div class="discord-user-tag" id="discordUserTag">#0000</div>
-                    </div>
-                    <div class="discord-user-controls">
-                        <div class="discord-control-btn"><i class="fas fa-microphone"></i></div>
-                        <div class="discord-control-btn"><i class="fas fa-headphones"></i></div>
-                        <div class="discord-control-btn"><i class="fas fa-cog"></i></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Main Chat Area -->
-            <div class="discord-chat">
-                <div class="discord-chat-header">
-                    <i class="fas fa-hashtag"></i>
-                    <span class="discord-chat-title">🎫・mod-tickets</span>
-                    <span class="discord-chat-topic" id="discordTicketCounter">Ticket #1</span>
-                    <div class="discord-chat-header-actions">
-                        <div class="discord-header-btn"><i class="fas fa-phone"></i></div>
-                        <div class="discord-header-btn"><i class="fas fa-video"></i></div>
-                        <div class="discord-header-btn"><i class="fas fa-user-plus"></i></div>
-                    </div>
-                </div>
-
-                <!-- Messages Container -->
-                <div class="discord-messages" id="discordMessages"></div>
-
-                <!-- Typing Indicator -->
-                <div class="discord-typing" id="discordTyping" style="display: none;">
-                    <div class="discord-typing-dots">
-                        <div class="discord-typing-dot"></div>
-                        <div class="discord-typing-dot"></div>
-                        <div class="discord-typing-dot"></div>
-                    </div>
-                    <span id="discordTypingText">Someone is typing...</span>
-                </div>
-
-                <!-- Message Input -->
-                <div class="discord-input-area">
-                    <div class="discord-input-container">
-                        <textarea class="discord-input" id="discordMessageInput" placeholder="Message #mod-tickets" rows="1"></textarea>
-                        <button class="discord-send-btn" id="discordSendBtn" disabled>
-                            <i class="fas fa-paper-plane"></i>
-                            <span>Send</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Members Sidebar -->
-            <div class="discord-members">
-                <div class="discord-members-header">
-                    <span>Members — <span id="discordMemberCount">3</span></span>
-                </div>
-                <div class="discord-members-scroll">
-                    <div class="discord-member-group">
-                        <div class="discord-member-group-title">ONLINE — 2</div>
-                        <div class="discord-member">
-                            <div class="discord-member-avatar">
-                                V
-                                <div class="discord-member-status"></div>
-                            </div>
-                            <span class="discord-member-name">Void Bot</span>
-                        </div>
-                        <div class="discord-member">
-                            <div class="discord-member-avatar" id="discordMemberAvatar">
-                                U
-                                <div class="discord-member-status"></div>
-                            </div>
-                            <span class="discord-member-name" id="discordMemberName">You</span>
-                        </div>
-                    </div>
-
-                    <!-- Score Display -->
-                    <div class="discord-score">
-                        <div class="discord-score-label">TEST SCORE</div>
-                        <div class="discord-score-value" id="discordScore">0</div>
-                        <div class="discord-progress">
-                            <div class="discord-progress-fill" id="discordProgress" style="width: 0%"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Test Complete Modal -->
-        <div class="discord-modal" id="discordModal">
-            <div class="discord-modal-content">
-                <div class="discord-modal-icon" id="discordModalIcon">
-                    <i class="fas fa-trophy"></i>
-                </div>
-                <h2 class="discord-modal-title" id="discordModalTitle">Test Complete!</h2>
-                <div class="discord-modal-score" id="discordModalScore">0/0</div>
-                <div class="discord-modal-message" id="discordModalMessage">
-                    Your responses have been recorded.
-                </div>
-                <div class="discord-modal-status" id="discordModalStatus">
-                    <i class="fas fa-spinner fa-spin"></i> Submitting...
-                </div>
-                <div class="discord-modal-buttons">
-                    <button class="discord-modal-btn secondary" id="discordReviewBtn">Review</button>
-                    <button class="discord-modal-btn primary" id="discordBackBtn">Back to Training</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Mobile Discord Interface -->
-    <div id="mobileDiscord" class="mobile-discord">
-        <!-- Mobile Header -->
-        <div class="mobile-header">
-            <div class="mobile-menu-btn" id="mobileMenuBtn">
-                <i class="fas fa-bars"></i>
-            </div>
-            <div class="mobile-server-icon">V</div>
-            <div class="mobile-channel-name" id="mobileChannelName">🎫・mod-tickets</div>
-            <div class="mobile-header-actions">
-                <div class="mobile-header-btn" id="mobileScoreBtn">
-                    <i class="fas fa-chart-simple"></i>
-                </div>
-            </div>
-        </div>
-
-        <!-- Messages Container -->
-        <div class="mobile-messages-container" id="mobileMessagesContainer"></div>
-
-        <!-- Typing Indicator -->
-        <div class="mobile-typing" id="mobileTyping" style="display: none;">
-            <div class="mobile-typing-dots">
-                <div class="mobile-typing-dot"></div>
-                <div class="mobile-typing-dot"></div>
-                <div class="mobile-typing-dot"></div>
-            </div>
-            <span id="mobileTypingText">Someone is typing...</span>
-        </div>
-
-        <!-- Input Area -->
-        <div class="mobile-input-area">
-            <textarea class="mobile-message-input" id="mobileMessageInput" placeholder="Message #mod-tickets" rows="1"></textarea>
-            <button class="mobile-send-btn" id="mobileSendBtn" disabled>
-                <i class="fas fa-paper-plane"></i>
-            </button>
-        </div>
-
-        <!-- Sidebar Menu -->
-        <div class="mobile-sidebar" id="mobileSidebar">
-            <div class="mobile-sidebar-header">
-                <span class="mobile-sidebar-title">Void Esports</span>
-                <div class="mobile-close-sidebar" id="mobileCloseSidebar">
-                    <i class="fas fa-times"></i>
-                </div>
-            </div>
-            <div class="mobile-scrollable-channels">
-                <div class="mobile-category-header">INFORMATION</div>
-                <div class="mobile-channel-item">
-                    <i class="fas fa-bullhorn mobile-channel-icon"></i>
-                    <span class="mobile-channel-name-sidebar">announcements</span>
-                </div>
-                <div class="mobile-channel-item">
-                    <i class="fas fa-book mobile-channel-icon"></i>
-                    <span class="mobile-channel-name-sidebar">rules</span>
-                </div>
-                <div class="mobile-category-header" style="margin-top: 16px;">TICKET SYSTEM</div>
-                <div class="mobile-channel-item active">
-                    <i class="fas fa-hashtag mobile-channel-icon"></i>
-                    <span class="mobile-channel-name-sidebar">🎫・mod-tickets</span>
-                </div>
-                <div class="mobile-category-header" style="margin-top: 16px;">USER</div>
-                <div class="mobile-channel-item" id="mobileUserProfileItem">
-                    <i class="fas fa-user mobile-channel-icon"></i>
-                    <span class="mobile-channel-name-sidebar" id="mobileSidebarUsername">Loading...</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Score Panel -->
-        <div class="mobile-score-panel" id="mobileScorePanel">
-            <div class="mobile-score-header">
-                <span class="mobile-score-title">Test Progress</span>
-                <div class="mobile-close-score" id="mobileCloseScore">
-                    <i class="fas fa-times"></i>
-                </div>
-            </div>
-            <div class="mobile-score-display">
-                <div class="mobile-score-value" id="mobileScore">0</div>
-                <div class="mobile-score-total" id="mobileScoreTotal">/ 0</div>
-                <div class="mobile-progress-bar-container">
-                    <div class="mobile-progress-fill-bar" id="mobileProgress" style="width: 0%"></div>
-                </div>
-                <div class="mobile-question-counter" id="mobileQuestionCounter">Question 1 of 8</div>
-            </div>
-            <div class="mobile-score-info">
-                <p style="color: #949ba4; text-align: center; font-size: 14px; padding: 16px;">
-                    Answer each ticket correctly. Need 6/8 to pass.
-                </p>
-            </div>
-        </div>
-
-        <!-- Test Complete Modal -->
-        <div class="mobile-test-complete" id="mobileTestComplete">
-            <div class="mobile-test-result-container">
-                <div class="mobile-test-result-icon" id="mobileResultIcon">
-                    <i class="fas fa-trophy"></i>
-                </div>
-                <h2 class="mobile-test-result-title" id="mobileResultTitle">Test Complete!</h2>
-                <div class="mobile-test-result-score" id="mobileResultScore">0/8</div>
-                <div class="mobile-test-result-message" id="mobileResultMessage">
-                    Your responses have been recorded.
-                </div>
-                <div class="mobile-submission-status" id="mobileSubmissionStatus">
-                    <i class="fas fa-spinner fa-spin"></i> Submitting...
-                </div>
-                <div class="mobile-test-result-buttons">
-                    <button class="mobile-test-result-btn secondary" id="mobileReviewBtn">Review</button>
-                    <button class="mobile-test-result-btn primary" id="mobileBackBtn">Back to Training</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Main Training Page -->
-    <div class="container" id="mainContainer">
-        <!-- Navigation Sidebar -->
-        <div class="nav-sidebar">
-            <div class="nav-item active" data-target="header">
-                <i class="fas fa-home"></i>
-            </div>
-            <div class="nav-item" data-target="ticket-types">
-                <i class="fas fa-ticket-alt"></i>
-            </div>
-            <div class="nav-item" data-target="roster-categories">
-                <i class="fas fa-layer-group"></i>
-            </div>
-            <div class="nav-item" data-target="mod-requirements">
-                <i class="fas fa-tasks"></i>
-            </div>
-            <div class="nav-item" data-target="quiz">
-                <i class="fas fa-graduation-cap"></i>
-            </div>
-        </div>
-        
-        <!-- Header -->
-        <div class="header" id="header">
-            <h1>Void Mod Training</h1>
-            <p>Comprehensive certification program for new Void Esports moderators. Master ticket handling, roster management, and community moderation through interactive scenarios and real-time testing.</p>
-            
-            <div class="progress-container">
-                <div class="progress-step active">
-                    <div class="step-icon active"><i class="fas fa-book"></i></div>
-                    <span>Learn</span>
-                </div>
-                <div class="progress-bar">
-                    <div class="progress-fill" id="progressFill"></div>
-                </div>
-                <div class="progress-step">
-                    <div class="step-icon"><i class="fas fa-question-circle"></i></div>
-                    <span>Practice</span>
-                </div>
-                <div class="progress-bar">
-                    <div class="progress-fill"></div>
-                </div>
-                <div class="progress-step">
-                    <div class="step-icon"><i class="fas fa-flag-checkered"></i></div>
-                    <span>Complete</span>
-                </div>
-            </div>
-            
-            <div class="made-by">
-                Made by Nicks Cold
-            </div>
-        </div>
-        
-        <!-- Ticket Types Section -->
-        <div class="content-section" id="ticket-types">
-            <h2 class="section-title"><i class="fas fa-ticket-alt"></i> Ticket Types</h2>
-            
-            <div class="intro-text">
-                Your first and foremost responsibility as a mod is to efficiently manage the ticket system in Void Esports. We operate with two primary ticket categories, each requiring specific handling protocols.
-            </div>
-            
-            <div class="ticket-types">
-                <div class="ticket-card">
-                    <h3><i class="fas fa-users"></i> General Ticket</h3>
-                    <p>These are created by community members for support inquiries, moderator assistance, or reporting issues. Handle with professionalism and follow escalation procedures for complex matters.</p>
-                </div>
-                <div class="ticket-card">
-                    <h3><i class="fas fa-user-plus"></i> Roster Ticket</h3>
-                    <p>Application channel for users seeking to join Void Esports. Initial response must include age verification and direction to appropriate resources. Follow structured onboarding workflow.</p>
-                </div>
-            </div>
-            
-            <div class="intro-text">
-                <strong>Protocol:</strong> All ticket responses should begin with professional greeting and age inquiry. Direct new applicants to the appropriate channels and maintain detailed records of all interactions.
-            </div>
-        </div>
-        
-        <!-- Roster Categories Section -->
-        <div class="content-section" id="roster-categories">
-            <h2 class="section-title"><i class="fas fa-layer-group"></i> Roster Categories & Requirements</h2>
-            
-            <div class="roster-categories">
-                <!-- Pro Roster -->
-                <div class="roster-card">
-                    <div class="roster-header">
-                        <div class="roster-icon">🏆</div>
-                        <div class="roster-title">Pro Roster</div>
-                    </div>
-                    <ul class="roster-requirements">
-                        <li>25,000+ Power Ranking</li>
-                        <li>$1,000+ in Official Fortnite Earnings</li>
-                        <li>Place and earn consistently</li>
-                        <li>Represent Us In Game and On Your Socials</li>
-                    </ul>
-                </div>
-                
-                <!-- Semi-Pro -->
-                <div class="roster-card">
-                    <div class="roster-header">
-                        <div class="roster-icon">🎮</div>
-                        <div class="roster-title">Semi-Pro</div>
-                    </div>
-                    <ul class="roster-requirements">
-                        <li>10,000-25,000 PR</li>
-                        <li>Place Consistently</li>
-                        <li>Represent us in Game</li>
-                        <li>Use our Fortnite Code</li>
-                        <li>Must have earnings</li>
-                    </ul>
-                </div>
-                
-                <!-- Academy Roster -->
-                <div class="roster-card">
-                    <div class="roster-header">
-                        <div class="roster-icon">🎓</div>
-                        <div class="roster-title">Academy Roster</div>
-                    </div>
-                    <ul class="roster-requirements">
-                        <li>500-10,000 PR</li>
-                        <li>Place Consistently</li>
-                        <li>Represent us in Game</li>
-                        <li>Use our Fortnite Code</li>
-                    </ul>
-                </div>
-                
-                <!-- Creative Roster -->
-                <div class="roster-card">
-                    <div class="roster-header">
-                        <div class="roster-icon">🎨</div>
-                        <div class="roster-title">Creative Roster</div>
-                    </div>
-                    <ul class="roster-requirements">
-                        <li>Smooth/Fast Mechanics</li>
-                        <li>Must Be Unique</li>
-                        <li>Must Be Able To Provide Clips When Asked</li>
-                        <li>Represent Us In Game and On Your Socials</li>
-                    </ul>
-                </div>
-                
-                <!-- Streamer -->
-                <div class="roster-card">
-                    <div class="roster-header">
-                        <div class="roster-icon">🎙️</div>
-                        <div class="roster-title">Streamer</div>
-                    </div>
-                    <ul class="roster-requirements">
-                        <li>1k+ Followers/Subscribers</li>
-                        <li>Average 25+ Viewers Per Stream</li>
-                        <li>Stream At Least 4x Per Week</li>
-                        <li>Use Our Hashtags in Bio/Descriptions</li>
-                        <li>Represent Us In Game and On Your Socials</li>
-                    </ul>
-                </div>
-                
-                <!-- Content Creator -->
-                <div class="roster-card">
-                    <div class="roster-header">
-                        <div class="roster-icon">🎥</div>
-                        <div class="roster-title">Content Creator</div>
-                    </div>
-                    <ul class="roster-requirements">
-                        <li>>1k Followers on Twitch/YouTube</li>
-                        <li>>10k Followers on TikTok</li>
-                        <li>Original/High Quality Posts</li>
-                        <li>Willing to Help Out With Void Content</li>
-                        <li>Must Post Actively</li>
-                        <li>Represent Us In Game and On Your Socials</li>
-                    </ul>
-                </div>
-                
-                <!-- Junior Content Creator -->
-                <div class="roster-card">
-                    <div class="roster-header">
-                        <div class="roster-icon">🎬</div>
-                        <div class="roster-title">Junior Content Creator</div>
-                    </div>
-                    <ul class="roster-requirements">
-                        <li>>500 Followers On Twitch/YouTube</li>
-                        <li>>3k Followers On TikTok</li>
-                        <li>Posts Are Original and High Quality</li>
-                        <li>Willing To Grind to Become a Main Roster Content Creator</li>
-                        <li>Represent Us In Game and On Your Socials</li>
-                    </ul>
-                </div>
-                
-                <!-- GFX/VFX -->
-                <div class="roster-card">
-                    <div class="roster-header">
-                        <div class="roster-icon">🖌️</div>
-                        <div class="roster-title">GFX/VFX</div>
-                    </div>
-                    <ul class="roster-requirements">
-                        <li>Experience With Editing</li>
-                        <li>Portfolio Required</li>
-                        <li>High-Quality Work (1440p or Higher)</li>
-                        <li>Willing To Do Free Work For Staff/Roster</li>
-                        <li>Deliver When Asked</li>
-                    </ul>
-                </div>
-            </div>
-            
-            <!-- Mod Requirements Section -->
-            <div class="mod-requirements" id="mod-requirements">
-                <h2 class="section-title"><i class="fas fa-tasks"></i> Mod Responsibilities & Commands</h2>
-                
-                <div class="requirement-section">
-                    <h3 class="requirement-title"><i class="fas fa-exclamation-triangle"></i> Warn / Report Command</h3>
-                    <div class="requirement-content">
-                        <p>Use <code class="inline-code">*warn user-id reason</code> command exclusively in the <strong>#staff-commands</strong> channel for minor rule violations. For major or repeated infractions, utilize the <code class="inline-code">/report</code> command with detailed documentation.</p>
-                    </div>
-                </div>
-                
-                <div class="requirement-section">
-                    <h3 class="requirement-title"><i class="fas fa-bed"></i> LOA (Leave On Application)</h3>
-                    <div class="requirement-content">
-                        <p>When unavailable due to illness or personal circumstances, use the <code class="inline-code">/loa command</code> with clear duration and reason. Prior notification to senior staff is mandatory for extended absences.</p>
-                    </div>
-                </div>
-                
-                <div class="requirement-section">
-                    <h3 class="requirement-title"><i class="fas fa-sign-in-alt"></i> Shift Management</h3>
-                    <div class="requirement-content">
-                        <p>Begin each moderation session with <code class="inline-code">/login command</code> and conclude with <code class="inline-code">/logout command</code>. Failure to log hours will result in activity discrepancies and potential disciplinary action.</p>
-                    </div>
-                </div>
-                
-                <div class="requirement-section">
-                    <h3 class="requirement-title"><i class="fas fa-chart-line"></i> Weekly Performance Metrics</h3>
-                    <div class="requirement-content">
-                        <p>Maintain minimum weekly thresholds to retain moderator status:</p>
-                        <ul class="requirement-list">
-                            <li><strong>10 Tickets</strong> - Process support tickets</li>
-                            <li><strong>400 Messages</strong> - Active community engagement</li>
-                            <li><strong>Must use of /login and /logout commands</strong> - Documented moderator actions</li>
-                        </ul>
-                        <div class="weekly-requirements">Performance below these standards triggers review and possible demotion.</div>
-                    </div>
-                </div>
-                
-                <!-- Ticket Handling Guidelines - COMPLETELY REVISED SECTION -->
-                <div class="ticket-handling-section">
-                    <h3><i class="fas fa-ticket-alt"></i> Ticket Handling Guidelines</h3>
-                    
-                    <div class="handling-intro">
-                        <p><strong>Here is how you should proceed in tickets:</strong></p>
-                        <p>Remember to be professional at all times. Refrain from using informal responses like "Yo", "Hi", "Bro". Always start with a friendly greeting.</p>
-                    </div>
-                    
-                    <div class="handling-category">
-                        <h4>General Guidelines</h4>
-                        <div class="handling-cards-grid">
-                            <div class="handling-card">
-                                <div class="handling-card-header">
-                                    <i class="fas fa-hand-sparkles"></i> Professional Greetings
-                                </div>
-                                <div class="handling-card-content">
-                                    <p>Start every interaction with a professional greeting:</p>
-                                    <ul>
-                                        <li>Hello, how may I help you?</li>
-                                        <li>Hello, what can I assist you with today?</li>
-                                    </ul>
-                                </div>
-                            </div>
-                            
-                            <div class="handling-card">
-                                <div class="handling-card-header">
-                                    <i class="fas fa-question-circle"></i> Role Inquiry
-                                </div>
-                                <div class="handling-card-content">
-                                    <p>Ask what role they are applying for:</p>
-                                    <ul>
-                                        <li>What role are you applying for today?</li>
-                                        <li>What are you applying for here?</li>
-                                    </ul>
-                                </div>
-                            </div>
-                            
-                            <div class="handling-card">
-                                <div class="handling-card-header">
-                                    <i class="fas fa-calendar-alt"></i> Age Verification
-                                </div>
-                                <div class="handling-card-content">
-                                    <p>Always ask for age verification:</p>
-                                    <ul>
-                                        <li>May I ask how old you are?</li>
-                                        <li>What is your current age?</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="handling-divider"></div>
-                    
-                    <div class="handling-category">
-                        <h4>Role-Specific Instructions</h4>
-                        <div class="handling-cards-grid">
-                            <div class="handling-card">
-                                <div class="handling-card-header">
-                                    <span class="highlight-role">@Creative Academy</span> <span class="highlight-role">@Main Creative</span>
-                                </div>
-                                <div class="handling-card-content">
-                                    <p>Perfect! Please send two-three clips and <strong>@Creative Department</strong> will be here shortly to review them!</p>
-                                </div>
-                            </div>
-                            
-                            <div class="handling-card">
-                                <div class="handling-card-header">
-                                    <span class="highlight-role">@Academy Roster</span>
-                                </div>
-                                <div class="handling-card-content">
-                                    <p>Please link your tracker below with an image of the default dance in lobby!</p>
-                                </div>
-                            </div>
-                            
-                            <div class="handling-card">
-                                <div class="handling-card-header">
-                                    <span class="highlight-role">@Semi-Pro Roster</span> <span class="highlight-role">@Pro Roster</span>
-                                </div>
-                                <div class="handling-card-content">
-                                    <p>Perfect! Please send your tracker below with an image of the default dance in lobby! <strong>@operations</strong> will be here shortly to review!</p>
-                                </div>
-                            </div>
-                            
-                            <div class="handling-card">
-                                <div class="handling-card-header">
-                                    <span class="highlight-role">@VOID VFX</span> <span class="highlight-role">@VOID GFX</span>
-                                </div>
-                                <div class="handling-card-content">
-                                    <p>Alright, please link your previous work and/or portfolio below and <strong>@GFX / VFX Lead</strong> will be here shortly to review.</p>
-                                </div>
-                            </div>
-                            
-                            <div class="handling-card">
-                                <div class="handling-card-header">
-                                    <span class="highlight-role">@Content Creator</span>
-                                </div>
-                                <div class="handling-card-content">
-                                    <p>Perfect! Please link your social media accounts below and <strong>@Content Department</strong> will review them shortly!</p>
-                                </div>
-                            </div>
-                            
-                            <div class="handling-card">
-                                <div class="handling-card-header">
-                                    <span class="highlight-role">@Coach</span>
-                                </div>
-                                <div class="handling-card-content">
-                                    <p>How many people have you coached previously? Can you link their trackers below!</p>
-                                </div>
-                            </div>
-                            
-                            <div class="handling-card">
-                                <div class="handling-card-header">
-                                    <span class="highlight-role">@Void Grinder+</span>
-                                </div>
-                                <div class="handling-card-content">
-                                    <p>Unfortunately you do not qualify for any roles, however, we can offer you Grinder+!</p>
-                                    <p><strong>For Grinder+ please do the following:</strong></p>
-                                    <ul>
-                                        <li>Send a screenshot of using our support creator code "Team.Void".</li>
-                                        <li>Send a screenshot of changing your Epic Games username to have "Void" in it.</li>
-                                        <li>Use our Discord "Void" tag!</li>
-                                    </ul>
-                                </div>
-                            </div>
-                            
-                            <div class="handling-card">
-                                <div class="handling-card-header">
-                                    <span class="highlight-role">⚠️┃blacklist</span>
-                                </div>
-                                <div class="handling-card-content">
-                                    <p>Please follow these guidelines:</p>
-                                    <ul>
-                                        <li><strong>User:</strong> Username of the person</li>
-                                        <li><strong>User ID:</strong> His discord ID</li>
-                                        <li><strong>Reason:</strong> Underage</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="handling-divider"></div>
-                    
-                    <div class="handling-category">
-                        <h4>Closing the Ticket</h4>
-                        <div class="handling-cards-grid">
-                            <div class="handling-card">
-                                <div class="handling-card-header">
-                                    <i class="fas fa-check-circle"></i> Final Steps
-                                </div>
-                                <div class="handling-card-content">
-                                    <p>Perfect! Please change your name to have "Void" in it and send a screenshot of using our code!</p>
-                                    <p>Once they send the images:</p>
-                                    <p><strong>Thank you! Here are your roles! Have a nice day!</strong></p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="handling-note">
-                        <strong>📌 Important:</strong> Always maintain professionalism throughout the entire interaction. Document all steps and escalate to senior staff when necessary.
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Quiz Instructions -->
-            <div class="quiz-instructions" id="quiz">
-                <h3><i class="fas fa-info-circle"></i> Interactive Training Phase</h3>
-                <p>Proceed to the practical assessment module. You'll encounter simulated scenarios requiring appropriate moderator responses. Each question evaluates application of the protocols detailed above.</p>
-                <button class="btn btn-primary" id="startQuizBtn">
-                    <i class="fas fa-play-circle"></i> Begin Practical Assessment
-                </button>
-                <button class="btn btn-secondary" id="skipAllQuizBtn" style="margin-left: 15px;">
-                    <i class="fas fa-forward"></i> Skip All Questions
-                </button>
-            </div>
-        </div>
-        
-        <!-- Training Quiz Section -->
-        <div class="training-quiz" id="quizSection" style="display: none;">
-            <h2 class="section-title"><i class="fas fa-graduation-cap"></i> Practical Assessment</h2>
-            
-            <!-- Skip All Container -->
-            <div class="skip-all-container">
-                <p>Don't want to answer all questions? You can skip directly to the test.</p>
-                <button class="skip-all-btn" id="skipAllQuestionsBtn">
-                    <i class="fas fa-forward"></i> Skip All Questions & Go to Test
-                </button>
-            </div>
-            
-            <!-- Question 1 -->
-            <div class="question-card active" id="question1">
-                <div class="question-header">
-                    <div class="question-title">Scenario 1: General Roster Inquiry</div>
-                    <div class="question-number">Question 1 of 7</div>
-                </div>
-                
-                <div class="question-description">
-                    <p>A user creates a roster ticket with the message: <em>"I want to join the team, what should I do?"</em></p>
-                    <p><strong>Task:</strong> Compose your initial response as the handling moderator.</p>
-                </div>
-                
-                <textarea class="answer-box" id="answer1" placeholder="Write your professional moderator response here..."></textarea>
-                
-                <div class="quiz-buttons">
-                    <button class="btn btn-secondary" id="skipBtn1">
-                        <i class="fas fa-forward"></i> Skip Question
-                    </button>
-                    <button class="btn btn-primary check-answer-btn" data-question="1">
-                        <i class="fas fa-check-circle"></i> Evaluate Response
-                    </button>
-                </div>
-                
-                <div class="answer-feedback" id="feedback1">
-                    <div class="feedback-title"><i class="fas fa-lightbulb"></i> Protocol Compliance</div>
-                    <div class="correct-answer">
-                        <p><strong>Optimal Response:</strong> "Hello! What's your age and how may I assist you today? Please review the requirements in 🎯┃how-to-join-roster and identify which category best fits your qualifications."</p>
-                    </div>
-                    <div class="correction-note">
-                        <p><strong>Key Elements:</strong> Age inquiry (mandatory), professional greeting, direction to appropriate resource channel, invitation for self-assessment.</p>
-                        <p><strong>Avoid:</strong> Immediate approval, vague directions, omitting age verification.</p>
-                    </div>
-                    <div class="quiz-buttons" style="margin-top: 20px;">
-                        <button class="btn btn-success next-question-btn" data-next="2">
-                            <i class="fas fa-arrow-right"></i> Next Scenario
-                        </button>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Question 2 -->
-            <div class="question-card" id="question2">
-                <div class="question-header">
-                    <div class="question-title">Scenario 2: Pro/Semi-Pro Application</div>
-                    <div class="question-number">Question 2 of 7</div>
-                </div>
-                
-                <div class="question-description">
-                    <p>A user submits an application for Pro or Semi-Pro roster position.</p>
-                    <p><strong>Task:</strong> Outline your verification and escalation procedure.</p>
-                </div>
-                
-                <textarea class="answer-box" id="answer2" placeholder="Detail your step-by-step handling process..."></textarea>
-                
-                <div class="quiz-buttons">
-                    <button class="btn btn-secondary" id="skipBtn2">Skip</button>
-                    <button class="btn btn-primary check-answer-btn" data-question="2">Evaluate</button>
-                </div>
-                
-                <div class="answer-feedback" id="feedback2">
-                    <div class="feedback-title"><i class="fas fa-lightbulb"></i> Protocol</div>
-                    <div class="correct-answer">
-                        <p><strong>Procedure:</strong> Request Fortnite tracker and earnings verification. Validate authenticity. Ping @trapped or relevant senior staff for review.</p>
-                    </div>
-                    <button class="btn btn-success next-question-btn" data-next="3">Next</button>
-                </div>
-            </div>
-            
-            <!-- Question 3 -->
-            <div class="question-card" id="question3">
-                <div class="question-header">
-                    <div class="question-title">Scenario 3: Academy Player Verification</div>
-                    <div class="question-number">Question 3 of 7</div>
-                </div>
-                
-                <div class="question-description">
-                    <p>An Academy roster applicant meets PR requirements.</p>
-                    <p><strong>Task:</strong> Describe the onboarding workflow including representation requirements.</p>
-                </div>
-                
-                <textarea class="answer-box" id="answer3" placeholder="Document the verification and onboarding steps..."></textarea>
-                
-                <div class="quiz-buttons">
-                    <button class="btn btn-secondary" id="skipBtn3">Skip</button>
-                    <button class="btn btn-primary check-answer-btn" data-question="3">Evaluate</button>
-                </div>
-                
-                <div class="answer-feedback" id="feedback3">
-                    <div class="feedback-title"><i class="fas fa-lightbulb"></i> Protocol</div>
-                    <div class="correct-answer">
-                        <p><strong>Workflow:</strong> 1) Verify Fortnite tracker. 2) Request username change to include "Void". 3) Require "team.void" proof. 4) Welcome and role assignment.</p>
-                    </div>
-                    <button class="btn btn-success next-question-btn" data-next="4">Next</button>
-                </div>
-            </div>
-            
-            <!-- Question 4 -->
-            <div class="question-card" id="question4">
-                <div class="question-header">
-                    <div class="question-title">Scenario 4: Content Creator Application</div>
-                    <div class="question-number">Question 4 of 7</div>
-                </div>
-                
-                <div class="question-description">
-                    <p>A user applies for Streamer or Content Creator position.</p>
-                    <p><strong>Task:</strong> Formulate your review and escalation process.</p>
-                </div>
-                
-                <textarea class="answer-box" id="answer4" placeholder="Write your handling protocol..."></textarea>
-                
-                <div class="quiz-buttons">
-                    <button class="btn btn-secondary" id="skipBtn4">Skip</button>
-                    <button class="btn btn-primary check-answer-btn" data-question="4">Evaluate</button>
-                </div>
-                
-                <div class="answer-feedback" id="feedback4">
-                    <div class="feedback-title"><i class="fas fa-lightbulb"></i> Protocol</div>
-                    <div class="correct-answer">
-                        <p><strong>Process:</strong> Confirm follower/viewer requirements. Request social media links. Ping @content department for evaluation.</p>
-                    </div>
-                    <button class="btn btn-success next-question-btn" data-next="5">Next</button>
-                </div>
-            </div>
-            
-            <!-- Question 5 -->
-            <div class="question-card" id="question5">
-                <div class="question-header">
-                    <div class="question-title">Scenario 5: GFX/VFX Portfolio Review</div>
-                    <div class="question-number">Question 5 of 7</div>
-                </div>
-                
-                <div class="question-description">
-                    <p>A GFX/VFX applicant submits their portfolio.</p>
-                    <p><strong>Task:</strong> Detail the verification and escalation steps.</p>
-                </div>
-                
-                <textarea class="answer-box" id="answer5" placeholder="Outline your evaluation procedure..."></textarea>
-                
-                <div class="quiz-buttons">
-                    <button class="btn btn-secondary" id="skipBtn5">Skip</button>
-                    <button class="btn btn-primary check-answer-btn" data-question="5">Evaluate</button>
-                </div>
-                
-                <div class="answer-feedback" id="feedback5">
-                    <div class="feedback-title"><i class="fas fa-lightbulb"></i> Protocol</div>
-                    <div class="correct-answer">
-                        <p><strong>Procedure:</strong> Request portfolio and proof of work. Assess quality. Ping @gfx-vfx lead for technical evaluation.</p>
-                    </div>
-                    <button class="btn btn-success next-question-btn" data-next="6">Next</button>
-                </div>
-            </div>
-            
-            <!-- Question 6 -->
-            <div class="question-card" id="question6">
-                <div class="question-header">
-                    <div class="question-title">Scenario 6: Creative Roster Submission</div>
-                    <div class="question-number">Question 6 of 7</div>
-                </div>
-                
-                <div class="question-description">
-                    <p>A Creative roster applicant provides freebuilding clips.</p>
-                    <p><strong>Task:</strong> Specify the review requirements and escalation.</p>
-                </div>
-                
-                <textarea class="answer-box" id="answer6" placeholder="Describe your clip verification process..."></textarea>
-                
-                <div class="quiz-buttons">
-                    <button class="btn btn-secondary" id="skipBtn6">Skip</button>
-                    <button class="btn btn-primary check-answer-btn" data-question="6">Evaluate</button>
-                </div>
-                
-                <div class="answer-feedback" id="feedback6">
-                    <div class="feedback-title"><i class="fas fa-lightbulb"></i> Protocol</div>
-                    <div class="correct-answer">
-                        <p><strong>Requirements:</strong> Minimum two freebuilding clips. Ping @creativedepartment for skill assessment.</p>
-                    </div>
-                    <button class="btn btn-success next-question-btn" data-next="7">Next</button>
-                </div>
-            </div>
-            
-            <!-- Question 7 -->
-            <div class="question-card" id="question7">
-                <div class="question-header">
-                    <div class="question-title">Scenario 7: Grinder Application Processing</div>
-                    <div class="question-number">Question 7 of 7</div>
-                </div>
-                
-                <div class="question-description">
-                    <p>A Grinder applicant seeks representation.</p>
-                    <p><strong>Task:</strong> Outline the username and verification requirements.</p>
-                </div>
-                
-                <textarea class="answer-box" id="answer7" placeholder="Specify representation requirements..."></textarea>
-                
-                <div class="quiz-buttons">
-                    <button class="btn btn-secondary" id="skipBtn7">Skip</button>
-                    <button class="btn btn-primary check-answer-btn" data-question="7">Evaluate</button>
-                </div>
-                
-                <div class="answer-feedback" id="feedback7">
-                    <div class="feedback-title"><i class="fas fa-lightbulb"></i> Protocol</div>
-                    <div class="correct-answer">
-                        <p><strong>Requirements:</strong> Discord and Fortnite username must include "Void". Proof of "team.void" item shop usage required.</p>
-                    </div>
-                    <button class="btn btn-success" id="completeQuizBtn">
-                        <i class="fas fa-flag-checkered"></i> Complete Assessment
-                    </button>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Completion Screen -->
-        <div class="completion-screen" id="completionScreen">
-            <div class="completion-icon">
-                <i class="fas fa-trophy"></i>
-            </div>
-            <h2 class="completion-title">Assessment Complete</h2>
-            <div class="completion-message">
-                <p>You have successfully completed the theoretical training module. Your responses have been logged for evaluation against protocol standards.</p>
-                <p>Proceed to the certification test for practical simulation. This final phase replicates real ticket handling with scoring based on protocol adherence, professionalism, and escalation accuracy.</p>
-            </div>
-            <div class="completion-buttons">
-                <button class="btn btn-secondary" id="restartQuizBtn">
-                    <i class="fas fa-redo"></i> Review Training
-                </button>
-                <button class="btn btn-test" id="takeTestBtn">
-                    <i class="fas fa-vial"></i> Begin Certification Test
-                </button>
-            </div>
-        </div>
-        
-        <!-- Footer -->
-        <div class="footer">
-            <p>Void Esports Mod Certification System • Made by Nicks Cold</p>
-            <p>© 2026 Void Esports. All rights reserved.</p>
-            <p>Founded by Frank • Ranked 25th in NAC • 13k+ Discord Members</p>
-            <p>Community: <a href="https://discord.gg/dqHF9HPucf">discord.gg/dqHF9HPucf</a></p>
-            <div class="footer-credit">System Architecture: Enhanced Audit Layer Active</div>
-        </div>
-    </div>
-
-    <script>
-        // Configuration
-        const CONFIG = {
-            API_BASE_URL: 'https://mod-application-backend.onrender.com',
-            TOTAL_QUESTIONS: 8,
-            PASSING_SCORE: 6
-        };
-
-        // Test State
-        const testState = {
-            active: false,
-            currentQuestion: 0,
-            score: 0,
-            questions: [],
-            userAnswers: [],
-            questionsWithAnswers: [],
-            userInfo: { username: 'User', userId: '0000' },
-            
-            reset() {
-                this.active = false;
-                this.currentQuestion = 0;
-                this.score = 0;
-                this.userAnswers = [];
-                this.questionsWithAnswers = [];
-                this.questions = [];
-            },
-            
-            initUser(username, userId) {
-                this.userInfo.username = username || 'User';
-                this.userInfo.userId = userId || '0000';
-            },
-            
-            getSubmissionData() {
-                const conversationLog = this.formatConversationLog();
-                const total = this.questions?.length || 1;
-                const passingScore = Math.ceil(total * 0.75);
-                const passed = this.score >= passingScore;
-                
-                return {
-                    discordId: this.userInfo.userId,
-                    discordUsername: this.userInfo.username,
-                    answers: conversationLog,
-                    conversationLog: conversationLog,
-                    score: `${this.score}/${total}`,
-                    totalQuestions: total,
-                    correctAnswers: this.score,
-                    wrongAnswers: total - this.score,
-                    testResults: JSON.stringify({
-                        passed: passed,
-                        percentage: Math.round((this.score / total) * 100),
-                        questions: this.questionsWithAnswers
-                    })
-                };
-            },
-            
-            formatConversationLog() {
-                let log = '';
-                const separator = '══════════════════════════════════════════════════════════════════════════════';
-                const total = this.questions?.length || 1;
-                const passingScore = Math.ceil(total * 0.75);
-                
-                log += separator + '\n';
-                log += 'VOID ESPORTS MODERATOR CERTIFICATION TEST - COMPLETE TRANSCRIPT\n';
-                log += separator + '\n';
-                log += `User: ${this.userInfo.username} (${this.userInfo.userId})\n`;
-                log += `Date: ${new Date().toLocaleString()}\n`;
-                log += `Final Score: ${this.score}/${total}\n`;
-                log += `Result: ${this.score >= passingScore ? 'PASSED ✓' : 'FAILED ✗'}\n`;
-                log += separator + '\n\n';
-
-                this.questionsWithAnswers.forEach((qa, index) => {
-                    log += `┌──────────────────────────────────────────────────────────────────────────┐\n`;
-                    log += `│ QUESTION ${index + 1} of ${total}${qa.correct ? ' ✓ PASS' : ' ✗ FAIL'}\n`;
-                    log += `├──────────────────────────────────────────────────────────────────────────┤\n`;
-                    log += `│ USER: ${qa.question || 'Unknown'}\n`;
-                    log += `├──────────────────────────────────────────────────────────────────────────┤\n`;
-                    log += `│ MOD RESPONSE:\n`;
-                    log += `│ ${qa.answer || 'No answer provided'}\n`;
-                    log += `├──────────────────────────────────────────────────────────────────────────┤\n`;
-                    log += `│ EVALUATION:\n`;
-                    log += `│ Matches: ${qa.matchCount || 0}/${qa.requiredMatches || 2}\n`;
-                    log += `│ Keywords: ${qa.matchedKeywords ? qa.matchedKeywords.join(', ') : 'None'}\n`;
-                    log += `├──────────────────────────────────────────────────────────────────────────┤\n`;
-                    log += `│ CORRECT RESPONSE:\n`;
-                    log += `│ ${qa.feedback || 'Follow protocol'}\n`;
-                    log += `└──────────────────────────────────────────────────────────────────────────┘\n\n`;
-                });
-
-                log += separator + '\n';
-                log += `END OF TRANSCRIPT - ${this.score}/${total} CORRECT\n`;
-                log += separator + '\n';
-
-                return log;
-            }
-        };
-
-        // Auth Manager
-        class AuthManager {
-            constructor() {
-                this.baseUrl = CONFIG.API_BASE_URL;
-            }
-
-            async startTest() {
-                try {
-                    console.log("Starting test flow...");
-                    
-                    const takeTestBtn = document.getElementById('takeTestBtn');
-                    if (takeTestBtn) {
-                        takeTestBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Starting test...';
-                        takeTestBtn.disabled = true;
-                    }
-                    
-                    const response = await fetch(`${this.baseUrl}/set-test-intent`, {
-                        method: 'GET',
-                        credentials: 'include'
-                    });
-                    
-                    if (response.ok) {
-                        window.location.href = `${this.baseUrl}/auth/discord`;
-                    } else {
-                        throw new Error("Failed to set test intent");
-                    }
-                } catch (error) {
-                    console.error("Start test error:", error);
-                    alert("Failed to start test. Please try again.");
-                    
-                    const takeTestBtn = document.getElementById('takeTestBtn');
-                    if (takeTestBtn) {
-                        takeTestBtn.innerHTML = '<i class="fas fa-vial"></i> Begin Certification Test';
-                        takeTestBtn.disabled = false;
-                    }
-                }
-            }
-            
-            startAdminLogin() {
-                window.location.href = `${this.baseUrl}/auth/discord/admin`;
-            }
-            
-            async handleOAuthReturn() {
-                const params = new URLSearchParams(window.location.search);
-                const startTest = params.get('startTest');
-                const discordUsername = params.get('discord_username');
-                const discordId = params.get('discord_id');
-                
-                if (startTest === '1' && discordUsername && discordId) {
-                    console.log("Returning from OAuth, starting test for:", discordUsername);
-                    
-                    testState.initUser(discordUsername, discordId);
-                    
-                    const isMobile = window.innerWidth <= 768;
-                    
-                    // Load questions from API FIRST
-                    await loadQuestionsFromAPI();
-                    
-                    if (isMobile) {
-                        mobileInterface.init();
-                        mobileInterface.show();
-                        mobileInterface.updateUserDisplay();
-                        setTimeout(() => {
-                            mobileInterface.start();
-                        }, 1000);
-                    } else {
-                        desktopInterface.init();
-                        desktopInterface.show();
-                        desktopInterface.updateUserDisplay();
-                        setTimeout(() => {
-                            testLogic.start(false);
-                        }, 1000);
-                    }
-                }
-            }
-        }
-
-        // Load questions from API - THIS IS THE CRITICAL FUNCTION
-        async function loadQuestionsFromAPI() {
-            try {
-                console.log("📡 Loading questions from API...");
-                const response = await fetch(`${CONFIG.API_BASE_URL}/api/test-questions/active`, {
-                    credentials: 'include',
-                    cache: 'no-store'
-                });
-                const data = await response.json();
-                
-                if (data.success && data.questions && data.questions.length > 0) {
-                    testState.questions = data.questions.map(q => ({
-                        id: q.id,
-                        username: q.username || 'User',
-                        avatarColor: q.avatar_color || '#5865f2',
-                        message: q.user_message,
-                        keywords: Array.isArray(q.keywords) ? q.keywords : [],
-                        required: q.required_matches || 2,
-                        feedback: q.explanation || 'Follow protocol',
-                        order: q.order ?? q.id ?? 0
-                    }));
-                    testState.questions.sort((a, b) => (a.order || 0) - (b.order || 0));
-                    console.log(`✅ Loaded ${testState.questions.length} question(s) from API`);
-                    CONFIG.TOTAL_QUESTIONS = testState.questions.length;
-                } else {
-                    console.log("⚠️ No enabled questions in database");
-                    testState.questions = [];
-                }
-            } catch (error) {
-                console.error("❌ Error loading questions from API:", error);
-                testState.questions = [];
-            }
-        }
-
-        // Desktop Interface
-        const desktopInterface = {
-            elements: {},
-            
-            init() {
-                console.log('💻 Initializing desktop interface...');
-                this.cacheElements();
-                this.setupEventListeners();
-            },
-
-            cacheElements() {
-                this.elements = {
-                    container: document.getElementById('testPage'),
-                    mainContainer: document.getElementById('mainContainer'),
-                    messages: document.getElementById('discordMessages'),
-                    input: document.getElementById('discordMessageInput'),
-                    sendBtn: document.getElementById('discordSendBtn'),
-                    typing: document.getElementById('discordTyping'),
-                    typingText: document.getElementById('discordTypingText'),
-                    score: document.getElementById('discordScore'),
-                    progress: document.getElementById('discordProgress'),
-                    ticketCounter: document.getElementById('discordTicketCounter'),
-                    modal: document.getElementById('discordModal'),
-                    modalIcon: document.getElementById('discordModalIcon'),
-                    modalTitle: document.getElementById('discordModalTitle'),
-                    modalScore: document.getElementById('discordModalScore'),
-                    modalMessage: document.getElementById('discordModalMessage'),
-                    modalStatus: document.getElementById('discordModalStatus'),
-                    reviewBtn: document.getElementById('discordReviewBtn'),
-                    backBtn: document.getElementById('discordBackBtn'),
-                    userName: document.getElementById('discordUserName'),
-                    userTag: document.getElementById('discordUserTag'),
-                    userAvatar: document.getElementById('discordUserAvatar'),
-                    memberName: document.getElementById('discordMemberName')
-                };
-            },
-
-            setupEventListeners() {
-                if (this.elements.input) {
-                    this.elements.input.addEventListener('input', () => {
-                        this.elements.input.style.height = 'auto';
-                        this.elements.input.style.height = Math.min(this.elements.input.scrollHeight, 144) + 'px';
-                        if (this.elements.sendBtn) {
-                            this.elements.sendBtn.disabled = !this.elements.input.value.trim() || !testState.active;
-                        }
-                    });
-
-                    this.elements.input.addEventListener('keydown', (e) => {
-                        if (e.key === 'Enter' && !e.shiftKey) {
-                            e.preventDefault();
-                            if (this.elements.sendBtn && !this.elements.sendBtn.disabled && testState.active) {
-                                testLogic.sendMessage(false);
-                            }
-                        }
-                    });
-                }
-
-                if (this.elements.sendBtn) {
-                    this.elements.sendBtn.addEventListener('click', () => {
-                        testLogic.sendMessage(false);
-                    });
-                }
-
-                if (this.elements.reviewBtn) {
-                    this.elements.reviewBtn.addEventListener('click', () => {
-                        this.hideModal();
-                        testLogic.reset();
-                        setTimeout(() => testLogic.start(false), 500);
-                    });
-                }
-
-                if (this.elements.backBtn) {
-                    this.elements.backBtn.addEventListener('click', () => {
-                        this.hideModal();
-                        testLogic.exit();
-                    });
-                }
-            },
-
-            updateUserDisplay() {
-                if (this.elements.userName) this.elements.userName.textContent = testState.userInfo.username;
-                if (this.elements.userTag) this.elements.userTag.textContent = '#' + (testState.userInfo.userId.slice(-4) || '0000');
-                if (this.elements.userAvatar) this.elements.userAvatar.textContent = testState.userInfo.username.charAt(0).toUpperCase();
-                if (this.elements.memberName) this.elements.memberName.textContent = testState.userInfo.username;
-            },
-
-            show() {
-                if (this.elements.container) {
-                    this.elements.container.classList.add('active');
-                }
-                if (this.elements.mainContainer) {
-                    this.elements.mainContainer.style.display = 'none';
-                }
-            },
-
-            hide() {
-                if (this.elements.container) {
-                    this.elements.container.classList.remove('active');
-                }
-                if (this.elements.mainContainer) {
-                    this.elements.mainContainer.style.display = 'block';
-                }
-            },
-
-            clearMessages() {
-                if (this.elements.messages) {
-                    this.elements.messages.innerHTML = '';
-                }
-            },
-
-            addMessage(username, content, color, isBot = false) {
-                if (!this.elements.messages) return;
-
-                const messageGroup = document.createElement('div');
-                messageGroup.className = 'discord-message-group';
-                
-                const now = new Date();
-                const timeString = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-                
-                let avatarInitial = username.charAt(0).toUpperCase();
-                if (username === 'Void Bot') avatarInitial = 'V';
-                if (username === 'You') avatarInitial = testState.userInfo.username.charAt(0).toUpperCase();
-
-                messageGroup.innerHTML = `
-                    <div class="discord-message-avatar" style="background-color: ${color}">
-                        ${avatarInitial}
-                    </div>
-                    <div class="discord-message-content">
-                        <div class="discord-message-header">
-                            <span class="discord-message-author">${username}</span>
-                            ${isBot ? '<span class="discord-message-badge">BOT</span>' : ''}
-                            <span class="discord-message-timestamp">Today at ${timeString}</span>
-                        </div>
-                        <div class="discord-message-text">${content}</div>
-                    </div>
-                `;
-
-                this.elements.messages.appendChild(messageGroup);
-                this.elements.messages.scrollTop = this.elements.messages.scrollHeight;
-            },
-
-            async showTyping(username, duration) {
-                if (this.elements.typing && this.elements.typingText) {
-                    this.elements.typingText.textContent = `${username} is typing...`;
-                    this.elements.typing.style.display = 'flex';
-                    await new Promise(resolve => setTimeout(resolve, duration));
-                    this.elements.typing.style.display = 'none';
-                }
-            },
-
-            updateScore() {
-                const total = testState.questions?.length || 1;
-                if (this.elements.score) this.elements.score.textContent = testState.score;
-                if (this.elements.progress) {
-                    const percentage = (testState.score / total) * 100;
-                    this.elements.progress.style.width = `${percentage}%`;
-                }
-                if (this.elements.ticketCounter) {
-                    this.elements.ticketCounter.textContent = `Ticket #${testState.currentQuestion + 1} of ${total}`;
-                }
-            },
-
-            disableInput(disabled) {
-                if (this.elements.input) {
-                    this.elements.input.disabled = disabled;
-                    if (!disabled) this.elements.input.focus();
-                }
-                if (this.elements.sendBtn) this.elements.sendBtn.disabled = disabled;
-            },
-
-            clearInput() {
-                if (this.elements.input) {
-                    this.elements.input.value = '';
-                    this.elements.input.style.height = 'auto';
-                }
-            },
-
-            showModal(passed) {
-                if (!this.elements.modal) return;
-
-                const total = testState.questions?.length || 1;
-                const passingScore = Math.ceil(total * 0.75);
-
-                if (this.elements.modalIcon) {
-                    this.elements.modalIcon.className = `discord-modal-icon ${passed ? 'pass' : 'fail'}`;
-                    this.elements.modalIcon.innerHTML = passed ? '<i class="fas fa-trophy"></i>' : '<i class="fas fa-times-circle"></i>';
-                }
-                
-                if (this.elements.modalTitle) {
-                    this.elements.modalTitle.textContent = passed ? 'Test Passed!' : 'Test Failed';
-                }
-                
-                if (this.elements.modalScore) {
-                    this.elements.modalScore.textContent = `${testState.score}/${total}`;
-                }
-                
-                if (this.elements.modalMessage) {
-                    this.elements.modalMessage.textContent = passed 
-                        ? 'Congratulations! You passed the certification test. Your results have been submitted for review.'
-                        : `You scored ${testState.score}/${total}. The minimum passing score is ${passingScore}/${total}.`;
-                }
-
-                this.elements.modal.classList.add('active');
-            },
-
-            hideModal() {
-                if (this.elements.modal) {
-                    this.elements.modal.classList.remove('active');
-                }
-            },
-
-            setModalStatus(html) {
-                if (this.elements.modalStatus) {
-                    this.elements.modalStatus.innerHTML = html;
-                }
-            }
-        };
-
-        // Mobile Interface
-        const mobileInterface = {
-            elements: {},
-            
-            init() {
-                console.log('📱 Initializing mobile interface...');
-                this.cacheElements();
-                this.setupEventListeners();
-            },
-
-            cacheElements() {
-                this.elements = {
-                    container: document.getElementById('mobileDiscord'),
-                    mainContainer: document.getElementById('mainContainer'),
-                    messages: document.getElementById('mobileMessagesContainer'),
-                    input: document.getElementById('mobileMessageInput'),
-                    sendBtn: document.getElementById('mobileSendBtn'),
-                    typing: document.getElementById('mobileTyping'),
-                    typingText: document.getElementById('mobileTypingText'),
-                    score: document.getElementById('mobileScore'),
-                    progress: document.getElementById('mobileProgress'),
-                    questionCounter: document.getElementById('mobileQuestionCounter'),
-                    channelName: document.getElementById('mobileChannelName'),
-                    sidebarUsername: document.getElementById('mobileSidebarUsername'),
-                    menuBtn: document.getElementById('mobileMenuBtn'),
-                    sidebar: document.getElementById('mobileSidebar'),
-                    closeSidebar: document.getElementById('mobileCloseSidebar'),
-                    scoreBtn: document.getElementById('mobileScoreBtn'),
-                    scorePanel: document.getElementById('mobileScorePanel'),
-                    closeScore: document.getElementById('mobileCloseScore'),
-                    modal: document.getElementById('mobileTestComplete'),
-                    modalIcon: document.getElementById('mobileResultIcon'),
-                    modalTitle: document.getElementById('mobileResultTitle'),
-                    modalScore: document.getElementById('mobileResultScore'),
-                    modalMessage: document.getElementById('mobileResultMessage'),
-                    modalStatus: document.getElementById('mobileSubmissionStatus'),
-                    reviewBtn: document.getElementById('mobileReviewBtn'),
-                    backBtn: document.getElementById('mobileBackBtn')
-                };
-            },
-
-            setupEventListeners() {
-                if (this.elements.input) {
-                    this.elements.input.addEventListener('input', () => {
-                        this.elements.input.style.height = 'auto';
-                        this.elements.input.style.height = Math.min(this.elements.input.scrollHeight, 120) + 'px';
-                        if (this.elements.sendBtn) {
-                            this.elements.sendBtn.disabled = !this.elements.input.value.trim() || !testState.active;
-                        }
-                    });
-
-                    this.elements.input.addEventListener('keydown', (e) => {
-                        if (e.key === 'Enter' && !e.shiftKey) {
-                            e.preventDefault();
-                            if (this.elements.sendBtn && !this.elements.sendBtn.disabled && testState.active) {
-                                this.sendMessage();
-                            }
-                        }
-                    });
-                }
-
-                if (this.elements.sendBtn) {
-                    this.elements.sendBtn.addEventListener('click', () => this.sendMessage());
-                }
-
-                if (this.elements.menuBtn) {
-                    this.elements.menuBtn.addEventListener('click', () => {
-                        if (this.elements.sidebar) this.elements.sidebar.classList.add('active');
-                    });
-                }
-
-                if (this.elements.closeSidebar) {
-                    this.elements.closeSidebar.addEventListener('click', () => {
-                        if (this.elements.sidebar) this.elements.sidebar.classList.remove('active');
-                    });
-                }
-
-                if (this.elements.scoreBtn) {
-                    this.elements.scoreBtn.addEventListener('click', () => {
-                        if (this.elements.scorePanel) this.elements.scorePanel.classList.add('active');
-                    });
-                }
-
-                if (this.elements.closeScore) {
-                    this.elements.closeScore.addEventListener('click', () => {
-                        if (this.elements.scorePanel) this.elements.scorePanel.classList.remove('active');
-                    });
-                }
-
-                if (this.elements.reviewBtn) {
-                    this.elements.reviewBtn.addEventListener('click', () => {
-                        this.hideModal();
-                        this.reset();
-                        setTimeout(() => this.start(), 500);
-                    });
-                }
-
-                if (this.elements.backBtn) {
-                    this.elements.backBtn.addEventListener('click', () => {
-                        this.hideModal();
-                        this.exit();
-                    });
-                }
-
-                document.addEventListener('click', (e) => {
-                    if (this.elements.sidebar && !this.elements.sidebar.contains(e.target) && 
-                        !this.elements.menuBtn?.contains(e.target) && 
-                        this.elements.sidebar.classList.contains('active')) {
-                        this.elements.sidebar.classList.remove('active');
-                    }
-                    
-                    if (this.elements.scorePanel && !this.elements.scorePanel.contains(e.target) && 
-                        !this.elements.scoreBtn?.contains(e.target) && 
-                        this.elements.scorePanel.classList.contains('active')) {
-                        this.elements.scorePanel.classList.remove('active');
-                    }
-                });
-            },
-
-            updateUserDisplay() {
-                if (this.elements.sidebarUsername) {
-                    this.elements.sidebarUsername.textContent = testState.userInfo.username;
-                }
-            },
-
-            show() {
-                if (this.elements.container) {
-                    this.elements.container.classList.add('active');
-                }
-                if (this.elements.mainContainer) {
-                    this.elements.mainContainer.style.display = 'none';
-                }
-            },
-
-            hide() {
-                if (this.elements.container) {
-                    this.elements.container.classList.remove('active');
-                }
-                if (this.elements.mainContainer) {
-                    this.elements.mainContainer.style.display = 'block';
-                }
-            },
-
-            clearMessages() {
-                if (this.elements.messages) {
-                    this.elements.messages.innerHTML = '';
-                }
-            },
-
-            addMessage(username, content, color, isBot = false) {
-                if (!this.elements.messages) return;
-
-                const messageGroup = document.createElement('div');
-                messageGroup.className = 'mobile-message-group';
-                
-                const now = new Date();
-                const timeString = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-                
-                let avatarInitial = username.charAt(0).toUpperCase();
-                if (username === 'Void Bot') avatarInitial = 'V';
-                if (username === 'You') avatarInitial = testState.userInfo.username.charAt(0).toUpperCase();
-
-                messageGroup.innerHTML = `
-                    <div class="mobile-message-avatar" style="background-color: ${color}">
-                        ${avatarInitial}
-                    </div>
-                    <div class="mobile-message-content">
-                        <div class="mobile-message-header">
-                            <span class="mobile-message-author">${username}</span>
-                            ${isBot ? '<span class="mobile-bot-tag">BOT</span>' : ''}
-                            <span class="mobile-message-timestamp">Today at ${timeString}</span>
-                        </div>
-                        <div class="mobile-message-text">${content}</div>
-                    </div>
-                `;
-
-                this.elements.messages.appendChild(messageGroup);
-                this.elements.messages.scrollTop = this.elements.messages.scrollHeight;
-            },
-
-            async showTyping(username, duration) {
-                if (this.elements.typing && this.elements.typingText) {
-                    this.elements.typingText.textContent = `${username} is typing...`;
-                    this.elements.typing.style.display = 'flex';
-                    await new Promise(resolve => setTimeout(resolve, duration));
-                    this.elements.typing.style.display = 'none';
-                }
-            },
-
-            updateScore() {
-                const total = testState.questions?.length || 1;
-                if (this.elements.score) this.elements.score.textContent = testState.score;
-                if (this.elements.progress) {
-                    const percentage = (testState.score / total) * 100;
-                    this.elements.progress.style.width = `${percentage}%`;
-                }
-                if (this.elements.questionCounter) {
-                    this.elements.questionCounter.textContent = `Question ${testState.currentQuestion + 1} of ${total}`;
-                }
-                if (this.elements.channelName) {
-                    this.elements.channelName.textContent = `🎫・mod-tickets • Q${testState.currentQuestion + 1}/${total}`;
-                }
-            },
-
-            disableInput(disabled) {
-                if (this.elements.input) {
-                    this.elements.input.disabled = disabled;
-                    if (!disabled) setTimeout(() => this.elements.input.focus(), 100);
-                }
-                if (this.elements.sendBtn) this.elements.sendBtn.disabled = disabled;
-            },
-
-            clearInput() {
-                if (this.elements.input) {
-                    this.elements.input.value = '';
-                    this.elements.input.style.height = 'auto';
-                }
-            },
-
-            showModal(passed) {
-                if (!this.elements.modal) return;
-
-                if (this.elements.modalIcon) {
-                    this.elements.modalIcon.className = `mobile-test-result-icon ${passed ? 'pass' : 'fail'}`;
-                    this.elements.modalIcon.innerHTML = passed ? '<i class="fas fa-trophy"></i>' : '<i class="fas fa-times-circle"></i>';
-                }
-                
-                if (this.elements.modalTitle) {
-                    this.elements.modalTitle.textContent = passed ? 'Test Passed!' : 'Test Failed';
-                }
-                
-                const total = testState.questions?.length || 1;
-                if (this.elements.modalScore) {
-                    this.elements.modalScore.textContent = `${testState.score}/${total}`;
-                }
-                
-                if (this.elements.modalMessage) {
-                    this.elements.modalMessage.textContent = passed 
-                        ? 'Congratulations! You passed the certification test. Your results have been submitted for review.'
-                        : `You scored ${testState.score}/${total}. The minimum passing score is ${CONFIG.PASSING_SCORE}/${total}.`;
-                }
-
-                this.elements.modal.classList.add('active');
-            },
-
-            hideModal() {
-                if (this.elements.modal) {
-                    this.elements.modal.classList.remove('active');
-                }
-            },
-
-            setModalStatus(html) {
-                if (this.elements.modalStatus) {
-                    this.elements.modalStatus.innerHTML = html;
-                }
-            },
-
-            async start() {
-                console.log('🚀 Starting mobile test...');
-                
-                const totalQuestions = testState.questions?.length || 0;
-                if (totalQuestions === 0) {
-                    console.error('No questions available!');
-                    this.addMessage('Void Bot', 'There are no questions available at this time. Contact staff for help.', '#ed4245', true);
-                    return;
-                }
-                
-                testState.active = true;
-                testState.currentQuestion = 0;
-                testState.score = 0;
-                testState.userAnswers = [];
-                testState.questionsWithAnswers = [];
-
-                this.clearMessages();
-                this.updateScore();
-                this.disableInput(true);
-                
-                await this.showTyping('Void Bot', 1000);
-                this.addMessage('Void Bot', 'Welcome to the **Void Esports Moderator Certification Test**.', '#5865f2', true);
-                
-                await delay(800);
-                await this.showTyping('Void Bot', 1200);
-                this.addMessage('Void Bot', `You'll be presented with **${totalQuestions}** scenario${totalQuestions !== 1 ? 's' : ''}.`, '#5865f2', true);
-                
-                await delay(800);
-                await this.showTyping('Void Bot', 800);
-                this.addMessage('Void Bot', 'Respond as you would as a real moderator. Good luck!', '#5865f2', true);
-                
-                await delay(1500);
-                
-                this.showNextQuestion();
-            },
-
-            async showNextQuestion() {
-                const totalQuestions = testState.questions?.length || 0;
-                if (testState.currentQuestion >= totalQuestions) {
-                    this.endTest();
-                    return;
-                }
-
-                const question = testState.questions[testState.currentQuestion];
-                
-                await this.showTyping(question.username, 1200);
-                this.addMessage(question.username, question.message, question.avatarColor, false);
-                
-                this.disableInput(false);
-                this.updateScore();
-            },
-
-            async sendMessage() {
-                if (!this.elements.input || !testState.active) return;
-
-                const userMessage = this.elements.input.value.trim();
-                if (!userMessage) return;
-
-                await this.processUserMessage(userMessage);
-            },
-
-            async processUserMessage(userMessage) {
-                this.disableInput(true);
-                
-                this.addMessage('You', userMessage, '#7289da', false);
-                
-                testState.userAnswers.push(userMessage);
-                this.clearInput();
-                
-                await this.showTyping('Void Bot', 1000);
-                
-                const question = testState.questions[testState.currentQuestion];
-                const result = this.evaluateAnswer(userMessage, question);
-                
-                testState.questionsWithAnswers.push({
-                    question: question.message,
-                    answer: userMessage,
-                    correct: result.correct,
-                    matchCount: result.matches,
-                    requiredMatches: question.required,
-                    matchedKeywords: result.matchedKeywords || [],
-                    feedback: question.feedback
-                });
-                
-                let feedbackMsg = result.correct 
-                    ? `✅ **Correct!** ${question.feedback}`
-                    : `❌ **Not quite right.** ${question.feedback}`;
-                
-                this.addMessage('Void Bot', feedbackMsg, '#5865f2', true);
-                
-                if (result.correct) {
-                    testState.score++;
-                }
-                
-                testState.currentQuestion++;
-                this.updateScore();
-                
-                const totalQuestions = testState.questions?.length || 0;
-                if (testState.currentQuestion < totalQuestions) {
-                    await delay(1500);
-                    this.showNextQuestion();
-                } else {
-                    await delay(2000);
-                    this.endTest();
-                }
-            },
-
-            evaluateAnswer(answer, question) {
-                const answerLower = answer.toLowerCase();
-                let matches = 0;
-                let matchedKeywords = [];
-
-                for (const keyword of question.keywords) {
-                    if (answerLower.includes(keyword.toLowerCase())) {
-                        matches++;
-                        matchedKeywords.push(keyword);
-                    }
-                }
-
-                return {
-                    correct: matches >= question.required,
-                    matches: matches,
-                    matchedKeywords: matchedKeywords
-                };
-            },
-
-            async endTest() {
-                console.log('📝 Mobile test complete!');
-                
-                testState.active = false;
-                this.disableInput(true);
-                
-                await this.showTyping('Void Bot', 1000);
-                
-                const totalQuestions = testState.questions?.length || 1;
-                const passingScore = Math.ceil(totalQuestions * 0.75);
-                const passed = testState.score >= passingScore;
-                const finalMsg = `**Test Complete!**\nFinal Score: **${testState.score}/${totalQuestions}**\nResult: **${passed ? 'PASSED ✅' : 'FAILED ❌'}**`;
-                
-                this.addMessage('Void Bot', finalMsg, '#5865f2', true);
-                
-                this.showModal(passed);
-                await this.submitTestResults();
-            },
-
-            async submitTestResults() {
-                const submissionData = testState.getSubmissionData();
-
-                this.setModalStatus('<i class="fas fa-spinner fa-spin"></i> Submitting results...');
-
-                try {
-                    console.log('Submitting test results...', submissionData);
-                    
-                    const response = await fetch(`${CONFIG.API_BASE_URL}/submit-test-results`, {
-                        method: 'POST',
-                        headers: { 
-                            'Content-Type': 'application/json',
-                            'Accept': 'application/json'
-                        },
-                        body: JSON.stringify(submissionData)
-                    });
-
-                    const result = await response.json();
-                    console.log('Submission response:', result);
-
-                    if (response.ok && result.success) {
-                        this.setModalStatus('<i class="fas fa-check-circle"></i> Results submitted successfully!');
-                        
-                        const totalQuestions = testState.questions?.length || 1;
-                        const passingScore = Math.ceil(totalQuestions * 0.75);
-                        setTimeout(() => {
-                            window.location.href = `success.html?discord_username=${encodeURIComponent(testState.userInfo.username)}&final_score=${testState.score}/${totalQuestions}&pass_fail=${testState.score >= passingScore ? 'PASS' : 'FAIL'}`;
-                        }, 2000);
-                    } else {
-                        throw new Error('Submission failed');
-                    }
-
-                } catch (error) {
-                    console.error('Submission error:', error);
-                    
-                    try {
-                        const fallbackResponse = await fetch(`${CONFIG.API_BASE_URL}/api/submit`, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify(submissionData)
-                        });
-                        
-                        if (fallbackResponse.ok) {
-                            this.setModalStatus('<i class="fas fa-check-circle"></i> Results submitted!');
-                            
-                            setTimeout(() => {
-                                window.location.href = `success.html?discord_username=${encodeURIComponent(testState.userInfo.username)}&final_score=${testState.score}/${testState.questions?.length || 1}&pass_fail=${testState.score >= CONFIG.PASSING_SCORE ? 'PASS' : 'FAIL'}`;
-                            }, 2000);
-                            return;
-                        }
-                    } catch (fallbackError) {
-                        console.error('Fallback also failed:', fallbackError);
-                    }
-                    
-                    this.setModalStatus('<i class="fas fa-exclamation-triangle"></i> Results saved locally');
-                    
-                    setTimeout(() => {
-                        window.location.href = `success.html?discord_username=${encodeURIComponent(testState.userInfo.username)}&final_score=${testState.score}/${testState.questions?.length || 1}&pass_fail=${testState.score >= CONFIG.PASSING_SCORE ? 'PASS' : 'FAIL'}`;
-                    }, 2000);
-                }
-            },
-
-            reset() {
-                testState.reset();
-                this.clearMessages();
-                this.updateScore();
-                this.disableInput(true);
-            },
-
-            exit() {
-                this.reset();
-                this.hide();
-                window.history.replaceState({}, document.title, window.location.pathname);
-            }
-        };
-
-        // Core Test Logic
-        const testLogic = {
-            async start(isMobile) {
-                console.log('🚀 Starting test...');
-                
-                const totalQuestions = testState.questions?.length || 0;
-                if (totalQuestions === 0) {
-                    console.error('No questions available!');
-                    const ui = isMobile ? mobileInterface : desktopInterface;
-                    ui.clearMessages();
-                    ui.addMessage('Void Bot', 'There are no questions available at this time. Contact staff for help.', '#ed4245', true);
-                    return;
-                }
-                
-                testState.active = true;
-                testState.currentQuestion = 0;
-                testState.score = 0;
-                testState.userAnswers = [];
-                testState.questionsWithAnswers = [];
-
-                const ui = isMobile ? mobileInterface : desktopInterface;
-                
-                ui.clearMessages();
-                ui.updateScore();
-                ui.disableInput(true);
-                
-                await ui.showTyping('Void Bot', 1000);
-                ui.addMessage('Void Bot', 'Welcome to the **Void Esports Moderator Certification Test**.', '#5865f2', true);
-                
-                await delay(800);
-                await ui.showTyping('Void Bot', 1200);
-                ui.addMessage('Void Bot', `You'll be presented with **${totalQuestions}** scenario${totalQuestions !== 1 ? 's' : ''}.`, '#5865f2', true);
-                
-                await delay(800);
-                await ui.showTyping('Void Bot', 800);
-                ui.addMessage('Void Bot', 'Respond as you would as a real moderator. Good luck!', '#5865f2', true);
-                
-                await delay(1500);
-                
-                this.showNextQuestion(isMobile);
-            },
-            
-            async showNextQuestion(isMobile) {
-                const ui = isMobile ? mobileInterface : desktopInterface;
-                
-                const totalQuestions = testState.questions?.length || 1;
-                if (testState.currentQuestion >= totalQuestions) {
-                    this.endTest(isMobile);
-                    return;
-                }
-
-                const question = testState.questions[testState.currentQuestion];
-                
-                await ui.showTyping(question.username, 1200);
-                ui.addMessage(question.username, question.message, question.avatarColor, false);
-                
-                ui.disableInput(false);
-                ui.updateScore();
-            },
-            
-            async sendMessage(isMobile) {
-                const ui = isMobile ? mobileInterface : desktopInterface;
-                
-                if (!ui.elements.input || !testState.active) return;
-
-                const userMessage = ui.elements.input.value.trim();
-                if (!userMessage) return;
-
-                await this.processUserMessage(userMessage, isMobile);
-            },
-            
-            async processUserMessage(userMessage, isMobile) {
-                const ui = isMobile ? mobileInterface : desktopInterface;
-                
-                ui.disableInput(true);
-                
-                ui.addMessage('You', userMessage, '#7289da', false);
-                
-                testState.userAnswers.push(userMessage);
-                ui.clearInput();
-                
-                await ui.showTyping('Void Bot', 1000);
-                
-                const question = testState.questions[testState.currentQuestion];
-                const result = this.evaluateAnswer(userMessage, question);
-                
-                testState.questionsWithAnswers.push({
-                    question: question.message,
-                    answer: userMessage,
-                    correct: result.correct,
-                    matchCount: result.matches,
-                    requiredMatches: question.required,
-                    matchedKeywords: result.matchedKeywords || [],
-                    feedback: question.feedback
-                });
-                
-                let feedbackMsg = result.correct 
-                    ? `✅ **Correct!** ${question.feedback}`
-                    : `❌ **Not quite right.** ${question.feedback}`;
-                
-                ui.addMessage('Void Bot', feedbackMsg, '#5865f2', true);
-                
-                if (result.correct) {
-                    testState.score++;
-                }
-                
-                testState.currentQuestion++;
-                ui.updateScore();
-                
-                const totalQuestions = testState.questions?.length || 1;
-                if (testState.currentQuestion < totalQuestions) {
-                    await delay(1500);
-                    this.showNextQuestion(isMobile);
-                } else {
-                    await delay(2000);
-                    this.endTest(isMobile);
-                }
-            },
-            
-            evaluateAnswer(answer, question) {
-                const answerLower = answer.toLowerCase();
-                let matches = 0;
-                let matchedKeywords = [];
-
-                for (const keyword of question.keywords) {
-                    if (answerLower.includes(keyword.toLowerCase())) {
-                        matches++;
-                        matchedKeywords.push(keyword);
-                    }
-                }
-
-                return {
-                    correct: matches >= question.required,
-                    matches: matches,
-                    matchedKeywords: matchedKeywords
-                };
-            },
-            
-            async endTest(isMobile) {
-                console.log('📝 Test complete!');
-                
-                const ui = isMobile ? mobileInterface : desktopInterface;
-                
-                testState.active = false;
-                ui.disableInput(true);
-                
-                await ui.showTyping('Void Bot', 1000);
-                
-                const totalQuestions = testState.questions?.length || 1;
-                const passingScore = Math.ceil(totalQuestions * 0.75);
-                const passed = testState.score >= passingScore;
-                const finalMsg = `**Test Complete!**\nFinal Score: **${testState.score}/${totalQuestions}**\nResult: **${passed ? 'PASSED ✅' : 'FAILED ❌'}**`;
-                
-                ui.addMessage('Void Bot', finalMsg, '#5865f2', true);
-                
-                const submissionData = testState.getSubmissionData();
-
-                ui.showModal(passed);
-                await this.submitTestResults(submissionData, isMobile);
-            },
-            
-            async submitTestResults(data, isMobile) {
-                const ui = isMobile ? mobileInterface : desktopInterface;
-                
-                ui.setModalStatus('<i class="fas fa-spinner fa-spin"></i> Submitting results...');
-
-                try {
-                    console.log('Submitting test results...', data);
-                    
-                    const response = await fetch(`${CONFIG.API_BASE_URL}/submit-test-results`, {
-                        method: 'POST',
-                        headers: { 
-                            'Content-Type': 'application/json',
-                            'Accept': 'application/json'
-                        },
-                        body: JSON.stringify(data)
-                    });
-
-                    const result = await response.json();
-                    console.log('Submission response:', result);
-
-                    if (response.ok && result.success) {
-                        ui.setModalStatus('<i class="fas fa-check-circle"></i> Results submitted successfully!');
-                    } else {
-                        throw new Error('Submission failed');
-                    }
-
-                } catch (error) {
-                    console.error('Submission error:', error);
-                    
-                    try {
-                        const fallbackResponse = await fetch(`${CONFIG.API_BASE_URL}/api/submit`, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify(data)
-                        });
-                        
-                        if (fallbackResponse.ok) {
-                            ui.setModalStatus('<i class="fas fa-check-circle"></i> Results submitted!');
-                            return;
-                        }
-                    } catch (fallbackError) {
-                        console.error('Fallback also failed:', fallbackError);
-                    }
-                    
-                    ui.setModalStatus('<i class="fas fa-exclamation-triangle"></i> Results saved locally');
-                }
-            },
-            
-            reset() {
-                testState.reset();
-                
-                const isMobile = window.innerWidth <= 768;
-                const ui = isMobile ? mobileInterface : desktopInterface;
-                
-                ui.clearMessages();
-                ui.updateScore();
-                ui.disableInput(true);
-            },
-            
-            exit() {
-                this.reset();
-                
-                const isMobile = window.innerWidth <= 768;
-                const ui = isMobile ? mobileInterface : desktopInterface;
-                
-                ui.hide();
-                window.history.replaceState({}, document.title, window.location.pathname);
-            }
-        };
-
-        // Utility Functions
-        function delay(ms) {
-            return new Promise(resolve => setTimeout(resolve, ms));
-        }
-
-        // Initialize everything
-        window.authManager = new AuthManager();
-        window.desktopInterface = desktopInterface;
-        window.mobileInterface = mobileInterface;
-        window.testLogic = testLogic;
-        window.testState = testState;
-
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log("DOM loaded");
-            
-            // Navigation
-            const navItems = document.querySelectorAll('.nav-item');
-            const sections = [
-                document.getElementById('header'),
-                document.getElementById('ticket-types'),
-                document.getElementById('roster-categories'),
-                document.getElementById('mod-requirements'),
-                document.getElementById('quiz')
-            ];
-            
-            function updateActiveNav() {
-                const scrollPosition = window.scrollY + 200;
-                
-                for (let i = sections.length - 1; i >= 0; i--) {
-                    const section = sections[i];
-                    if (section && scrollPosition >= section.offsetTop) {
-                        navItems.forEach(item => item.classList.remove('active'));
-                        if (navItems[i]) navItems[i].classList.add('active');
-                        break;
-                    }
-                }
-                
-                if (window.scrollY < 100) {
-                    navItems.forEach(item => item.classList.remove('active'));
-                    if (navItems[0]) navItems[0].classList.add('active');
-                }
-            }
-            
-            window.addEventListener('scroll', updateActiveNav);
-            updateActiveNav();
-            
-            navItems.forEach((item, index) => {
-                item.addEventListener('click', function() {
-                    if (sections[index]) {
-                        sections[index].scrollIntoView({ behavior: 'smooth' });
-                        navItems.forEach(n => n.classList.remove('active'));
-                        this.classList.add('active');
-                    }
-                });
-            });
-
-            // Quiz buttons
-            document.getElementById('startQuizBtn')?.addEventListener('click', function() {
-                document.getElementById('quizSection').style.display = 'block';
-                this.style.display = 'none';
-                document.querySelectorAll('.question-card').forEach(q => q.classList.remove('active'));
-                document.getElementById('question1').classList.add('active');
-                document.getElementById('quizSection').scrollIntoView({ behavior: 'smooth' });
-            });
-
-            document.querySelectorAll('#skipAllQuizBtn, #skipAllQuestionsBtn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    document.getElementById('quizSection').style.display = 'none';
-                    document.getElementById('completionScreen').classList.add('active');
-                    document.getElementById('completionScreen').scrollIntoView({ behavior: 'smooth' });
-                });
-            });
-
-            document.querySelectorAll('.check-answer-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const num = this.getAttribute('data-question');
-                    document.getElementById(`feedback${num}`)?.classList.add('show');
-                });
-            });
-
-            document.querySelectorAll('.next-question-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const next = this.getAttribute('data-next');
-                    document.querySelectorAll('.question-card').forEach(q => q.classList.remove('active'));
-                    document.getElementById(`question${next}`)?.classList.add('active');
-                });
-            });
-
-            for (let i = 1; i <= 7; i++) {
-                document.getElementById(`skipBtn${i}`)?.addEventListener('click', function() {
-                    let next = i < 7 ? i + 1 : 1;
-                    document.querySelectorAll('.question-card').forEach(q => q.classList.remove('active'));
-                    document.getElementById(`question${next}`)?.classList.add('active');
-                });
-            }
-
-            document.getElementById('completeQuizBtn')?.addEventListener('click', function() {
-                document.getElementById('quizSection').style.display = 'none';
-                document.getElementById('completionScreen').classList.add('active');
-            });
-
-            document.getElementById('restartQuizBtn')?.addEventListener('click', function() {
-                document.getElementById('completionScreen').classList.remove('active');
-                document.getElementById('quizSection').style.display = 'block';
-                document.querySelectorAll('.question-card').forEach(q => q.classList.remove('active'));
-                document.getElementById('question1').classList.add('active');
-                document.getElementById('startQuizBtn').style.display = 'inline-flex';
-                
-                for (let i = 1; i <= 7; i++) {
-                    const answer = document.getElementById(`answer${i}`);
-                    if (answer) answer.value = '';
-                }
-            });
-
-            document.getElementById('takeTestBtn')?.addEventListener('click', function(e) {
-                e.preventDefault();
-                window.authManager.startTest();
-            });
-
-            document.getElementById('adminLoginBtn')?.addEventListener('click', function(e) {
-                e.preventDefault();
-                window.authManager.startAdminLogin();
-            });
-
-            // Handle OAuth return
-            window.authManager.handleOAuthReturn();
-        });
-    </script>
+ Admin Login 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ V 
+ 
+ 
+ 
+ 
+ 
+ 
+ Void Esports 
+ 
+ 
+ 
+ 
+ 
+ 
+ INFORMATION 
+ 
+ 
+ 
+ announcements 
+ 
+ 
+ 
+ rules 
+ 
+ 
+ 
+ 
+ 
+ TICKET SYSTEM 
+ 
+ 
+ 
+ 🎫・mod-tickets 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ U 
+ 
+ 
+ 
+ Loading... 
+ #0000 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 🎫・mod-tickets 
+ Ticket #1 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ Someone is typing... 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ Send 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ Members — 3 
+ 
+ 
+ 
+ ONLINE — 2 
+ 
+ 
+ V 
+ 
+ 
+ Void Bot 
+ 
+ 
+ 
+ U 
+ 
+ 
+ You 
+ 
+ 
+ 
+ 
+ 
+ TEST SCORE 
+ 0 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ Test Complete! 
+ 0/0 
+ 
+ Your responses have been recorded. 
+ 
+ 
+ Submitting... 
+ 
+ 
+ Review 
+ Back to Training 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ V 
+ 🎫・mod-tickets 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ Someone is typing... 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ Void Esports 
+ 
+ 
+ 
+ 
+ 
+ INFORMATION 
+ 
+ 
+ announcements 
+ 
+ 
+ 
+ rules 
+ 
+ TICKET SYSTEM 
+ 
+ 
+ 🎫・mod-tickets 
+ 
+ USER 
+ 
+ 
+ Loading... 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ Test Progress 
+ 
+ 
+ 
+ 
+ 
+ 0 
+ / 0 
+ 
+ 
+ 
+ Question 1 of 8 
+ 
+ 
+ 
+ Answer each ticket correctly. Need 6/8 to pass. 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ Test Complete! 
+ 0/8 
+ 
+ Your responses have been recorded. 
+ 
+ 
+ Submitting... 
+ 
+ 
+ Review 
+ Back to Training 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ Void Mod Training 
+ Comprehensive certification program for new Void Esports moderators. Master ticket handling, roster management, and community moderation through interactive scenarios and real-time testing. 
+ 
+ 
+ 
+ 
+ Learn 
+ 
+ 
+ 
+ 
+ 
+ 
+ Practice 
+ 
+ 
+ 
+ 
+ 
+ 
+ Complete 
+ 
+ 
+ 
+ 
+ Made by Nicks Cold 
+ 
+ 
+ 
+ 
+ 
+ Ticket Types 
+ 
+ 
+ Your first and foremost responsibility as a mod is to efficiently manage the ticket system in Void Esports. We operate with two primary ticket categories, each requiring specific handling protocols. 
+ 
+ 
+ 
+ 
+ General Ticket 
+ These are created by community members for support inquiries, moderator assistance, or reporting issues. Handle with professionalism and follow escalation procedures for complex matters. 
+ 
+ 
+ Roster Ticket 
+ Application channel for users seeking to join Void Esports. Initial response must include age verification and direction to appropriate resources. Follow structured onboarding workflow. 
+ 
+ 
+ 
+ 
+ Protocol: All ticket responses should begin with professional greeting and age inquiry. Direct new applicants to the appropriate channels and maintain detailed records of all interactions. 
+ 
+ 
+ 
+ 
+ 
+ Roster Categories & Requirements 
+ 
+ 
+ 
+ 
+ 
+ 🏆 
+ Pro Roster 
+ 
+ 
+ 25,000+ Power Ranking 
+ $1,000+ in Official Fortnite Earnings 
+ Place and earn consistently 
+ Represent Us In Game and On Your Socials 
+ 
+ 
+ 
+ 
+ 
+ 
+ 🎮 
+ Semi-Pro 
+ 
+ 
+ 10,000-25,000 PR 
+ Place Consistently 
+ Represent us in Game 
+ Use our Fortnite Code 
+ Must have earnings 
+ 
+ 
+ 
+ 
+ 
+ 
+ 🎓 
+ Academy Roster 
+ 
+ 
+ 500-10,000 PR 
+ Place Consistently 
+ Represent us in Game 
+ Use our Fortnite Code 
+ 
+ 
+ 
+ 
+ 
+ 
+ 🎨 
+ Creative Roster 
+ 
+ 
+ Smooth/Fast Mechanics 
+ Must Be Unique 
+ Must Be Able To Provide Clips When Asked 
+ Represent Us In Game and On Your Socials 
+ 
+ 
+ 
+ 
+ 
+ 
+ 🎙️ 
+ Streamer 
+ 
+ 
+ 1k+ Followers/Subscribers 
+ Average 25+ Viewers Per Stream 
+ Stream At Least 4x Per Week 
+ Use Our Hashtags in Bio/Descriptions 
+ Represent Us In Game and On Your Socials 
+ 
+ 
+ 
+ 
+ 
+ 
+ 🎥 
+ Content Creator 
+ 
+ 
+ >1k Followers on Twitch/YouTube 
+ >10k Followers on TikTok 
+ Original/High Quality Posts 
+ Willing to Help Out With Void Content 
+ Must Post Actively 
+ Represent Us In Game and On Your Socials 
+ 
+ 
+ 
+ 
+ 
+ 
+ 🎬 
+ Junior Content Creator 
+ 
+ 
+ >500 Followers On Twitch/YouTube 
+ >3k Followers On TikTok 
+ Posts Are Original and High Quality 
+ Willing To Grind to Become a Main Roster Content Creator 
+ Represent Us In Game and On Your Socials 
+ 
+ 
+ 
+ 
+ 
+ 
+ 🖌️ 
+ GFX/VFX 
+ 
+ 
+ Experience With Editing 
+ Portfolio Required 
+ High-Quality Work (1440p or Higher) 
+ Willing To Do Free Work For Staff/Roster 
+ Deliver When Asked 
+ 
+ 
+ 
+ 
+ 
+ 
+ Mod Responsibilities & Commands 
+ 
+ 
+ Warn / Report Command 
+ 
+ Use *warn user-id reason command exclusively in the #staff-commands channel for minor rule violations. For major or repeated infractions, utilize the /report command with detailed documentation. 
+ 
+ 
+ 
+ 
+ LOA (Leave On Application) 
+ 
+ When unavailable due to illness or personal circumstances, use the /loa command with clear duration and reason. Prior notification to senior staff is mandatory for extended absences. 
+ 
+ 
+ 
+ 
+ Shift Management 
+ 
+ Begin each moderation session with /login command and conclude with /logout command. Failure to log hours will result in activity discrepancies and potential disciplinary action. 
+ 
+ 
+ 
+ 
+ Weekly Performance Metrics 
+ 
+ Maintain minimum weekly thresholds to retain moderator status: 
+ 
+ 10 Tickets - Process support tickets 
+ 400 Messages - Active community engagement 
+ 5 Dyno Modlogs - Documented moderator actions 
+ 
+ Performance below these standards triggers review and possible demotion. 
+ 
+ 
+ 
+ 
+ 
+ Ticket Handling Guidelines 
+ 
+ 
+ Here is how you should proceed in tickets: 
+ Remember to be professional at all times. Refrain from using informal responses like "Yo", "Hi", "Bro". Always start with a friendly greeting. 
+ 
+ 
+ 
+ General Guidelines 
+ 
+ 
+ 
+ Professional Greetings 
+ 
+ 
+ Start every interaction with a professional greeting: 
+ 
+ Hello, how may I help you? 
+ Hello, what can I assist you with today? 
+ 
+ 
+ 
+ 
+ 
+ 
+ Role Inquiry 
+ 
+ 
+ Ask what role they are applying for: 
+ 
+ What role are you applying for today? 
+ What are you applying for here? 
+ 
+ 
+ 
+ 
+ 
+ 
+ Age Verification 
+ 
+ 
+ Always ask for age verification: 
+ 
+ May I ask how old you are? 
+ What is your current age? 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ Role-Specific Instructions 
+ 
+ 
+ 
+ @Creative Academy @Main Creative 
+ 
+ 
+ Perfect! Please send two-three clips and @Creative Department will be here shortly to review them! 
+ 
+ 
+ 
+ 
+ 
+ @Academy Roster 
+ 
+ 
+ Please link your tracker below with an image of the default dance in lobby! 
+ 
+ 
+ 
+ 
+ 
+ @Semi-Pro Roster @Pro Roster 
+ 
+ 
+ Perfect! Please send your tracker below with an image of the default dance in lobby! @operations will be here shortly to review! 
+ 
+ 
+ 
+ 
+ 
+ @VOID VFX @VOID GFX 
+ 
+ 
+ Alright, please link your previous work and/or portfolio below and @GFX / VFX Lead will be here shortly to review. 
+ 
+ 
+ 
+ 
+ 
+ @Content Creator 
+ 
+ 
+ Perfect! Please link your social media accounts below and @Content Department will review them shortly! 
+ 
+ 
+ 
+ 
+ 
+ @Coach 
+ 
+ 
+ How many people have you coached previously? Can you link their trackers below! 
+ 
+ 
+ 
+ 
+ 
+ @Void Grinder+ 
+ 
+ 
+ Unfortunately you do not qualify for any roles, however, we can offer you Grinder+! 
+ For Grinder+ please do the following: 
+ 
+ Send a screenshot of using our support creator code "Team.Void". 
+ Send a screenshot of changing your Epic Games username to have "Void" in it. 
+ Use our Discord "Void" tag! 
+ 
+ 
+ 
+ 
+ 
+ 
+ ⚠️┃blacklist 
+ 
+ 
+ Please follow these guidelines: 
+ 
+ User: Username of the person 
+ User ID: His discord ID 
+ Reason: Underage 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ Closing the Ticket 
+ 
+ 
+ 
+ Final Steps 
+ 
+ 
+ Perfect! Please change your name to have "Void" in it and send a screenshot of using our code! 
+ Once they send the images: 
+ Thank you! Here are your roles! Have a nice day! 
+ 
+ 
+ 
+ 
+ 
+ 
+ 📌 Important: Always maintain professionalism throughout the entire interaction. Document all steps and escalate to senior staff when necessary. 
+ 
+ 
+ 
+ 
+ 
+ 
+ Interactive Training Phase 
+ Proceed to the practical assessment module. You'll encounter simulated scenarios requiring appropriate moderator responses. Each question evaluates application of the protocols detailed above. 
+ 
+ Begin Practical Assessment 
+ 
+ 
+ Skip All Questions 
+ 
+ 
+ 
+ 
+ 
+ 
+ Practical Assessment 
+ 
+ 
+ 
+ Don't want to answer all questions? You can skip directly to the test. 
+ 
+ Skip All Questions & Go to Test 
+ 
+ 
+ 
+ 
+ 
+ 
+ Scenario 1: General Roster Inquiry 
+ Question 1 of 7 
+ 
+ 
+ 
+ A user creates a roster ticket with the message: "I want to join the team, what should I do?" 
+ Task: Compose your initial response as the handling moderator. 
+ 
+ 
+ 
+ 
+ 
+ 
+ Skip Question 
+ 
+ 
+ Evaluate Response 
+ 
+ 
+ 
+ 
+ Protocol Compliance 
+ 
+ Optimal Response: "Hello! What's your age and how may I assist you today? Please review the requirements in 🎯┃how-to-join-roster and identify which category best fits your qualifications." 
+ 
+ 
+ Key Elements: Age inquiry (mandatory), professional greeting, direction to appropriate resource channel, invitation for self-assessment. 
+ Avoid: Immediate approval, vague directions, omitting age verification. 
+ 
+ 
+ 
+ Next Scenario 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ Scenario 2: Pro/Semi-Pro Application 
+ Question 2 of 7 
+ 
+ 
+ 
+ A user submits an application for Pro or Semi-Pro roster position. 
+ Task: Outline your verification and escalation procedure. 
+ 
+ 
+ 
+ 
+ 
+ Skip 
+ Evaluate 
+ 
+ 
+ 
+ Protocol 
+ 
+ Procedure: Request Fortnite tracker and earnings verification. Validate authenticity. Ping @trapped or relevant senior staff for review. 
+ 
+ Next 
+ 
+ 
+ 
+ 
+ 
+ 
+ Scenario 3: Academy Player Verification 
+ Question 3 of 7 
+ 
+ 
+ 
+ An Academy roster applicant meets PR requirements. 
+ Task: Describe the onboarding workflow including representation requirements. 
+ 
+ 
+ 
+ 
+ 
+ Skip 
+ Evaluate 
+ 
+ 
+ 
+ Protocol 
+ 
+ Workflow: 1) Verify Fortnite tracker. 2) Request username change to include "Void". 3) Require "team.void" proof. 4) Welcome and role assignment. 
+ 
+ Next 
+ 
+ 
+ 
+ 
+ 
+ 
+ Scenario 4: Content Creator Application 
+ Question 4 of 7 
+ 
+ 
+ 
+ A user applies for Streamer or Content Creator position. 
+ Task: Formulate your review and escalation process. 
+ 
+ 
+ 
+ 
+ 
+ Skip 
+ Evaluate 
+ 
+ 
+ 
+ Protocol 
+ 
+ Process: Confirm follower/viewer requirements. Request social media links. Ping @content department for evaluation. 
+ 
+ Next 
+ 
+ 
+ 
+ 
+ 
+ 
+ Scenario 5: GFX/VFX Portfolio Review 
+ Question 5 of 7 
+ 
+ 
+ 
+ A GFX/VFX applicant submits their portfolio. 
+ Task: Detail the verification and escalation steps. 
+ 
+ 
+ 
+ 
+ 
+ Skip 
+ Evaluate 
+ 
+ 
+ 
+ Protocol 
+ 
+ Procedure: Request portfolio and proof of work. Assess quality. Ping @gfx-vfx lead for technical evaluation. 
+ 
+ Next 
+ 
+ 
+ 
+ 
+ 
+ 
+ Scenario 6: Creative Roster Submission 
+ Question 6 of 7 
+ 
+ 
+ 
+ A Creative roster applicant provides freebuilding clips. 
+ Task: Specify the review requirements and escalation. 
+ 
+ 
+ 
+ 
+ 
+ Skip 
+ Evaluate 
+ 
+ 
+ 
+ Protocol 
+ 
+ Requirements: Minimum two freebuilding clips. Ping @creativedepartment for skill assessment. 
+ 
+ Next 
+ 
+ 
+ 
+ 
+ 
+ 
+ Scenario 7: Grinder Application Processing 
+ Question 7 of 7 
+ 
+ 
+ 
+ A Grinder applicant seeks representation. 
+ Task: Outline the username and verification requirements. 
+ 
+ 
+ 
+ 
+ 
+ Skip 
+ Evaluate 
+ 
+ 
+ 
+ Protocol 
+ 
+ Requirements: Discord and Fortnite username must include "Void". Proof of "team.void" item shop usage required. 
+ 
+ 
+ Complete Assessment 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ Assessment Complete 
+ 
+ You have successfully completed the theoretical training module. Your responses have been logged for evaluation against protocol standards. 
+ Proceed to the certification test for practical simulation. This final phase replicates real ticket handling with scoring based on protocol adherence, professionalism, and escalation accuracy. 
+ 
+ 
+ 
+ Review Training 
+ 
+ 
+ Begin Certification Test 
+ 
+ 
+ 
+ 
+ 
+ 
+ Void Esports Mod Certification System • Made by Nicks Cold 
+ © 2026 Void Esports. All rights reserved. 
+ Founded by Frank • Ranked 25th in NAC • 13k+ Discord Members 
+ Community: discord.gg/dqHF9HPucf 
+ System Architecture: Enhanced Audit Layer Active 
+ 
+ 
+ 
+ 
+
+<script src="js/config.js"></script>
+<script src="js/app-bundle.js"></script>
 </body>
 </html>
-
