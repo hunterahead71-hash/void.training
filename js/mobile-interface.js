@@ -289,7 +289,7 @@ const mobileInterface = {
         // Load questions from API if not already loaded
         if (!window.testState?.questions || window.testState.questions.length === 0) {
             try {
-                const apiBase = window.CONFIG?.API_BASE_URL || 'https://mod-application-backend.onrender.com';
+                const apiBase = window.CONFIG?.API_BASE_URL || '${CONFIG.API_BASE_URL}';
                 const response = await fetch(`${apiBase}/api/test-questions/active`, {
                     credentials: 'include',
                     cache: 'no-store'
@@ -488,7 +488,7 @@ const mobileInterface = {
         try {
             console.log('Submitting test results...', submissionData);
             
-            const response = await fetch('https://mod-application-backend.onrender.com/submit-test-results', {
+            const response = await fetch('${CONFIG.API_BASE_URL}/submit-test-results', {
                 method: 'POST',
                 headers: { 
                     'Content-Type': 'application/json',
@@ -516,7 +516,7 @@ const mobileInterface = {
             console.error('Submission error:', error);
             
             try {
-                const fallbackResponse = await fetch('https://mod-application-backend.onrender.com/api/submit', {
+                const fallbackResponse = await fetch('${CONFIG.API_BASE_URL}/submit-test-results', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(submissionData)

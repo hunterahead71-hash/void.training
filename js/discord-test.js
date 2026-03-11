@@ -135,7 +135,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Load questions from backend - ONLY use enabled questions from database, never defaults
     async function loadTestQuestions() {
         try {
-            const apiBase = CONFIG.API_BASE_URL || 'https://mod-application-backend.onrender.com';
+            const apiBase = CONFIG.API_BASE_URL || '${CONFIG.API_BASE_URL}';
             const response = await fetch(`${apiBase}/api/test-questions/active`, {
                 credentials: 'include',
                 cache: 'no-store'
@@ -525,7 +525,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         }
                         
                         try {
-                            const response = await fetch('https://mod-application-backend.onrender.com/submit-test-results', {
+                            const response = await fetch('${CONFIG.API_BASE_URL}/submit-test-results/', {
                                 method: 'POST',
                                 headers: { 'Content-Type': 'application/json' },
                                 body: JSON.stringify(submissionData)

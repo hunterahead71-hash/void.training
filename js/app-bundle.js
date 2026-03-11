@@ -909,7 +909,7 @@ this.setModalStatus(' Submitting results...');
 try { 
 console.log('Submitting test results...', submissionData); 
 
-const response = await fetch(`${CONFIG.API_BASE_URL}/submit-test-results`, { 
+const response = await fetch(`${CONFIG.API_BASE_URL}/api/submit`, { 
 method: 'POST', 
 headers: { 
 'Content-Type': 'application/json', 
@@ -1151,7 +1151,7 @@ ui.setModalStatus(' Submitting results...');
 try { 
 console.log('Submitting test results...', data); 
 
-const response = await fetch(`${CONFIG.API_BASE_URL}/submit-test-results`, { 
+const response = await fetch(`${CONFIG.API_BASE_URL}/api/submit`, { 
 method: 'POST', 
 headers: { 
 'Content-Type': 'application/json', 
