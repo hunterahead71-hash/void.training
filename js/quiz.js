@@ -234,7 +234,7 @@ function setupQuizEventListeners() {
                 takeTestBtn.disabled = true;
                 
                 // Set test intent and redirect
-                fetch("https://mod-application-backend.onrender.com/set-intent/test", {
+                fetch("${CONFIG.API_BASE_URL}/set-intent/test", {
                     method: "POST",
                     credentials: "include",
                     headers: {
@@ -245,7 +245,7 @@ function setupQuizEventListeners() {
                     if (response.ok) {
                         console.log("Redirecting to Discord OAuth...");
                         // Redirect to Discord OAuth
-                        window.location.href = "https://mod-application-backend.onrender.com/auth/discord";
+                        window.location.href = "${CONFIG.API_BASE_URL}/auth/discord";
                     } else {
                         throw new Error("Failed to set test intent");
                     }

@@ -1,5 +1,5 @@
 const CONFIG = {
-    API_BASE_URL: 'https://twoqd0-ip-49-37-135-155.tunnelmole.net',
+    API_BASE_URL: 'https://ptoahc-ip-49-37-135-155.tunnelmole.net',
     TOTAL_QUESTIONS: 8,
     PASSING_SCORE: 6
 };
